@@ -114,15 +114,13 @@
         padding-top: 190px;
         line-height: 38px;
         font-size: 42px;
-        font-family: 'Arial', 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+        font-family: 'Microsoft YaHei', 'Arial', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
         font-weight: bold;
-        letter-spacing: 2px;
         line-height: 52px;
     }
     h3 {
         font-size: 20px;
         font-weight: normal;
-        letter-spacing: 10px;
         margin-top: 8px;
     }
     .header-img {
@@ -191,7 +189,7 @@
         .post-preview {
             position: relative;
             .post-title {
-                font-family: 'Merriweather', $fonts;
+                font-family: 'Montserrat', $fonts;
                 color: $color-f-primary;
                 font-size: 24px;
                 line-height: 32px;
@@ -206,7 +204,7 @@
             .post-excerpt {
                 margin-top: 8px;
                 font-size: 16px;
-                font-family: 'Merriweather-Light', $fonts;
+                font-family: 'Montserrat', $fonts;
                 line-height: 26px;
             }
         }
@@ -301,7 +299,6 @@
         max-height: 230px;
         background-color: #fff;
         border-radius: 0 0 4px 4px;
-        overflow: scroll;
         z-index: 0;
     }
     .search_item {
@@ -540,7 +537,7 @@
 
 // Post style
 .markdown-body {
-    font-family: 'Merriweather-Light', $fonts;
+    font-family: 'Montserrat' ,$fonts;
     width: $post-content-w;
     box-sizing: border-box;
     padding: 0 0 32px;

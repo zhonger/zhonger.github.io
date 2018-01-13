@@ -1,8 +1,8 @@
 # Site settings 配置站点
-title: '廖柯宇的独立博客'
-description: '昵称悟空，千禧一代，前端开发者/伪极客/灵魂摄影师，热爱技术&设计。很高兴能在这里与你分享我对技术和生活的思考。'
-keyword: '廖柯宇, 廖柯宇的独立博客, 廖柯宇的博客, 前端, 前端开发, 前端博客, javascript, vuejs, nodejs, 设计'
-url: 'http://liaokeyu.com' # your host
+title: 'Mr Li'
+description: '个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。'
+keyword: 'zhonger，zhonger的博客，nodejs，kvm'
+url: 'https://lisz.ink' # your host
 
 # if you don't need baseurl, you should leave this value blank.
 baseurl: ''
@@ -13,10 +13,13 @@ nav:
   tags: '/tags.html'
 
 # Author 配置博主信息
-author: '廖柯宇'
-nickname: '悟空'
-bio: '前端开发者，热爱技术&设计，简单乐观爱创造'
-avatar: '/assets/img/profile.png'
+author: 'zhonger'
+nickname: 'zhonger'
+bio: '前端开发者，喜爱运维管理'
+avatar: '/assets/img/profile.jpg'
+
+# permalink
+permalink: /:categories/:title.html
 
 # Search
 search: true
@@ -25,8 +28,8 @@ search: true
 nightMode: true
 
 # Comments
-disqus: false
-disqus_url: 'https://liaokeyu.disqus.com/embed.js'
+disqus: true
+disqus_url: 'https://zhonger.disqus.com/embed.js'
 
 # Share
 social-share: true
@@ -40,10 +43,8 @@ postPatterns: 'circuitBoard'
 
 # SNS settings 配置社交网站url: weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
 sns:
-  weibo: '//weibo.com/lovecolcol'
-  juejin: '//juejin.im/user/57a6f434165abd006159b4cc'
-  instagram: '//www.instagram.com/steveliaocn'
-  github: '//github.com/kaeyleo'
+  facebook: '//facebook.com/zhonger95'
+  github: '//github.com/zhonger'
 
 # Tags 设置标签
 recommend-tags: true # whether or not display recommend-tags on the sidebar
@@ -56,11 +57,11 @@ exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'R
 
 # Markdown
 markdown: kramdown
-highlighter: rouge
+highlighter: prism
 kramdown:
   input: GFM
 
 RSS: false
 
 # Plugins
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]

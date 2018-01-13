@@ -74,10 +74,26 @@ tags: jekyll 前端开发 设计
 
 在Markdown中你可以这样写：
 
+
+```css
+p { color: red }
 ```
- ```css
-	p { color: red }
- ```
+
+```ruby
+def show
+	@widget = Widget(params[:id])
+	respond_to do |format|
+		format.html # show.html.erb
+		format.json { render json: @widget }
+	end
+end
+```
+
+```puppet
+Private Sub Form_Load()
+    ' Execute a simple message box that says "Hello, World!"
+    MsgBox "Hello, World!"
+End Sub
 ```
 
 支持语言：
