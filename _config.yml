@@ -2,7 +2,7 @@
 title: 'Mr Li'
 description: '个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。'
 keyword: 'zhonger，zhonger的博客，nodejs，kvm'
-url: 'https://lisz.ink' # your host
+url: '/' # your host
 
 # if you don't need baseurl, you should leave this value blank.
 baseurl: ''
