@@ -24,9 +24,10 @@ cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format
 
 ```bash
 #安装bandersnatch
-`sudo pip install bandersnatch`
+sudo pip install bandersnatch
+
 #尝试启动bandersnatch
-`bandersnatch mirror`  
+bandersnatch mirror  
 #返回没有/etc/bandersnatch.conf文件错误
 
 #创建bandersnatch.conf文件（文件内容如下）
@@ -41,10 +42,10 @@ ctrl+b+d
 #tmux为终端会话工具，`ctrl+b+d`让任务在后台执行
 
 #配置web 服务器到同步路径
-web服务的根目录为`/srv/pypi/web`
-在linux系统用户配置中修改pypi默认镜像
+#web服务的根目录为`/srv/pypi/web`
+#在linux系统用户配置中修改pypi默认镜像
 
-#~/.pip/pip.conf
+#文件 ~/.pip/pip.conf
 [global]
 index-url = https://pypi.doubanio.com/simple/  （该地址修改为web服务器对应地址）
 ```
