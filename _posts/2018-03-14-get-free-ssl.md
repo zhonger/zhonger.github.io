@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Letsencrypt泛域名SSL证书免费申请
-date: 2018-03-14 22:25:44
+date: 2018-03-14 20:25:44
 tags:
 - Letsencrypt
 - ssl
@@ -10,9 +10,7 @@ tags:
 categories: tech
 cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
 ---
-
 # HTTPS和Let's encrypt简介
-
 超文本传输安全协议（英语：Hypertext Transfer Protocol Secure，缩写：HTTPS，常称为HTTP over TLS，HTTP over SSL或HTTP Secure）是一种网络安全传输协议。在计算机网络上，HTTPS经由超文本传输协议进行通信，但利用SSL/TLS来加密数据包。HTTPS开发的主要目的，是提供对网络服务器的身份认证，保护交换数据的隐私与完整性。这个协议由网景公司（Netscape）在1994年首次提出，随后扩展到互联网上。
 
 HTTPS连接经常用于万维网上的交易支付和企业信息系统中敏感信息的传输，而如今在Goolge、Mozilla等大厂的联合推广下，HTTPS已经成为了每一个站点的安全必备要素。
@@ -25,13 +23,10 @@ HTTPS连接经常用于万维网上的交易支付和企业信息系统中敏感
 
 下面我们将会以申请`*.shu.aixinwu.org`为例来讲一下这款工具的用法，真的是很清真。
 
-
 # 申请泛域名
-
 申请泛域名的第一步自然是安装SSL证书申请工具了，当然我们选用的是`acme.sh`。
 
 ## 下载acme.sh工具
-
 `acme.sh`官方提供一个非常简单的一键安装脚本，老少皆宜。当然，安装这个工具对于是否在公网并没有任何要求，你可以选择在将要部署SSL证书的内网服务器中安装即可。
 
 ```bash
@@ -43,7 +38,6 @@ source .bashrc
 ```
 
 ## 提交泛域名
-
 安装好`acme.sh`工具，就可以开始提交泛域名申请了，按照下面命令就可以使用DNS验证的方式来提交申请。结果会返回一个TXT记录新增的要求。
 
 ```
@@ -51,26 +45,21 @@ acme.sh --issue -dns -d *.shu.aixinwu.org
 ```
 
 ## 添加DNS记录
-
 根据上一步返回的TXT记录添加要求，在相应的域名DNS服务提供商那里添加好对应的TXT记录即可。如下图所示。
 
 ![TXT记录新增](https://vgy.me/RnrLzG.jpg)
 
 ## 生成泛域名证书
-
 在添加好TXT记录之后，就可以使用更新命令来请求颁发泛域名证书。执行下面这条命令之后可以发现返回了生成的文件的本地路径。
 ```bash
 acme.sh --renew -d *.shu.aixinwu.org
 ```
-
 到此为止，泛域名证书已经申请完成，但是用于部署还有点小毛病。因为通过DNS申请生成的SSL证书的key和cer两个文件都不是标准的pem文件格式，在某些浏览器或者终端中会出现缺少中间CA机构证书的问题（尽管在大部分浏览器中是没有任何问题的，但是为了终端中不产生问题最好还是修复该问题），所以需要在正式部署之前生成好pem证书。
 
 # 部署泛域名
-
 这里以Nginx为例来展示部署泛域名的步骤。首先是通过key和cer文件来生成对应包含完整证书链的pem文件。
 
 ## 生成pem证书
-
 `acme.sh`工具自身就提供一键生成pem证书的方式，无须像网上很多博客中讲的通过`openssl`原生命令来转换文件。以下操作即可生成的key和cert的pem文件到用户主目录的ssl文件中。
 
 ```bash
@@ -80,7 +69,6 @@ acme.sh --install-cert -d *.shu.aixinwu.org \
 ```
 
 ## 添加到Nginx中
-
 以下为Nginx文件文件示例。
 ```conf
 server
