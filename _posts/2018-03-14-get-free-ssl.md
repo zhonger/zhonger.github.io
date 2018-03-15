@@ -42,7 +42,7 @@ source .bashrc
 安装好`acme.sh`工具，就可以开始提交泛域名申请了，按照下面命令就可以使用DNS验证的方式来提交申请。结果会返回一个TXT记录新增的要求。
 
 ```
-acme.sh --issue -dns -d *.shu.aixinwu.org
+acme.sh --issue --dns -d *.shu.aixinwu.org
 ```
 
 ## 添加DNS记录
@@ -106,3 +106,7 @@ server
         access_log  /home/wwwlogs/shu.aixinwu.org.log  access;
     }
 ```
+
+# 总结
+
+虽然通过这样的方式我们成功实现了免费申请内网SSL泛域名证书，但是经过实践发现，目前 Let's encrypt 所提供的泛域名证书只能支持到最近一级通配。比如说，现在申请的是 `*.shu.aixinwu.org` ，如果站点域名为 `www.t.shu.aixinwu.org`即被判别为无效域名，像 `www.shu.aixinwu.org` 即可认定为合法SSL证书。其实因为这种泛域名证书目前并没有提出任何限制，我们可以多级通配就申请多个即可。
