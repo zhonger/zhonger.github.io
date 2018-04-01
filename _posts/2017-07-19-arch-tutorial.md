@@ -2,7 +2,7 @@
 layout: post
 title: 'archlinux入门初步'
 subtitle: 'archlinux入门初步'
-date: 2017-07-19 15:23:10
+date: 2017-07-19 15:23:10 +0800
 categories: tech
 cover: 'https://images.unsplash.com/photo-1508288155660-625e378b3fc9?auto=format&fit=crop&w=1500&q=80'
 tags: archlinux setup

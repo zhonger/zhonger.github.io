@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 使用caddy和apache搭建php环境
-date: 2017-06-21 20:53:02
+date: 2017-06-21 20:53:02 +0800
 tags: caddy apache
 categories: tech
 cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'

@@ -2,7 +2,7 @@
 layout: post
 title: '我的女儿'
 subtitle: '一首随笔诗，百无聊赖'
-date: 2015-09-19
+date: 2015-09-19 22:20:12 +0800
 categories: others
 cover: 'https://images.unsplash.com/photo-1502646434673-f914c2b11728?auto=format&fit=crop&w=1500&q=80'
 tags: 随笔 诗

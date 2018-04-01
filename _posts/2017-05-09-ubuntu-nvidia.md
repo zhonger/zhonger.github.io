@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ubuntu16.04下安装nvidia gtx 970显卡驱动
-date: 2017-05-09 12:02:49
+date: 2017-05-09 12:02:49 +0800
 tags:
 - ubuntu
 - nvidia

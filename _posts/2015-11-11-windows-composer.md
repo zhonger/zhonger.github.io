@@ -2,7 +2,7 @@
 layout: post
 title: 'windows配置composer和laravel笔记'
 subtitle: '在windows系统上配置composer，并应用于laravel框架开发过程中。'
-date: 2015-11-11
+date: 2015-11-11 12:12:12 +0800
 categories: tech
 cover: 'https://images.unsplash.com/photo-1490633874781-1c63cc424610?auto=format&fit=crop&w=1500&q=80'
 tags: windows composer laravel

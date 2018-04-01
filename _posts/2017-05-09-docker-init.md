@@ -1,7 +1,7 @@
 ---
 layout: post
 title: docker平台学习初步
-date: 2017-05-09 12:43:31
+date: 2017-05-09 12:43:31 +0800
 tags:
 - docker 
 - ubuntu

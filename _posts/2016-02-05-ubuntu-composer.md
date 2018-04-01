@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ubuntu14.04安装composer+laravel配置
-date: 2016-02-05 16:29:05
+date: 2016-02-05 16:29:05 +0800
 tags:
 - ubuntu
 - composer

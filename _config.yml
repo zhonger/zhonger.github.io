@@ -64,7 +64,7 @@ highlighter: prism
 kramdown:
   input: GFM
 
-RSS: false
+RSS: true
 
 # Plugins
-plugins: [jekyll-paginate]
+plugins: [jekyll-paginate, jekyll-feed]

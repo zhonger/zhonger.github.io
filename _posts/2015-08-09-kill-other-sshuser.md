@@ -2,7 +2,7 @@
 layout: post
 title: 'Linux踢出其他正在SSH登陆用户'
 subtitle: '踢出其他SSH登录用户'
-date: 2015-08-09
+date: 2015-08-09 15:32:12 +0800
 categories: tech
 cover: 'https://images.unsplash.com/photo-1504006833117-8886a355efbf?auto=format&fit=crop&w=1500&q=80'
 tags: SSH登录 转载

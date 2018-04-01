@@ -2,7 +2,7 @@
 layout: post
 title: unbound+dnscrypt搭建无污染DNS服务
 subtitle: 从零开始搭建一个无污染的DNS服务
-date: 2017-12-03 18:23:41
+date: 2017-12-03 18:23:41 +0800
 tags:
 - DNS
 - unbound

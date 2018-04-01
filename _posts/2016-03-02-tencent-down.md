@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 腾讯云服务器重装系统后……
-date: 2016-03-02 16:36:27
+date: 2016-03-02 16:36:27 +0800
 tags:
 - 腾讯云
 categories: tech

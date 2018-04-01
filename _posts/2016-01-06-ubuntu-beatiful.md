@@ -2,7 +2,7 @@
 layout: post
 title: 'Ubuntu14.04常用美化、配置、软件安装（持续更新中。。。）'
 subtitle: '美化ubuntu，你值得拥有。'
-date: 2016-01-06
+date: 2016-01-06 13:11:23 +0800
 categories: tech
 cover: 'https://images.unsplash.com/photo-1508288155660-625e378b3fc9?auto=format&fit=crop&w=1500&q=80'
 tags: ubuntu 美化

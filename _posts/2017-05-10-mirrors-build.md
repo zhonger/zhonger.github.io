@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 镜像站构建
-date: 2017-05-10 10:02:50
+date: 2017-05-10 10:02:50 +0800
 tags:
 - mirror
 - build

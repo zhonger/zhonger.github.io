@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 腾讯云服务器CVM作为MYSQL遇到远程无法连接的解决办法
-date: 2016-03-03 22:04:40
+date: 2016-03-03 22:04:40 +0800
 tags: 
 - 腾讯云
 - Mysql
