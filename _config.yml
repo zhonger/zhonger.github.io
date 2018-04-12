@@ -11,6 +11,7 @@ baseurl: ''
 nav:
   home: '/'
   tags: '/tags.html'
+  RSS: '/feed.xml'
 
 # Author 配置博主信息
 author: 'zhonger'
@@ -28,7 +29,7 @@ timezone: Asia/Shanghai
 search: true
 
 # Night mode
-nightMode: true
+nightMode: false
 
 # Comments
 disqus: true
