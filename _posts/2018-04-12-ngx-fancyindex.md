@@ -115,9 +115,6 @@ server {
     
     location / {
     	include /var/www/html/Nginx-Fancyindex-Theme/fancyindex.conf;
-		#fancyindex on;
-		#fancyindex_exact_size off;
-		#fancyindex_time_format "%Y-%m-%d %H:%M";
 		autoindex_format html;
 		charset utf-8,gbk;
 	    disable_symlinks off;
