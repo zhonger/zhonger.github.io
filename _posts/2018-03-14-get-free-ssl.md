@@ -42,7 +42,7 @@ source .bashrc
 安装好`acme.sh`工具，就可以开始提交泛域名申请了，按照下面命令就可以使用DNS验证的方式来提交申请。结果会返回一个TXT记录新增的要求。
 
 ```bash
-acme.sh --issue --dns -d *.shu.aixinwu.org
+acme.sh --issue --dns -d shu.aixinwu.org -d *.shu.aixinwu.org --yes-I-know-dns-manual-mode-enough-go-ahead-please
 ```
 
 ## 添加DNS记录
@@ -53,7 +53,7 @@ acme.sh --issue --dns -d *.shu.aixinwu.org
 ## 生成泛域名证书
 在添加好TXT记录之后，就可以使用更新命令来请求颁发泛域名证书。执行下面这条命令之后可以发现返回了生成的文件的本地路径。
 ```bash
-acme.sh --renew -d *.shu.aixinwu.org
+acme.sh --renew -d shu.aixinwu.org -d *.shu.aixinwu.org --yes-I-know-dns-manual-mode-enough-go-ahead-please
 ```
 到此为止，泛域名证书已经申请完成，但是用于部署还有点小毛病。因为通过DNS申请生成的SSL证书的key和cer两个文件都不是标准的pem文件格式，在某些浏览器或者终端中会出现缺少中间CA机构证书的问题（尽管在大部分浏览器中是没有任何问题的，但是为了终端中不产生问题最好还是修复该问题），所以需要在正式部署之前生成好pem证书。
 
@@ -64,7 +64,7 @@ acme.sh --renew -d *.shu.aixinwu.org
 `acme.sh`工具自身就提供一键生成pem证书的方式，无须像网上很多博客中讲的通过`openssl`原生命令来转换文件。以下操作即可生成的key和cert的pem文件到用户主目录的ssl文件中。
 
 ```bash
-acme.sh --install-cert -d *.shu.aixinwu.org \
+acme.sh --install-cert -d shu.aixinwu.org \
 --key-file /home/ubuntu/ssl/shu.aixinwu.org.key.pem \
 --fullchain-file /home/ubuntu/ssl/shu.aixinwu.org.cert.pem 
 ```
@@ -76,7 +76,7 @@ server
     {
         listen 80;
         listen [::]:80;
-        server_name *.shu.aixinwu.org;
+        server_name shu.aixinwu.org *.shu.aixinwu.org;
 		return 301 https://$host$request_uri;
     }
 
@@ -84,7 +84,7 @@ server
     {
         listen 443;
         listen [::]:443;
-        server_name *.shu.aixinwu.org;
+        server_name shu.aixinwu.org *.shu.aixinwu.org;
         ssl on;
         ssl_certificate /home/ubuntu/ssl/shu.aixinwu.org.cert.pem;
         ssl_certificate_key /home/ubuntu/ssl/shu.aixinwu.org.key.pem;
