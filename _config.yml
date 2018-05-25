@@ -69,3 +69,5 @@ RSS: true
 
 # Plugins
 plugins: [jekyll-paginate, jekyll-feed, jemoji]
+
+include: [_redirects]
