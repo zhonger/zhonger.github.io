@@ -70,3 +70,8 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 ## 大功告成的结果
 
 ![screenshot](https://vgy.me/AORYMC.jpg)
+
+## 参考资料
+
+- [https://www.cnblogs.com/feipeng8848/p/8970556.html](https://www.cnblogs.com/feipeng8848/p/8970556.html)
+- [https://tankeryang.github.io/posts/%E5%AE%89%E8%A3%85Ubuntu-18-04-LTS%E4%B9%8B%E5%90%8E%E7%9A%84N%E4%BB%B6%E4%BA%8B/](https://tankeryang.github.io/posts/%E5%AE%89%E8%A3%85Ubuntu-18-04-LTS%E4%B9%8B%E5%90%8E%E7%9A%84N%E4%BB%B6%E4%BA%8B/)
