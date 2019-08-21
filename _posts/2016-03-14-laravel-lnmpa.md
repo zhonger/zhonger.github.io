@@ -1,6 +1,6 @@
 ---
 layout: post
-title: laravel5.2在lnmpa一键安装包环境下的部署
+title: laravel5.2 在 lnmpa 一键安装包环境下的部署
 date: 2016-03-14 22:19:48 +0800
 tags:
 - laravel

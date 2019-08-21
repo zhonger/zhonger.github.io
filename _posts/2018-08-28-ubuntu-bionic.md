@@ -10,7 +10,7 @@ tags:
 - Mac
 - 18.04
 categories: tech
-cover: 'https://images.unsplash.com/photo-1533458504656-81a904b29a69?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b888832a29d97d8eb911d207d29f7cf5&auto=format&fit=crop&w=1950&q=80'
+cover: 'https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900'
 ---
 
 Ubuntu 操作系统一直深受广大开发者喜爱，一个原因在于它的软件支持比较新，另一个原因在于它的交互更为友好、便于定制化。今天，在尝试从 16.04 升级到 18.04 之后，觉得可能需要换个主题，换个好心情（16.04 一直用的是 `Flat` 主题，一款非常好看的主题哦）。由于 Ubuntu 18.04 采用了 GNOME 替代 Unity（GTK 基础上由 Canonical 自主开发的，因为维护耗费精力而被砍掉） 作为默认图形桌面环境，原来的 Flat 主题也失效了，不过好在有万能的 opendesktop.org ，有很多开源界的设计师们纷纷向这个站点贡献自己的 GNOME 桌面定制化设计，在这个地方基本可以找到想要的主题，比如像类 MacOS 、 Windows 、Arch 等操作系统样子的高仿主题。个人比较偏爱 MacOS 风格的主题，因此下面就拿自己使用的一系列主题举例。
@@ -73,5 +73,5 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 ## 参考资料
 
-- [https://www.cnblogs.com/feipeng8848/p/8970556.html](https://www.cnblogs.com/feipeng8848/p/8970556.html)
-- [https://tankeryang.github.io/posts/%E5%AE%89%E8%A3%85Ubuntu-18-04-LTS%E4%B9%8B%E5%90%8E%E7%9A%84N%E4%BB%B6%E4%BA%8B/](https://tankeryang.github.io/posts/%E5%AE%89%E8%A3%85Ubuntu-18-04-LTS%E4%B9%8B%E5%90%8E%E7%9A%84N%E4%BB%B6%E4%BA%8B/)
+- [给Ubuntu18.04(18.10)安装mac os主题](https://www.cnblogs.com/feipeng8848/p/8970556.html)
+- [安装Ubuntu-18-04-LTS之后的N件事](https://tankeryang.github.io/posts/%E5%AE%89%E8%A3%85Ubuntu-18-04-LTS%E4%B9%8B%E5%90%8E%E7%9A%84N%E4%BB%B6%E4%BA%8B/)

@@ -1,20 +1,20 @@
 ---
 layout: post
-title: 使用caddy和apache搭建php环境
+title: 使用 caddy 和 apache 搭建 php 环境
 date: 2017-06-21 20:53:02 +0800
 tags: caddy apache
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1552162679-446212964bfc?w=1600&h=900'
 ---
 
-# caddy篇
-## 安装caddy
+# caddy 篇
+## 安装 caddy
 
 ```bash
 curl https://getcaddy.com | bash
 ```
 
-## 配置Caddyfile
+## 配置 Caddyfile
 
 ```bash
 yun.wl27.cn {
@@ -24,7 +24,7 @@ yun.wl27.cn {
 
 ```
 
-## 安装并配置supervisor
+## 安装并配置 supervisor
 
 ```bash
 sudo pip install supervisor
@@ -43,15 +43,15 @@ stdout_logfile=/tmp/caddy.log
 ```
 
 
-# 安装apache
+# 安装 apache
 
 ```bash
 sudo apt-get install apache2 
 sudo a2enmod rewrite env headers mime dir setenvif
 ```
 
-# php篇
-## 安装php7.0
+# php 篇
+## 安装 php7.0
 
 ```bash
 sudo apt-get install python-software-properties

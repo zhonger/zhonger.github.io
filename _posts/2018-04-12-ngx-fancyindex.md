@@ -1,17 +1,14 @@
 ---
 layout: post
-title: Nginx目录列表美化
+title: Nginx 目录列表美化
 subtitle: 使用 Ngx-fancyindex 插件一键美化Nginx目录列表
 date: 2018-04-12 15:26:35 +0800
 tags: 
 - nginx
 - 目录列表
 categories: tech
-cover: https://images.unsplash.com/photo-1521566878949-d0febfb1e9bb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3b5ee0942ce548abde8fbd1cb096330&auto=format&fit=crop&w=1887&q=80
+cover: https://images.unsplash.com/photo-1560613717-c793db79055e?w=1600&h=900
 ---
-
-# Nginx目录列表美化
-
 
 ## 安装 Nginx
 

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: unbound+dnscrypt搭建无污染DNS服务
-subtitle: 从零开始搭建一个无污染的DNS服务
+title: unbound + dnscrypt 搭建无污染 DNS 服务
+subtitle: 从零开始搭建一个无污染的 DNS 服务
 date: 2017-12-03 18:23:41 +0800
 tags:
 - DNS
@@ -9,12 +9,12 @@ tags:
 - dnscrypt
 categories:
 - tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900'
 ---
 
 # 引言
 
-鉴于某些原因，我们日常生活中使用的公共DNS总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析DNS，因此搭建无污染DNS服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了`unbound`和`dnscrypt`。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如`knot DNS`、`dnspord-sr`、`powerdns`等，它们也在很多大型的ISP提供商的DNS产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么`unbound`是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。
+鉴于某些原因，我们日常生活中使用的公共 DNS 总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析 DNS ，因此搭建无污染 DNS 服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了`unbound`和`dnscrypt`。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如`knot DNS`、`dnspord-sr`、`powerdns`等，它们也在很多大型的 ISP 提供商的 DNS 产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么`unbound`是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。
 
 # 实验环境
 

@@ -6,18 +6,18 @@ tags:
 - ubuntu
 - nvidia
 categories: tech
-cover: 'https://source.unsplash.com/collection/215583'
+cover: 'https://images.unsplash.com/photo-1474835409173-5dc81aae3faa?w=1600&h=900'
 ---
 # 实验环境
 - Ubuntu 16.04 Desktop (内核版本：4.8.0-46-generic)
 - 显卡：GTX-960
 
 # 准备工作
-## 下载NVIDIA驱动程序
+## 下载 NVIDIA 驱动程序
 - 在[nvidia官网下载](http://www.nvidia.cn/Download/index.aspx?lang=cn)对应的驱动（`.run`文件）
 ## 删除旧驱动
 - `sudo apt-get purge nvidia*`（如果返回卸载成功或无匹配结果均可）
-## 禁用自带的nouveau nvidia驱动
+## 禁用自带的 nouveau nvidia 驱动
 - 通过命令`sudo vim /etc/modprobe.d/blacklist-nouveau.conf`创建文件，并添加内容如下：
 ```
 blacklist nouveau
@@ -32,7 +32,7 @@ sudo apt-get install linux-headers-$(uname -r)
 
 # 正式安装过程
 - 通过命令`sudo service lightdm stop`关闭`x-window`
-- 执行NVIDIA驱动安装程序`sudo sh NVIDIA.run`（`.run`文件需提前赋予执行权限）
+- 执行 NVIDIA 驱动安装程序`sudo sh NVIDIA.run`（`.run`文件需提前赋予执行权限）
 - 一步一步选择下去执行安装即可，最终显示安装成功
 - 通过命令`sudo service lightdm start`开启`x-window`
 

@@ -1,15 +1,15 @@
 ---
 layout: post
-title: 'archlinux入门初步'
-subtitle: 'archlinux入门初步'
+title: 'archlinux 入门初步'
+subtitle: 'archlinux 入门初步'
 date: 2017-07-19 15:23:10 +0800
 categories: tech
-cover: 'https://images.unsplash.com/photo-1508288155660-625e378b3fc9?auto=format&fit=crop&w=1500&q=80'
+cover: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900'
 tags: archlinux setup
 ---
 
 
-# 制作archlinux启动盘
+# 制作 archlinux 启动盘
 
 从`archlinux`官方或者是镜像源下载到iso文件
 使用以下命令制作启动U盘
@@ -120,4 +120,4 @@ systemctl enable gdm
 ```
 
 # 重启
-重启之后从硬盘启动就会进入gdm登录界面，使用上面设置的username和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录
+重启之后从硬盘启动就会进入g dm 登录界面，使用上面设置的 username 和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录

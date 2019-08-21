@@ -7,7 +7,7 @@ tags:
 - onlyoffice
 - docker
 categories: tech
-cover: https://images.unsplash.com/photo-1521566878949-d0febfb1e9bb?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3b5ee0942ce548abde8fbd1cb096330&auto=format&fit=crop&w=1887&q=80
+cover: https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900
 ---
 
 # Onlyoffice 搭建

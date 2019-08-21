@@ -10,17 +10,17 @@ tags:
 - wget
 - bandsnatch
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?w=1600&h=900'
 ---
 # 引言
-构建镜像站主要是对于linux开源平台的软件源、pypi源、cran源、mysql等开源软件第三方源，大部分源支持使用rsync工具直接进行同步，少部分源比较特殊，比如pypi源必须采用官方提供的bandsnatch工具，mysql源则只能采用wget的方式镜像整站。
+构建镜像站主要是对于 linux开源平台的软件源、 pypi源、 cran源、 mysql等开源软件第三方源，大部分源支持使用 rsync 工具直接进行同步，少部分源比较特殊，比如 pypi 源必须采用官方提供的 bandsnatch 工具，mysql 源则只能采用 wget 的方式镜像整站。
 
-# linux镜像
+# linux 镜像
 
 采用`rsync`工具
 
 
-# pypi镜像
+# pypi 镜像
 
 ```bash
 #安装bandersnatch
