@@ -7,7 +7,7 @@ tags:
 - composer
 - laravel
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900'
 ---
 安装前提：系统已安装好php环境，可在全局使用php命令
 # 安装compsoer并设置为全局调用

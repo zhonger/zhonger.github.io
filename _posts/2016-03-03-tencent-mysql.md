@@ -6,7 +6,7 @@ tags:
 - 腾讯云
 - Mysql
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1499006619764-59e5b0c0e7ca?w=1600&h=900'
 ---
 # 修改mysql配置
 首先需要确认安装的mysql服务器的配置文件/etc/mysql/my.cnf是否将bindless 120.0.0.1:0注释掉，务必保证已注释；

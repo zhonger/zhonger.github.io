@@ -6,7 +6,7 @@ tags:
 - ubuntu
 - nvidia
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://source.unsplash.com/collection/215583'
 ---
 # 实验环境
 - Ubuntu 16.04 Desktop (内核版本：4.8.0-46-generic)

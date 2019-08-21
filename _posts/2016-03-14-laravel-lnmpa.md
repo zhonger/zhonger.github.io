@@ -6,7 +6,7 @@ tags:
 - laravel
 - lnmpa
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1516545595035-b494dd0161e4?w=1600&h=900'
 ---
 
 # 实验环境

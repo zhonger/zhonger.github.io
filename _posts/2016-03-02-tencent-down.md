@@ -5,7 +5,7 @@ date: 2016-03-02 16:36:27 +0800
 tags:
 - 腾讯云
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1455459182396-ae46100617cb?w=1600&h=900'
 ---
 # 一、添加用户并设为sudo权限
 `sudo useradd 用户名`

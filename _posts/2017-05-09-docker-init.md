@@ -6,7 +6,7 @@ tags:
 - docker 
 - ubuntu
 categories: tech
-cover: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1680&q=80'
+cover: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900'
 ---
 # Docker入门
 

@@ -1,10 +1,12 @@
 ---
+layout: post
 title: Gravatar Fixed 头像载入出错
 date: 2015-08-08 15:41:01 +0800
 tags:
 - gravatar 
 - wordpress
 categories: tech
+cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900
 ---
 
 WordPress使用的用户默认头像是Gravatar Fixed 头像，由于种种原因，经常在国内载入出错。一般的解决办法有好几种，主要的是Gravatar Fixed 插件和修改wp-include中文件代码。
