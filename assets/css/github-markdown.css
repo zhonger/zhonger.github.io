@@ -318,13 +318,18 @@
 
 .markdown-body p {
   margin-bottom: 16px;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.8;
   text-align: justify;
+  text-indent: 2em;
 }
 
 .markdown-body blockquote {
   margin: 0;
+}
+
+.markdown-body blockquote p{
+  text-indent: 0;
 }
 
 .markdown-body ul {
