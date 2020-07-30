@@ -37,7 +37,6 @@ sudo apt install -y nginx
 
 ```bash
 sudo apt install build-esstenial libpcre3 libpcre3-dev libxslt1-dev libgd-dev libgeoip-dev
-
 ```
 
 ### 下载 Nginx 源码
@@ -61,7 +60,6 @@ cd ~/downloads
 wget -c https://github.com/aperezdc/ngx-fancyindex/archive/v0.4.2.tar.gz
 tar zxf v0.4.2.tar.gz
 # 得到文件夹  ngx-fancyindex-0.4.2
-
 ```
 
 ### 编译生成新的 Nginx
@@ -117,5 +115,4 @@ server {
 	    disable_symlinks off;
     }
 }
-
 ```
