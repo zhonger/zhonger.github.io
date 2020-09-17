@@ -11,20 +11,20 @@ categories: tech
 cover: 'https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900'
 ---
 
-# LaTeX和ShareLaTex
+# LaTeX 和 ShareLaTex
 
-LaTex是一种基于TEX的排版系统，在上世纪80年代初由美国计算机学家莱斯利·兰伯特发明。通过这种格式，即使对排版或者程序设计没有了解的人也可以利用TEX，在几天甚至几小时内生成很多具有书籍质量的印刷品。尤其对于有生成复杂表格和数学公式的科研人员来说，LaTex具有得天独厚的优势。因此在生成简单的信件、制作高印刷质量的技术类、学术类文档或书籍等方面，应用都非常广泛。
+LaTex 是一种基于 TEX 的排版系统，在上世纪80年代初由美国计算机学家莱斯利·兰伯特发明。通过这种格式，即使对排版或者程序设计没有了解的人也可以利用 TEX，在几天甚至几小时内生成很多具有书籍质量的印刷品。尤其对于有生成复杂表格和数学公式的科研人员来说，LaTex 具有得天独厚的优势。因此在生成简单的信件、制作高印刷质量的技术类、学术类文档或书籍等方面，应用都非常广泛。
 
-笔者在研究生初期撰写小论文的时候首次接触到LaTex。那个时候单纯是因为编写公式和生成参考文献比较方便，可以把时间和精力都集中在论文的内容上。刚开始学习LaTex的时候，安装编写环境是非常麻烦的。因为在本地安装的过程中，TEX会一个一个下载CTAN包。数量之大速度之慢，难以忍受。即使用上了国内高校的CTAN镜像源也颇为吃力。后来就接触到了ShareLaTex在线编辑器，只需要使用docker就可以很快部署一个完善的ShareLaTex服务，再也不用在本地安装半天了。正是由于ShareLaTex的优越性，overleaf在线编辑器向ShareLaTex伸出了橄榄枝，二者合二为一，为广大的LaTex用户带来了更好的LaTex在线编辑服务。当然合并之后，ShareLatex仍然在Github上以开源的方式回馈社区。
+笔者在研究生初期撰写小论文的时候首次接触到 LaTex。那个时候单纯是因为编写公式和生成参考文献比较方便，可以把时间和精力都集中在论文的内容上。刚开始学习 LaTex 的时候，安装编写环境是非常麻烦的。因为在本地安装的过程中，TEX 会一个一个下载 CTAN 包。数量之大速度之慢，难以忍受。即使用上了国内高校的 CTAN 镜像源也颇为吃力。后来就接触到了ShareLaTex在线编辑器，只需要使用 docker 就可以很快部署一个完善的 ShareLaTex 服务，再也不用在本地安装半天了。正是由于 ShareLaTex 的优越性，overleaf 在线编辑器向 ShareLaTex 伸出了橄榄枝，二者合二为一，为广大的 LaTex 用户带来了更好的 LaTex 在线编辑服务。当然合并之后，ShareLatex 仍然在 Github 上以开源的方式回馈社区。
 
-本文选择ShareLatex来部署在线LaTex编辑平台，还有一个非常重要的原因。就是ShareLaTex支持中日英文在内的多种语言，能很好地满足笔者在中日英三语上的需求。
+本文选择 ShareLatex 来部署在线 LaTex 编辑平台，还有一个非常重要的原因。就是ShareLaTex 支持中日英文在内的多种语言，能很好地满足笔者在中日英三语上的需求。
 
-# 搭建在线LaTex编辑平台
+# 搭建在线 LaTex 编辑平台
 
 
 ## 构建镜像
 
-ShareLaTex官方提供的docker镜像就已经支持多种语言了，但是字体上比较缺少，毕竟官方镜像只能使用开源字体或者得到授权的字体。为了提供编写所需的字体，需要往官方docker镜像中加入自己需要的字体。编写一个如下的`Dockerfile`文件，用`docker build . -t zhonger/sharelatex`生成新的镜像。（PS：此处使用的字体包是windows本地打包得到，仅为个人学习使用，非为商用或公开提供服务）构建镜像之前可以自行准备好字体压缩包，压缩包内只需含有字体文件即可。
+ShareLaTex 官方提供的 docker 镜像就已经支持多种语言了，但是字体上比较缺少，毕竟官方镜像只能使用开源字体或者得到授权的字体。为了提供编写所需的字体，需要往官方 docker 镜像中加入自己需要的字体。编写一个如下的`Dockerfile`文件，用`docker build . -t zhonger/sharelatex`生成新的镜像。（PS：此处使用的字体包是windows本地打包得到，仅为个人学习使用，非为商用或公开提供服务）构建镜像之前可以自行准备好字体压缩包，压缩包内只需含有字体文件即可。
 
 
 ```dockerfile
@@ -47,7 +47,7 @@ RUN apt update && apt-get install xfonts-wqy -y && \
 
 ## 启动镜像
 
-使用以下`docker-compose.yml`文件和`docker-compose up -d`命令完成docker镜像的实例启动。
+使用以下`docker-compose.yml`文件和`docker-compose up -d`命令完成 docker 镜像的实例启动。
 
 ```yaml
 version: '2.2'
@@ -181,17 +181,17 @@ services:
 
 浏览器访问`http://服务所在计算机IP地址:8070/launchpad`创建超级管理员用户。创建成功后访问该页面就会被自动跳转到登录页。
 
-至此，ShareLaTex在线编辑平台就搭建成功了。
+至此，ShareLaTex 在线编辑平台就搭建成功了。
 
 # 后记
 
-## 关于LaTex模板
+## 关于 LaTex 模板
 
-要说LaTex模板的话，overleaf几乎涵盖了各式各样的模板，当然也包括中文书籍、中文PPT等优秀模板。欢迎访问[https://www.overleaf.com/latex/templates](https://www.overleaf.com/latex/templates)获取更多模板。访问模板的详细页，可以看到`Source`字样的按钮，点击即可查看模板源代码。如果是比较复杂的书籍等模板，最好是点击`Open as Template`按钮在overleaf上看到更多原始代码文件。
+要说 LaTex 模板的话，overleaf 几乎涵盖了各式各样的模板，当然也包括中文书籍、中文 PPT 等优秀模板。欢迎访问[https://www.overleaf.com/latex/templates](https://www.overleaf.com/latex/templates)获取更多模板。访问模板的详细页，可以看到`Source`字样的按钮，点击即可查看模板源代码。如果是比较复杂的书籍等模板，最好是点击`Open as Template`按钮在 overleaf 上看到更多原始代码文件。
 
 ## 其他尝试
 
-在构建镜像初期，笔者尝试了非ShareLaTex官方构建的docker镜像。因为镜像中CTEX没有完全安装，所以使用了以下命令来完善编写文档基础所需的CTAN包。毕竟这些包是有限个，时不时容易报出某个包缺失什么的错误，因而还是推荐大家采用上面的从ShareLaTex官方docker镜像开始做。
+在构建镜像初期，笔者尝试了非 ShareLaTex 官方构建的 docker 镜像。因为镜像中 CTEX 没有完全安装，所以使用了以下命令来完善编写文档基础所需的 CTAN 包。毕竟这些包是有限个，时不时容易报出某个包缺失什么的错误，因而还是推荐大家采用上面的从 ShareLaTex 官方 docker 镜像开始做。
 
 ```bash
 tlmgr option repository https://mirrors.ustc.edu.cn/CTAN/systems/texlive/tlnet
