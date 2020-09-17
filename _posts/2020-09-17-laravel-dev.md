@@ -21,7 +21,7 @@ cover: 'https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=90
 
 Laravel 是 PHP 领域内一大流行的 Web 应用框架，因开发成本低、依赖管理方便等优势深受国内外开发者的喜爱，有很多的应用案例。Laravel 官方提供了`Valet`工具专门用于 PHP 项目的开发环境管理，相当简单、强大。`Valet`不但可以支持 Laravel，还可以支持 Zend、CakePHP 等多种 PHP 常用框架和 Wordpress 等多种 PHP 常用应用。以下会简要介绍该工具的配置使用。
 
-在前几年撰写的 [laravel5.2 在 lnmpa 一键安装包环境下的部署](/tech/laravel-lnmpa) 一文中，使用了 [lnmp.org](https://lnmp.org) 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。
+在前几年撰写的 [laravel5.2 在 lnmpa 一键安装包环境下的部署](/tech/laravel-lnmpa.html) 一文中，使用了 [lnmp.org](https://lnmp.org) 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。
 
 ## 基础环境配置
 
