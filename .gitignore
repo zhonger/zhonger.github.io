@@ -9,3 +9,5 @@ Gemfile.lock
 
 .vscode
 .jekyll-cache
+.bundle
+vendor

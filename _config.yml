@@ -10,13 +10,14 @@ baseurl: ''
 # Navigation links
 nav:
   home: '/'
+  blog: '/blog/'
   tags: '/tags.html'
   RSS: '/feed.xml'
 
 # Author 配置博主信息
 author: 'zhonger'
 nickname: 'zhonger'
-bio: '前端开发者，喜爱运维管理'
+bio: 'Developer & Maintainer'
 avatar: '/assets/img/profile.jpg'
 
 # permalink
@@ -49,6 +50,7 @@ postPatterns: 'circuitBoard'
 sns:
   facebook: '//facebook.com/zhonger95'
   github: '//github.com/zhonger'
+  linkedin: '//www.linkedin.com/in/shengzhouli/'
 
 # Tags 设置标签
 recommend-tags: true # whether or not display recommend-tags on the sidebar
@@ -56,7 +58,7 @@ recommend-condition-size: 12 # a tag will be recommended if the size of it is mo
 
 # Build settings
 paginate: 10
-paginate_path: 'page:num'
+paginate_path: 'blog/page:num'
 exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'README.md']
 
 # Markdown

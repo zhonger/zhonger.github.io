@@ -11,16 +11,12 @@ tags: windows composer laravel
 ## 安装及配置composer
 
 - 由于getcomposer.org的服务器在国外，国内访问网速有点慢，所以采用了[国内镜像](http://packagist.cn/)获得composer.phar包，将composer.phar所在文件夹位置添加至环境变量Path中
-
 - 下载php至电脑上，并将php.exe所在文件夹位置添加至环境变量Path中
-
 - 在composer.phar所在文件夹按住Shift键点击鼠标右键选择“在此处打开cmd命令”，输入     
 ```bash
 echo @php "%~dp0composer.phar" %*>composer.bat
 ```
-
 - 到这里，composer全局安装完成，在命令行中输入`composer -v`进行验证是否成功
-
 - 输入下列命令配置composer包和依赖库国内下载镜像
 ```bash
 composer config -g repositories.packagist composer https://packagist.phpcomposer.com
