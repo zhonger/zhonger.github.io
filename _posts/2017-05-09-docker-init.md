@@ -1,6 +1,7 @@
 ---
 layout: post
-title: Docker入门
+title: Docker 入门
+subtitle: Docker 的常用安装与加速
 date: 2017-05-09 12:43:31 +0800
 tags:
 - docker 
@@ -12,12 +13,15 @@ cover: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900'
 
 ## 安装
 
-安装 `Docker` 环境当然要使用上海大学开源镜像站提供的 `docker-ce` 镜像源咯，下面以 `Ubuntu` 操作为例开始实验。
+~~安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。~~ 
+
+推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。
+
 
 ```bash
-# 添加上海大学镜像源到list列表中
+# 添加中科大镜像源到list列表中
 sudo tee -a /etc/apt/sources.list.d/docker.list << EOF
-    deb [arch=amd64] https://mirrors.shu.edu.cn/docker-ce/linux/ubuntu/ xenial stable
+    deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/ $(lsb_release -c --short) stable
 EOF
 
 # 添加可信任的GPG公钥
@@ -47,7 +51,7 @@ sudo service docker restart
 ```
 
 
-以下为国内其他的 docker 镜像仓库加速器：
+以下为国内主要的 docker 镜像仓库加速器：
 
 | 服务提供者 | 加速地址 | 推荐指数 | 备注 |
 | ---- | ---- | ---- | ---- |
@@ -59,7 +63,7 @@ sudo service docker restart
 
 ## 安装 docker-compose
 
-`docker-compose` 是一个由 `Docker` 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
+docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
 
 ```bash
 # 安装 python3 python3-pip

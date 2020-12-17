@@ -1,6 +1,7 @@
 ---
 layout: post
-title: ubuntu14.04安装composer+laravel配置
+title: Ubuntu 14.04 安装 composer+laravel 配置
+subtitle: Linux 下配置 laravel 环境。
 date: 2016-02-05 16:29:05 +0800
 tags:
 - ubuntu
@@ -9,20 +10,25 @@ tags:
 categories: tech
 cover: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900'
 ---
-安装前提：系统已安装好php环境，可在全局使用php命令
-# 安装compsoer并设置为全局调用
+安装前提：系统已安装好 php 环境，可在全局使用 php 命令。
+## 安装 compsoer 并设置为全局调用
+
 ```bash
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 ```
 
-# 使用composer建立laravel installer安装工具
+## 使用 composer 建立 laravel installer 安装工具
+
 ```bash
 composer global require "laravel/installer"
 ```
 
-# 将laravel命令添加进用户环境变量
-打开`~/.bashrc`文件最末添加命令：`PATH=$PATH:~/.composer/vendor/bin`
-`source ~/.bashrc` 命令使环境变量变化生效
+## 将 laravel 命令添加进用户环境变量
 
-# 可以在全局使用laravel new {应用名称}了
+&emsp;&emsp;打开`~/.bashrc`文件最末添加命令：`PATH=$PATH:~/.composer/vendor/bin`
+`source ~/.bashrc` 命令使环境变量变化生效。
+
+## 完成配置
+
+&emsp;&emsp;可以在全局使用`laravel new {应用名称}`了。

@@ -6,7 +6,7 @@ description: Writing, writing, writing ...
 
 # About me
 
-I'm Li Shengzhou. Nowadays, I am a PhD student of Computer Science in University of Tsukuba. My research topic is "Data-Driven and Machine Learning Based Material Science Research" under the supervision of Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba.
+&emsp;&emsp;I'm Li Shengzhou. Nowadays, I am a PhD student of Computer Science in University of Tsukuba. My research topic is "Data-Driven and Machine Learning Based Material Science Research" under the supervision of Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba.
 
 # Interests
 
@@ -41,7 +41,7 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)
 
 # 关于我
 
-我是李盛洲，目前我正在筑波大学攻读计算机博士学位。我的导师是NIMS的中田彩子研究员和筑波大学的樱井铁也教授，我的主要研究方向是《基于数据驱动和机器学习的材料科学研究》。
+&emsp;&emsp;我是李盛洲，目前我正在筑波大学攻读计算机博士学位。我的导师是NIMS的中田彩子研究员和筑波大学的樱井铁也教授，我的主要研究方向是《基于数据驱动和机器学习的材料科学研究》。
 
 # 研究兴趣
 

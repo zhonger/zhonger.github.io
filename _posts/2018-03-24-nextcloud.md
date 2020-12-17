@@ -14,17 +14,17 @@ cover: 'https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900'
 
 ## Nextcloud 简介
 
-今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 [Mega](https://mgea.nz) （由于核心人员出走最近好像也不行了）、微软的 [OneDrive](https://onedrive.live.com)、老牌网盘 [Dropbox](https://www.dropbox.com)、[Box](https://box.com)、谷家的 [Google drive](https://drive.google.com)（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。 `Nextcloud` 就是这样一款网盘，来源于 `Owncloud` 却较之更加强大、安全（集成 `Office` 文档、图片相册、日历、`RSS`阅读，几乎等同于一个私有的 `Dropbox`），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 `Nextcloud` ，至于结合对象存储下回再说。
+&emsp;&emsp;今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 [Mega](https://mgea.nz) （由于核心人员出走最近好像也不行了）、微软的 [OneDrive](https://onedrive.live.com)、老牌网盘 [Dropbox](https://www.dropbox.com)、[Box](https://box.com)、谷家的 [Google drive](https://drive.google.com)（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。
 
 ## Docker 搭建 Nextcloud
-`Docker` 部署软件的好处我就不多提了：简单、高效，极其适合运维人员的应用管理工具。下面就先谈使用 `Docker` 一键搭建 `Nextcloud` 。
+&emsp;&emsp;Docker 部署软件的好处我就不多提了：简单、高效，极其适合运维人员的应用管理工具。下面就先谈使用 Docker 一键搭建 Nextcloud。
 
 ### 安装 Docker 环境
 
-请移步 [Docker 入门](/tech/docker-init.html)
+&emsp;&emsp;请移步 [Docker 入门](/tech/docker-init.html)
 
 ### 安装 docker-compose 工具
-`docker-compose` 是一个由 `Docker` 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
+&emsp;&emsp;docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
 
 ```bash
 # 安装 python3 python3-pip
@@ -35,7 +35,8 @@ sudo pip3 install docker-compose
 ```
 
 ### 编写 docker-compose.yml
-`docker-compose` 的管理主要依赖于一个名为 `docker-compose.yml` 的 `yaml` 文件来进行管理，当然这个文件也可以以任何别的名称并以 `-f 文件名` 的方式来启用，但必须是符合 `yaml` 格式和 `Docker` 官方定义的字段和方式。以下为本实验所需的内容，其中用到了 `mariadb`官方提供的数据库容器 和 `Nextcloud` 官方提供的应用容器。
+
+&emsp;&emsp;docker-compose 的管理主要依赖于一个名为 `docker-compose.yml` 的 yaml 文件来进行管理，当然这个文件也可以以任何别的名称并以 `-f 文件名` 的方式来启用，但必须是符合 yaml 格式和 Docker 官方定义的字段和方式。以下为本实验所需的内容，其中用到了 mariadb 官方提供的数据库容器 和 Nextcloud 官方提供的应用容器。
 
 ```yaml
 version: '2'
@@ -64,7 +65,8 @@ services:
 ```
 
 ### 启动容器
-以下命令即可开始拉取所需容器的镜像文件并根据 `docker-compose.yml` 文件配置好本地文件夹挂载和端口映射。
+
+&emsp;&emsp;以下命令即可开始拉取所需容器的镜像文件并根据 docker-compose.yml 文件配置好本地文件夹挂载和端口映射。
 ```bash
 # 启动容器
 sudo docker-compose up -d
@@ -73,32 +75,35 @@ sudo docker-compose up -d
 sudo docker pull nextcloud
 sudo docker-compose down && sudo docker-compose up -d
 ```
-然后 `Nextcloud` 就在 `7009` 端口（可自行修改 `docker-compose.yml` 文件来改变）开启好了，使用浏览器访问 `http://IP:7009` 。
+&emsp;&emsp;然后 Nextcloud 就在 7009 端口（可自行修改 docker-compose.yml 文件来改变）开启好了，使用浏览器访问 `http://IP:7009` 。
 
 ### 应用初始化配置
-自行设置管理员用户名和密码，数据目录默认即可，数据库信息填写如 `docker-composer.yml` 中所示，数据库主机名填 `db` （配置文件中的数据库应用名）。
+
+&emsp;&emsp;自行设置管理员用户名和密码，数据目录默认即可，数据库信息填写如 docker-composer.yml 中所示，数据库主机名填 db （配置文件中的数据库应用名）。
 
 ![初始化示意图](https://vgy.me/4rRtnu.png)
 
-所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， `Docker` 搭建 `Nextcloud` 应用就大功告成了（也可在`80`端口安装`Nginx`服务代理到`7009`端口，此处不加赘述）。
+&emsp;&emsp;所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见 nextcloud 的主目录页面。到此处，Docker 搭建 Nextcloud 应用就大功告成了（也可在 80 端口安装 Nginx 服务代理到 7009 端口，此处不加赘述）。
 
 ## LNMPA 搭建 Nextcloud
-本实验采用 `Ubuntu` 操作系统为例，其他`Linux`操作系统可以根据系统不同类比操作，操作步骤基本一致。
+
+&emsp;&emsp;本实验采用 Ubuntu 操作系统为例，其他 Linux 操作系统可以根据系统不同类比操作，操作步骤基本一致。
 
 ### 安装 LNMPA 环境
 
 #### 为什么选用 LNMPA 而非 LNMP 或者 LMPA架构
-LNMPA的含义：
+
+&emsp;&emsp;LNMPA 的含义：
 - `L`： Linux操作系统
 - `N`： Nginx web服务器软件
 - `M`： MySQL、Mariadb等类MySQL数据库软件
 - `P`： PHP编译环境
 - `A`： Apache服务
 
-`LNMPA`相比其他两种架构的优势在于充分发挥了 `Nginx` 和 `Apache` 的功能优势，即 `Nginx` 擅长提供静态文件服务、代理HTTP请求服务、`Apache`擅长对于动态编程语言的结合接管编译工作。
+&emsp;&emsp;LNMPA 相比其他两种架构的优势在于充分发挥了 Nginx 和 Apache 的功能优势，即 Nginx 擅长提供静态文件服务、代理 HTTP 请求服务、Apache 擅长对于动态编程语言的结合接管编译工作。
 
 #### 安装
-[LNMP.org](https://lnmp.org)提供一键式的环境安装脚本，所有软件均从各种软件官方下载源码编译安装，软件升级也相当方便。如果你的CPU核数不够的话，那么第一次安装的时候编译可能需要花很长一段时间。
+&emsp;&emsp;[LNMP.org](https://lnmp.org) 提供一键式的环境安装脚本，所有软件均从各种软件官方下载源码编译安装，软件升级也相当方便。如果你的CPU 核数不够的话，那么第一次安装的时候编译可能需要花很长一段时间。
 
 ```bash
 # 建议使用 tmux 来管理后台任务
@@ -125,7 +130,7 @@ sudo ./install.sh lnmpa
 ### 准备工作
 
 #### 新建数据库
-使用 `LNMPA` 带的 `phpMyadmin`可以直接新增数据库，比如数据库名为 `nextcloud`，分配用户名和密码均为 `nextcloud`。
+&emsp;&emsp;使用 LNMPA 带的 phpMyadmin 可以直接新增数据库，比如数据库名为 nextcloud，分配用户名和密码均为 nextcloud。
 
 #### 安装 PHP 扩展
 ```bash
@@ -151,11 +156,9 @@ client_max_body_size 10240m;
 # 添加下面一行，以生效fileinfo扩展
 extension = fileinfo.so
 
-
 # 重启服务使配置生效
 sudo lnmp restart
 ```
-
 
 ### 安装 Nextcloud
 
@@ -173,7 +176,7 @@ sudo chown -R www:www /home/wwwroot/nextcloud
 ```
 
 #### 添加虚拟主机
-一种方式是使用 `lnmp vhost add` 的方式来添加（要求要域名，一步一步设置即可），另一种是直接添加文件，下面给出后一种方法无需域名的配置文件。
+&emsp;&emsp;一种方式是使用 `lnmp vhost add` 的方式来添加（要求要域名，一步一步设置即可），另一种是直接添加文件，下面给出后一种方法无需域名的配置文件。
 
 ```bash
 # /usr/local/nginx/conf/vhost/default
@@ -228,18 +231,18 @@ CustomLog "/home/wwwlogs/nextcloud-access_log" combined
 </Directory>
 </VirtualHost>
 ```
-使用 `sudo lnmp restart` 重启服务生效，接着即可通过浏览器访问 `http://IP` 或者 `http://域名` 来访问。
+&emsp;&emsp;使用 `sudo lnmp restart` 重启服务生效，接着即可通过浏览器访问 `http://IP` 或者 `http://域名` 来访问。
 
 ### 配置 Nextcloud
 
-自行设置管理员用户名和密码，数据目录可任意选择一处有权限的目录即可（默认的应为`/home/wwwroot/nextcloud/data`，建议填一个非源代码的目录便于版本更新，比如`/home/data/nextcloud`，要求所属用户和用户组为 `www-data`），数据库信息均填写 `nextcloud`，数据库主机名默认填 `localhost`。
+&emsp;&emsp;自行设置管理员用户名和密码，数据目录可任意选择一处有权限的目录即可（默认的应为 /home/wwwroot/nextcloud/data，建议填一个非源代码的目录便于版本更新，比如 /home/data/nextcloud，要求所属用户和用户组为 www-data），数据库信息均填写 nextcloud，数据库主机名默认填 localhost。
 ![初始化示意图](https://vgy.me/4rRtnu.png)
 
-所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， `LNMPA` 搭建 `Nextcloud` 应用就完成了，不过更新应用版本的话就更麻烦一点了。
+&emsp;&emsp;所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， `LNMPA` 搭建 `Nextcloud` 应用就完成了，不过更新应用版本的话就更麻烦一点了。
 
 ### 更新 Nextcloud
 
-这种方式安装的 `Nextcloud` 也需要通过源代码更新的方式来更新，以下为主要步骤。
+&emsp;&emsp;这种方式安装的 Nextcloud 也需要通过源代码更新的方式来更新，以下为主要步骤。
 
 ```bash
 # 备份原来的源代码

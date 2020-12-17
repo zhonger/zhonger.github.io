@@ -12,13 +12,13 @@ cover: https://images.unsplash.com/photo-1560613717-c793db79055e?w=1600&h=900
 
 ## 安装 Nginx
 
-### CentOS系统
+### CentOS 系统
 
 ```bash
 sudo yum install -y nginx
 ```
 
-### Ubuntu系统
+### Ubuntu 系统
 
 ```bash
 sudo tee -a /etc/apt/sources.list.d/nginx.list << EOF
@@ -31,12 +31,12 @@ sudo apt install -y nginx
 
 ## 安装 Ngx-fancyindex 插件
 
-下面的所有操作均以 Ubuntu 操作系统为例。
+&emsp;&emsp;下面的所有操作均以 Ubuntu 操作系统为例。
 
 ### 安装编译工具及依赖
 
 ```bash
-sudo apt install build-esstenial libpcre3 libpcre3-dev libxslt1-dev libgd-dev libgeoip-dev
+sudo apt install -y build-esstenial libpcre3 libpcre3-dev libxslt1-dev libgd-dev libgeoip-dev
 ```
 
 ### 下载 Nginx 源码

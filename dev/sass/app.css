@@ -7,7 +7,7 @@
 /** Font **/
 @font-face {
   font-family: "Merriweather";
-  src: url("../fonts/Merriweather-Black.ttf"); }
+  src: url("../fonts/Merriweather-Regular.ttf"); }
 
 @font-face {
   font-family: "Merriweather-Light";
@@ -253,7 +253,7 @@ a {
     .article-list .article-item .post-preview {
       position: relative; }
       .article-list .article-item .post-preview .post-title {
-        font-family: "Montserrat", "Microsoft YaHei", -apple-system, Verdana, "PingFang SC", "Helvetica Neue", "Arial", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+        font-family: "Merriweather", "Microsoft YaHei", -apple-system, Verdana, "PingFang SC", "Helvetica Neue", "Arial", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
         color: #4E4E4E;
         font-size: 24px;
         line-height: 32px; }
@@ -658,7 +658,7 @@ a {
       bottom: 0; }
 
 .markdown-body {
-  font-family: "Montserrat", "Microsoft YaHei", -apple-system, Verdana, "PingFang SC", "Helvetica Neue", "Arial", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
+  font-family: "Merriweather", "Microsoft YaHei", -apple-system, Verdana, "PingFang SC", "Helvetica Neue", "Arial", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
   width: 720px;
   box-sizing: border-box;
   padding: 0 0 32px; }
