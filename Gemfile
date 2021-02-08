@@ -6,3 +6,4 @@ gem 'jemoji'
 gem 'gemoji'
 gem 'jekyll-sitemap'
 gem 'kramdown-parser-gfm'
+gem "webrick"
