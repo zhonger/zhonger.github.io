@@ -174,3 +174,12 @@ networks:
 **问题描述**：如果没有共用 NAS 怎么办？
 
 **解决方法**：在没有共用 NAS 的情况下，想要 Slurm 集群的节点共用同样的配置和代码目录可以通过“在管理节点物理机上搭建 NFS 服务器”的方式来解决。关于 NFS 服务器的搭建和容器中挂载 NFS 文件系统的有关教程可以在网络上搜索到，这里就不再赘述了。
+
+**问题描述**：集群中的某个节点在集群中的状态为 Down 怎么办？
+
+**解决方法**：这种情况下，只需要在 Down 状态的节点中运行 `sudo scontrol show node` 命令确认一下是否因为物理机重启而造成节点状态发生改变。如果是 Node unexpectly restart，就是这个原因导致的。可以采用 `sudo scontrol update NodeName=worker01 State=IDLE` 命令将该节点的状态重新设为空闲可用。
+
+## 参考资料
+
+1. [SciDAS/slurm-in-docker](https://github.com/SciDAS/slurm-in-docker)
+2. [srun fails after node reboot](https://github.com/smith1511/hpc/issues/3)
