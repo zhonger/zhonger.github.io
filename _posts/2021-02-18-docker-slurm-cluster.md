@@ -177,7 +177,7 @@ networks:
 
 **问题描述**：集群中的某个节点在集群中的状态为 Down 怎么办？
 
-**解决方法**：这种情况下，只需要在 Down 状态的节点中运行 `sudo scontrol show node` 命令确认一下是否因为物理机重启而造成节点状态发生改变。如果是 Node unexpectly restart，就是这个原因导致的。可以采用 `sudo scontrol update NodeName=worker01 State=IDLE` 命令将该节点的状态重新设为空闲可用。
+**解决方法**：这种情况下，只需要在 Down 状态的节点中运行 `sudo scontrol show node` 命令确认一下是否因为物理机重启而造成节点状态发生改变。如果是 **Reason=Node unexpectedly rebooted**，就是这个原因导致的。可以采用 `sudo scontrol update NodeName=worker01 State=IDLE` 命令将该节点的状态重新设为空闲可用。
 
 ## 参考资料
 
