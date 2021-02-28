@@ -129,7 +129,23 @@ s.setAttribute('data-timestamp', +new Date());
 })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script>
+    // 给图片添加链接
+    $(document).ready(function() {
+        $("p img").each(function() {
+            var strA = "<a class='fancybox' ref='gallery1' href='" + this.src + "'></a>";
+            $(this).wrapAll(strA);
+        });
+
+        $(".fancybox").fancybox({
+            thumbs : {
+                autoStart : true
+            }
+        });
+    });
+</script>
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
 </body>
