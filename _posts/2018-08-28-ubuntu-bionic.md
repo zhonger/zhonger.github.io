@@ -44,7 +44,7 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 &emsp;&emsp;访问 [https://www.opendesktop.org/s/Gnome/p/1013714/](https://www.opendesktop.org/s/Gnome/p/1013714/) ，点击 Install 按钮下拉出所有选项，前八个选项是主题，后四个分别是图标主题、背景图片、鼠标主题、字体主题。点击选项将请求交给 ocs-url-tools 处理（它收到同意操作之后会将压缩包下载并解压到对应的文件夹中）。
 
-![选择主题](https://vgy.me/76db8C.jpg)
+![选择主题](https://i.vgy.me/yXdRuG.png)
 
 > 注：SHELL 主题是指顶部任务栏的风格，由于顶部为白色的话有些图标不容易看清，所以此处主题选用白色（不带透明）、SHELL 主题选用黑色（不带透明）。
 
@@ -52,7 +52,7 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 &emsp;&emsp;访问 [https://www.opendesktop.org/s/Gnome/p/1102582/](https://www.opendesktop.org/s/Gnome/p/1102582/)，如下图一样操作，选择 macOS11.tar.xz 即可。
 
-![选择图标](https://vgy.me/u5fKSh.jpg)
+![选择图标](https://i.vgy.me/sRCxht.png)
 
 ### 更换系统搭配
 

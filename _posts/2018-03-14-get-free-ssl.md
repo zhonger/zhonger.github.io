@@ -80,7 +80,7 @@ acme.sh --install-cert -d shu.aixinwu.org \
 ### 添加到 Nginx 中
 
 &emsp;&emsp;以下为 Nginx 文件文件示例。
-```conf
+```bash
 server
     {
         listen 80;
