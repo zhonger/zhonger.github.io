@@ -660,3 +660,29 @@ li p:nth-child(2) {
   margin: 12px 0 6px;
   text-align: center;
 }
+
+.archives-date {
+  width: 130px;
+  display: inline-block;
+}
+
+.archives-title {
+  width: 95%;
+  display: inline-block;
+  margin-bottom: 0!important;
+  margin-top: 0!important;
+}
+
+@media screen and (max-width: 960px) {
+  .archives-date {
+    display: none;
+  }
+
+  .archives-title {
+    width: 290px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-bottom: -8px!important;
+  }
+}

@@ -11,6 +11,7 @@ baseurl: ''
 nav:
   home: '/'
   blog: '/blog/'
+  archives: '/archives.html'
   tags: '/tags.html'
   RSS: '/feed.xml'
 
