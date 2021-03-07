@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 {% include head.html %}
 <body>
 
@@ -36,7 +36,7 @@
                 <ul id="sns-links" class="sns-links">
                     {% for s in site.sns %}
                     <li>
-                        <a href="{{ s[1] }}" target="_blank">
+                        <a href="{{ s[1] }}" target="_blank" rel="noreferrer">
                             <i class="iconfont icon-{{ s[0] }}"></i>
                         </a>
                     </li>
@@ -58,7 +58,7 @@
 
             <section class="tags-card">
                 <div class="links" rel="links">Links</div>
-                <a href="https://kalasearch.cn" target="_blank" class="tag">Kala Search</a>
+                <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer">Kala Search</a>
             </section>
         </div>
 
@@ -76,7 +76,7 @@
 
 {% include footer.html %}
 
-<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script src="/assets/js/prism.js"></script>
 <script src="/assets/js/index.min.js"></script>
 

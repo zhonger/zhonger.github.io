@@ -100,6 +100,13 @@
     padding: 0 60px;
 }
 
+.interest {
+    width: auto;
+    height: 40px;
+    display: inline-block !important;
+    margin: 0 20px 0 0 !important;
+}
+
 .home-banner {
     position: relative;
     text-align: center;
@@ -379,9 +386,9 @@
     section {
         font-size: 14px;
         line-height: 20px;
-        color: #A6ABB2;
+        color: #4E4E4E;
         a {
-            color: #A6ABB2;
+            color: #4E4E4E;
             &:hover {
                 color: #83888F;
             }
