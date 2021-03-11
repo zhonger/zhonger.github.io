@@ -14,7 +14,7 @@
         <div class="post-tags">
             {% if page.tags.size > 0 %}
             {% for tag in page.tags  %}
-            <a href="{{ "/tags.html#" | append: tag | absolute_url }}" class="post-tag">{{ tag }}</a>
+            <a href="{{ "/tags.html#" | append: tag | relative_url }}" class="post-tag">{{ tag }}</a>
             {% endfor %}
             {% endif %}
         </div>
@@ -47,7 +47,7 @@
 <section class="author-detail">
     <section class="post-footer-item author-card">
         <div class="avatar">
-            <img src="{{ site.avatar | absolute_url }}" alt="">
+            <img src="{{ site.avatar | prepend: site.baseurl }}" alt="">
         </div>
         <div class="author-name" rel="author">{{ site.author }}</div>
         <div class="bio">
@@ -68,7 +68,7 @@
     <section class="post-footer-item read-next">
         {% if page.next.url %}
         <div class="read-next-item">
-            <a href="{{ page.next.url }}" class="read-next-link"></a>
+            <a href="{{ page.next.url | prepend: site.baseurl }}" class="read-next-link"></a>
             <section>
                 <span>{{ page.next.title }}</span>
                 <p>{{ page.next.excerpt | strip_html | strip_newlines | truncate: 60}}</p>
@@ -81,7 +81,7 @@
         {% endif %}
         {% if page.previous.url %}
         <div class="read-next-item">
-            <a href="{{ page.previous.url }}" class="read-next-link"></a>
+            <a href="{{ page.previous.url | prepend: site.baseurl }}" class="read-next-link"></a>
             <section>
                 <span>{{ page.previous.title }}</span>
                 <p>{{ page.previous.excerpt | strip_html | strip_newlines | truncate: 60}}</p>
@@ -102,7 +102,7 @@
 
 {% include footer.html %}
 
-<script src="/assets/js/social-share.min.js"></script>
+<script src="{{ site.baseurl }}/assets/js/social-share.min.js"></script>
 <script>
     socialShare('.social-share', {
         sites: [{% for i in site.social-share-items %}'{{ i }}'{% if forloop.last == false %},{% endif %}{% endfor %}],
@@ -130,7 +130,7 @@ s.setAttribute('data-timestamp', +new Date());
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 <script>
     // 给图片添加链接
     $(document).ready(function() {
@@ -146,7 +146,7 @@ s.setAttribute('data-timestamp', +new Date());
         });
     });
 </script>
-<script src="/assets/js/prism.js"></script>
-<script src="/assets/js/index.min.js"></script>
+<script src="{{ site.baseurl }}/assets/js/prism.js"></script>
+<script src="{{ site.baseurl }}/assets/js/index.min.js"></script>
 </body>
 </html>

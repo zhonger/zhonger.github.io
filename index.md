@@ -10,15 +10,15 @@ description: Writing, writing, writing ...
 
 # Interests
 
-<img src="/assets/icons/kvm.webp" alt="KVM" class="interest">
-<img src="/assets/icons/docker.webp" alt="Docker" class="interest">
-<img src="/assets/icons/php.svg" alt="PHP" class="interest">
-<img src="/assets/icons/python.svg" alt="Python" class="interest">
-<img src="/assets/icons/nodejs.svg" alt="Nodejs" class="interest">
-<img src="/assets/icons/linux.svg" alt="Linux" class="interest">
-<img src="/assets/icons/R.svg" alt="R" class="interest">
-<img src="/assets/icons/mysql.png" alt="Mysql" class="interest">
-<img src="/assets/icons/photoshop.svg" alt="Photoshop" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/kvm.webp" alt="KVM" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/docker.webp" alt="Docker" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/php.svg" alt="PHP" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/python.svg" alt="Python" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/nodejs.svg" alt="Nodejs" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/linux.svg" alt="Linux" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/R.svg" alt="R" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/mysql.png" alt="Mysql" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/photoshop.svg" alt="Photoshop" class="interest">
 
 # Educations
 
@@ -45,15 +45,15 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)
 
 # 研究兴趣
 
-<img src="/assets/icons/kvm.webp" alt="KVM" class="interest">
-<img src="/assets/icons/docker.webp" alt="Docker" class="interest">
-<img src="/assets/icons/php.svg" alt="PHP" class="interest">
-<img src="/assets/icons/python.svg" alt="Python" class="interest">
-<img src="/assets/icons/nodejs.svg" alt="Nodejs" class="interest">
-<img src="/assets/icons/linux.svg" alt="Linux" class="interest">
-<img src="/assets/icons/R.svg" alt="R" class="interest">
-<img src="/assets/icons/mysql.png" alt="Mysql" class="interest">
-<img src="/assets/icons/photoshop.svg" alt="Photoshop" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/kvm.webp" alt="KVM" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/docker.webp" alt="Docker" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/php.svg" alt="PHP" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/python.svg" alt="Python" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/nodejs.svg" alt="Nodejs" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/linux.svg" alt="Linux" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/R.svg" alt="R" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/mysql.png" alt="Mysql" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/photoshop.svg" alt="Photoshop" class="interest">
 
 # 教育经历
 

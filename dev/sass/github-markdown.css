@@ -207,8 +207,8 @@
 .markdown-body code,
 .markdown-body kbd,
 .markdown-body pre {
-  font-family: monospace, 'Microsoft Yahei';
-  font-size: 1em;
+  font-family: Monaco, 'Courier New', Courier, 'Microsoft Yahei';
+  font-size: 14px;
   /* padding: 0.2em 0.4em; */
   margin: 0;
 }

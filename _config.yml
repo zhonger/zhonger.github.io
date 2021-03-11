@@ -20,6 +20,7 @@ author: 'zhonger'
 nickname: 'zhonger'
 bio: 'Developer & Maintainer'
 avatar: '/assets/img/profile.webp'
+favicon: "/assets/icons/favicon.ico"
 
 # permalink
 permalink: /:categories/:title.html
@@ -45,7 +46,7 @@ social-share-items: ['wechat', 'weibo', 'douban', 'twitter']
 theme-color: 'default'  # pink or default
 
 # Post header background patterns (when the post no cover): circuitBoard, overlappingCircles, food, glamorous, ticTacToe, seaOfClouds
-postPatterns: 'circuitBoard'
+postPatterns: 'food'
 
 # SNS settings 配置社交网站url: weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
 sns:

@@ -20,12 +20,12 @@ description: Writing, writing, writing ...
             <article class="article-item">
                 {% if post.cover %}
                 <div class="post-cover">
-                    <a class="post-link" href="{{ post.url }}" title="{{ post.title }}"></a>
+                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}" title="{{ post.title }}"></a>
                     <img src="{{ post.cover }}" alt="">
                 </div>
                 {% endif %}
                 <section class="post-preview">
-                    <a class="post-link" href="{{ post.url }}" title="{{ post.title }}"></a>
+                    <a class="post-link" href="{{ post.url | prepend: site.baseurl }}" title="{{ post.title }}"></a>
                     <h2 class="post-title">{{ post.title }}</h2>
                     {% if post.subtitle %}
                     <h3 class="post-subtitle">{{ post.subtitle }}</h3>
@@ -38,7 +38,7 @@ description: Writing, writing, writing ...
                     <div class="post-tags">
                         {% if post.tags.size > 0 %}
                             {% for tag in post.tags  %}
-                            <a href={{ "/tags.html#" | append: tag | pretend: site.baseurl}} class="post-tag">{{ tag }}</a>
+                            <a href={{ "/tags.html#" | append: tag | relative_url }} class="post-tag">{{ tag }}</a>
                             {% endfor %}
                         {% endif %}
                     </div>

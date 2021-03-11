@@ -6,7 +6,7 @@
     <nav class="g-nav">
         <ul>
             {% for i in site.nav %}
-            <li><a href="{{ i[1] }}">{{ i[0] }}</a></li>
+            <li><a href="{{ i[1] | prepend: site.baseurl }}">{{ i[0] }}</a></li>
             {% endfor %}
         </ul>
     </nav>

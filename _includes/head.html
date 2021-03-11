@@ -11,13 +11,13 @@
     <meta property="og:url" content="{{ page.url | prepend: site.url }}">
     <meta property="og:description" content="{{ site.description }}">
     <meta property="og:site_name" content="{{ site.title }}">
+    <link rel="Shortcut Icon" href="{{ site.favicon | prepend: site.baseurl }}">
+    <link rel="bookmark" href="{{ site.favicon | prepend: site.baseurl }}" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css">
     <link rel="stylesheet" href="https://at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
-    <!-- <link rel="stylesheet" href="/assets/css/github-markdown.min.css">
-    <link rel="stylesheet" href="/assets/css/prism.min.css"> -->
-    <link rel="stylesheet" href="/assets/css/plugins.min.css">
-    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin=”anonymous”>
-    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/plugins.min.css">
+    <link rel="preload" href="{{ site.baseurl }}/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin=”anonymous”>
+    <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/app.min.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164207041-1"></script>
     <script>
