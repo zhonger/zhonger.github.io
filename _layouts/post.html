@@ -34,7 +34,7 @@
     {% if page.subtitle %}
     <h2 class="post-subtitle">{{ page.subtitle }}</h2>
     {% endif %}
-    <article class="markdown-body">
+    <article class="markdown-body" id="lightgallery">
         {{ page.content }}
     </article>
     {% if site.social-share %}
@@ -135,15 +135,11 @@ s.setAttribute('data-timestamp', +new Date());
     // 给图片添加链接
     $(document).ready(function() {
         $("p img").each(function() {
-            var strA = "<a class='fancybox' ref='gallery1' href='" + this.src + "'></a>";
+            var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
             $(this).wrapAll(strA);
         });
 
-        $(".fancybox").fancybox({
-            thumbs : {
-                autoStart : true
-            }
-        });
+        $('[data-fancybox="gallery"]').fancybox();
     });
 </script>
 <script src="{{ site.baseurl }}/assets/js/prism.js"></script>
