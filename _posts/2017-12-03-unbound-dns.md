@@ -7,8 +7,7 @@ tags:
 - DNS
 - unbound
 - dnscrypt
-categories:
-- [tech, Linux]
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900'
 ---
 
