@@ -14,6 +14,7 @@ nav:
   archives: '/archives.html'
   tags: '/tags.html'
   RSS: '/feed.xml'
+  logs: '/logs.html'
 
 # Author 配置博主信息
 author: 'zhonger'
