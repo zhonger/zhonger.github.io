@@ -9,7 +9,7 @@ tags:
 - 优化
 - fancybox
 - prism
-categories: webmaster
+categories: [tech, webmaster]
 cover: 'https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900'
 ---
 
