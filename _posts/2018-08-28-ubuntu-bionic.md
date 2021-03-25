@@ -9,7 +9,7 @@ tags:
 - 主题
 - Mac
 - 18.04
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900'
 ---
 

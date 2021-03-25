@@ -8,7 +8,7 @@ tags:
 - docker
 - lnmpa
 - 云盘
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900'
 ---
 

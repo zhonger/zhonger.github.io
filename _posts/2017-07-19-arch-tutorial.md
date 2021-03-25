@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 'archlinux 入门初步'
-subtitle: 'archlinux 从安装操作系统入手'
+title: 'Archlinux 入门初步'
+subtitle: 'Archlinux 从安装操作系统入手'
 date: 2017-07-19 15:23:10 +0800
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900'
 tags: 
 - archlinux 

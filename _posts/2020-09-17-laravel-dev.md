@@ -9,7 +9,7 @@ tags:
 - Linux Mint
 - Nginx
 - php-fpm
-categories: tech
+categories: [tech, PHP]
 cover: 'https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900'
 ---
 

@@ -8,7 +8,7 @@ tags:
 - Ubuntu
 - Slurm
 - Cluster
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1514613453913-ec5da0db2faa?w=1600&q=900'
 ---
 

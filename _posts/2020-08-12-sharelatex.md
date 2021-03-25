@@ -7,7 +7,7 @@ tags:
 - ShareLaTeX
 - LaTex
 - Ubuntu
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900'
 ---
 

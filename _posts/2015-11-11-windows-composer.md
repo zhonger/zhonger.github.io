@@ -1,11 +1,14 @@
 ---
 layout: post
-title: 'windows 配置 composer 和 laravel 笔记'
-subtitle: '在 windows 系统上配置 composer，并应用于 laravel 框架开发过程中。'
+title: 'Windows 配置 Composer 和 Laravel 笔记'
+subtitle: '在 Windows 系统上配置 Composer，并应用于 Laravel 框架开发过程中。'
 date: 2015-11-11 12:12:12 +0800
-categories: tech
+categories: [tech, PHP]
 cover: 'https://images.unsplash.com/photo-1557600280-9ceddf1a3cc3?w=1600&h=900'
-tags: windows composer laravel
+tags: 
+- windows 
+- composer 
+- laravel
 ---
 
 ## 安装及配置 composer

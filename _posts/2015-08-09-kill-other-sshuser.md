@@ -1,14 +1,16 @@
 ---
 layout: post
-title: 'Linux踢出其他正在SSH登陆用户'
-subtitle: '踢出其他SSH登录用户'
+title: 'Linux 踢出其他正在 SSH 登陆用户'
+subtitle: '踢出其他 SSH 登录用户'
 date: 2015-08-09 15:32:12 +0800
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1428550590922-34c77f716ad4?w=1600&q=900'
-tags: SSH登录 转载
+tags: 
+- SSH登录 
+- 转载
 ---
 
-&emsp;&emsp;在一些生产平台或者做安全审计的时候往往看到一大堆的用户SSH连接到同一台服务器，或者连接后没有正常关闭进程还驻留在系统内。限制SSH连接数与手动断开空闲连接也有必要之举，这里写出手动剔出其他用户的过程。
+&emsp;&emsp;在一些生产平台或者做安全审计的时候往往看到一大堆的用户 SSH 连接到同一台服务器，或者连接后没有正常关闭进程还驻留在系统内。限制 SSH 连接数与手动断开空闲连接也有必要之举，这里写出手动剔出其他用户的过程。
 
 - 查看系统在线用户
 
@@ -27,13 +29,13 @@ root     pts/1    116.204.64.165   14:15    2.00s  0.02s  0.02s –bash
 root     pts/0        2013-01-16 14:15 (116.204.64.165)
 ```
 
-- 用pkill 命令剔除对方
+- 用 pkill 命令剔除对方
 
 ```bash
 [root@apache ~]# pkill -kill -t pts/1
 ```
 
-- 用w命令在看看干掉没
+- 用 w 命令在看看干掉没
 
 ```bash
 [root@apache ~]# w 
@@ -42,7 +44,7 @@ USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT
 root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
 ```
 
-- 如果最后查看还是没有干掉，建议加上-9 强制杀死。
+- 如果最后查看还是没有干掉，建议加上 -9 强制杀死。
 
 ```bash
 [root@apache ~]# pkill -9 -t pts/1

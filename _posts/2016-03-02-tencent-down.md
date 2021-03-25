@@ -5,7 +5,7 @@ subtitle: 重装系统
 date: 2016-03-02 16:36:27 +0800
 tags:
 - 腾讯云
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1455459182396-ae46100617cb?w=1600&h=900'
 ---
 ## 添加用户并设为 sudo 权限

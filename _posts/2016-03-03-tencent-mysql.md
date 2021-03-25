@@ -6,7 +6,7 @@ date: 2016-03-03 22:04:40 +0800
 tags: 
 - 腾讯云
 - MySQL
-categories: tech
+categories: [tech, SQL]
 cover: 'https://images.unsplash.com/photo-1499006619764-59e5b0c0e7ca?w=1600&h=900'
 ---
 ## 修改mysql配置

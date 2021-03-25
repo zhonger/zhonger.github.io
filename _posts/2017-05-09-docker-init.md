@@ -6,7 +6,7 @@ date: 2017-05-09 12:43:31 +0800
 tags:
 - docker 
 - ubuntu
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900'
 ---
 # Docker入门

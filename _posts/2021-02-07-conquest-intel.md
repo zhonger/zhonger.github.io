@@ -7,7 +7,7 @@ tags:
 - CONQUEST
 - 量子化学
 - Intel
-categories: tech
+categories: [tech, conquest]
 cover: 'https://images.unsplash.com/photo-1611908494970-3eea5e0a773e?w=1600&q=900'
 ---
 

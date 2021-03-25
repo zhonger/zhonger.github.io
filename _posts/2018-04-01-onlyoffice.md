@@ -6,7 +6,7 @@ date: 2018-04-01 18:10:35 +0800
 tags: 
 - onlyoffice
 - docker
-categories: tech
+categories: [tech, docker]
 cover: https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900
 ---
 

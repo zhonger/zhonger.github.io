@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Ubuntu 14.04 安装 composer+laravel 配置
-subtitle: Linux 下配置 laravel 环境。
+title: Ubuntu 14.04 安装 Composer+Laravel 配置
+subtitle: Linux 下配置 laravel 环境
 date: 2016-02-05 16:29:05 +0800
 tags:
 - ubuntu
 - composer
 - laravel
-categories: tech
+categories: [tech, PHP]
 cover: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900'
 ---
 安装前提：系统已安装好 php 环境，可在全局使用 php 命令。

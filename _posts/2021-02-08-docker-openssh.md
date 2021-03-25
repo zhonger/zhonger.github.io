@@ -6,7 +6,7 @@ date: 2021-02-08 20:11:00 +0800
 tags: 
 - Docker
 - SSH
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1612533923019-b532b3131212?w=1600&q=900'
 ---
 

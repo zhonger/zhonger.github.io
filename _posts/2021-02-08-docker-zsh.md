@@ -8,7 +8,7 @@ tags:
 - Ubuntu
 - zsh
 - 免密
-categories: tech
+categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1551978429-3dbfed5cacc9?w=1600&q=900'
 ---
 

@@ -9,7 +9,7 @@ tags:
 - SSH
 - Proxy
 - Dev
-categories: tech
+categories: [tech, devops]
 cover: 'https://images.unsplash.com/photo-1580574875107-2eb4a7d77040?w=1600&q=900'
 ---
 

@@ -7,7 +7,7 @@ tags:
 - DMOJ
 - 判题系统
 - Ubuntu
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1594199679806-d543943615c8?w=1600&q=900'
 ---
 

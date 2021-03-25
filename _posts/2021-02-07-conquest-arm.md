@@ -7,7 +7,7 @@ tags:
 - CONQUEST
 - 量子化学
 - ARM
-categories: tech
+categories: [tech, conquest]
 cover: 'https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=900'
 ---
 

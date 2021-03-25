@@ -1,6 +1,6 @@
 ---
 layout: post
-title: unbound + dnscrypt 搭建无污染 DNS 服务
+title: Unbound + Dnscrypt 搭建无污染 DNS 服务
 subtitle: 从零开始搭建一个无污染的 DNS 服务
 date: 2017-12-03 18:23:41 +0800
 tags:
@@ -8,7 +8,7 @@ tags:
 - unbound
 - dnscrypt
 categories:
-- tech
+- [tech, Linux]
 cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900'
 ---
 

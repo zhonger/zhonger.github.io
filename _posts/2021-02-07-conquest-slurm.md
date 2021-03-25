@@ -7,7 +7,7 @@ tags:
 - CONQUEST
 - 量子化学
 - Slurm
-categories: tech
+categories: [tech, conquest, docker]
 cover: 'https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900'
 ---
 

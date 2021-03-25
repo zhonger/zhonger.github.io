@@ -1,12 +1,12 @@
 ---
 layout: post
-title: laravel5.2 在 lnmpa 一键安装包环境下的部署
-subtitle: Linux 上配置 laravel 环境
+title: Laravel 5.2 在 LNMPA 一键安装包环境下的部署
+subtitle: Linux 上配置 Laravel 环境
 date: 2016-03-14 22:19:48 +0800
 tags:
 - laravel
 - lnmpa
-categories: tech
+categories: [tech, PHP]
 cover: 'https://images.unsplash.com/photo-1516545595035-b494dd0161e4?w=1600&h=900'
 ---
 

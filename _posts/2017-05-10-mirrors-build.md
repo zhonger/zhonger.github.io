@@ -10,7 +10,7 @@ tags:
 - cran
 - wget
 - bandsnatch
-categories: tech
+categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?w=1600&h=900'
 ---
 ## 引言

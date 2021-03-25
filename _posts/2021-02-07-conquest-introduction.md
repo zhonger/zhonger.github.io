@@ -6,7 +6,7 @@ date: 2021-02-07 20:18:00 +0800
 tags: 
 - CONQUEST
 - 量子化学
-categories: tech
+categories: [tech, conquest]
 cover: 'https://images.unsplash.com/photo-1612572767699-093823e475af?w=1600&q=900'
 ---
 
