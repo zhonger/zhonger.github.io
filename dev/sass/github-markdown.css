@@ -597,6 +597,15 @@ li p:nth-child(2) {
   border-top: 1px solid #c6cbd1;
 }
 
+.gist table tr {
+  border-top: none!important;
+}
+
+.gist table td, 
+.gist table th {
+  border: none!important;
+}
+
 .markdown-body table tr:nth-child(2n) {
   background-color: #f6f8fa;
 }
