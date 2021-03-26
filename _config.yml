@@ -16,6 +16,10 @@ nav:
   RSS: '/feed.xml'
   logs: '/logs.html'
 
+# Footer
+footer:
+  since: 2015
+
 # Author 配置博主信息
 author: 'zhonger'
 nickname: 'zhonger'
