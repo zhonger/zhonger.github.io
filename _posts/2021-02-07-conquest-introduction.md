@@ -48,9 +48,9 @@ cover: 'https://images.unsplash.com/photo-1612572767699-093823e475af?w=1600&q=90
 
 &emsp;&emsp;为了更好地符合可能存在的多种环境需求，笔者就自己所有的一些平台进行了测试和实践，主要分为以下几类，并以独立文章的形式分别介绍：
 
-- [ARM 篇](/tech/conquest-arm)：该类主要包含 Mac M1，树莓派以及 ARM 服务器。
-- [Intel 篇](/tech/conquest-intel)：该类主要包括普通 PC 和 x86 服务器。
-- [Slurm 篇](/tech/conquest-slurm)：该类主要是应用于 HPC 环境下，当然也适合个人在高性能服务器上运行。
+- [ARM 篇](/tech/conquest/conquest-arm)：该类主要包含 Mac M1，树莓派以及 ARM 服务器。
+- [Intel 篇](/tech/conquest/conquest-intel)：该类主要包括普通 PC 和 x86 服务器。
+- [Slurm 篇](/tech/conquest/conquest-slurm)：该类主要是应用于 HPC 环境下，当然也适合个人在高性能服务器上运行。
 
 ## 使用指南
 
