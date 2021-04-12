@@ -6,10 +6,7 @@ date: 2021-04-05 16:03:00 +0800
 tags: 
 - blog
 - free
-- static
-- hexo
 - jekyll
-- gitbook
 - readthedoc
 - cloudflare
 - netlify

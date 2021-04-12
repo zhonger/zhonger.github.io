@@ -7,16 +7,13 @@ tags:
 - blog
 - free
 - static
-- hexo
 - jekyll
 - gitbook
 - readthedoc
-- cloudflare
-- netlify
 - ftp
 - github
 categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900'
+cover: 'https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=900'
 ---
 
 ## 前言
