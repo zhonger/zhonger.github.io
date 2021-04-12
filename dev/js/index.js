@@ -137,7 +137,7 @@ $(document).ready(function(){
 
         for(var i = current - limit; i<current; i++) { 
             if(i>0 && i!==1) {
-                link_html += '<a href="' + baseUrl + 'page' + i + '" class="page-link page-num">' + i + '</a>';
+                link_html += '<a href="' + baseUrl + 'page' + i + '/" class="page-link page-num">' + i + '</a>';
             }else if(i===1) {
                 link_html += '<a href="' + baseUrl + '" class="page-link page-num">' + i + '</a>';
             }
@@ -147,7 +147,7 @@ $(document).ready(function(){
 
         for(var j = current + 1; j<=current + limit; j++) { 
             if(j<=total) {
-                link_html += '<a href="' + baseUrl + 'page' + j + '" class="page-link page-num">' + j + '</a>';
+                link_html += '<a href="' + baseUrl + 'page' + j + '/" class="page-link page-num">' + j + '</a>';
             }
         }
         
