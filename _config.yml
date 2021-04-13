@@ -10,7 +10,7 @@ baseurl: ''
 # Navigation links
 nav:
   home: '/'
-  blog: '/blog/'
+  blog: '/blog/index.html'
   archives: '/archives.html'
   tags: '/tags.html'
   RSS: '/feed.xml'
