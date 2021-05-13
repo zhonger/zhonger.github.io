@@ -544,6 +544,16 @@ li p:nth-child(2) {
   color: #6a737d;
 }
 
+.markdown-body a {
+    color: #005b81;
+    text-decoration: none;
+}
+
+.markdown-body a:hover {
+    color: #e32e00;
+    text-decoration: underline;
+}
+
 .markdown-body ul,
 .markdown-body ol {
   padding-left: 2em;
