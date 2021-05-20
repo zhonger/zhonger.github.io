@@ -153,6 +153,12 @@ mkdir -p /home/lisz/.conda/envs/pgsql/data
 # 指定数据存储目录并后台启动 PostgreSQL，同时也开启日志记录功能
 pg_ctl -D /home/lisz/.conda/envs/pgsql/data -l logfile start
 
+# 查看是否正常启动并监听端口 5432
+(base) ➜  data lsof -i:5432 
+COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+postgres 33906 lisz    3u  IPv6 66936721      0t0  TCP localhost:postgres (LISTEN)
+postgres 33906 lisz    4u  IPv4 66936722      0t0  TCP localhost:postgres (LISTEN)
+
 # 使用当前 Linux 用户身份认证直接进入 PostgreSQL 默认数据库
 # 进入后是 PostgreSQL 的 shell 交互界面
 psql -d  postgres
@@ -190,6 +196,11 @@ rabbitmq-plugins enable rabbitmq_management
 
 # 查看状态，验证是否正常启动
 rabbitmq-server status
+
+# 查看是否正常监听 5672 端口
+(base) ➜  ~ lsof -i:5672             
+COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+beam.smp 33967 lisz   95u  IPv6 66919827      0t0  TCP *:amqp (LISTEN)
 ```
 
 &emsp;&emsp;由于 RabbitMQ 是消息队列，这里没有持久化和验证的需求，所有可以直接使用默认配置启动即可。验证正常启动后，可浏览 [http://localhost:15627](http://localhost:15627) 来访问 RabbitMQ 的 Web 界面，默认管理员账号和密码均为 guest。这里需要注意的是，如果是服务器安装，本地机器是需要使用 ssh 代理端口的功能把服务器端的 15627 端口代理到本地的 15627 端口之后才能正常访问。当然，笔者建议使用 VS Code 来远程连接服务器，然后就可以使用 VS Code 提供的界面简单操作代理远程端口到本地。
@@ -244,6 +255,7 @@ Repository directory [/home/lisz/.aiida/repository/conquest]:
 
 ```bash
 # verdi daemon status 检查后台情况
+# 如果没有启动使用 verdi daemon start 启动
 (base) ➜  ~ verdi daemon status
 Profile: conquest
 Daemon is running as PID 25383 since 2021-05-12 16:06:03
@@ -273,7 +285,7 @@ In [1]: exit()
 
 ## 后续使用
 
-&emsp;&emsp;当我们已经有了 AiiDA 的完整环境之后，我们就会想要知道该如何使用 AiiDA 为计算服务呢。由于笔者是做第一性原理计算和机器学习的研究，所以后续就将以 AiiDA 和 CONQUEST 的搭配使用为实例来介绍 AiiDA 的数据管理用法。
+&emsp;&emsp;当我们已经有了 AiiDA 的完整环境之后，我们就会想要知道该如何使用 AiiDA 为计算服务呢。由于笔者是做第一性原理计算和机器学习的研究，所以后续将以 AiiDA 和 CONQUEST 的搭配使用为实例来介绍 AiiDA 的数据管理用法。
 
 ## 参考资料
 
