@@ -227,7 +227,19 @@ Host ecs
 
 ##### 公网服务器
 
-&emsp;&emsp;和第一种方法中 配置路由转发-远程服务节点 操作一致，并且添加第一种方法中 配置路由转发-公网服务器 操作。
+&emsp;&emsp;和第一种方法中 配置路由转发-远程服务节点 操作基本一致，并且添加第一种方法中 配置路由转发-公网服务器 操作。这里不同的是 Zerotier 虚拟网卡需要转发流量，而不是将 Zerotier 虚拟网卡的流量请求转发给主要上网网卡，因此应做如下操作：
+
+```bash
+# 允许 zt0 虚拟网卡转发流量请求
+sudo iptables -t nat -A POSTROUTING -o zt0 -j MASQUERADE
+sudo iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+# 接受一切网卡转发流量请求
+sudo iptables -P FORWARD  ACCEPT
+# 保存修改的 iptables 规则
+sudo netfilter-persistent save
+# 查看保存的 iptables 规则
+sudo iptables-save
+```
 
 ##### 本地客户端节点
 
