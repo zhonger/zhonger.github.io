@@ -51,6 +51,8 @@ description: Writing, writing, writing ...
 - 2021年2月，在新的学习环境和学习需求下，开始了一系列第一性原理计算的学习，同时也在多平台下探索了计算环境的搭建和运行模式。开始有了做系列文章或者专题的想法。
 - 2021年3月12日，由于学校提供给每个学生 10GB 的空间用于托管网页或者文件，所以就新增了学校托管节点。
 - 2021年3月24日，对文章原来的单类别分类方式有点想法，想做一些系列文章或专题。所以想先把文章做成多类别，然后再添加类别页面。于是开始了**类别改造**的新网站改版计划。考虑到原来搜索引擎已收录页面的原因，本次改造对所有之前的文章均采用双类别模式，之后的文章一般采用单类别模式，尽量保留原有 SEO 的优势。
+- 2021年6月16日，由于阿里云服务器续费比较昂贵，到期后不打算继续续费，所以将博客的阿里云服务器节点下线。
+- 2021年9月，通过 U-File 正式上线又拍云 CDN 节点，但可能由于又拍云的地区限制，该节点目前只能在国内访问。
 
 ## 站点节点信息
 
@@ -59,7 +61,8 @@ description: Writing, writing, writing ...
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
-| 阿里云服务器 | [www.lisz.ink](https://www.lisz.ink) | 是 | 否 | 国内单节点 |
+| 阿里云服务器 | www.lisz.ink(下线) | 是 | 否 | 国内单节点 |
 | 腾讯云服务器 | [luish.cc](https://luish.cc) | 是 | 否 | 国内单节点 |
 | 腾讯云 COS | [lisz.ink](https://lisz.ink) | 是 | 否 | 国内 CDN 节点 |
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
+| 又拍云 CDN | [blog.lisz.ink](https://blog.lisz.ink) | 是 | 是 | 国内 CDN 节点 |
