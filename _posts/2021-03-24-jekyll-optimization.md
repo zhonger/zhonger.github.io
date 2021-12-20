@@ -9,6 +9,7 @@ tags:
 - 优化
 - fancybox
 - prism
+- LaTex
 categories: [tech, webmaster]
 cover: 'https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900'
 ---
@@ -337,3 +338,37 @@ nav:
   tags: '/tags.html'
   RSS: '/feed.xml'
 ```
+
+### 支持 LaTex 数学公式
+
+(本小节更新于 2021年12月20日)
+
+&emsp;&emsp;作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用**双$符号**来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。
+
+```js
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script> 
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        processEscapes: true
+      }
+    };
+</script>
+```
+
+```latex
+$$
+ax^2 + bx + c = 0
+$$
+```
+
+$$
+ax^2 + bx + c = 0
+$$
+
+
+### 参考资料
+
+- [让 Jekyll 支持 LaTex 数学公式（MathJax v3）](https://hansenz42.github.io/posts/add-latex-support-to-jekyll/)
