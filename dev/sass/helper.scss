@@ -136,11 +136,25 @@ $post-content-w: 720px;
 }
 
 @mixin snsIcon {
-    .iconfont {
+    .icon {
         color: #B8BDC3;
         transition: .2s;
+        width: 22px;
+        height: 22px;
+        line-height: 30px;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+        filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
         &:hover {
             color: #7B848F;
+            filter: none;
+            -webkit-filter: none;
+            -moz-filter: none;
+            -ms-filter: none;
         }
     }
     .icon-weibo:hover {
