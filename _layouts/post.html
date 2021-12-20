@@ -23,6 +23,9 @@
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="{{ site.url }}" target="_blank" rel="author">{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}</a></span>
             <time class="post-meta-item" datetime="{{ page.date | date:"%y-%m-%d" }}"><i class="iconfont icon-date"></i>{{ page.date | date_to_rfc822 }}</time>
         </div>
+        <div class="post-meta">
+            <span>本文总共 {{ page.content | strip_html | strip_newlines | remove: " " | size }} 字 <b>·</b> 阅读全文大约需要 {{ page.content | strip_html | strip_newlines | remove: " " | size | divided_by: 350 | plus: 1 }} 分钟</span>
+        </div>
     </div>
     {% if page.cover %}
     <div class="filter"></div>
