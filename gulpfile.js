@@ -1,7 +1,7 @@
 var gulp = require('gulp'),
     concat = require("gulp-concat"),
     uglify = require('gulp-uglify'), // 压缩js文件
-    sass = require('gulp-sass'), // 编译sass
+    // sass = require('gulp-sass'), // 编译sass
     cleanCSS = require('gulp-clean-css'), // 压缩css文件
     rename = require('gulp-rename'), // 文件重命名
     minifyCSS = require('gulp-minify-css');
@@ -15,9 +15,9 @@ gulp.task('scripts', (cb) => {
 });
 
 gulp.task('sass', (cb) => {
-    gulp.src('dev/sass/app.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('dev/sass'))
+    gulp.src('dev/sass/app.css')
+        // .pipe(sass())
+        // .pipe(gulp.dest('dev/sass'))
         .pipe(cleanCSS())
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('assets/css'));

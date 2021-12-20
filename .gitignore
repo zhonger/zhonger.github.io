@@ -6,8 +6,12 @@ package-lock.json
 _site
 
 Gemfile.lock
+yarn.lock
 
 .vscode
 .jekyll-cache
 .bundle
 vendor
+
+dev/sass/*.map
+dev/sass/.sass-cache
