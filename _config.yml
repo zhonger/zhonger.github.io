@@ -55,12 +55,12 @@ postPatterns: 'food'
 
 # SNS settings 配置社交网站url: weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
 sns:
-  facebook: 'https://facebook.com/zhonger95'
-  github: 'https://github.com/zhonger'
-  linkedin: 'https://www.linkedin.com/in/shengzhouli/'
   google-scholar: 'https://scholar.google.com/citations?user=AUupIooAAAAJ'
   researchgate: 'https://www.researchgate.net/profile/Shengzhou-Li'
   ORCID: 'https://orcid.org/0000-0001-6973-3825'
+  github: 'https://github.com/zhonger'
+  linkedin: 'https://www.linkedin.com/in/shengzhouli/'
+  segmentfault: 'https://segmentfault.com/u/wuwozhonger'
 
 # Tags 设置标签
 recommend-tags: true # whether or not display recommend-tags on the sidebar
