@@ -30,9 +30,10 @@ description: Writing, writing, writing ...
 # Publications
 
 1. **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136) 
-2. Y Liu, H Zhang, Y Xu, **S Li**, D Dai, C Li, G Ding, W Shen, Q Qian. Prediction of Superconducting Transition Temperature Using A Machine-Learning Method[J]. *Materiali in tehnologije*, 2018, 52(5): 639-643.[[DOI]](https://doi.org/10.17222/mit.2018.043) 
-3. H Zhang, G Zhou, **S Li**, X Fan, Z Guo, T Xu, Y Xu, X Chen, D Dai, Q Qian. Application of fuzzy learning in the research of binary alloys: Revisit and validation[J]. *Computational Materials Science*, 2020, 172: 109350.[[DOI]](https://doi.org/10.1016/j.commatsci.2019.109350) 
-4. D Dai, T Xu, H Hu, Z Guo, Q Liu, **S Li**, Q Qian, Y Xu, H Zhang. A New Method to Characterize Limited Material Datasets of High-Entropy Alloys Based on the Feature Engineering and Machine Learning[J]. *Available at SSRN 3442010*.[[DOI]](https://dx.doi.org/10.2139/ssrn.3442010) 
+2. W Zheng , H Zhang, H Hu, Y Liu, **S Li**, G Ding, J Zhang. Performance prediction of perovskite materials based on different machine learning algorithms[J]. The Chinese Journal of Nonferrous Metals, 2019, 29(04): 803-809.[[DOI]](http://www.ysxbcn.com/down/2019/04_cn/17-P0803-37307.pdf)(Chinese)
+3. Y Liu, H Zhang, Y Xu, **S Li**, D Dai, C Li, G Ding, W Shen, Q Qian. Prediction of Superconducting Transition Temperature Using A Machine-Learning Method[J]. *Materiali in tehnologije*, 2018, 52(5): 639-643.[[DOI]](https://doi.org/10.17222/mit.2018.043) 
+4. H Zhang, G Zhou, **S Li**, X Fan, Z Guo, T Xu, Y Xu, X Chen, D Dai, Q Qian. Application of fuzzy learning in the research of binary alloys: Revisit and validation[J]. *Computational Materials Science*, 2020, 172: 109350.[[DOI]](https://doi.org/10.1016/j.commatsci.2019.109350) 
+5. D Dai, T Xu, H Hu, Z Guo, Q Liu, **S Li**, Q Qian, Y Xu, H Zhang. A New Method to Characterize Limited Material Datasets of High-Entropy Alloys Based on the Feature Engineering and Machine Learning[J]. *Available at SSRN 3442010*.[[DOI]](https://dx.doi.org/10.2139/ssrn.3442010) 
 
 # Contact
 
@@ -65,9 +66,10 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)
 # 论文发表
 
 1. **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136) 
-2. Y Liu, H Zhang, Y Xu, **S Li**, D Dai, C Li, G Ding, W Shen, Q Qian. Prediction of Superconducting Transition Temperature Using A Machine-Learning Method[J]. *Materiali in tehnologije*, 2018, 52(5): 639-643.[[DOI]](https://doi.org/10.17222/mit.2018.043) 
-3. H Zhang, G Zhou, **S Li**, X Fan, Z Guo, T Xu, Y Xu, X Chen, D Dai, Q Qian. Application of fuzzy learning in the research of binary alloys: Revisit and validation[J]. *Computational Materials Science*, 2020, 172: 109350.[[DOI]](https://doi.org/10.1016/j.commatsci.2019.109350) 
-4. D Dai, T Xu, H Hu, Z Guo, Q Liu, **S Li**, Q Qian, Y Xu, H Zhang. A New Method to Characterize Limited Material Datasets of High-Entropy Alloys Based on the Feature Engineering and Machine Learning[J]. *Available at SSRN 3442010*.[[DOI]](https://dx.doi.org/10.2139/ssrn.3442010)  
+2. W Zheng , H Zhang, H Hu, Y Liu, **S Li**, G Ding, J Zhang. Performance prediction of perovskite materials based on different machine learning algorithms[J]. The Chinese Journal of Nonferrous Metals, 2019, 29(04): 803-809.[[DOI]](http://www.ysxbcn.com/down/2019/04_cn/17-P0803-37307.pdf)(中文)
+3. Y Liu, H Zhang, Y Xu, **S Li**, D Dai, C Li, G Ding, W Shen, Q Qian. Prediction of Superconducting Transition Temperature Using A Machine-Learning Method[J]. *Materiali in tehnologije*, 2018, 52(5): 639-643.[[DOI]](https://doi.org/10.17222/mit.2018.043) 
+4. H Zhang, G Zhou, **S Li**, X Fan, Z Guo, T Xu, Y Xu, X Chen, D Dai, Q Qian. Application of fuzzy learning in the research of binary alloys: Revisit and validation[J]. *Computational Materials Science*, 2020, 172: 109350.[[DOI]](https://doi.org/10.1016/j.commatsci.2019.109350) 
+5. D Dai, T Xu, H Hu, Z Guo, Q Liu, **S Li**, Q Qian, Y Xu, H Zhang. A New Method to Characterize Limited Material Datasets of High-Entropy Alloys Based on the Feature Engineering and Machine Learning[J]. *Available at SSRN 3442010*.[[DOI]](https://dx.doi.org/10.2139/ssrn.3442010)  
 
 # 联系我
 
