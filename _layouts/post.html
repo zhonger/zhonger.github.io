@@ -61,7 +61,9 @@
             {% for s in site.sns %}
             <li>
                 <a href="{{ s[1] }}" target="_blank">
-                    <i class="iconfont icon-{{ s[0] }}"></i>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-{{ s[0] }}"></use>
+                    </svg>
                 </a>
             </li>
             {% endfor %}
