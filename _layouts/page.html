@@ -58,11 +58,14 @@
             </section>
             {% endif %}
 
+            {% if site.links.size > 0 %}
             <section class="tags-card">
                 <div class="links" rel="links">Links</div>
-                <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer">Kala Search</a>
-                <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer">个人导航</a>
+                {% for link in site.links %}
+                    <a href="{{ link[1] }}" target="_blank" class="tag" rel="noreferrer"> {{ link[0] }} </a>
+                {% endfor %}
             </section>
+            {% endif %}
         </div>
 
         {% if site.search %}

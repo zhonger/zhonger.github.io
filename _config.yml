@@ -30,9 +30,6 @@ favicon: "/assets/icons/favicon.ico"
 # permalink
 permalink: /:categories/:title.html
 
-# timezone
-timezone: Asia/Shanghai
-
 # Search
 search: true
 
@@ -61,6 +58,14 @@ sns:
   github: 'https://github.com/zhonger'
   linkedin: 'https://www.linkedin.com/in/shengzhouli/'
   segmentfault: 'https://segmentfault.com/u/wuwozhonger'
+
+# Links 友情链接
+links:
+  Kala Search: 'https://kalasearch.cn'
+  个人导航: 'https://nav.lisz.me'
+
+# Beian 备案号
+beian: '沪ICP备15014851号'
 
 # Tags 设置标签
 recommend-tags: true # whether or not display recommend-tags on the sidebar
