@@ -14,6 +14,10 @@
     "gulp-concat": "^2.6.1",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
+    "gulp-sass": "*",
     "gulp-uglify": "^2.1.2"
+  },
+  "dependencies": {
+    "node-sass": "^7.0.0"
   }
 }
