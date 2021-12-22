@@ -300,6 +300,18 @@
         transition: .2s;
         z-index: 1;
     }
+    .icon {
+        position: absolute;
+        top: 13px;
+        right: 18px;
+        color: #CAD3DC;
+        z-index: 1;
+        width: 20px;
+        height: 20px;
+        vertical-align: -0.15em;
+        fill: currentColor;
+        overflow: hidden;
+    }
     .search_result {
         position: relative;
         margin-top: -2px;

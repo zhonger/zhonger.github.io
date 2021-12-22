@@ -2,7 +2,10 @@
     <div class="g-logo">
       <a href="{{ "/" | relative_url }}" aria-label="Homepage"></a>
     </div>
-    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
     <nav class="g-nav">
         <ul>
             {% for i in site.nav %}
