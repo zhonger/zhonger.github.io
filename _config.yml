@@ -67,6 +67,9 @@ links:
 # Beian 备案号
 beian: '沪ICP备15014851号'
 
+# TZ 时区
+timezone: Asia/Tokyo
+
 # Tags 设置标签
 recommend-tags: true # whether or not display recommend-tags on the sidebar
 recommend-condition-size: 12 # a tag will be recommended if the size of it is more than this value
