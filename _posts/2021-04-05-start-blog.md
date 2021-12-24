@@ -44,11 +44,11 @@ cover: 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=1600&q=90
 
 &emsp;&emsp;这里就以笔者的个人博客站点为例解释一下如何使用静态生成器来搭建博客。其实，笔者的博客本来也不是静态生成器，最早还是 WordPress，后来过渡到 Hexo，再后来才转到 Jekyll。说实话，当时 Hexo 转投 Jekyll 也是因为发现了 [H2O](https://github.com/kaeyleo/jekyll-theme-H2O) 这个好看又优秀的 Jekyll 主题，果断选择切换到 Jekyll。当然，还有另外一个原因，Github 的原生支持静态生成器就是 Jekyll，这也意味着在 Github 上部署 Jekyll 更加方便。
 
-&emsp;&emsp;Jekyll 的开始与 Hexo 有所不同，Hexo 是采用子目录的方式加载应用新的主题，而 Jekyll 则是采用主题化的方式应用主题。也就是说，如果你想使用某个 Jekyll 主题，唯一的方式就是克隆这个 Jekyll 主题的项目，并在此基础上开始你的博客。当然，Jekyll 完全支持用户在原有主题上进行更改，只要你了解文件是如何组织的、需要何种环境等等，你就可以做出自己的修改。为了保障原有主题的版权声明，即使你自己修改了一部分，也应该保留原有主题在底部的声明，你可以做的是加上自己的声明。在实际的使用过程中，笔者根据自己的需求也在 H2O 主题上做出了一定的功能修改，并开源为 [jekyll-them-H2O-ac](https://github.com/zhoner/jekyll-theme-H2O-ac)。
+&emsp;&emsp;Jekyll 的开始与 Hexo 有所不同，Hexo 是采用子目录的方式加载应用新的主题，而 Jekyll 则是采用主题化的方式应用主题。也就是说，如果你想使用某个 Jekyll 主题，唯一的方式就是克隆这个 Jekyll 主题的项目，并在此基础上开始你的博客。当然，Jekyll 完全支持用户在原有主题上进行更改，只要你了解文件是如何组织的、需要何种环境等等，你就可以做出自己的修改。为了保障原有主题的版权声明，即使你自己修改了一部分，也应该保留原有主题在底部的声明，你可以做的是加上自己的声明。在实际的使用过程中，笔者根据自己的需求也在 H2O 主题上做出了一定的功能修改，并开源为 [jekyll-them-H2O-ac](https://github.com/zhonger/jekyll-theme-H2O-ac)。
 
 ### Fork 项目
 
-&emsp;&emsp;访问 [jekyll-them-H2O-ac](https://github.com/zhoner/jekyll-theme-H2O-ac)，点击 Fork 按钮，选择合适的用户命名空间。为了可以支持 username.github.io 域名直接展示该项目，建议在 Settings 里面将 Respository name 修改为 username.github.io，然后克隆项目到本地目录。
+&emsp;&emsp;访问 [jekyll-them-H2O-ac](https://github.com/zhonger/jekyll-theme-H2O-ac)，点击 Fork 按钮，选择合适的用户命名空间。为了可以支持 username.github.io 域名直接展示该项目，建议在 Settings 里面将 Respository name 修改为 username.github.io，然后克隆项目到本地目录。
 
 ```bash
 git clone git@github.com:zhonger/zhonger.github.io
