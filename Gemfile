@@ -1,9 +1,7 @@
 source "https://rubygems.org"
 gem 'jekyll'
+gem 'jekyll-theme-h2o-ac'
 gem 'jekyll-paginate'
 gem 'jekyll-feed'
-gem 'jemoji'
-gem 'gemoji'
 gem 'jekyll-sitemap'
-gem 'kramdown-parser-gfm'
 gem "webrick"

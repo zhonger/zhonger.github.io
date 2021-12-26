@@ -7,6 +7,9 @@ url: 'https://lisz.me' # your host
 # if you don't need baseurl, you should leave this value blank.
 baseurl: ''
 
+# Theme
+theme: jekyll-theme-h2o-ac
+
 # Navigation links
 nav:
   home: '/'
@@ -32,6 +35,9 @@ permalink: /:categories/:title.html
 
 # Search
 search: true
+
+# MathJax
+mathjax: true
 
 # Night mode
 nightMode: false
@@ -67,6 +73,15 @@ links:
 # Beian 备案号
 beian: '沪ICP备15014851号'
 
+# CC License
+cclicense: true
+
+# CNZZ Analytics
+cnzz: 1280712061
+
+# Google Analytics
+google_analytics: UA-164207041-1
+
 # TZ 时区
 timezone: Asia/Tokyo
 
@@ -81,13 +96,13 @@ exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'R
 
 # Markdown
 markdown: kramdown
-highlighter: prism
+highlighter: rouge
 kramdown:
   input: GFM
 
 RSS: true
 
 # Plugins
-plugins: [jekyll-paginate, jekyll-feed, jemoji, jekyll-sitemap]
+plugins: [jekyll-paginate, jekyll-feed, jekyll-sitemap]
 
 include: [_redirects]
