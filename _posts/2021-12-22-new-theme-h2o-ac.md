@@ -69,7 +69,7 @@ tags: jekyll theme blog ac develop 主题 前端开发 学术 运维
 
 #### 配置项
 
-&emsp;&emsp;配置项中新增了**友情链接**和**备案号**功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。
+&emsp;&emsp;配置项中新增了**友情链接**、**备案号**、**Google Analytics** 和 **CNZZ** 统计功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。
 
 ```yaml
 # Links 友情链接
@@ -78,6 +78,12 @@ links:
 
 # Beian 备案号
 beian: '沪ICP备xxxxxxxx号'
+
+# CNZZ 统计代码
+cnzz:
+
+# Google Analytics
+google_analytics:
 ```
 
 #### 前端自动构建工作流优化
@@ -107,7 +113,10 @@ beian: '沪ICP备xxxxxxxx号'
 
 #### 方式二：已有博客迁移
 
-&emsp;&emsp;暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。
+&emsp;&emsp;~~暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。~~
+
+(2021年12月26日更新)
+&emsp;&emsp;现已支持使用 gem 直接切换主题 `jekyll-theme-h2o-ac`。同时，也推出了一键式构建工具 [easy-to-h2o-ac](https://github.com/zhonger/easy-to-h2o-ac)，详细可以见项目主页。
 
 ### 本地测试
 
