@@ -54,6 +54,8 @@ description: Writing, writing, writing ...
 - 2021年6月16日，由于阿里云服务器续费比较昂贵，到期后不打算继续续费，所以将博客的阿里云服务器节点下线。
 - 2021年9月，通过 U-File 正式上线又拍云 CDN 节点，但可能由于又拍云的地区限制，该节点目前只能在国内访问。
 - 2021年12月，由于 U-File 更新服务规则，从原来的一年到现在的一月手动续签一次，经常会忘记续签而导致服务暂停，于是决定即日起下线该节点。
+- 2021年12月22日，正式发布 [H2O-ac](https://github.com/zhonger/jekyll-theme-h2o-ac) 主题的公开版本。
+- 2021年12月24日，正式发布 [easy-to-h2o-ac](https://github.com/zhonger/easy-to-h2o-ac) 一键部署工具。
 
 ## 站点节点信息
 
