@@ -13,8 +13,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the site in the jekyll/builder container
+    - name: Build the site in the ruby:latest container
       run: |
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         ruby:latest /bin/bash -c "chmod -R 777 /srv/jekyll && gem install jekyll bundler && cd /srv/jekyll && bundle install && jekyll build --future"
+    - name: Deploy
+      uses: actions/deploy-pages@v1-beta
