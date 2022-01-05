@@ -1,10 +1,6 @@
 name: Jekyll site CI
 
-on:
-  push:
-    branches: [ gh_page ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -16,9 +12,10 @@ jobs:
       - uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1.0'
-      - run: gem install jekyll bundler
-      - run: bundle install
-      - run: jekyll build
+      - run: |
+             gem install jekyll bundler
+             bundle install
+             jekyll build
       - uses: actions/upload-artifact@v2.3.1
         with:
           path: _site
