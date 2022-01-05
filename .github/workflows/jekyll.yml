@@ -20,4 +20,4 @@ jobs:
 #           publish_dir: ./_site
       - uses: actions/deploy-pages@v1-beta
         with:
-          github_token: ${{ github.token }}
+          token: ${{ github.token }}
