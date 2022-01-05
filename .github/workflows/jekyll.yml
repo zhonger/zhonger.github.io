@@ -9,19 +9,16 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ruby-latest
 
     steps: 
-      - name: Build
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1.1.3
+      - uses: actions/setup-ruby@v1
         with:
           ruby-version: '3.1.0'
       - run: gem install jekyll bundler
       - run: bundle install
       - run: jekyll build
-      
-      - name: Deploy
       - uses: actions/upload-artifact@v2.3.1
         with:
           path: _site
