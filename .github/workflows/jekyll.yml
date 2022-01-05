@@ -18,8 +18,8 @@ jobs:
         docker run \
         -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
         ruby:latest /bin/bash -c "chmod -R 777 /srv/jekyll && gem install jekyll bundler && cd /srv/jekyll && bundle install && jekyll build --future"
-    - name: Deploy
-    - uses: peaceiris/actions-gh-pages@v3
-      with: 
-        github_token: ${{ secrets.TOKEN }}
-        publish_dir: ./_site
+    - name: Deploy 🚀
+    - uses: JamesIves/github-pages-deploy-action@4.1.7
+      with:
+        branch: gh-pages
+        folder: _site
