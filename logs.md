@@ -57,6 +57,10 @@ description: Writing, writing, writing ...
 - 2021年12月22日，正式发布 [H2O-ac](https://github.com/zhonger/jekyll-theme-h2o-ac) 主题的公开版本。
 - 2021年12月24日，正式发布 [easy-to-h2o-ac](https://github.com/zhonger/easy-to-h2o-ac) 一键部署工具。
 
+### 2022
+
+- 2022年1月1日，上线 [Vercel](https://vercel.com) 节点。
+
 ## 站点节点信息
 
 | 托管方 | 支持访问域名 | IPv4 | IPv6 | 备注 |
@@ -69,3 +73,4 @@ description: Writing, writing, writing ...
 | 腾讯云 COS | [lisz.ink](https://lisz.ink) | 是 | 否 | 国内 CDN 节点 |
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
 | 又拍云 CDN | blog.lisz.ink(下线) | 是 | 是 | 国内 CDN 节点 |
+| Vercel | [zhonger.vercel.app](https://zhonger.vercel.app) | 是 | 否 | 美国节点 |
