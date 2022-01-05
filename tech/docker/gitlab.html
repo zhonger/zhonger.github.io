@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私有代码托管平台的搭建与运维 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="私有代码托管平台的搭建与运维">
+    <meta name="keywords"  content="Git, Gitlab, docker">
+    <!-- Open Graph -->
+    <meta property="og:title" content="私有代码托管平台的搭建与运维 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/gitlab.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Git" class="post-tag">Git</a>
+          
+            <a href="/tags.html#Gitlab" class="post-tag">Gitlab</a>
+          
+            <a href="/tags.html#docker" class="post-tag">docker</a>
+          
+        
+      </div>
+      <h1>私有代码托管平台的搭建与运维</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-08-02"><i class="iconfont icon-date"></i>Mon, 02 Aug 2021 08:10:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 9586 字 <b>·</b> 阅读全文大约需要 28 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1627035983655-0ceec61bb733?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">如何使用 Gitlab 实现代码托管自由？</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<h3 id="版本控制">版本控制</h3>
+
+<p>  当我们谈到代码托管平台，我们不得不先谈一谈“版本控制”。什么是“版本控制”？版本控制是一种记录一个或若干内容变化，以便将来查阅特定版本修订情况的系统。在我们日常的编写代码过程或者工作中，版本控制显得尤为重要。有了它你就可以将选定的文件回溯到之前的状态，甚至可以将整个项目代码都回退到过去某个时间点的状态，你可以比较文件的变化细节，查出最后是谁修改了哪个地方，从而找出导致怪异问题出现的原因，又是谁在何时报告了某个功能缺陷等等。使用版本控控制系统通常还意味着，就算你胡乱处理项目中的文件，你也照样可以轻松回复到原先的养殖，而且额外增加的工作量却是微乎其微。</p>
+
+<p>  其实除了代码之外，任何文件都可以加入版本控制。比如像最新的 Office 365 中，如果将文件放在与 Onedrive 同步的文件夹中，那么 Office 365 不但会时不时为你自动保存文件，而且会把每一次的保存都记录下来，同时在你关闭文档时记录为一个版本。</p>
+
+<p>  回过头来看版本控制系统，它主要可以分为本地版本控制系统、集中化的版本控制系统和分布式版本控制系统。</p>
+
+<h4 id="本地版本控制系统">本地版本控制系统</h4>
+
+<p>  举个例子，当我在写论文或者做 PPT 的时候，我习惯在文件名的最后加上完成年月日以示区分。这样做的唯一好处就是简单便捷，但是特别容易犯错，尤其是需要和之前的版本进行交叉修改的时候。为了解决这种问题，很久以前就有许多中本地版本控制系统被开发出来，其中大多数都是采用某种简单的数据库来记录文件的历次更新差异。其中最流行的一种叫做 RCS，现今许多计算机系统上还看得到它的踪影。RCS 的工作原理是在硬盘上保留补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。我们常用的网盘的增量同步就是采用了这种方式，网盘同步工具会在同步的主目录建立一个文件来描述本地文件的修订情况，在联网之后与远程服务器的信息进行对比就能发现本地文件与远程文件是否一致。如果两个文件的 MD5 值相同则可以说明文件无须操作，如果不同则根据时间戳来判断哪个文件最新，并将最新的文件更新给另一方。</p>
+
+<p><img src="https://git-scm.com/book/en/v2/images/local.png" alt="local-version" /></p>
+
+<h4 id="集中化的版本控制系统">集中化的版本控制系统</h4>
+
+<p>  以上的本地版本控制系统也有一定的局限性，比如无法让不同系统上的开发者协同工作。于是就有了集中化的版本控制系统（CVCS）。比较有名的像 Subversion（SVN），CVS 等等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人脉通常通过客户端连接到这台服务器，取出最新的文件或者提交更新。在 Git 没有被发明出来之前，这是主要的版本控制系统的标准，而且主要以 SVN 使用者最多。</p>
+
+<p>  这样一来，的确在某种程度上提供了多人开发协同的功能，但是如果中央服务器发生了故障，那么谁也无法提交更新或者协同工作。如果磁盘发生损坏且未进行实时备份，毫无疑问所有或者一部分数据都会丢失。</p>
+
+<p><img src="https://git-scm.com/book/en/v2/images/centralized.png" alt="central-version" /></p>
+
+<h4 id="分布式版本控制系统">分布式版本控制系统</h4>
+
+<p>  于是分布式版本控制系统（DVCS）应运而生，其中比较知名的有 Git、Mercurial、Bazaar 等等。在这类系统中，客户端并不只提取最新版本的文件快照，而是把代码仓库完整地镜像下来，包括完整的历史记录、这样一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。</p>
+
+<p>  关于 Git 的诞生有个小故事一直被人津津乐道。Linux 内核开源项目有着众多的参与者，但是早期（1991~2002 年间）绝大多数的 Linux 内核维护工作都花在了提交补丁和保存归档的繁琐事务上。从 2002 年开始，整个项目组开始启用一个专门的分布式版本控制系统 BitKeeper 来管理和维护代码。到了 2005 年，开发 BitKeeper 的商业公司同 Linux 内核开源社区的合作关系结束，他们收回了 Linux 内核开源社区免费使用 BitKeeper 的权利。于是 Linux 的缔造者 Linus 决定闭关开发一款自己的版本控制系统。一个星期后 Git 就诞生了。Git 的目标是速度、简单的设计、对非线性开发模式的强力支持、完全分布式、有能力高效管理类似 Linux 内核一样的超大规模项目，因此它的速度非空，极其适合管理大项目。</p>
+
+<p>  Git 诞生以前几乎是 SVN 占据了开源届版本控制系统的江山，但之后随着 Git 的诞生与日臻完善，版本控制系统的天下早已被 Git 收入囊中。就连原来以 SVN 作为版本控制系统的 <a href="https://sf.net/">SourceForge</a> 和以 Mercurial 作为版本控制系统的 <a href="https://bitbucket.org/">Bitbucket</a> 都相继支持 Git。</p>
+
+<p><img src="https://git-scm.com/book/en/v2/images/distributed.png" alt="distributed-version" /></p>
+
+<h3 id="git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</h3>
+
+<p>  目前公有代码托管平台国外主要有 <a href="https://github.com">Github</a>、<a href="https://gitlab.com">Gitlab</a>、<a href="https://sf.net">SourceForge</a>、<a href="https://bitbucket.org/">Bitbucket</a> 等，国内主要有 <a href="https://gitee.com">Gitee</a>、<a href="https://coding.net">Coding</a>、<a href="https://code.aliyun.com/">阿里云 Code</a> 等。其中，Github、SourceForge、Bitbucket、Gitee 都提供商业化的 Git 私有代码托管平台解决方案，只有 Gitlab 提供开源的 Git 私有代码托管平台解决方案，其他平台暂不了解是否有相应的解决方案。</p>
+
+<p>  除了 Gitlab 这家开源的解决方案之外，其实还有 <a href="https://gogs.io/">gogs</a>、<a href="https://gitea.io/">Gitea</a> 等。Gitlab CE 版本提供了与 Gitlab EE 几乎一样的功能，并包含了非常丰富的特性，比如 Pages（静态页面托管）、Oauth2（第三方应用登录验证）、CI（持续集成）、CD（持续部署）等。相比之下，gogs 或者 Gitea 则偏向于更加基础、精悍的 Git 私有代码托管平台解决方案。从 Gitea 提供的 <a href="https://docs.gitea.io/en-us/comparison/">Gitea compared to other Git hosting options</a> 一文可以看出，Gitlab CE、Gitlab EE 与 Github EE 事实上是特性最为丰富的，Gitea 除了不支持 Pages、内置容器 Registry、内置 CI/CD、提交人身份验证等特性之外，还是支持大部分特性的。考虑到未来可能出现的更加复杂的应用场景需求，比如 JupyterLab 的 Oauth2 登录验证等，这里我们采用了 Gitlab CE 的解决方案。</p>
+
+<p>  随着 Docker 的广泛使用和发展，Gitlab CE 官方也提供了 Docker 化的部署方式，但是相比较而言，由 sameersbn 提供的 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 更加适合实践。主要的理由有以下两点：</p>
+<ul>
+  <li>对 Gitlab CE 的多个组成部分包括数据库、缓存数据库、应用进行了分离，解耦程度更高，更有利于应用本身的独立升级。</li>
+  <li>Gitlab CE 应用的升级并非只是镜像的更新，还涉及到应用容器实例启动后的内部数据库和文件的更新，<a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 提供了一键式的部署和更新，让用户无须关注容器内部的操作。唯一值得注意的是，Gitlab 的版本升级是具有路线图的，当跨版本升级的时候需要根据官方给出的路线图逐步迭代更新，<strong>不能直接从一个旧版本直接升级到最新版本</strong>。</li>
+</ul>
+
+<h2 id="平台搭建">平台搭建</h2>
+
+<p>  由于这里采用了 Docker 化的方式进行部署 Gitlab CE，所以预先需要安装 Docker 环境 和 docker-compose 工具，这里不对此进行赘述。</p>
+
+<h3 id="准备">准备</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 为 Gitlab 创建一个目录用于放置应用配置和数据</span>
+<span class="nb">mkdir</span> ~/web/gitlab
+
+<span class="c"># 下载 docker-compose.yml 文件</span>
+wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/docker-gitlab/master/docker-compose.yml
+</code></pre></div></div>
+
+<h3 id="修改配置">修改配置</h3>
+
+<h4 id="镜像版本的设置">镜像版本的设置</h4>
+
+<p>  编辑 docker-compose.yml 配置文件。配置文件包含了对于使用的各个容器镜像的定义，主要有三个：redis、postgresql、gitlab。由于缓存数据库与应用本身没有直接的影响，只是为了加快应用的访问响应速度，所以 redis 镜像一般是使用默认的最新镜像即可，可以使用具体的最新版本号，也可以直接使用 latest 标签。数据库这里采用的 postgresql 数据库，一般来说使用 sameersbn 构建的版本即可。由于 Gitlab 在 13.7.0 版本之后将 postgresql 最低版本的要求升级到了 12，所以现在一般 sammersbn/postgresql 镜像的版本标签都是 12-20200524，以前 postgresql 11 的时候对应的标签就是 11-20200524。gitlab 镜像的版本号主要是跟着 Gitlab 的本身的版本升级而变化，但是由于 Gitlab 的版本更新比较频繁（Gitlab 素来有“版本帝”的称号），所以 sameersbn/gitlab 的版本更新可能不会包含每一个版本，但是已编译的版本标签是符合 Gitlab 官方的版本升级路线图的。</p>
+
+<h4 id="数据持久化">数据持久化</h4>
+
+<p>  这里为了使容器的数据能够持久化，一般来说会把挂载一个本地目录来对应容器的数据目录。当然 Docker 本身提供了 volume 的创建和管理，sameersbn 推荐的也是 volume 的方式挂载，但是考虑到实际的中心存储服务器来存储所有数据，仍然使用最原始的本地目录对应挂载。在下面的配置文件中，三个容器对应的数据目录都做了这项变动。</p>
+
+<h4 id="随机秘钥">随机秘钥</h4>
+
+<p>  由于 Gitlab 应用本身需要有三个随机字符串来分别完成数据库记录生成、密码加密、二次验证生成，所以这里建议使用 uuid 命令生成三个长随机字符串替代 GITLAB_SECRETS_DB_KEY_BASE 、GITLAB_SECRETS_SECRET_KEY_BASE、GITLAB_SECRETS_OTP_KEY_BASE 三个参数，如下所示。</p>
+
+<h4 id="时区设置">时区设置</h4>
+
+<p>  这里使用的时区默认是 sameersbn 所在的时区，如果需要改成中国，则 TZ 为 Asia/Shanghai ，GITLAB_TIMEZONE 为 Beijing。注意，中国时区的表示并不是 Asia/Beijing，而是 Asia/Shanghai。只用一个单词表示时区时，则使用 Beijing （北京时间）。</p>
+
+<h4 id="端口和-ssl-设置">端口和 SSL 设置</h4>
+
+<p>  在 gitlab 容器中实际上是有 Nginx 服务的，所以官方提供了自带的 SSL 加载方式。但是考虑到搭建 Gitlab 的服务器可能还要用于其他服务，所以这里的 80 和 22 端口将会修改成本地其他端口，而在宿主机上使用统一的 Nginx + SSL 来支持 SSL 化。虽然这样不需要把 SSL 证书挂载到容器内，但还是需要告诉容器启动 HTTPS （GITLAB_HTTPS）和实际使用的端口 (GITLAB_PORT 和 GITLAB_SSH_PORT)，否则在 UI 上显示的将是 HTTP 和 容器内部的端口。</p>
+
+<h4 id="自动备份设置">自动备份设置</h4>
+
+<p>  一般来说采用默认的“每天凌晨1点”策略自动备份即可，可以根据实际需求修改为不同的时间点或每周或每月。备份的压缩包会保存在 gitlab-data 目录下的 backups 目录里。</p>
+
+<h4 id="pages-设置">Pages 设置</h4>
+
+<p>  Pages 功能是 Gitlab CE 提供的一个非常实用的内部静态页面托管方案，不像 Github Pages 是完全公开的， Gitlab Pages 也可以根据 Gitlab 本身的用户验证来限制页面的访问权限。这里上面下载的配置文件中默认不包含 Pages 的配置，需要进行添加如下以 GITLAB_PAGES_ 开头的配置节。当开启 Pages 功能后，需要设定好对应的域名（建议二级域名，非主域名），并将该域名对应的通配符解析到 Gitlab 服务器。解析好后，普通项目的访问 URL 是 <a href="https://{username}.pages.example.com/{project}">https://{username}.pages.example.com/{project}</a>，比如项目 zhonger/zhonger 的 Pages 访问 URL 为 <a href="https://zhonger.pages.example.com/zhonger">https://zhonger.pages.example.com/zhonger</a>。如果项目名与前面的域名完全对应，那么就可以直接使用域名访问，无须带子目录，比如项目 zhonger/zhonger.pages.example.com 的 Pages 使用 <a href="https://zhonger.pages.example.com">https://zhonger.pages.example.com</a> 访问即可。</p>
+
+<h4 id="相对路径配置">相对路径配置</h4>
+
+<p>  如果想要把 Gitlab 服务与其他服务共用一个域名对外提供服务，那么就需要设置相对路径 GITLAB_RELATIVE_URL_ROOT。比如想要使用 <a href="https://example.com/git">https://example.com/git</a> 的 URL 访问 Gitlab 服务，那么就需要将相对路径的配置内容设为 /git。这里笔者没有这个需求，所以置空即可。注意，当使用相对路径配置时升级前最好将相对路径置空，待正常升级后再重新设置相对路径编译生效。编译过程可能比较长，大约十分钟左右。</p>
+
+<h4 id="初始-root-密码配置">初始 root 密码配置</h4>
+
+<p>  GITLAB_ROOT_PASSWORD 配置节为初始管理员用户（root）密码，如果置空则为 Gitlab 官方常用默认密码 <strong>5iveL!fe</strong>。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2.3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.2</span>
+    <span class="na">command</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">--loglevel warning</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./redis-data:/data</span>
+
+  <span class="na">postgresql</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/postgresql:12-20200524</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./postgresql-data:/var/lib/postgresql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DB_USER=gitlab</span>
+    <span class="pi">-</span> <span class="s">DB_PASS=password</span>
+    <span class="pi">-</span> <span class="s">DB_NAME=gitlabhq_production</span>
+    <span class="pi">-</span> <span class="s">DB_EXTENSION=pg_trgm,btree_gist</span>
+
+  <span class="na">gitlab</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/gitlab:14.1.1</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">redis</span>
+    <span class="pi">-</span> <span class="s">postgresql</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">10080:80"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">10022:22"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./gitlab-data:/home/git/data</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/sbin/healthcheck"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">5m</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">5m</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DEBUG=false</span>
+
+    <span class="pi">-</span> <span class="s">DB_ADAPTER=postgresql</span>
+    <span class="pi">-</span> <span class="s">DB_HOST=postgresql</span>
+    <span class="pi">-</span> <span class="s">DB_PORT=5432</span>
+    <span class="pi">-</span> <span class="s">DB_USER=gitlab</span>
+    <span class="pi">-</span> <span class="s">DB_PASS=password</span>
+    <span class="pi">-</span> <span class="s">DB_NAME=gitlabhq_production</span>
+
+    <span class="pi">-</span> <span class="s">REDIS_HOST=redis</span>
+    <span class="pi">-</span> <span class="s">REDIS_PORT=6379</span>
+
+    <span class="pi">-</span> <span class="s">TZ=Asia/Shanghai</span>
+    <span class="pi">-</span> <span class="s">GITLAB_TIMEZONE=Beijing</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_HTTPS=true</span>
+    <span class="pi">-</span> <span class="s">SSL_SELF_SIGNED=false</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_HOST=localhost</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PORT=10080</span>
+    <span class="pi">-</span> <span class="s">GITLAB_SSH_PORT=10022</span>
+    <span class="pi">-</span> <span class="s">GITLAB_RELATIVE_URL_ROOT=</span>
+    <span class="pi">-</span> <span class="s">GITLAB_SECRETS_DB_KEY_BASE=fd6d127c-f4ce-11eb-8163-1e008a0e6985</span>
+    <span class="pi">-</span> <span class="s">GITLAB_SECRETS_SECRET_KEY_BASE=03221924-f4cf-11eb-a75e-1e008a0e6985</span>
+    <span class="pi">-</span> <span class="s">GITLAB_SECRETS_OTP_KEY_BASE=07d5caec-f4cf-11eb-ab3b-1e008a0e6985</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_ROOT_PASSWORD=root@root</span>
+    <span class="pi">-</span> <span class="s">GITLAB_ROOT_EMAIL=root@example.com</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_NOTIFY_ON_BROKEN_BUILDS=true</span>
+    <span class="pi">-</span> <span class="s">GITLAB_NOTIFY_PUSHER=false</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_EMAIL=notifications@example.com</span>
+    <span class="pi">-</span> <span class="s">GITLAB_EMAIL_REPLY_TO=noreply@example.com</span>
+    <span class="pi">-</span> <span class="s">GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_BACKUP_SCHEDULE=daily</span>
+    <span class="pi">-</span> <span class="s">GITLAB_BACKUP_TIME=01:00</span>
+
+    <span class="pi">-</span> <span class="s">GITLAB_SHARED_DIR=/home/git/data/shared</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PAGES_ENABLED=true</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PAGES_DOMAIN=pages.example.com</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PAGES_DIR=$GITLAB_SHARED_DIR/pages</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PAGES_PORT=80</span>
+    <span class="pi">-</span> <span class="s">GITLAB_PAGES_HTTPS=true</span>
+
+    <span class="s">.....</span>
+</code></pre></div></div>
+
+<h3 id="启动与测试">启动与测试</h3>
+
+<p>  在 ~/web/gitlab/ 目录使用以下命令拉取并启动所有容器实例。如果已经在宿主机的 Nginx 上预先配置好 Gitlab 访问域名 git.example.com 以及 SSL 证书，则可以使用 <a href="https://git.example.com">https://git.example.com</a> 直接访问启动好的 Gitlab。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h3 id="gitlab-runner">Gitlab Runner</h3>
+
+<p>  Gitlab CE 提供的 Pages 功能必须与 Gitlab Runner 一起联合使用，否则源代码无法编译成静态页面，从而无法正常提供 Pages 功能。虽然 Gitlab Runner 有好几种方式，但是为了避免对于服务器的环境的破坏和支持更多的源码编译环境，这里建议采用 docker 方式启动 Gitlab runner。</p>
+
+<h4 id="启动">启动</h4>
+
+<p>  使用以下命令拉取并启动 gitlab-runner 的最新镜像。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span> gitlab-runner <span class="nt">--restart</span> always <span class="se">\</span>
+  <span class="nt">-v</span> /srv/gitlab-runner/config:/etc/gitlab-runner <span class="se">\</span>
+  <span class="nt">-v</span> /var/run/docker.sock:/var/run/docker.sock <span class="se">\</span>
+  <span class="nt">-n</span> gitlab-runner <span class="se">\</span>
+  gitlab/gitlab-runner:latest
+</code></pre></div></div>
+
+<h4 id="配置">配置</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 gitlab-runner 容器</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner register
+<span class="c"># 根据提示输入内容</span>
+<span class="c"># 输入 Gitlab 服务的 URL，比如 https://git.example.com</span>
+<span class="c"># 输入 Token，可以在 Gitlab 的管理员配置的 Runner 里面看到</span>
+<span class="c"># 输入描述，根据实际自行设定，可以是主机别名</span>
+<span class="c"># 输入与该 runner 绑定的标签 tag，可以输入一个或空格间隔多个，也可以置空（建议）</span>
+<span class="c"># 选择 runner executor 为 docker</span>
+<span class="c"># 输入默认的编译环境镜像，比如 python:alpine</span>
+</code></pre></div></div>
+
+<h2 id="平台运维">平台运维</h2>
+
+<h3 id="升级">升级</h3>
+
+<h4 id="升级路线规划">升级路线规划</h4>
+
+<p>  前面已经提到过 Gitlab 的升级实际上是要遵循 Gitlab 官方提供的路线图的，即按版本逐步迭代升级，具体可以查看 <a href="https://docs.gitlab.com/ce/update/#upgrade-paths">Upgrade-paths</a>。截止到文章撰写之时，Gitlab 的版本升级主要路线为：8.11.Z -&gt; 8.12.0 -&gt; 8.17.7 -&gt; 9.5.10 -&gt; 10.8.7 -&gt; 11.11.8 -&gt; 12.0.12 -&gt; 12.1.17 -&gt; 12.10.14 -&gt; 13.0.14 -&gt; 13.1.11 -&gt; latest 13.12.Z -&gt; latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z。这里的 Z 指的是该主要版本的最后一个次要版本，Y 指的是最新的主要版本。Gitlab 的版本可以通过 <a href="https://docs.gitlab.com/ce/update/#version-specific-upgrading-instructions">Version-specific upgrading instructions</a> 和 <a href="https://about.gitlab.com/releases/categories/releases/">Releases</a> 来确认。当然，在文档中我们也可以看到一些具体的版本升级路线的示例。如果我们当前的版本符合某一条升级路线，那么可以直接按照示例中的路线逐步升级。如果不符合则需要自行根据主要路线进行确认。</p>
+
+<p>  这里我们以当前版本 13.2.6 想要升级到 13 主要版本的最后一个次要版本 13.12.4 为例进行尝试。首先查阅一下 <a href="https://github.com/sameersbn/docker-gitlab/tags">sameersbn/docker-gitlab</a> 的版本号，发现如下：</p>
+<ul>
+  <li>13.2.6 为 13.2.Z 的最后一个修补（patch）版本</li>
+  <li>自 13.7.0 版本开始 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 采用 Postgresql 12</li>
+  <li>13.12.4 是 13 主要（Major）版本中的最后一个次要（Minor）版本</li>
+</ul>
+
+<p>  根据以上的升级主要路线可知，从 13.2.6 版本到 13.12.4 其实一步到位升级也是可行的。但是实际上 13.2.6 版本对应的 postgresql 的版本还在 11，而从 13.7.0 版本之后开始升级到 12。根据 Gitlab 遵循的版本号命名规则，地位代表主要版本，第二位代表次要版本，第三位代表修补版本，并且每个次要版本的最后一个修补版本可以认为是稳定版本。在同一个主要版本内，从一个稳定次要版本升级到稳定次要版本被认为是稳定可行的。所以可以设定升级路线为：13.2.6 -&gt; 13.7.4 -&gt; 13.12.4。</p>
+
+<h4 id="边备份边升级">边备份边升级</h4>
+
+<p>  Gitlab 的备份还原需要是在与备份对应的版本上做的。如果因为升级失败而需要使用旧版本的备份还原，需要移除失败版本所用的文件夹及文件，并启动一个对应版本的新实例然后进行备份还原。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 首先对 13.2.6 版本进行备份</span>
+docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:create <span class="c"># 将会进行手动备份</span>
+
+<span class="c"># 修改 docker-compose.yml 中的 gitlab 镜像版本为 13.7.4，</span>
+<span class="c"># 同时修改 postgresql 的镜像版本为 12-20200524</span>
+<span class="c"># 销毁旧版本的实例集群并启动新的实例集群</span>
+docker-compose down <span class="o">&amp;&amp;</span> docker-compose up <span class="nt">-d</span>
+<span class="c"># 等待镜像完成数据库迁移和前端样式库生成，并自动重启各项服务</span>
+<span class="c"># 查询应用实例的状态</span>
+docker logs gitlab_gitlab_1
+<span class="c"># 访问界面，登录验证，确认实例升级成功</span>
+
+<span class="c"># 对 13.7.4 版本进行备份</span>
+docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:create <span class="c"># 将会进行手动备份</span>
+
+<span class="c"># 修改 dockerc-compose.yml 中的 gitlab 镜像版本为 13.12.4，</span>
+<span class="c"># 同时修改 redis 的镜像版本为 6.2，之前 redis 的镜像版本为 5.0.9</span>
+<span class="c"># 销毁旧版本的实例集群并启动新的实例集群</span>
+docker-compose down <span class="o">&amp;&amp;</span> docker-compose up <span class="nt">-d</span>
+<span class="c"># 等待镜像完成数据库迁移和前端样式库生成，并自动重启各项服务</span>
+<span class="c"># 查询应用实例的状态</span>
+docker logs gitlab_gitlab_1
+<span class="c"># 访问界面，登录验证，确认实例升级成功</span>
+</code></pre></div></div>
+
+<p>  如果在升级之后发现升级失败或新版本中某些组件有问题想要回滚，就需要利用刚才升级过程中提前备份好的数据还原备份了。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 复制刚才备份的所有数据文件到当前工作目录</span>
+<span class="nb">cp </span>gitlab/backups/<span class="k">*</span>.tar ./
+<span class="c"># 销毁所有实例</span>
+docker-compose down
+<span class="c"># 移除本地持久化文件夹及文件</span>
+<span class="nb">sudo rm</span> <span class="nt">-rf</span> gitlab postgresql redis
+
+<span class="c"># 修改 docker-compose.yml 中的配置到想要回滚的备份数据对应的版本</span>
+<span class="c"># 此处注意三个镜像版本的对应修改</span>
+<span class="c"># 启动实例集群</span>
+docker-compose up <span class="nt">-d</span>
+<span class="c"># 复制备份数据到新实例的备份文件夹</span>
+<span class="nb">cp</span> ./<span class="k">*</span>.tar gitlab/backups
+<span class="c"># 执行恢复数据操作</span>
+docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:restore <span class="c"># 将会看到可用备份列表</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://git-scm.com/book/zh/v2/">《Pro Git》</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
+        <section>
+          <span>科学文献的那些事儿</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/jupyterlab.html" class="read-next-link"></a>
+          <section>
+            <span>JupyterLab 的搭建与运维</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

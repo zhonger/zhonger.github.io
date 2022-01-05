@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextcloud 源码部署迁移到容器部署 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Nextcloud 源码部署迁移到容器部署">
+    <meta name="keywords"  content="Nextcloud, docker, lnmpa, 云盘">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Nextcloud 源码部署迁移到容器部署 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/nextcloud-docker.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+          
+            <a href="/tags.html#docker" class="post-tag">docker</a>
+          
+            <a href="/tags.html#lnmpa" class="post-tag">lnmpa</a>
+          
+            <a href="/tags.html#%E4%BA%91%E7%9B%98" class="post-tag">云盘</a>
+          
+        
+      </div>
+      <h1>Nextcloud 源码部署迁移到容器部署</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="18-06-11"><i class="iconfont icon-date"></i>Mon, 11 Jun 2018 13:46:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1861 字 <b>·</b> 阅读全文大约需要 6 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">LNMPA 源码部署通常不便于更新，迁移到容器部署倒是个不错的法子</h2>
+    
+
+    <article class="markdown-body">
+      <p>  在以前我们部署 Nextcloud 都是采用 LNMPA 架构和源码来直接部署，到版本升级时一般都需要比较复杂的操作，虽然也还算比较可以接受，但是相比较 Docker 方式而言，这就显得复杂多了，而且还对宿主机的环境还有所要求。因此，今天就来尝试一下从源码部署迁移到容器部署。</p>
+
+<h2 id="备份数据">备份数据</h2>
+
+<p>  源码部署方式需要管理员时常备份的数据主要是 Mysql 数据库、程序配置文件 config.php、存储数据三部分，而迁移到 Docker 部署也是需要这三部分即可。</p>
+
+<p>  对于 Docker 方式部署来说，存储数据文件夹只需要在启动应用时挂载目录到容器应用的对应目录即可，因此无需做任何更改。</p>
+
+<p>  由于配置文件 config/config.php 文件会在 Docker 应用创建是重新生成，只需保证文件中重要部分相同即可。</p>
+
+<p>  所以只需备份数据库。</p>
+
+<h3 id="备份数据库">备份数据库</h3>
+
+<h4 id="从-phpmyadmin-中备份">从 phpMyadmin 中备份</h4>
+
+<p>  这种方式只需要在数据库中选中<strong>导出</strong>功能，并且将 sql 文件保存到服务器本地目录即可。</p>
+
+<h4 id="从命令行备份">从命令行备份</h4>
+
+<p>  这种方式需要登录服务器操作（如果开放对外访问，那也可在远程操作）。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 服务器本地操作</span>
+mysqldump <span class="nt">-u</span> root <span class="nt">-p</span> yun <span class="o">&gt;</span> ~/yun.sql
+<span class="c"># 文件导出到本地用户主目录</span>
+</code></pre></div></div>
+
+<h2 id="恢复数据">恢复数据</h2>
+
+<p>  默认服务器已安装 docker-ce 和 docker-compose 工具。</p>
+
+<h3 id="启动容器">启动容器</h3>
+
+<p>  首先在 /home/ubuntu/nextcloud 目录下编写如下 docker-compose.yml 文件。</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./db:/var/lib/mysql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">MYSQL_ROOT_PASSWORD=root</span>
+      <span class="pi">-</span> <span class="s">MYSQL_PASSWORD=nextcloud</span>
+      <span class="pi">-</span> <span class="s">MYSQL_DATABASE=nextcloud</span>
+      <span class="pi">-</span> <span class="s">MYSQL_USER=nextcloud</span>
+
+  <span class="na">app</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nextcloud</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">7009:80</span>
+    <span class="na">links</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./www:/var/www/html</span>
+      <span class="pi">-</span> <span class="s">/home/data/:/var/www/html/data</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+</code></pre></div></div>
+<p>使用 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 启动应用。由于数据库和应用配置尚未恢复，此时无法在浏览器上通过<code class="language-plaintext highlighter-rouge">http://127.0.0.1:7009</code>访问。</p>
+<h3 id="恢复数据库">恢复数据库</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 拷贝数据库备份至容器应用中</span>
+docker <span class="nb">cp</span> /home/ubuntu/yun.sql nextcloud_db_1:/opt/yun.sql
+
+<span class="c"># 导入数据库</span>
+mysql <span class="nt">-u</span> root <span class="nt">-p</span>
+<span class="c"># 输入密码 nextcloud</span>
+
+mysql&gt; use nextcloud<span class="p">;</span>
+mysql&gt; <span class="nb">source</span> /opt/yun.sql
+
+<span class="c"># 导入需要一段时间，稍加等待一下即可</span>
+</code></pre></div></div>
+
+<h3 id="恢复应用配置">恢复应用配置</h3>
+
+<p>  数据库恢复完成之后，由于应用配置尚未配置，此时访问会要求应用重新安装一次，其实已经没有再次安装的必要了。</p>
+
+<p>  通过拷贝旧配置中的内容即可初始化容器应用，主要内容如下所示：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="s1">'</span><span class="s">passwordsalt'</span> <span class="s">=&gt; '一大串文本',</span>
+  <span class="s">'secret' =&gt; '一大串文本',</span>
+  <span class="s">'datadirectory' =&gt; '/var/www/html/data',</span>
+  <span class="s">'overwrite.cli.url' =&gt; 'http://127.0.0.1:7009',</span>
+  <span class="s">'dbtype' =&gt; 'mysql',</span>
+  <span class="s">'version' =&gt; '13.0.3.2',</span>
+  <span class="s">'dbname' =&gt; 'nextcloud',</span>
+  <span class="s">'dbhost' =&gt; 'db',</span>
+  <span class="s">'dbport' =&gt; '',</span>
+  <span class="s">'dbtableprefix' =&gt; 'oc_',</span>
+  <span class="s">'dbuser' =&gt; 'nextcloud',</span>
+  <span class="s">'dbpassword' =&gt; 'nextcloud',</span>
+  <span class="s">'installed' =&gt; </span><span class="no">true</span><span class="s">,</span>
+  <span class="s">'theme' =&gt; '',</span>
+  <span class="s">'loglevel' =&gt; 0,</span>
+  <span class="s">'maintenance' =&gt; </span><span class="no">false</span><span class="s">,</span>
+</code></pre></div></div>
+
+<p>  其中主要包含<strong>数据库配置</strong>、<strong>应用是否安装标志位</strong>、<strong>关闭维护模式</strong>等。</p>
+
+<p>  这一步完成之后，浏览器中可以正常访问到应用界面。</p>
+
+<p>  不过，如果源码部署的应用版本与 Docker 镜像的应用版本不符时（通常是落后），还需要执行以下命令先升级某些插件之后才能正常访问：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ upgrade
+</code></pre></div></div>
+
+<p>  当升级插件完成后，就可以正常使用 Docker 部署的 Nextcloud 了。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/postfix.html" class="read-next-link"></a>
+        <section>
+          <span>Ubuntu 搭建 Postfix 邮件SMTP发送服务器</span>
+          <p>```bashsudo apt install mailutils -ysudo vim /etc/postfix...</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1560345573-9f453083c335?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/kvm/kvm.html" class="read-next-link"></a>
+          <section>
+            <span>KVM 虚拟化</span>
+            <p>KVM 简介</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1521566878949-d0febfb1e9bb?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

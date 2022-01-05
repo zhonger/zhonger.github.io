@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareLaTeX 搭建 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="ShareLaTeX 搭建">
+    <meta name="keywords"  content="ShareLaTeX, LaTex, Ubuntu">
+    <!-- Open Graph -->
+    <meta property="og:title" content="ShareLaTeX 搭建 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/sharelatex.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#ShareLaTeX" class="post-tag">ShareLaTeX</a>
+          
+            <a href="/tags.html#LaTex" class="post-tag">LaTex</a>
+          
+            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          
+        
+      </div>
+      <h1>ShareLaTeX 搭建</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="20-08-12"><i class="iconfont icon-date"></i>Wed, 12 Aug 2020 14:51:45 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 5899 字 <b>·</b> 阅读全文大约需要 17 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">搭建一个属于自己的在线中英文 LaTex 编辑平台</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="latex-和-sharelatex">LaTeX 和 ShareLaTex</h2>
+
+<p>  LaTex 是一种基于 TEX 的排版系统，在上世纪80年代初由美国计算机学家莱斯利·兰伯特发明。通过这种格式，即使对排版或者程序设计没有了解的人也可以利用 TEX，在几天甚至几小时内生成很多具有书籍质量的印刷品。尤其对于有生成复杂表格和数学公式的科研人员来说，LaTex 具有得天独厚的优势。因此在生成简单的信件、制作高印刷质量的技术类、学术类文档或书籍等方面，应用都非常广泛。</p>
+
+<p>  笔者在研究生初期撰写小论文的时候首次接触到 LaTex。那个时候单纯是因为编写公式和生成参考文献比较方便，可以把时间和精力都集中在论文的内容上。刚开始学习 LaTex 的时候，安装编写环境是非常麻烦的。因为在本地安装的过程中，TEX 会一个一个下载 CTAN 包。数量之大速度之慢，难以忍受。即使用上了国内高校的 CTAN 镜像源也颇为吃力。后来就接触到了ShareLaTex在线编辑器，只需要使用 docker 就可以很快部署一个完善的 ShareLaTex 服务，再也不用在本地安装半天了。正是由于 ShareLaTex 的优越性，overleaf 在线编辑器向 ShareLaTex 伸出了橄榄枝，二者合二为一，为广大的 LaTex 用户带来了更好的 LaTex 在线编辑服务。当然合并之后，ShareLatex 仍然在 Github 上以开源的方式回馈社区。</p>
+
+<p>  本文选择 ShareLatex 来部署在线 LaTex 编辑平台，还有一个非常重要的原因。就是ShareLaTex 支持中日英文在内的多种语言，能很好地满足笔者在中日英三语上的需求。</p>
+
+<h2 id="搭建在线-latex-编辑平台">搭建在线 LaTex 编辑平台</h2>
+
+<h3 id="构建镜像">构建镜像</h3>
+
+<p>  ShareLaTex 官方提供的 docker 镜像就已经支持多种语言了，但是字体上比较缺少，毕竟官方镜像只能使用开源字体或者得到授权的字体。为了提供编写所需的字体，需要往官方 docker 镜像中加入自己需要的字体。编写一个如下的 Dockerfile 文件，用<code class="language-plaintext highlighter-rouge">docker build . -t zhonger/sharelatex</code>生成新的镜像。（PS：此处使用的字体包是 windows 本地打包得到，仅为个人学习使用，非为商用或公开提供服务）构建镜像之前可以自行准备好字体压缩包，压缩包内只需含有字体文件即可。</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> sharelatex/sharelatex:latest</span>
+
+<span class="k">LABEL</span><span class="s"> maintainer "zhonger &lt;zhonger@live.cn&gt;"</span>
+
+<span class="k">RUN </span>tlmgr option repository https://mirrors.ustc.edu.cn/CTAN/systems/texlive/tlnet <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    tlmgr update <span class="nt">--self</span> <span class="nt">--all</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    tlmgr <span class="nb">install </span>scheme-full
+
+<span class="k">RUN </span>apt update <span class="o">&amp;&amp;</span> apt-get <span class="nb">install </span>xfonts-wqy <span class="nt">-y</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    wget <span class="nt">-c</span> https://ftp.dlcloud.info/linuxsoftware/winfonts.zip <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    unzip winfonts.zip <span class="nt">-d</span> winfonts <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">mv </span>winfonts /usr/share/fonts/ <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">cd</span> /usr/share/fonts/winfonts <span class="o">&amp;&amp;</span> mkfontscale <span class="o">&amp;&amp;</span> mkfontdir <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    fc-cache <span class="nt">-fv</span> <span class="o">&amp;&amp;</span> fc-list :lang<span class="o">=</span>zh-cn
+
+</code></pre></div></div>
+
+<h3 id="启动镜像">启动镜像</h3>
+
+<p>  使用以下 docker-compose.yml 文件和<code class="language-plaintext highlighter-rouge">docker-compose up -d</code>命令完成 docker 镜像的实例启动。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2.2'</span>
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">sharelatex</span><span class="pi">:</span>
+        <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+        <span class="c1"># Server Pro users:</span>
+        <span class="c1"># image: quay.io/sharelatex/sharelatex-pro</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/sharelatex</span>
+        <span class="na">container_name</span><span class="pi">:</span> <span class="s">sharelatex</span>
+        <span class="na">depends_on</span><span class="pi">:</span>
+            <span class="na">mongo</span><span class="pi">:</span>
+                <span class="na">condition</span><span class="pi">:</span> <span class="s">service_healthy</span>
+            <span class="na">redis</span><span class="pi">:</span>
+                <span class="na">condition</span><span class="pi">:</span> <span class="s">service_started</span>
+        <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">8070:80</span>
+        <span class="na">links</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">mongo</span>
+            <span class="pi">-</span> <span class="s">redis</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">./sharelatex_data:/var/lib/sharelatex</span>
+            <span class="c1">########################################################################</span>
+            <span class="c1">####  Server Pro: Un-comment the following line to mount the docker ####</span>
+            <span class="c1">####             socket, required for Sibling Containers to work    ####</span>
+            <span class="c1">########################################################################</span>
+            <span class="c1"># - /var/run/docker.sock:/var/run/docker.sock</span>
+        <span class="na">environment</span><span class="pi">:</span>
+
+            <span class="na">SHARELATEX_APP_NAME</span><span class="pi">:</span> <span class="s">oooooo ShareLaTeX</span>
+
+            <span class="na">SHARELATEX_MONGO_URL</span><span class="pi">:</span> <span class="s">mongodb://mongo/sharelatex</span>
+
+            <span class="c1"># Same property, unfortunately with different names in</span>
+            <span class="c1"># different locations</span>
+            <span class="na">SHARELATEX_REDIS_HOST</span><span class="pi">:</span> <span class="s">redis</span>
+            <span class="na">REDIS_HOST</span><span class="pi">:</span> <span class="s">redis</span>
+
+            <span class="na">ENABLED_LINKED_FILE_TYPES</span><span class="pi">:</span> <span class="s1">'</span><span class="s">url,project_file'</span>
+
+            <span class="c1"># Enables Thumbnail generation using ImageMagick</span>
+            <span class="na">ENABLE_CONVERSIONS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+
+            <span class="c1"># Disables email confirmation requirement</span>
+            <span class="na">EMAIL_CONFIRMATION_DISABLED</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+
+            <span class="c1"># temporary fix for LuaLaTex compiles</span>
+            <span class="c1"># see https://github.com/overleaf/overleaf/issues/695</span>
+            <span class="na">TEXMFVAR</span><span class="pi">:</span> <span class="s">/var/lib/sharelatex/tmp/texmf-var</span>
+
+            <span class="c1">## Set for SSL via nginx-proxy</span>
+            <span class="c1">#VIRTUAL_HOST: 103.112.212.22</span>
+
+            <span class="na">SHARELATEX_SITE_URL</span><span class="pi">:</span> <span class="s">https://ooooo.ooo</span>
+            <span class="na">SHARELATEX_NAV_TITLE</span><span class="pi">:</span> <span class="s">LEP自己的在线latex编辑分享平台</span>
+            <span class="c1"># SHARELATEX_HEADER_IMAGE_URL: http://somewhere.com/mylogo.png</span>
+            <span class="na">SHARELATEX_ADMIN_EMAIL</span><span class="pi">:</span> <span class="s">zhonger@lep.ac.cn</span>
+
+            <span class="na">SHARELATEX_LEFT_FOOTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[{"text":</span><span class="nv"> </span><span class="s">"本平台由</span><span class="nv"> </span><span class="s">&lt;a</span><span class="nv"> </span><span class="s">href=\"https://www.sharelatex.com\"&gt;ShareLaTeX&lt;/a&gt;强力驱动"}</span><span class="nv"> </span><span class="s">]'</span>
+            <span class="na">SHARELATEX_RIGHT_FOOTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[{"text":</span><span class="nv"> </span><span class="s">"版权及最终解释权归oooooo所有"}</span><span class="nv"> </span><span class="s">]'</span>
+
+            <span class="c1"># SHARELATEX_EMAIL_FROM_ADDRESS: "team@sharelatex.com"</span>
+
+            <span class="c1"># SHARELATEX_EMAIL_AWS_SES_ACCESS_KEY_ID:</span>
+            <span class="c1"># SHARELATEX_EMAIL_AWS_SES_SECRET_KEY:</span>
+
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_HOST: smtp.mydomain.com</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_PORT: 587</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_SECURE: false</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_USER:</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_PASS:</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_TLS_REJECT_UNAUTH: true</span>
+            <span class="c1"># SHARELATEX_EMAIL_SMTP_IGNORE_TLS: false</span>
+            <span class="c1"># SHARELATEX_CUSTOM_EMAIL_FOOTER: "&lt;div&gt;This system is run by department x &lt;/div&gt;"</span>
+
+            <span class="c1">################</span>
+            <span class="c1">## Server Pro ##</span>
+            <span class="c1">################</span>
+
+            <span class="c1"># SANDBOXED_COMPILES: 'true'</span>
+
+            <span class="c1"># SANDBOXED_COMPILES_SIBLING_CONTAINERS: 'true'</span>
+            <span class="c1"># SANDBOXED_COMPILES_HOST_DIR: '/var/sharelatex_data/data/compiles'</span>
+            <span class="c1"># SYNCTEX_BIN_HOST_PATH: '/var/sharelatex_data/bin/synctex'</span>
+
+            <span class="c1"># DOCKER_RUNNER: 'false'</span>
+
+            <span class="c1">## Works with test LDAP server shown at bottom of docker compose</span>
+            <span class="c1"># SHARELATEX_LDAP_URL: 'ldap://ldap:389'</span>
+            <span class="c1"># SHARELATEX_LDAP_SEARCH_BASE: 'ou=people,dc=planetexpress,dc=com'</span>
+            <span class="c1"># SHARELATEX_LDAP_SEARCH_FILTER: '(uid=)'</span>
+            <span class="c1"># SHARELATEX_LDAP_BIND_DN: 'cn=admin,dc=planetexpress,dc=com'</span>
+            <span class="c1"># SHARELATEX_LDAP_BIND_CREDENTIALS: 'GoodNewsEveryone'</span>
+            <span class="c1"># SHARELATEX_LDAP_EMAIL_ATT: 'mail'</span>
+            <span class="c1"># SHARELATEX_LDAP_NAME_ATT: 'cn'</span>
+            <span class="c1"># SHARELATEX_LDAP_LAST_NAME_ATT: 'sn'</span>
+            <span class="c1"># SHARELATEX_LDAP_UPDATE_USER_DETAILS_ON_LOGIN: 'true'</span>
+
+            <span class="c1"># SHARELATEX_TEMPLATES_USER_ID: "578773160210479700917ee5"</span>
+            <span class="c1"># SHARELATEX_NEW_PROJECT_TEMPLATE_LINKS: '[ {"name":"All Templates","url":"/templates/all"}]'</span>
+
+
+            <span class="c1"># SHARELATEX_PROXY_LEARN: "true"</span>
+
+    <span class="na">mongo</span><span class="pi">:</span>
+        <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">mongo</span>
+        <span class="na">container_name</span><span class="pi">:</span> <span class="s">mongo</span>
+        <span class="na">expose</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="m">27017</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">./mongo_data:/data/db</span>
+        <span class="na">healthcheck</span><span class="pi">:</span>
+            <span class="na">test</span><span class="pi">:</span> <span class="s">echo 'db.stats().ok' | mongo localhost:27017/test --quiet</span>
+            <span class="na">interval</span><span class="pi">:</span> <span class="s">10s</span>
+            <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+            <span class="na">retries</span><span class="pi">:</span> <span class="m">5</span>
+
+    <span class="na">redis</span><span class="pi">:</span>
+        <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">redis:5</span>
+        <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis</span>
+        <span class="na">expose</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="m">6379</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">./redis_data:/data</span>
+
+</code></pre></div></div>
+
+<h3 id="初始化平台">初始化平台</h3>
+
+<p>  浏览器访问<code class="language-plaintext highlighter-rouge">http://服务所在计算机IP地址:8070/launchpad</code>创建超级管理员用户。创建成功后访问该页面就会被自动跳转到登录页。</p>
+
+<p>  至此，ShareLaTex 在线编辑平台就搭建成功了。</p>
+
+<h2 id="后记">后记</h2>
+
+<h3 id="关于-latex-模板">关于 LaTex 模板</h3>
+
+<p>  要说 LaTex 模板的话，overleaf 几乎涵盖了各式各样的模板，当然也包括中文书籍、中文 PPT 等优秀模板。欢迎访问 <a href="https://www.overleaf.com/latex/templates">https://www.overleaf.com/latex/templates</a> 获取更多模板。访问模板的详细页，可以看到 Source 字样的按钮，点击即可查看模板源代码。如果是比较复杂的书籍等模板，最好是点击 Open as Template 按钮在 overleaf 上看到更多原始代码文件。</p>
+
+<h3 id="其他尝试">其他尝试</h3>
+
+<p>  在构建镜像初期，笔者尝试了非 ShareLaTex 官方构建的 docker 镜像。因为镜像中 CTEX 没有完全安装，所以使用了以下命令来完善编写文档基础所需的 CTAN 包。毕竟这些包是有限个，时不时容易报出某个包缺失什么的错误，因而还是推荐大家采用上面的从 ShareLaTex 官方 docker 镜像开始做。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tlmgr option repository https://mirrors.ustc.edu.cn/CTAN/systems/texlive/tlnet
+tlmgr update <span class="nt">--self</span> <span class="nt">--all</span>
+tlmgr <span class="nb">install </span>etoolbox
+tlmgr <span class="nb">install </span>setspace
+tlmgr <span class="nb">install </span>comment
+tlmgr <span class="nb">install </span>newtxtext
+tlmgr <span class="nb">install </span>newtx
+tlmgr <span class="nb">install </span>fontaxes
+tlmgr <span class="nb">install </span>xkeyval
+tlmgr <span class="nb">install </span>anyfontsize
+tlmgr <span class="nb">install </span>xcolor
+tlmgr <span class="nb">install </span>mwe
+tlmgr <span class="nb">install </span>enumitem
+tlmgr <span class="nb">install </span>caption
+tlmgr <span class="nb">install </span>jknapltx
+tlmgr <span class="nb">install </span>booktabs
+tlmgr <span class="nb">install </span>multirow
+tlmgr <span class="nb">install </span>fancyvrb
+tlmgr <span class="nb">install </span>makecell
+tlmgr <span class="nb">install </span>lipsum
+tlmgr <span class="nb">install </span>hologo
+tlmgr <span class="nb">install </span>xpatch
+tlmgr <span class="nb">install </span>pgf
+tlmgr <span class="nb">install </span>titlesec
+tlmgr <span class="nb">install </span>apptools
+tlmgr <span class="nb">install </span>appendix
+tlmgr <span class="nb">install </span>manfnt
+tlmgr <span class="nb">install </span>bbding
+tlmgr <span class="nb">install </span>tcolorbox
+tlmgr <span class="nb">install </span>environ
+tlmgr <span class="nb">install </span>trimspaces
+tlmgr <span class="nb">install </span>adforn
+tlmgr <span class="nb">install </span>listings
+tlmgr <span class="nb">install </span>footmisc
+tlmgr <span class="nb">install </span>csquotes
+tlmgr <span class="nb">install </span>fontspec
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/php/laravel-dev.html" class="read-next-link"></a>
+        <section>
+          <span>Laravel 开发和部署环境搭建</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/dmoj-runtime.html" class="read-next-link"></a>
+          <section>
+            <span>DMOJ 判题环境配置集锦</span>
+            <p>  由于 DMOJ 支持多达63种编程语言环境，每一种环境都需要特别安装。如下为笔者尝试过的一些编程语言环境配置。</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1594199679806-d543943615c8?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

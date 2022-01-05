@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONQUEST 编译安装指南 Intel 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="CONQUEST 编译安装指南 Intel 篇">
+    <meta name="keywords"  content="CONQUEST, 量子化学, Intel">
+    <!-- Open Graph -->
+    <meta property="og:title" content="CONQUEST 编译安装指南 Intel 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/conquest/conquest-intel.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#CONQUEST" class="post-tag">CONQUEST</a>
+          
+            <a href="/tags.html#%E9%87%8F%E5%AD%90%E5%8C%96%E5%AD%A6" class="post-tag">量子化学</a>
+          
+            <a href="/tags.html#Intel" class="post-tag">Intel</a>
+          
+        
+      </div>
+      <h1>CONQUEST 编译安装指南 Intel 篇</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-02-07"><i class="iconfont icon-date"></i>Sun, 07 Feb 2021 21:22:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 6219 字 <b>·</b> 阅读全文大约需要 18 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1611908494970-3eea5e0a773e?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">欢迎进入量子化学的世界</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  虽然笔者写过 ARM 比 Intel CPU 要有低功耗、高性能等优势，但是目前来说 Intel 芯片仍然是主流，毕竟大部分实验室所使用的服务器、工作站以及个人普通 PC 基本上都是 Intel 芯片。在 Intel 平台我们可能对于软件和依赖库的支持不需要太担心，正常来说不管 Linux 或者 Unix 系统都会有。这里笔者采用 Ubuntu Server 20.04 来举例介绍 Intel 平台下 CONQUEST 的编译安装。</p>
+
+<h2 id="ubuntu">Ubuntu</h2>
+
+<p>  OpenMPI 是 CONQUEST 所必需的依赖环境，虽然说 Ubuntu 的软件源中也有最新的版本发行，但是为了进一步统一之后编译安装过程中的依赖库地址，这里选择从源代码开始编译安装 OpenMPI。下面的 FFTW 依赖库也是如此。另外，blas、lapack、scalapack 也是 CONQUEST 要求的依赖库，但是为了与 ARM 篇中的形成一个对比，这里采用了 Intel 科学计算库 MKL 中的相应依赖库来尝试加速计算。</p>
+
+<p>  在正式安装前，需要先预先安装好所需的基础环境：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> wget build-essential apt gnupg gfortran
+</code></pre></div></div>
+
+<h3 id="安装-openmpi">安装 OpenMPI</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/softwares /opt/openmpi 
+<span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/openmpi /opt/softwares
+
+<span class="nb">cd</span> /opt/softwares <span class="se">\</span>
+<span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.gz <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf openmpi-4.1.0.tar.gz <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">cd </span>openmpi-4.1.0 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/openmpi <span class="se">\</span>
+<span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="安装-fftw3">安装 FFTW3</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span>  /opt/fftw3
+<span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/fftw3
+
+<span class="nb">cd</span> /opt/softwares <span class="se">\</span>
+<span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> http://www.fftw.org/fftw-3.3.9.tar.gz <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf fftw-3.3.9.tar.gz <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">cd </span>fftw-3.3.9 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/fftw3 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="安装-mkl">安装 MKL</h3>
+
+<p>注意此处使用的 bash 配置 PATH，如果是 zsh 请对应修改 为 .zshrc。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"export PATH=/opt/openmpi/bin:/opt/fftw3/bin:</span><span class="nv">$PATH</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export MKLROOT=/opt/intel/compilers_and_libraries_2020.4.304/linux/mkl"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LD_LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="nv">$LD_LIBRARY_PATH</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="nv">$LIBRARY_PATH</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">source</span> ~/.bashrc
+
+<span class="nb">cd</span> /tmp
+wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB
+<span class="nb">sudo </span>apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB
+<span class="nb">sudo </span>wget https://apt.repos.intel.com/setup/intelproducts.list <span class="nt">-O</span> /etc/apt/sources.list.d/intelproducts.list
+<span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> intel-mkl-2020.4-912
+</code></pre></div></div>
+
+<h4 id="如果遇到-e-sub-process-usrbindpkg-returned-an-error-code-1怎么办">如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/lib/dpkg/
+<span class="nb">sudo mv </span>info/ info_bak          <span class="c"># 现将info文件夹更名</span>
+<span class="nb">sudo mkdir </span>info                 <span class="c"># 再新建一个新的info文件夹</span>
+<span class="nb">sudo </span>apt-get update             <span class="c"># 更新</span>
+<span class="nb">sudo </span>apt-get <span class="nt">-f</span> <span class="nb">install</span>         <span class="c"># 修复</span>
+<span class="nb">sudo mv </span>info/<span class="k">*</span> info_bak/        <span class="c"># 执行完上一步操作后会在新的info文件夹下生成一些文件，现将这些文件全部移到info_bak文件夹下</span>
+<span class="nb">sudo rm</span> <span class="nt">-rf</span> info                <span class="c"># 把自己新建的info文件夹删掉</span>
+<span class="nb">sudo mv </span>info_bak info           <span class="c"># 把以前的info文件夹重新改回名</span>
+</code></pre></div></div>
+
+<h3 id="编译安装-conquest">编译安装 CONQUEST</h3>
+
+<p>下载 CONQUEST 最新源代码：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /opt/softwares/
+git clone https://github.com/OrderN/CONQUEST-release conquest
+</code></pre></div></div>
+
+<p>修改 conquest/src/system.make 文件如下所示：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker (2021/01/27 zhonger)</span>
+
+<span class="c"># Set compilers</span>
+<span class="nv">FC</span><span class="o">=</span>mpif90
+<span class="nv">F77</span><span class="o">=</span>mpif77
+
+<span class="c"># Linking flags</span>
+LINKFLAGS <span class="o">=</span> <span class="nt">-L</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64 <span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64/libmkl_blacs_openmpi_lp64.a <span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64/libmkl_lapack95_lp64.a <span class="nt">-lmkl_scalapack_lp64</span> <span class="nt">-lmkl_intel_lp64</span> <span class="nt">-lmkl_sequential</span> <span class="nt">-lmkl_core</span> <span class="nt">-lmkl_blacs_openmpi_lp64</span>  <span class="nt">-lpthread</span> <span class="nt">-lm</span>
+<span class="c">#LINKFLAGS= -L/usr/local/lib</span>
+<span class="nv">ARFLAGS</span><span class="o">=</span>
+
+<span class="c"># Compilation flags</span>
+<span class="nv">COMPFLAGS</span><span class="o">=</span> <span class="nt">-I</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/include/intel64/lp64 <span class="nt">-I</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/include
+<span class="c">#COMPFLAGS= -O3 $(XC_COMPFLAGS)</span>
+<span class="nv">COMPFLAGS_F77</span><span class="o">=</span> <span class="si">$(</span>COMPFLAGS<span class="si">)</span>
+
+<span class="c"># Set BLAS and LAPACK libraries</span>
+<span class="c">#BLAS= -lvecLibFort</span>
+
+<span class="c"># Full library call; remove scalapack if using dummy diag module</span>
+<span class="nv">LIBS</span><span class="o">=</span> <span class="si">$(</span>FFT_LIB<span class="si">)</span> <span class="si">$(</span>XC_LIB<span class="si">)</span> <span class="si">$(</span>BLAS<span class="si">)</span>
+<span class="c">#LIBS= $(FFT_LIB) $(XC_LIB) -lscalapack $(BLAS)</span>
+
+<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library</span>
+
+<span class="c"># Conquest XC library</span>
+XC_LIBRARY <span class="o">=</span> CQ
+XC_LIB <span class="o">=</span>
+XC_COMPFLAGS <span class="o">=</span>
+
+<span class="c"># LibXC compatibility</span>
+<span class="c"># Choose old LibXC (v2.x) or modern versions</span>
+<span class="c">#XC_LIBRARY = LibXC_v2</span>
+<span class="c">#XC_LIBRARY = LibXC</span>
+<span class="c">#XC_LIB = -lxcf90 -lxc</span>
+<span class="c">#XC_COMPFLAGS = -I/usr/local/include</span>
+
+<span class="c"># Set FFT library</span>
+<span class="nv">FFT_LIB</span><span class="o">=</span> <span class="nt">-L</span>/opt/fftw3/lib/ <span class="nt">-lfftw3</span>
+<span class="c">#FFT_LIB=-lfftw3</span>
+<span class="nv">FFT_OBJ</span><span class="o">=</span>fft_fftw3.o
+
+<span class="c"># Matrix multiplication kernel type</span>
+MULT_KERN <span class="o">=</span> default
+<span class="c"># Use dummy DiagModule or not</span>
+DIAG_DUMMY <span class="o">=</span>
+</code></pre></div></div>
+
+<h4 id="编译错误解决">编译错误解决</h4>
+
+<p><strong>编译错误：</strong>generic_blas.o: in function `__genblas_MOD_two_potri’:……</p>
+
+<p><strong>解决办法：</strong>修改 conquest/src/Makefile 文件，如下修改。这里发生编译错误的原因是编译程序如果按照原来的顺序无法寻找到 MKL 提供的依赖库文件，相反将链接依赖库文件的顺序放到后面编译程序就能成功找到依赖库文件。这么听起来有点玄学，但事实就是这样的。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 第68行</span>
+<span class="si">$(</span>FC<span class="si">)</span> <span class="si">$(</span>LINKFLAGS<span class="si">)</span> <span class="nt">-o</span> <span class="si">$(</span>TARGET<span class="si">)</span> <span class="si">$(</span>NODE_OBJECTS<span class="si">)</span> <span class="si">$(</span>LIBS<span class="si">)</span>
+
+<span class="c"># 修改为</span>
+<span class="si">$(</span>FC<span class="si">)</span> <span class="nt">-o</span> <span class="si">$(</span>TARGET<span class="si">)</span> <span class="si">$(</span>NODE_OBJECTS<span class="si">)</span> <span class="si">$(</span>LIBS<span class="si">)</span> <span class="si">$(</span>LINKFLAGS<span class="si">)</span>
+</code></pre></div></div>
+
+<h2 id="docker-化">Docker 化</h2>
+
+<p>以下为 Docker 化所需的 Dockerfile 文件（基于笔者个性化后的 Intel 官方 Docker 镜像）：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM zhonger/oneapi-hpckit:latest
+
+LABEL <span class="nv">maintainer</span><span class="o">=</span><span class="s2">"zhonger zhonger@live.cn"</span>
+
+<span class="c"># Install open-mpi</span>
+RUN <span class="nb">sudo </span>apt update <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> wget <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/softwares /opt/openmpi /opt/fftw3 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/openmpi /opt/softwares /opt/fftw3 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.gz <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf openmpi-4.1.0.tar.gz <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>openmpi-4.1.0 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/openmpi <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+
+<span class="c"># Install fftw3</span>
+RUN <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> http://www.fftw.org/fftw-3.3.9.tar.gz <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf fftw-3.3.9.tar.gz <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>fftw-3.3.9 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/fftw3 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+
+<span class="c"># Add PATH for open-mpi &amp; fftw3</span>
+RUN <span class="nb">echo</span> <span class="s2">"export PATH=/opt/openmpi/bin:/opt/fftw3/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export MKLROOT=/opt/intel/oneapi/mkl/latest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LD_LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LD_LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
+
+<span class="c"># Compile CONQUEST</span>
+COPY system.make /home/ubuntu/system.make
+ENV <span class="nv">PATH</span><span class="o">=</span>/opt/openmpi/bin:/opt/fftw3/bin:<span class="nv">$PATH</span>
+ENV <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/opt/openmpi/lib:/opt/fftw3/lib:<span class="nv">$LD_LIBRARY_PATH</span>
+ENV <span class="nv">LIBRARY_PATH</span><span class="o">=</span>/opt/openmpi/lib:/opt/fftw3/lib:<span class="nv">$LIBRARY_PATH</span>
+RUN <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> git clone https://github.com/OrderN/CONQUEST-release conquest <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>conquest/src <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cp</span> ~/system.make ./system.make <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ../tools/BasisGeneration <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">mv</span> ~/system.make ./system.make <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> make 
+
+<span class="c"># Add PATH for CONQUEST</span>
+RUN <span class="nb">echo</span> <span class="s2">"export PATH=/opt/softwares/conquest/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cq=/opt/softwares/conquest/bin/Conquest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cqion=/opt/softwares/conquest/bin/MakeIonFiles"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
+
+<span class="c"># Clean apt-cache &amp; archive files</span>
+RUN <span class="nb">sudo </span>apt autoremove <span class="nt">-y</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt clean <span class="nt">-y</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span> <span class="se">\</span>
+    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> /opt/softwares/<span class="k">*</span>.tar.gz
+
+ENTRYPOINT <span class="o">[</span><span class="s2">"/bin/zsh"</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>  镜像构建过程中所需的 system.make 文件与上一节中的文件内容一致，使用以下命令编译生成 Docker 镜像。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nb">.</span> <span class="nt">-t</span> zhonger/conquest
+</code></pre></div></div>
+
+<h3 id="运行">运行</h3>
+
+<h4 id="方式一">方式一</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">--name</span> dev zhonger/conquest:latest
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
+</code></pre></div></div>
+
+<h4 id="方式二">方式二</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">conquest</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/conquest:latest</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">dev</span>
+    <span class="na">stdin_open</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+     <span class="pi">-</span> <span class="s">~/web/test:/home/ubuntu/test</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/docker/conquest-slurm.html" class="read-next-link"></a>
+        <section>
+          <span>CONQUEST 编译安装指南 Slurm 篇</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/conquest-arm.html" class="read-next-link"></a>
+          <section>
+            <span>CONQUEST 编译安装指南 ARM 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

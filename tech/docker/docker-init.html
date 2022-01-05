@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker 入门 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Docker 入门">
+    <meta name="keywords"  content="docker, ubuntu">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Docker 入门 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/docker-init.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#docker" class="post-tag">docker</a>
+          
+            <a href="/tags.html#ubuntu" class="post-tag">ubuntu</a>
+          
+        
+      </div>
+      <h1>Docker 入门</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="17-05-09"><i class="iconfont icon-date"></i>Tue, 09 May 2017 13:43:31 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1233 字 <b>·</b> 阅读全文大约需要 4 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">Docker 的常用安装与加速</h2>
+    
+
+    <article class="markdown-body">
+      <h1 id="docker入门">Docker入门</h1>
+
+<h2 id="安装">安装</h2>
+
+<p><del>安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。</del></p>
+
+<p>推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加中科大镜像源到list列表中</span>
+<span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/apt/sources.list.d/docker.list <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+    deb [arch=amd64] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/ </span><span class="si">$(</span>lsb_release <span class="nt">-c</span> <span class="nt">--short</span><span class="si">)</span><span class="sh"> stable
+</span><span class="no">EOF
+
+</span><span class="c"># 添加可信任的GPG公钥</span>
+<span class="nb">sudo </span>apt-key adv <span class="nt">--keyserver</span><span class="o">=</span>hkp://keyserver.ubuntu.com <span class="nt">--recv</span> 7EA0A9C3F273FCD8
+
+<span class="c"># 更新本地软件缓存列表</span>
+<span class="nb">sudo </span>apt update
+
+<span class="c"># 安装 docker-ce 及其依赖</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> docker-ce
+
+<span class="c"># 将普通用户添加到 docker 组，这样普通用户也能使用 docker 命令</span>
+<span class="nb">sudo </span>usermod <span class="nt">-aG</span> docker <span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span>
+</code></pre></div></div>
+
+<h2 id="更换-docker-镜像加速器">更换 docker 镜像加速器</h2>
+
+<p>由于 Docker Hub 的服务器只部署在美国，所以国内访问一般都比较慢，于是就要使用上大大佬们提供的镜像加速器，以下为修改加速器地址的方法（以中科大 docker 镜像仓库加速器为例）：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加 中科大 Docker 镜像加速器</span>
+curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh | sh <span class="nt">-s</span> https://docker.mirrors.ustc.edu.cn/
+
+<span class="c"># 重启 Docker 服务</span>
+<span class="nb">sudo </span>service docker restart
+</code></pre></div></div>
+
+<p>以下为国内主要的 docker 镜像仓库加速器：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>服务提供者</th>
+      <th>加速地址</th>
+      <th>推荐指数</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>中科大镜像站</td>
+      <td>https://docker.mirrors.ustc.edu.cn</td>
+      <td>★★★★★</td>
+      <td>无任何限制</td>
+    </tr>
+    <tr>
+      <td>Docker官方</td>
+      <td>https://registry.docker-cn.com</td>
+      <td>★★★★</td>
+      <td>无任何限制，由于服务器在香港阿里云，和阿里云差不多</td>
+    </tr>
+    <tr>
+      <td>阿里云</td>
+      <td>https://{your_id}.mirror.aliyuncs.com</td>
+      <td>★★★★</td>
+      <td>某些时候会限速</td>
+    </tr>
+    <tr>
+      <td>Daocloud</td>
+      <td>http://{your_id}.m.daocloud.io</td>
+      <td>★★★★★</td>
+      <td>大部分时候网速还是可以的</td>
+    </tr>
+    <tr>
+      <td>网易云</td>
+      <td>https://hub-mirror.c.163.com</td>
+      <td>★★★★</td>
+      <td>没有尝试过</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="安装-docker-compose">安装 docker-compose</h2>
+
+<p>docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 python3 python3-pip</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> python3 python3-pip
+
+<span class="c"># 安装 docker-compose</span>
+<span class="nb">sudo </span>pip3 <span class="nb">install </span>docker-compose
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/mirrors-build.html" class="read-next-link"></a>
+        <section>
+          <span>镜像站构建</span>
+          <p>引言  构建镜像站主要是对于 linux 开源平台的软件源、 pypi 源、 cran 源、 mysql 等开源软...</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/ubuntu-nvidia.html" class="read-next-link"></a>
+          <section>
+            <span>Ubuntu 16.04 下安装 NVIDIA GTX 970 显卡驱动</span>
+            <p>实验环境</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1474835409173-5dc81aae3faa?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

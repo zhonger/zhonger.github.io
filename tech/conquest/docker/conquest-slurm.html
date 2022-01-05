@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONQUEST 编译安装指南 Slurm 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="CONQUEST 编译安装指南 Slurm 篇">
+    <meta name="keywords"  content="CONQUEST, 量子化学, Slurm">
+    <!-- Open Graph -->
+    <meta property="og:title" content="CONQUEST 编译安装指南 Slurm 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/conquest/docker/conquest-slurm.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#CONQUEST" class="post-tag">CONQUEST</a>
+          
+            <a href="/tags.html#%E9%87%8F%E5%AD%90%E5%8C%96%E5%AD%A6" class="post-tag">量子化学</a>
+          
+            <a href="/tags.html#Slurm" class="post-tag">Slurm</a>
+          
+        
+      </div>
+      <h1>CONQUEST 编译安装指南 Slurm 篇</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-02-07"><i class="iconfont icon-date"></i>Sun, 07 Feb 2021 21:24:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 6724 字 <b>·</b> 阅读全文大约需要 20 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">欢迎使用作业任务管理的方式运行多个 CONQUEST 任务</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  在实际的生产环境中，使用单用户模式直接运行命令的机会不是很多，通常是采用提交作业任务给集群计算的方式。这样一来既能节约资源和时间，又能申请到更大规模的计算资源，对于平台管理人员还是用户来说都是非常有利的。国家超算中心，地方超算中心，学校超算中心一般都对外提供这样的服务，不过需要按核时进行计费。所谓“核时”就是一个 CPU 核运行一个小时，这也是高性能计算中通常使用的资源衡量单位。作为超算中心或者高性能集群，必不可缺的就是集群作业管理系统，它可以根据用户的需求，统一管理和调度集群的软硬件资源，保证用户作业公平合理地共享集群资源，提高系统利用率和吞吐率。</p>
+
+<p>  我们常见的集群作业管理系统有 PBS、LSF 和 Slurm等。其中，笔者在超算中心、研究所高性能计算集群中接触比较多的就是 PBS 作业管理系统。但是如果自己在单节点高性能计算服务器上部署 PBS 可能有点麻烦。现今市面上比较流行的 PBS 作业管理系统主要就是 Torque 和 OpenPBS 两家，前者需要购买授权才能使用，后者属于开源产品可以免费使用。笔者在初期也尝试过安装 OpenPBS，不过由于安装依赖多，确实莫名其妙的错误也比较多。根据网上资料发现 CentOS 安装 OpenPBS 比较方便，而 Ubuntu 安装 OpenPBS 就麻烦很多甚至极难成功。不过还有一点，由于 CentOS 最大的支持者 Redhat 撤资，现在 CentOS 8 即将失去维护转而推广使用 CentOS Stream，因此 Ubuntu 操作系统上安装 OpenPBS 显得更有意义。为了又想在 Ubuntu 上用 OpenPBS 熟悉的方式，又想安装简单一点，笔者尝试了一种曲线实现的方式——安装 Slurm 和 PBS 工具。这样一来，表面上我们仍然可以使用 PBS 中常用的脚本文件和相关命令，而实际上管理和执行任务的作业管理系统则是 Slurm。</p>
+
+<h2 id="pbs-简介">PBS 简介</h2>
+
+<p>  PBS （Protable Batch System） 作业管理系统会根据一个集群上的可用计算节点的计算资源管理和调度所有计算作业（无论是批处理作业还是交互式作业）。</p>
+
+<h3 id="pbs-常用命令">PBS 常用命令</h3>
+
+<h4 id="作业控制">作业控制</h4>
+
+<ul>
+  <li>qsub：提交作业</li>
+  <li>qdel：取消作业</li>
+  <li>qsig：给作业发送信号</li>
+  <li>qhold：挂起作业</li>
+  <li>qrls：释放挂起的作业</li>
+  <li>qrerun：重新运行作业</li>
+  <li>qmove：将作业移动到另一个队列</li>
+  <li>qalter： 更改作业资源属性</li>
+</ul>
+
+<h4 id="作业监测">作业监测</h4>
+
+<ul>
+  <li>qstat：显示作业状态</li>
+  <li>showq： 查看所有作业</li>
+</ul>
+
+<h4 id="节点状态">节点状态</h4>
+
+<ul>
+  <li>pbsnodes：列出集群中所有节点的状态和属性</li>
+</ul>
+
+<h3 id="pbs-作业属性">PBS 作业属性</h3>
+
+<p>可以用两种方式设置 PBS 作业属性：</p>
+<ul>
+  <li>通过命令行参数传递给 qsub 命令；</li>
+  <li>在 PBS 脚本中以 #PBS 方式指定。</li>
+</ul>
+
+<p>下表列出常用的 PBS 作业属性</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>取值</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-l</td>
+      <td>以逗号分隔的资源列表</td>
+      <td>设定作业所需资源</td>
+    </tr>
+    <tr>
+      <td>-N</td>
+      <td>作业名称</td>
+      <td>设定作业名称</td>
+    </tr>
+    <tr>
+      <td>-o</td>
+      <td>文件路径</td>
+      <td>设定作业的标准输出文件路径</td>
+    </tr>
+    <tr>
+      <td>-e</td>
+      <td>文件路径</td>
+      <td>设定作业的标准错误文件路径</td>
+    </tr>
+    <tr>
+      <td>-p</td>
+      <td>-1024 到 +1023 之间的整数</td>
+      <td>设定作业优先级，越大优先级越高</td>
+    </tr>
+    <tr>
+      <td>-q</td>
+      <td>队列名称</td>
+      <td>设定作业队列名称</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>比较常用的作业资源如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>资源</th>
+      <th>取值</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>nodes</td>
+      <td>节点资源构型</td>
+      <td>设定作业所需计算节点资源</td>
+    </tr>
+    <tr>
+      <td>walltime</td>
+      <td>hh:mm:ss</td>
+      <td>设定作业所需的最大 wallclock 时间</td>
+    </tr>
+    <tr>
+      <td>cput</td>
+      <td>hh:mm:ss</td>
+      <td>设定作业所需的最大 CPU 时间</td>
+    </tr>
+    <tr>
+      <td>mem</td>
+      <td>正整数，后面可跟 b，kb，mb，gb</td>
+      <td>设定作业所需的最大内存</td>
+    </tr>
+    <tr>
+      <td>ncpus</td>
+      <td>正整数</td>
+      <td>设定作业所需的 CPU 数目</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="pbs-脚本">PBS 脚本</h3>
+
+<p>  PBS 脚本本质上是一个 Linux shell 脚本，在 PBS 脚本中可以用一种特殊形式的注释（#PBS）作为 PBS 指令以设定作业属性。下面是一个 Li 计算的 PBS 脚本示例 (run_CQ_GridCutoff.csh)：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c">#PBS -l walltime=06:00:00</span>
+
+<span class="c">##PBS -l select=1:ncpus=1:mpiprocs=1</span>
+<span class="c">#PBS -l nodes=workq:ppn=2</span>
+
+<span class="c">#PBS -N t_Li_GridCutoff</span>
+
+<span class="nb">set echo
+
+set </span><span class="nv">HOMEDIR</span><span class="o">=</span><span class="nv">$PBS_O_WORKDIR</span>
+<span class="nb">cd</span> <span class="nv">$HOMEDIR</span>
+
+<span class="nb">echo</span> <span class="s2">"HOMEDIR: </span><span class="nv">$HOMEDIR</span><span class="s2">"</span>
+<span class="nb">echo</span> <span class="s2">"We are in "</span>
+
+<span class="nb">pwd
+
+cp </span>Conquest_input_Li Conquest_input
+
+cq<span class="o">(){</span>
+    <span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"30c Grid.GridCutoff </span><span class="nv">$i</span><span class="s2">"</span> Conquest_input
+    mpirun /opt/softwares/conquest/bin/Conquest &lt; Conquest_input <span class="o">&gt;</span> Conquest_out
+    <span class="nb">cp </span>Conquest_input Conquest_input_Li_<span class="nv">$i</span>
+    <span class="nb">mv </span>Conquest_out Conquest_out_Li_<span class="nv">$i</span>
+<span class="o">}</span>
+
+<span class="nb">let </span><span class="nv">i</span><span class="o">=</span><span class="s2">"75"</span>
+
+<span class="k">for </span>i <span class="k">in</span> <span class="si">$(</span><span class="nb">seq </span>75 25 250<span class="si">)</span>
+<span class="k">do
+    </span><span class="nb">echo</span> <span class="s2">"Now the Grid.GridCutoff is "</span> <span class="nv">$i</span>
+    cq
+<span class="k">done
+
+</span><span class="nb">unset echo</span>
+</code></pre></div></div>
+
+<h2 id="slurm-简介与安装">Slurm 简介与安装</h2>
+
+<p>  Slurm 任务调度工具（前身为极简 Linux 资源管理工具，英文：Simple Linux Utility for Resource Management，取首字母，简写为 SLURM），或 Slurm，是一个用于 Linux 和 Unix 内核系统的免费、开源的任务调度工具，被世界范围内的超级计算机和计算机群广泛采用。它提供了三个关键功能。第一，为用户分配一定时间的专享或非专享的资源(计算机节点)，以供用户执行工作。第二，它提供了一个框架，用于启动、执行、监测在节点上运行着的任务(通常是并行的任务，例如 MPI)。第三，为任务队列合理地分配资源。</p>
+
+<p>  大约 60％ 的 500 强超级计算机上都运行着 Slurm，包括 2016 年前世界上最快的计算机天河-2。</p>
+
+<p>  Slurm 使用基于 Hilbert 曲线调度或肥胖网络拓扑结构的最适算法，以便优化并行计算机中的任务分配。</p>
+
+<h3 id="slurm-常用命令">Slurm 常用命令</h3>
+
+<p>下面是一些最常用的 SLURM 命令：</p>
+
+<ul>
+  <li>sacct：查看历史作业信息</li>
+  <li>salloc：分配资源</li>
+  <li>sbatch：提交批处理作业</li>
+  <li>scancel：取消作业</li>
+  <li>scontrol：系统控制</li>
+  <li>sinfo：查看节点与分区状态</li>
+  <li>squeue：查看队列状态</li>
+  <li>srun：执行作业</li>
+</ul>
+
+<h3 id="资源管理系统实体">资源管理系统实体</h3>
+
+<p>Slurm 资源管理系统的管理对象包括：节点，分区，作业和作业步。</p>
+
+<ul>
+  <li>节点：Node
+    <ul>
+      <li>即指计算节点</li>
+      <li>包含处理器、内存、磁盘空间等资源</li>
+      <li>具有空闲、分配、故障等状态</li>
+      <li>使用节点名字标识</li>
+    </ul>
+  </li>
+  <li>分区：Partition
+    <ul>
+      <li>节点的逻辑分组</li>
+      <li>提供一种管理机制，可设置资源限制、访问权限、优先级等</li>
+      <li>分区可重叠，提供类似于队列的功能</li>
+      <li>使用分区名字标识</li>
+    </ul>
+  </li>
+  <li>作业：Job
+    <ul>
+      <li>一次资源分配</li>
+      <li>位于一个分区中，作业不能跨分区</li>
+      <li>排队调度后分配资源运行</li>
+      <li>通过作业 ID 标识</li>
+    </ul>
+  </li>
+  <li>作业步：Jobstep
+    <ul>
+      <li>通过 srun 进行的任务加载</li>
+      <li>作业步可只使用作业中的部分节点</li>
+      <li>一个作业可包含多个作业步，可并发运行</li>
+      <li>在作业内通过作业步 ID 标识</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="作业运行模式">作业运行模式</h3>
+<p>Slurm 系统有三种作业运行模式：</p>
+
+<ul>
+  <li>交互模式，以 srun 命令运行；</li>
+  <li>批处理模式，以 sbatch 命令运行；</li>
+  <li>分配模式，以 salloc 命令运行。</li>
+</ul>
+
+<p>想要了解更多相关内容请移步至参考资料1。</p>
+
+<h3 id="ubuntu-上安装">Ubuntu 上安装</h3>
+
+<p>  安装 Munge、Slurm 和 PBS 工具，并清理、新建和赋权 slurm 所需文件夹。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install </span>munge slurm-wlm slurm-wlm-doc slurm-wlm-torque <span class="nt">-y</span> <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span>  /var/spool/slurm-llnl <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> /var/spool/slurm-llnl <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> slurm.slurm /var/spool/slurm-llnl <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/run/slurm-llnl/ <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> /var/run/slurm-llnl/ <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> slurm.slurm /var/run/slurm-llnl/
+</code></pre></div></div>
+
+<p>  修改 Slurm 配置文件 /etc/slurm-llnl/slurm.conf，本配置文件配置控制节点的主机名为 workq（可根据实际进行修改，如与实际不一致 Slurm 主服务会启动不了），配置单用户可提交多个任务同时进行，并取消了资源使用的限制。另外，最后计算节点的定义字节中需对节点名称、CPU 核数进行修改。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># slurm.conf file generated by configurator easy.html.</span>
+<span class="c"># Put this file on all nodes of your cluster.</span>
+<span class="c"># See the slurm.conf man page for more information.</span>
+<span class="c">#</span>
+<span class="nv">ControlMachine</span><span class="o">=</span>workq
+<span class="c">#ControlAddr=</span>
+<span class="c">#</span>
+<span class="c">#MailProg=/bin/mail</span>
+<span class="nv">MpiDefault</span><span class="o">=</span>none
+<span class="c">#MpiParams=ports=#-#</span>
+<span class="nv">ProctrackType</span><span class="o">=</span>proctrack/pgid
+<span class="nv">ReturnToService</span><span class="o">=</span>1
+<span class="nv">SlurmctldPidFile</span><span class="o">=</span>/var/run/slurm-llnl/slurmctld.pid
+<span class="c">#SlurmctldPort=6817</span>
+<span class="nv">SlurmdPidFile</span><span class="o">=</span>/var/run/slurm-llnl/slurmd.pid
+<span class="c">#SlurmdPort=6818</span>
+<span class="nv">SlurmdSpoolDir</span><span class="o">=</span>/var/spool/slurmd
+<span class="nv">SlurmUser</span><span class="o">=</span>slurm
+<span class="c">#SlurmdUser=root</span>
+<span class="nv">StateSaveLocation</span><span class="o">=</span>/var/spool/slurm-llnl
+<span class="nv">SwitchType</span><span class="o">=</span>switch/none
+<span class="nv">TaskPlugin</span><span class="o">=</span>task/none
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># TIMERS</span>
+<span class="c">#KillWait=30</span>
+<span class="c">#MinJobAge=300</span>
+<span class="c">#SlurmctldTimeout=120</span>
+<span class="c">#SlurmdTimeout=300</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># SCHEDULING</span>
+<span class="nv">FastSchedule</span><span class="o">=</span>1
+<span class="c">#SchedulerType=sched/backfill</span>
+<span class="c">#SelectType=select/linear</span>
+<span class="nv">SelectType</span><span class="o">=</span><span class="k">select</span>/cons_res
+<span class="nv">SelectTypeParameters</span><span class="o">=</span>CR_CPU
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># LOGGING AND ACCOUNTING</span>
+<span class="nv">AccountingStorageType</span><span class="o">=</span>accounting_storage/none
+<span class="nv">ClusterName</span><span class="o">=</span>cluster
+<span class="c">#JobAcctGatherFrequency=30</span>
+<span class="nv">JobAcctGatherType</span><span class="o">=</span>jobacct_gather/none
+<span class="c">#SlurmctldDebug=3</span>
+<span class="c">#SlurmctldLogFile=</span>
+<span class="c">#SlurmdDebug=3</span>
+<span class="c">#SlurmdLogFile=</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c"># COMPUTE NODES</span>
+<span class="nv">NodeName</span><span class="o">=</span>workq <span class="nv">CPUs</span><span class="o">=</span>128 <span class="nv">State</span><span class="o">=</span>UNKNOWN
+<span class="nv">PartitionName</span><span class="o">=</span>cpu <span class="nv">Nodes</span><span class="o">=</span>workq <span class="nv">Default</span><span class="o">=</span>YES <span class="nv">MaxTime</span><span class="o">=</span>INFINITE <span class="nv">State</span><span class="o">=</span>UP
+</code></pre></div></div>
+
+<p>  重启有关服务使配置生效。Munge 为 Slurm 所必需的服务，需要首先启动。slurmctld 是管理控制模块，slurmd是计算模块，启动先后无实际影响。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>service munge restart <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo </span>service slurmctld restart <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nb">sudo </span>service slurmd restart
+</code></pre></div></div>
+
+<p>  经过以上步骤就安装完成了，可以分别通过以下两个命令 sinfo 和 pbsnodes 来验证是否安装成功。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sinfo <span class="c"># slurm 查看节点命令</span>
+
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+cpu<span class="k">*</span>         up   infinite      1   idle workq
+
+pbsnodes <span class="c"># pbs 查看节点命令</span>
+
+workq
+    state <span class="o">=</span> free
+    np <span class="o">=</span> 128
+    ntype <span class="o">=</span> cluster
+    status <span class="o">=</span> <span class="nv">rectime</span><span class="o">=</span>1612757114,state<span class="o">=</span>free,slurmstate<span class="o">=</span>idle,size<span class="o">=</span>0kb:0kb,ncpus<span class="o">=</span>128,boards<span class="o">=</span>1,sockets<span class="o">=</span>2,cores<span class="o">=</span>64,threads<span class="o">=</span>1,availmem<span class="o">=</span>1mb,opsys<span class="o">=</span>linux 4.18.0-25-generic <span class="c">#26~18.04.1-ubuntu smp thu jun 27 07:28:31 utc 2019,arch=x86_64</span>
+
+</code></pre></div></div>
+
+<h3 id="docker-化">Docker 化</h3>
+
+<p>  Docker 化服务已经成为现在最为流行的应用部署方式之一。Docker 能提供一键式的应用部署方式，给用户免去了大量的麻烦，与已有的虚拟机镜像化相比，其在镜像大小、镜像获取方式、镜像获取速度、支持平台上都有得天独厚的优势。虚拟机化软件不仅受限于平台支持和 License 版权限制，还会因为专用化软件的虚拟化镜像十分庞大，多达十几个 G，下载速度也受限于下载提供方。而 Docker 可以将镜像推送到 Docker Hub，再由 Docker Hub 进行镜像分发，其下载速度一般都是满速。而且从 Docker 镜像启动一个 Docker 实例也是非常简单，一行命令即可。使用时也只需要使用 Docker 提供的方式连入或者使用 ssh 方式，方便快捷。以下为 Slurm 的 Docker 化编译文件 Dockerfile：</p>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> zhonger/conquest:1.0.6</span>
+
+<span class="k">LABEL</span><span class="s"> maintainer="zhonger zhonger@live.cn"</span>
+
+<span class="c"># Install munge &amp; slurm</span>
+<span class="k">RUN </span><span class="nb">sudo </span>apt update <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install </span>munge slurm-wlm slurm-wlm-doc slurm-wlm-torque <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span>  /var/spool/slurm-llnl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> /var/spool/slurm-llnl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> slurm.slurm /var/spool/slurm-llnl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/run/slurm-llnl/ <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> /var/run/slurm-llnl/ <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> slurm.slurm /var/run/slurm-llnl/
+
+<span class="k">COPY</span><span class="s"> slurm.conf /etc/slurm-llnl/slurm.conf</span>
+
+<span class="k">RUN </span><span class="nb">sudo </span>service munge restart <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>service slurmd restart <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>service slurmctld restart
+
+<span class="c"># Clean apt-cache</span>
+<span class="k">RUN </span><span class="nb">sudo </span>apt autoremove <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt clean <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="k">ADD</span><span class="s"> entrypoint.sh /entrypoint.sh</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> ["/entrypoint.sh"]</span>
+</code></pre></div></div>
+
+<p>其中所需的 slurm.conf 文件如上一节中所示， entrypoint.sh 文件如下所示：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">sudo </span>service munge restart
+<span class="nb">sudo </span>service slurmctld restart
+<span class="nb">sudo </span>service slurmd restart
+sinfo
+
+/bin/zsh
+</code></pre></div></div>
+
+<p>使用以下命令编译生成 Docker 镜像：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nb">.</span> <span class="nt">-t</span> zhonger/conquest:slurm
+</code></pre></div></div>
+
+<p>使用以下命令启动一个实例：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">-h</span> workq <span class="nt">-v</span> /home/ubuntu/test:/home/ubuntu/test <span class="nt">--name</span> dev zhonger/conquest:slurm
+</code></pre></div></div>
+
+<p>  这里需要注意的是，一定要添加 -h workq 来为启动的实例指定主机名，否则实例将无法正常启动 Slurm 模块。这里也给出一个等同的 docker-compose.yml 文件。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">conquest</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/conquest:slurm</span>
+    <span class="na">hostname</span><span class="pi">:</span> <span class="s2">"</span><span class="s">workq"</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">dev2</span>
+    <span class="na">stdin_open</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+     <span class="pi">-</span> <span class="s">~/web/test:/home/ubuntu/test</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ol>
+  <li><a href="https://www.cnblogs.com/bio-mary/p/13500255.html">PBS LSF 作业管理系统 SLURM 资源管理系统</a></li>
+  <li><a href="https://zh.wikipedia.org/wiki/Slurm工作调度工具">Slurm工作调度工具</a></li>
+</ol>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/docker-zsh.html" class="read-next-link"></a>
+        <section>
+          <span>Docker 镜像安装配置 zsh</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1551978429-3dbfed5cacc9?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/conquest-intel.html" class="read-next-link"></a>
+          <section>
+            <span>CONQUEST 编译安装指南 Intel 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1611908494970-3eea5e0a773e?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

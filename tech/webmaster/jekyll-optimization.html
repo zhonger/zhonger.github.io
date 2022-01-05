@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekyll 优化合集 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Jekyll 优化合集">
+    <meta name="keywords"  content="Jekyll, Plugins, 优化, fancybox, prism, LaTex">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jekyll 优化合集 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/jekyll-optimization.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Jekyll" class="post-tag">Jekyll</a>
+          
+            <a href="/tags.html#Plugins" class="post-tag">Plugins</a>
+          
+            <a href="/tags.html#%E4%BC%98%E5%8C%96" class="post-tag">优化</a>
+          
+            <a href="/tags.html#fancybox" class="post-tag">fancybox</a>
+          
+            <a href="/tags.html#prism" class="post-tag">prism</a>
+          
+            <a href="/tags.html#LaTex" class="post-tag">LaTex</a>
+          
+        
+      </div>
+      <h1>Jekyll 优化合集</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-03-24"><i class="iconfont icon-date"></i>Wed, 24 Mar 2021 11:10:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 7691 字 <b>·</b> 阅读全文大约需要 22 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">为 Jekyll 添加更多的功能支持</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  Jekyll 是一款采用 Ruby 语言编写的、非常方便简单又功能强大的静态站点生成器，适合于搭建个人博客、静态网站等。我们知道，Github Page 默认支持的也是 Jekyll，而非 Hexo、Hugo等静态站点生成器。Hexo 是用 NodeJS 语言编写的，Hugo 是用 Go 语言编写的，它们三者背后其实都有非常丰富的插件来增强它们自身，从而为用户提供一个可插拔式的个人定制功能。由于本站目前是采用 Jekyll 来搭建的，所以为了提供给读者更加高效的阅读条件，笔者在廖柯杰大佬开发的 <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a> 主题的基础上做了一些功能上的增加和优化，接下来就来详细介绍一下。</p>
+
+<h2 id="功能需求">功能需求</h2>
+
+<ul>
+  <li>原有的 Rouge 代码高亮支持的语言种类较少、代码主题有限；</li>
+  <li>由于主题的文章模板限制了文字宽度在适合阅读的 30 字左右，图片尺寸相应也受到了限制，无法放大和集中观看；</li>
+  <li>主题提供的首页是文章卡片，对于学术研究的个人博客来说学术首页显得更加重要；</li>
+  <li>主题不提供简单的文章标题和发表时间的列表页，对于读者来说有些文章可能需要翻好几页才能找到，不是很方便。虽然标签有标签分类，但是因为存在大量重复也不是很方便；</li>
+  <li>如果想要将文章整理成一个系列或者专题，恐怕比较困难，只能通过建立单独的页面和编写代码的方式生成列表。</li>
+</ul>
+
+<h2 id="实现">实现</h2>
+
+<h3 id="代码高亮">代码高亮</h3>
+
+<p>  Jekyll 代码高亮可以使用 Pygments、Rouge、Prism、Highlight JS等工具实现，据说大部分的高亮博客中基本上都是使用 Pygments。从 Pygments 的名字也可以看出来，这款工具是 Python 语言编写的，因此编译时是需要 Ruby 和 Python 两种语言环境的。不过除此之外，它的配置还是比较简单的。</p>
+
+<h4 id="pygments">Pygments</h4>
+
+<p>首先在 Gemfile 中配置下面行，以便安装好对应的插件模块。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="nb">install </span>pygments.rb
+</code></pre></div></div>
+
+<p>然后是修改 _config.yml 配置文件，其中的 highlighter 修改如下：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">markdown</span><span class="pi">:</span> <span class="s">kramdown</span>
+<span class="na">highlighter</span><span class="pi">:</span> <span class="s">pygments</span>
+</code></pre></div></div>
+
+<p>之后不要忘记要引入 Pygments 的 CSS 样式，可以直接访问以下地址下载：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://pygments.org/_static/pygments.css
+</code></pre></div></div>
+
+<p>不过也是可以引入其他主题的 CSS 样式的。</p>
+
+<h4 id="rouge">Rouge</h4>
+
+<p>  Rouge 是 Jekyll 也是 H2O 主题默认的代码高亮工具，支持的语言与其他工具相比都要少一些。因为 Rouge 本身是用 Ruby 语言编写的，所以编译时只需要 Ruby 环境。另外，Rouge 的主题和 Pygments 是完全兼容的，所以如果是从 Pygments 变到 Rouge，只需要在 _config.yml 配置文件做如下修改即可：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">markdown</span><span class="pi">:</span> <span class="s">kramdown</span>
+<span class="na">highlighter</span><span class="pi">:</span> <span class="s">rouge</span>
+</code></pre></div></div>
+
+<h4 id="prism">Prism</h4>
+
+<p>本站所采用的代码高亮就是 Prism，选择 Prism 的原因主要有三点：</p>
+<ul>
+  <li>Prism 生成代码比较简洁，没有多余代码，颜色在不同网站主题上都试用；</li>
+  <li>支持的高亮编程语言丰富，虽然在某些地方还是有所瑕疵，但是总体上还是很实用；</li>
+  <li>高亮主题基本上现有的都能用，本站所用的就是 Github 官方同款主题。</li>
+</ul>
+
+<p>  Prism 工具的安装使用相较其他两种稍微复杂一点，需要下载插件 prism.rb 手动安装到 _plugins 文件夹中，然后在文章模板页添加 prism.css 和 prism.js 的引入（下面花括号中间的反斜杆是为了是花括号不被解析而直接显示出来，使用时请删除反斜杠）。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># prism.rb</span>
+
+<span class="k">module</span> <span class="nn">Jekyll</span>
+
+    <span class="k">class</span> <span class="nc">PrismBlock</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Block</span>
+      <span class="kp">include</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">StandardFilters</span>
+  
+      <span class="no">OPTIONS_SYNTAX</span> <span class="o">=</span> <span class="sr">%r{^([a-zA-Z0-9.+#-]+)((</span><span class="se">\s</span><span class="sr">+</span><span class="se">\w</span><span class="sr">+(=[0-9,-]+)?)*)$}</span>
+  
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">markup</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
+        <span class="k">super</span>
+        <span class="k">if</span> <span class="n">markup</span><span class="p">.</span><span class="nf">strip</span> <span class="o">=~</span> <span class="no">OPTIONS_SYNTAX</span>
+          <span class="vi">@lang</span> <span class="o">=</span> <span class="vg">$1</span>
+          <span class="k">if</span> <span class="k">defined?</span><span class="p">(</span><span class="vg">$2</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="vg">$2</span> <span class="o">!=</span> <span class="s1">''</span>
+            <span class="n">tmp_options</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="vg">$2</span><span class="p">.</span><span class="nf">split</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">opt</span><span class="o">|</span>
+              <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">opt</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s1">'='</span><span class="p">)</span>
+              <span class="k">if</span> <span class="n">value</span><span class="p">.</span><span class="nf">nil?</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="kp">true</span>
+              <span class="k">end</span>
+              <span class="n">tmp_options</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">end</span>
+            <span class="vi">@options</span> <span class="o">=</span> <span class="n">tmp_options</span>
+          <span class="k">else</span>
+            <span class="vi">@options</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">"linenos"</span> <span class="o">=&gt;</span> <span class="s2">""</span> <span class="p">}</span>
+          <span class="k">end</span>
+        <span class="k">else</span>
+          <span class="k">raise</span> <span class="no">SyntaxError</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s2">"Syntax Error in 'prism' - Valid syntax: prism &lt;lang&gt; [linenos(='1-5')]"</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+  
+      <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">h</span><span class="p">(</span><span class="k">super</span><span class="p">).</span><span class="nf">strip</span>
+  
+        <span class="k">if</span> <span class="vi">@options</span><span class="p">[</span><span class="s2">"linenos"</span><span class="p">]</span> <span class="o">==</span> <span class="kp">true</span>
+          <span class="vi">@options</span><span class="p">[</span><span class="s2">"linenos"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"1-</span><span class="si">#{</span><span class="n">code</span><span class="p">.</span><span class="nf">lines</span><span class="p">.</span><span class="nf">count</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">end</span>
+  
+        <span class="o">&lt;&lt;-</span><span class="no">HTML</span><span class="sh">
+  &lt;div&gt;
+    &lt;pre data-line='</span><span class="si">#{</span><span class="vi">@options</span><span class="p">[</span><span class="s2">"linenos"</span><span class="p">]</span><span class="si">}</span><span class="sh">'&gt;&lt;code class='language-</span><span class="si">#{</span><span class="vi">@lang</span><span class="si">}</span><span class="sh">'&gt;</span><span class="si">#{</span><span class="n">code</span><span class="si">}</span><span class="sh">&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+</span><span class="no">        HTML</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  
+  <span class="k">end</span>
+  
+  <span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'prism'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">PrismBlock</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- _includes/post-head.html --&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    ......
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"{\{ site.baseurl }}/assets/css/prism.css"</span> <span class="na">rel=</span><span class="s">"stylesheets"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="c">&lt;!-- _layouts/post.html --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    ......
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{\{ site.baseurl }}/assets/js/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+<span class="c">&lt;!-- 或者使用 CDN 加载 --&gt;</span>
+
+<span class="c">&lt;!-- _includes/post-head.html --&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    ......
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"https://cdn.jsdelivr.net/npm/prismjs/themes/prism.css"</span> <span class="na">rel=</span><span class="s">"stylesheets"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="c">&lt;!-- _layouts/post.html --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    ......
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/prismjs/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+
+</code></pre></div></div>
+
+<h3 id="图片放大和图集">图片放大和图集</h3>
+
+<p>  在实际的文章阅读过程中，往往是文字和图掺杂在一起才能做到图文并茂，因此在博客文章中也会出现需要放大查看图看得更清楚的时候，甚至说只浏览图，这就需要有图片放大和图集功能的帮助了。帮助 Jekyll 实现这一点的 JS 工具也有很多，比如 fancybox、lightgallery 等等，本站所采用的是 fancybox。实现步骤主要就是两步，一是添加好 CSS 和 JS 文件引入，二是添加一个声明，如下所示：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- _includes/post-head.html --&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    ......
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"https://cdn.jsdelivr.net/npm/fancybox/dist/css/jquery.fancybox.css"</span> <span class="na">rel=</span><span class="s">"stylesheets"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="c">&lt;!-- _layouts/post.html --&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    ......
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/fancybox/dist/js/jquery.fancybox.cjs.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+        <span class="c1">// 给图片添加链接</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">$</span><span class="p">(</span><span class="dl">"</span><span class="s2">p img</span><span class="dl">"</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">strA</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">&lt;a data-fancybox='gallery' ref='gallery1' href='</span><span class="dl">"</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">src</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">'&gt;&lt;/a&gt;</span><span class="dl">"</span><span class="p">;</span>
+                <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">wrapAll</span><span class="p">(</span><span class="nx">strA</span><span class="p">);</span>
+            <span class="p">});</span>
+
+            <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">[data-fancybox="gallery"]</span><span class="dl">'</span><span class="p">).</span><span class="nx">fancybox</span><span class="p">();</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>这里使用的是默认配置，想要更多定制可以移步 <a href="http://fancyapps.com/fancybox/3/docs/#options">fancybox 官网</a>。</p>
+
+<h3 id="学术首页">学术首页</h3>
+
+<p>  所谓的学术首页功能其实就是将原来的首页移到 blog 子目录下，首页用一个自定义的页面来替代。由于 H2O 主题本身很适合转换成一个页面模板，要实现这一功能比较方便。</p>
+
+<h4 id="移动默认首页">移动默认首页</h4>
+
+<p>  这里想要移动的子目录可以使用任何与已有文件夹不重名的文件夹名，建议使用 blog，这样语义理解上比较方便。另外值得注意的是，因为原来的文章首页发生了移动，搜索使用的 search.json 配置文件也要复制一份，这样能同时保证不同目录下的搜索功能。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>blog
+<span class="nb">mv </span>index.html blog/index.html
+<span class="nb">cp </span>search.json blog/search.json
+</code></pre></div></div>
+
+<h4 id="添加页面模板">添加页面模板</h4>
+
+<p>  因为页面模板内容在页面上会被翻译导致无法正常显示，这里就使用了 Github 提供的 gist 代码片段服务。如下所示，添加一个页面模板到 _layouts 目录。</p>
+
+<script src="https://gist.github.com/zhonger/7b60d2fcc3b6649131fe389ca1148440.js?filename=page.html"></script>
+
+<h4 id="编写学术首页">编写学术首页</h4>
+
+<p>  修改 dev/sass/common.scss 文件和 index.md 文件。注意，这里的样式文件需要经过编译才能生效。编译需要在 NodeJS 环境下使用 <code class="language-plaintext highlighter-rouge">npm install &amp; gulp</code> 命令。为了加快网页访问，学术首页中的图建议使用 webp 格式。（反斜杠请删除）</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* common.scss */</span>
+
+<span class="nc">.interest</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="nb">auto</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">40px</span><span class="p">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="m">20px</span> <span class="m">0</span> <span class="m">0</span> <span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- index.md --&gt;</span>
+<span class="p">
+---</span>
+layout: page
+home-title: Welcome to zhonger's blog!
+<span class="gh">description: Writing, writing, writing ...
+---
+</span>
+<span class="gh"># About me</span>
+
+<span class="ni">&amp;emsp;&amp;emsp;</span>I'm xxx.
+
+<span class="gh"># Interests</span>
+
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{\{ site.baseurl }}/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
+
+<span class="gh"># Educations</span>
+<span class="p">
+-</span> XXX University (China), XXX, Bachelor degree. (20xx/09~20xx/06)
+
+<span class="gh"># Publications</span>
+<span class="p">
+1.</span> <span class="gs">**S Li**</span>, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning<span class="p">[</span><span class="nv">J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]</span><span class="p">](</span><span class="sx">https://doi.org/10.1016/j.jallcom.2018.12.136</span><span class="p">)</span> 
+
+<span class="gh"># Contact</span>
+
+Email: zhonger[at]live.cn (Please replace [at] with @.)<span class="sb">
+
+
+</span><span class="gh"># 关于我</span>
+
+<span class="ni">&amp;emsp;&amp;emsp;</span>我是XXX。
+
+<span class="gh"># 研究兴趣</span>
+
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
+
+<span class="gh"># 教育经历</span>
+<span class="p">
+-</span> XX大学（中国），XXXX学院，工学学士（20xx年9月~20xx年6月）
+
+<span class="gh"># 论文发表</span>
+<span class="p">
+1.</span> <span class="gs">**S Li**</span>, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning<span class="p">[</span><span class="nv">J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]</span><span class="p">](</span><span class="sx">https://doi.org/10.1016/j.jallcom.2018.12.136</span><span class="p">)</span> 
+<span class="gh"># 联系我</span>
+
+邮箱：xxxx[at]xxx.xx (请使用@替换[at])
+</code></pre></div></div>
+
+<h4 id="修复链接">修复链接</h4>
+
+<p>  由于博客原来首页移动到子目录 blog 下，相应的博客分页展示页中的卡片链接、分页链接、标签链接等等都需要做出修改。下面举个例子（反斜杠请删除）：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 原来是 --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{\{ post.url }}"</span> <span class="na">title=</span><span class="s">"{\{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+<span class="c">&lt;!-- 现在修改为 --&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{\{ post.url | prepend: site.baseurl }}"</span> <span class="na">title=</span><span class="s">"{\{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _config.yml</span>
+<span class="c1"># 原来是</span>
+<span class="na">paginate_path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">page:num'</span>
+<span class="c1"># 现在修改为</span>
+<span class="na">paginate_path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">blog/page:num'</span>
+</code></pre></div></div>
+
+<h3 id="归档页">归档页</h3>
+
+<p>  归档页其实是在上一个功能的基础上实现的，使用的也是同一个页面模板，只是内容稍有不同。如下所示，创建新文件 archives.html 和修改 dev/sass/common.scss 文件：</p>
+
+<script src="https://gist.github.com/zhonger/72dd3ddde762f8b040f25c53c12c70c7.js?filename=archives.html"></script>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* common.scss */</span>
+<span class="nc">.archives-date</span> <span class="p">{</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">130px</span><span class="p">;</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.archives-title</span> <span class="p">{</span>
+  <span class="nl">width</span><span class="p">:</span> <span class="m">95%</span><span class="p">;</span>
+  <span class="nl">display</span><span class="p">:</span> <span class="n">inline-block</span><span class="p">;</span>
+  <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">0</span><span class="cp">!important</span><span class="p">;</span>
+  <span class="nl">margin-top</span><span class="p">:</span> <span class="m">0</span><span class="cp">!important</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@media</span> <span class="n">screen</span> <span class="n">and</span> <span class="p">(</span><span class="n">max-width</span><span class="p">:</span> <span class="m">960px</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nc">.archives-date</span> <span class="p">{</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.archives-title</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">290px</span><span class="p">;</span>
+    <span class="nl">overflow</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+    <span class="nl">white-space</span><span class="p">:</span> <span class="nb">nowrap</span><span class="p">;</span>
+    <span class="nl">text-overflow</span><span class="p">:</span> <span class="n">ellipsis</span><span class="p">;</span>
+    <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">-8px</span><span class="cp">!important</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>另外，也需要在 _config.yml 文件中在导航栏中添加链接，如下所示。</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">_config.yml</span>
+<span class="na">nav</span><span class="pi">:</span>
+  <span class="na">home</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/'</span>
+  <span class="na">blog</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/blog/'</span>
+  <span class="na">archives</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/archives.html'</span>
+  <span class="na">tags</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/tags.html'</span>
+  <span class="na">RSS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/feed.xml'</span>
+</code></pre></div></div>
+
+<h3 id="支持-latex-数学公式">支持 LaTex 数学公式</h3>
+
+<p>(本小节更新于 2021年12月20日)</p>
+
+<p>  作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用<strong>双$符号</strong>来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://polyfill.io/v3/polyfill.min.js?features=es6</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">MathJax-script</span><span class="dl">"</span> <span class="k">async</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span> 
+    <span class="nx">MathJax</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="na">tex</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">inlineMath</span><span class="p">:</span> <span class="p">[[</span><span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">]],</span>
+        <span class="na">processEscapes</span><span class="p">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
+</span></code></pre></div></div>
+
+<div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$$</span><span class="nb">
+ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </span><span class="o">+</span><span class="nb"> bx </span><span class="o">+</span><span class="nb"> c </span><span class="o">=</span><span class="nb"> </span><span class="m">0</span><span class="nb">
+</span><span class="p">$$</span>
+</code></pre></div></div>
+
+\[ax^2 + bx + c = 0\]
+
+<h3 id="字数统计及阅读时长估算">字数统计及阅读时长估算</h3>
+
+<p>(本小节更新于 2021年12月20日)</p>
+
+<p>  由于博客上的文章或短或长，对于读者来说不可能马上辨别是否需要多长时间才能阅读完全文，因此最好在文章开头的地方就有一个简单的信息告诉读者。其实在 Jekyll 中要做到这个也不是很难，只需要对整个文章的内容进行字符计数即可。通常来说，英文单词的阅读速度在 350 词/分钟 左右，而中文的阅读速度也差不多，所以可以将字数除以 350 即可得到大概所需的阅读时长。最后将以下代码添加到 _layouts/post.html 相应的位置即可，一般来说在写作时间下面较佳。</p>
+
+<script src="https://gist.github.com/zhonger/9a26aed1141880ce03c1d27c61be5cdd.js"></script>
+
+<p>  当然可能有的人要问了，这样计算出来的字数是否正确呢？毕竟中英文字符还是有差别的嘛。这个问题在参考资料的博文中做了一些比较深刻的讨论，最后给出来的方案就是这里采用的方案。也可能会有人问如果存在公式、代码、图片等非可计数的内容，那么阅读时长岂不是准确性很差？这个问题其实主要还是在统计上，由于这些非可计数内容不在正常字数统计内，也无法根据它们的数量来评估对应所需的时间，自然也不能加入到阅读时长里。回过头来看，这里的字数统计及阅读时长估算功能本来就是给读者一个信息好做出预判，至于读者阅读是否需要那么长时间或者甚至更长时间，那都没有太大关系。</p>
+
+<h3 id="参考资料">参考资料</h3>
+
+<ul>
+  <li><a href="https://hansenz42.github.io/posts/add-latex-support-to-jekyll/">让 Jekyll 支持 LaTex 数学公式（MathJax v3）</a></li>
+  <li><a href="https://too.pub/Jekyll-count-of-characters">Jekyll 实现文章阅读耗时与字数统计</a></li>
+  <li><a href="https://taoalpha.github.io/blog/2015/05/21/tech-jekyll-count-of-chinese-characters/">Jekyll 中如何做中文字数统计</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog.html" class="read-next-link"></a>
+        <section>
+          <span>个人免费博客花式搭建指南</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/devops/intern-develope.html" class="read-next-link"></a>
+          <section>
+            <span>内网环境下的远程登录和开发实践</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1580574875107-2eb4a7d77040?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

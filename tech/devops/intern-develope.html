@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内网环境下的远程登录和开发实践 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="内网环境下的远程登录和开发实践">
+    <meta name="keywords"  content="Docker, Ubuntu, SSH, Proxy, Dev">
+    <!-- Open Graph -->
+    <meta property="og:title" content="内网环境下的远程登录和开发实践 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/devops/intern-develope.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Docker" class="post-tag">Docker</a>
+          
+            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          
+            <a href="/tags.html#SSH" class="post-tag">SSH</a>
+          
+            <a href="/tags.html#Proxy" class="post-tag">Proxy</a>
+          
+            <a href="/tags.html#Dev" class="post-tag">Dev</a>
+          
+        
+      </div>
+      <h1>内网环境下的远程登录和开发实践</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-02-26"><i class="iconfont icon-date"></i>Fri, 26 Feb 2021 15:33:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 2305 字 <b>·</b> 阅读全文大约需要 7 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1580574875107-2eb4a7d77040?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">只能通过内部服务器代理上网的条件下也能无障碍使用远程服务器开发吗？</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  讲起在内网环境下开发实践的经历，可能在公司上班的程序员们比较有发言权。公司为了提高大家工作时间的效率、监控工作电脑上的流量去向，都会采用内网开发的方式。这样一来，通常来说电脑与外部网络是完全隔离的，至少从外部网络是无法访问到内部网络电脑上的。如果严格到所有开发都是离线的，那么可能大家都会有点不方便，毕竟很多开发是需要加载依赖库和查阅资料的。因此，公司可能会提供了有限的上网方式，既保证大家正常的上网需求，又对员工工作期间上网内容进行监控和过滤。</p>
+
+<h2 id="需求和环境">需求和环境</h2>
+
+<p>  在日常的开发实践中，通常需要支持的上网类型主要有三种：</p>
+
+<ol>
+  <li>浏览器和终端下载所需的 HTTP 和 HTTPS 代理；</li>
+  <li>远程登录服务器所需的 SSH 代理；</li>
+  <li>上传、下载文件所需的 FTP 代理。</li>
+</ol>
+
+<p>  其实以上三种代理上网方式都可以由 Squid 来实现，并且可以管理上网黑白名单，对访问网页的类型、地址、内容进行过滤筛选。比如说如果不希望员工访问 QQ，那么就可以将 QQ 服务器 IP 网段加入到 IP 黑名单中。现在我们假设已经在内部网络上已架设好满足以上要求的 Squid 服务器，且具体信息如下：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host gateway.lisz.me
+
+Protocl         Port
+http_proxy      8888
+https_proxy     8888
+ftp_proxy       21
+ssh_proxy       1080
+</code></pre></div></div>
+
+<h2 id="配置">配置</h2>
+
+<p>  现以 macOS Big Sur 操作系统为例进行实际配置操作：</p>
+
+<h3 id="http-和-https">HTTP 和 HTTPS</h3>
+
+<h4 id="全局设置">全局设置</h4>
+
+<p>  在 <strong>设置 &gt; 网络 &gt; WiFi &gt; 高级 &gt; 代理</strong> 中如下进行设置“网页代理”和“安全网页代理”之后，除终端外其他应用均会自动应用此代理配置。
+<img src="https://i.vgy.me/rdCHul.png" alt="HTTP和HTTPS代理" /></p>
+
+<h4 id="终端设置">终端设置</h4>
+
+<p>  根据使用的 SHELL 类型不同，在对应的个人用户配置文件（比如 .bashrc，.zshrc等）末尾添加如下命令，即可让终端打开时自动加载代理配置。如有需要终端临时取消代理，使用 <code class="language-plaintext highlighter-rouge">unsetproxy</code> 命令即可。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">alias </span><span class="nv">setproxy</span><span class="o">=</span><span class="s2">"export ALL_PROXY=http://gateway.lisz.me:8888"</span>
+<span class="nb">alias </span><span class="nv">unsetproxy</span><span class="o">=</span><span class="s2">"unset ALL_PROXY"</span>
+setproxy
+</code></pre></div></div>
+
+<h3 id="ssh">SSH</h3>
+
+<p>  SSH 代理主要应用于终端或者某些远程管理软件（比如 Xshell 等），当然也可以与远程服务器本身的 OpenSSH 服务联合起来实现多级代理访问。以下为一个 config 文件的配置示例：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># outserver 为外网服务器集群入口，拥有公网 IP</span>
+<span class="c"># 通过内部网提供的 SSH 代理服务器 gateway 代理访问</span>
+Host outserver
+    HostName outserver.lisz.me
+    Port 22
+    User nologin_user
+    ProxyCommand nc <span class="nt">-X</span> 5 <span class="nt">-x</span> gateway.lisz.me:1080 %h %p
+
+<span class="c"># app 为外网服务器集群中的应用节点，只拥有局域网 IP</span>
+<span class="c"># 通过 outserver 自身的 OpenSSH 服务代理访问 app</span>
+<span class="c"># 此处为两层级联 SSH 代理访问</span>
+Host app
+    HostName 192.168.1.100
+    Port 22
+    User ubuntu
+    ProxyJump outserver
+</code></pre></div></div>
+
+<blockquote>
+  <p>这里需要注意的是，内部网的 SSH 代理服务器是不需要秘钥访问的，outserver 必须要有秘钥登录权限。</p>
+</blockquote>
+
+<h3 id="ftp">FTP</h3>
+
+<p>  近年来 FTP 的访问需求感觉越来越少，毕竟大部分的时候可以使用基于 SSH 的 <code class="language-plaintext highlighter-rouge">scp</code> 和 <code class="language-plaintext highlighter-rouge">rsync</code> 命令来替代。这里给出 Filezilla 软件的 FTP 代理设置示例，同时也提供终端上的替代命令。</p>
+
+<p><img src="https://i.vgy.me/X668Vv.png" alt="FTP 通用代理配置" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以下命令的使用需先配置好上述的 SSH 终端代理配置</span>
+<span class="c"># 复制文件夹 test 到 app 服务器上</span>
+scp <span class="nt">-r</span> <span class="nb">test </span>app:/home/ubuntu/
+rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh /home/zhonger/test/ app:/home/ubuntu/
+
+<span class="c"># 从 app 服务器上下载 test 文件夹到本地</span>
+rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubuntu/ /home/zhonger/test/
+</code></pre></div></div>
+
+<blockquote>
+  <p>scp 在此处只能单向使用，rsync 可以双向使用。</p>
+</blockquote>
+
+<h2 id="远程开发使用">远程开发使用</h2>
+
+<p>  随着项目开发的资源需求越来越大，代码安全性越来越重视，现在都在推崇云开发。近年来比较出名的有像被 AWS 收购的在线编辑器 Cloud9，腾讯云收购的 Coding 推出的 Cloud Studio，国外流行的在线编辑器 GroomIDE，微软旗下的开源编辑器 VS Code ，Eclipse 推出的 Eclipse theia 在线编辑器等等。这些强大的在线编辑器或者支持连接远程服务器开发的编辑器极大地改变了现代开发的方式，不仅解决了开发资源限制的问题，还为开发者提供了最简便的开发环境配置，在线调试、内部预览、团队协作等需求都得到了很好地满足。</p>
+
+<p>  值得一提的是，这些编辑器都有一个基础共识—-包含文件管理、终端、预览和插件管理等远程开发必备的功能。本人在最开始接触代码编写的时候，Sublime 所具有自定义化、插件化的特点赢来了很多的拥护，同时也提供一个相对较弱的终端。随着 Bracket、Atom、VS Code等编辑器的涌现，终端已经成为了一个合格编辑器所应当具有的特点。尤其是在 Unix/Linux 操作系统终端相比 UI 更加方便快捷。当然，近些年 Windows 平台也有这种趋势，各种各样的支持命令化软件管理的项目推出，为 Windows 系统上的终端使用也增加了更多的可能。</p>
+
+<p>  下面以 VS Code 为例介绍编辑器远程开发使用：</p>
+
+<ol>
+  <li>安装 Remote Development 扩展</li>
+  <li>配置远程服务器 config 配置文件</li>
+  <li>在 VS Code 编辑器的左边按钮导航栏中选中 SSH TARGETS，点击对应的远程主机即可访问</li>
+  <li>按 ctrl + ` 键即可打开终端</li>
+  <li>点击“打开文件夹”按钮即可打开远程服务器上的文件夹显示目录</li>
+</ol>
+
+<p><img src="https://i.vgy.me/usZH3y.png" alt="VS Code 远程开发" /></p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/jekyll-optimization.html" class="read-next-link"></a>
+        <section>
+          <span>Jekyll 优化合集</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/docker-slurm-cluster.html" class="read-next-link"></a>
+          <section>
+            <span>Docker 快速部署 Slurm 集群</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1514613453913-ec5da0db2faa?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

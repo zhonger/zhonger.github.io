@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人免费博客花式搭建指南 FTP 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人免费博客花式搭建指南 FTP 篇">
+    <meta name="keywords"  content="blog, free, static, hexo, jekyll, ftp">
+    <!-- Open Graph -->
+    <meta property="og:title" content="个人免费博客花式搭建指南 FTP 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/start-blog-ftp.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#blog" class="post-tag">blog</a>
+          
+            <a href="/tags.html#free" class="post-tag">free</a>
+          
+            <a href="/tags.html#static" class="post-tag">static</a>
+          
+            <a href="/tags.html#hexo" class="post-tag">hexo</a>
+          
+            <a href="/tags.html#jekyll" class="post-tag">jekyll</a>
+          
+            <a href="/tags.html#ftp" class="post-tag">ftp</a>
+          
+        
+      </div>
+      <h1>个人免费博客花式搭建指南 FTP 篇</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-04-09"><i class="iconfont icon-date"></i>Fri, 09 Apr 2021 17:23:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 3167 字 <b>·</b> 阅读全文大约需要 10 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1601812535834-2e65e370af6d?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<h3 id="虚拟主机">虚拟主机</h3>
+
+<p>  传统虚拟主机是最早的博客建站方式之一，也是对用户要求较低的方式之一。一般来说，虚拟主机空间与静态空间还有所不同。虽然二者可能都支持 FTP 方式管理空间，但是虚拟主机空间往往是 PHP 空间或者 ASP.net 空间，支持 PHP 或 .Net 语言。根据提供虚拟主机空间的操作系统不同，可以将虚拟主机空间分为 Windows 虚拟主机和 Linux 虚拟主机。</p>
+
+<p>  网络上收费的虚拟主机空间比比皆是，也有不少免费的。笔者在 WordPress 建站之初使用的是 <a href="https://west.cn">西部数据</a> 的 1G 虚拟主机空间，当时一年大概一百出头，现在将近两百。之后慢慢接触了阿里云，用上了阿里云的学生认证云服务器和一年免费虚拟主机。对比用过的这两款虚拟主机，感觉使用上没有太大的不同，都是可以从给定的 PHP 版本中选择、读取访问日志和错误日志、采用 FTP 方式管理空间内容。后来一年免费使用期结束后，就通过 <a href="https://www.freehao123.com/">免费资源部落</a> （站长 Qi 现已全面转向 <a href="https://wzfou.com">挖站否</a>，原网站交由其他人运营） 寻找国内外一些免费的虚拟主机。国内免费虚拟主机往往都是要你在主机交流论坛上发帖给他们做宣传，现在也有转变为发微信朋友圈宣传。而国外虚拟主机虽然没有这种套路，但是也会有一定的不足，比如说国内访问速度慢、有广告，在一定程度上也限制了使用的想法。所以笔者在此之后几乎没有使用过所谓的虚拟主机了。</p>
+
+<h3 id="u-file">U-File</h3>
+
+<p>  大概 2019 年的时候，笔者开始接触了 <a href="https://u-file.cn">U-File</a>，一个提供 3T 大容量静态文件托管的免费平台。那个时候 U-File 还是只提供普通的 FTP 文件管理功能，免费用户使用的空间大而已。后来慢慢地开始提供自定义域名绑定、SSL 证书管理、直链等功能。这样一来，使用起来与普通的静态空间毫无差异，可以上传静态网页搭建博客。笔者一度怀疑 U-File 是基于某个对象存储而开发出来的，通过以下命令查询 FTP 的服务器地址可以看到，其底层是 <a href="https://upyun.com">又拍云</a> 确信无疑。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dig box.u-file.cn @1.1.1.1
+
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.10.6 &lt;&lt;<span class="o">&gt;&gt;</span> box.u-file.cn @1.1.1.1
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 31665
+;; flags: qr rd ra; QUERY: 1, ANSWER: 7, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;box.u-file.cn.			IN	A
+
+;; ANSWER SECTION:
+box.u-file.cn.		600	IN	CNAME	mxk.own-cloud.cn.
+mxk.own-cloud.cn.	600	IN	CNAME	v0.ftp.upyun.com.
+v0.ftp.upyun.com.	300	IN	A	118.116.2.3
+v0.ftp.upyun.com.	300	IN	A	121.12.52.4
+v0.ftp.upyun.com.	300	IN	A	36.99.71.15
+v0.ftp.upyun.com.	300	IN	A	58.222.16.5
+v0.ftp.upyun.com.	300	IN	A	117.21.235.5
+
+;; Query time: 940 msec
+;; SERVER: 1.1.1.1#53(1.1.1.1)
+;; WHEN: Sat Apr 10 08:47:00 JST 2021
+;; MSG SIZE  rcvd: 180
+</span></code></pre></div></div>
+
+<h2 id="实现与评价">实现与评价</h2>
+
+<p>  以 U-File 为例解释一下如何使用 FTP 的方式部署静态博客。根据部署方式的不同，可以分为 <strong>手动部署</strong> 和 <strong>自动部署</strong>：</p>
+
+<blockquote>
+  <p>如何注册并获取 U-File 的 FTP 账号等信息请移步 <a href="https://u-file.cn">U-File 官网</a>。</p>
+</blockquote>
+
+<h3 id="手动部署">手动部署</h3>
+
+<p>  手动部署一般是要借助一些 FTP 客户端来上传最新的静态博客内容，比如 Filezilla (全平台)、WinSCP (Windows)、Transmit (Mac) 等等。这三款软件笔者分别在三个平台都使用过，总体上感觉都不错。本地目录和远程目录都是左右式布局，直接拖拽就可以完成上传下载，操作简单便捷。下面就以 Filezilla 为例：</p>
+
+<h4 id="下载安装-filezilla">下载安装 Filezilla</h4>
+
+<p>访问 <a href="https://filezilla-project.org/">Filezilla 官网</a> 点击安装按钮。
+<img src="https://i.vgy.me/XgchsU.png" alt="vgy.me" /></p>
+
+<h4 id="新建主机">新建主机</h4>
+
+<p>打开 Filezilla，点击左上角<strong>新建虚拟主机</strong>按钮。
+<img src="https://i.vgy.me/XxzF1N.png" alt="vgy.me" /></p>
+
+<p>填写 FTP 服务器信息、登录用户名和密码。
+<img src="https://i.vgy.me/wlE1Wl.png" alt="vgy.me" /></p>
+
+<h4 id="上传最新静态博客文件">上传最新静态博客文件</h4>
+
+<p>点击<strong>连接</strong>按钮开始访问 FTP 空间，将 _site 目录下的文件拖到右边远程根目录。</p>
+
+<p><img src="https://i.vgy.me/franDc.png" alt="vgy.me" /></p>
+
+<blockquote>
+  <p>使用 <code class="language-plaintext highlighter-rouge">bundle exec jekyll b</code> 命令可以生成 _site 目录。</p>
+</blockquote>
+
+<h3 id="自动部署">自动部署</h3>
+
+<p>  为了提高自动化效率，不同的静态站点生成器都开发了相关的插件来辅助实现自动化上传。比如说 Jekyll 中就有 <a href="https://github.com/JesseHerrick/jekyll-ftp">JesseHerrick/jekyll-ftp</a> 这种插件。不过由于安全性的考虑，一般来说 FTP 的登录密码是不会写入到项目的配置文件中的，只能在执行命令的时候作为一个参数传入。这样一来，也不能称得上是全自动化部署。如果想要全自动化部署，那最好还是把 Github 项目与自动化流水线一起使用为好，像 Github Action、Jenkins、Travis CI、Buddy 等等。除此之外，也有另辟蹊径的方法，比如 <a href="https://github.com/git-ftp/git-ftp">git-ftp/git-ftp</a> 项目就是给 git 加了一个 FTP 功能。git-ftp 可以根据指定的 Git 分支内容进行 FTP 部署，非常灵活。</p>
+
+<p>  考虑到 Github 和 Tranvis CI 需要自行编写配置文件，Jenkins 需要自行搭建服务，这里就以界面交互方便的 <a href="https://buddy.works">Buddy</a> 为例谈一谈如何全自动化部署。</p>
+
+<h4 id="创建项目">创建项目</h4>
+
+<p>  访问 <a href="https://buddy.works">Buddy 官网</a> ，使用 Github 账户登录即可，如下图所示搜索到想要部署的项目，并选中创建。</p>
+
+<p><img src="https://i.vgy.me/jPs082.png" alt="vgy.me" /></p>
+
+<h4 id="创建流水线">创建流水线</h4>
+
+<p>转到项目页面后，点击 <strong>Create a pipeline</strong> 按钮。</p>
+
+<p><img src="https://i.vgy.me/dBicNi.png" alt="vgy.me" /></p>
+
+<p>  如下图所示填写流水线名称、选中在代码发生 PUSH 操作时触发流水线、操作的分支设置为 master 单分支，点击下面按钮完成创建。</p>
+
+<p><img src="https://i.vgy.me/KVsyYc.png" alt="vgy.me" /></p>
+
+<h4 id="添加-jekyll-编译动作">添加 Jekyll 编译动作</h4>
+
+<p>如下图所示，点击 Add an action 按钮，选中 Jekyll。</p>
+
+<p><img src="https://i.vgy.me/pofkrx.png" alt="vgy.me" /></p>
+
+<p>无须作任何修改，点击右下角的 Add this action 按钮即可完成添加。</p>
+
+<p><img src="https://i.vgy.me/22iq0A.png" alt="vgy.me" /></p>
+
+<h4 id="添加-ftp-部署动作">添加 FTP 部署动作</h4>
+
+<p>如下图所示再次添加一个动作，这次使用 FTP 字符筛选选中 TRANSFER 的 FTP。</p>
+
+<p><img src="https://i.vgy.me/rDMp5G.png" alt="vgy.me" /></p>
+
+<p>  选择从流水线文件系统加载文件，并将源目录设置为 _site，远程目录不变。同时修改 FTP 主机地址及端口、登录用户名和密码三个参数。</p>
+
+<p><img src="https://i.vgy.me/KJ5gY7.png" alt="vgy.me" /></p>
+
+<p>为了防止同名文件，开启删除同名旧文件，不使用缓存文件，点击 Add this action 按钮完成添加。</p>
+
+<p><img src="https://i.vgy.me/QW3Dqp.png" alt="vgy.me" /></p>
+
+<h4 id="运行流水线">运行流水线</h4>
+
+<p>如下图所示，可以看到两个动作添加完毕，点击右上角 Run pipeline 按钮开始执行流水线。</p>
+
+<p><img src="https://i.vgy.me/I8oZgQ.png" alt="vgy.me" /></p>
+
+<p>从下图可以看到<strong>环境准备</strong>和 Jekyll 编译动作正在执行。</p>
+
+<p><img src="https://i.vgy.me/h4ptZ3.png" alt="vgy.me" /></p>
+
+<p>等待两分钟左右，可以看到 FTP 部署动作成功完成。</p>
+
+<p><img src="https://i.vgy.me/TtKsWd.png" alt="vgy.me" /></p>
+
+<h3 id="评价">评价</h3>
+
+<p>  FTP 虽然已经慢慢成为了一个古老的东西，但一直都不过时。在使用 FTP 方式将静态网站页面部署到虚拟主机空间时，仍然体现了 FTP 文件管理的优势。从手动部署和自动部署的对比来看，虽然手动部署需要页面生成和拖拽上传这两步，自动部署则只需要将代码上传到 Github，但是所花的时间也不会相差太大。有了自动部署的好处就是，可以更加专注于博客内容本身，即使是在不常用的机器上编写再推送到 Github，也不需要担心本地没有环境编译 Jekyll 以及用 FTP 客户端配置 FTP 信息和上传静态页面。</p>
+
+<p>  上文中笔者选择 Buddy 的原因，除了和其他的对比它更加具有安全私密性，还因为它同时支持多种部署方式。也就是说，如果想要添加一个新的部署方式，只需要添加一个部署动作即可，非常方便快捷，所有多节点部署一步到位。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-vps.html" class="read-next-link"></a>
+        <section>
+          <span>个人免费博客花式搭建指南 VPS 篇</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1587471384749-6d25c9944c5a?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-cloudflare.html" class="read-next-link"></a>
+          <section>
+            <span>个人免费博客花式搭建指南 Cloudflare 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1610070945206-2f5cafcb4e2b?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

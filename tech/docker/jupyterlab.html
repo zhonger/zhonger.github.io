@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JupyterLab 的搭建与运维 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="JupyterLab 的搭建与运维">
+    <meta name="keywords"  content="JupyterLab, Docker, Gitlab">
+    <!-- Open Graph -->
+    <meta property="og:title" content="JupyterLab 的搭建与运维 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/jupyterlab.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#JupyterLab" class="post-tag">JupyterLab</a>
+          
+            <a href="/tags.html#Docker" class="post-tag">Docker</a>
+          
+            <a href="/tags.html#Gitlab" class="post-tag">Gitlab</a>
+          
+        
+      </div>
+      <h1>JupyterLab 的搭建与运维</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-07-25"><i class="iconfont icon-date"></i>Sun, 25 Jul 2021 08:20:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 10688 字 <b>·</b> 阅读全文大约需要 31 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">多实例多用户的 Jupyterhub</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  <a href="https://jupyter.org/">Jupyter</a>， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>。不过笔者还是比较喜欢 <a href="https://code.visualstudio.com/">VS Code</a>，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。</p>
+
+<p>  在 Jupyter 出现之前，也有可以替代 Python 自带的 Python Shell 的 <a href="https://ipython.org/">IPython</a>。笔者在早期也曾使用过，体验还不错。其实，Jupyter 就是2014 年从 IPython 中衍生出来的，所以从 IPython 过渡到 Jupyter 毫无困难。如果说 IPython 是为了 Python 而量身定制的话，那么 Jupyter 则是为包括 Julia、Python、R 在内的几十种编程语言（<a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels">详情连接</a>）的交互式数据科学和科学计算而生的。</p>
+
+<p>  早期的 Jupyter 只包含 Jupyter Kernels 和 Jupyter Notebook，其中 Jupyter Kernels 是用于支持编程语言的内核，Jupyter Notebook 是基于 Web 的交互式计算环境，前身是 IPython Notebook。现在的 Jupyter 除了这两者以外还有 JupyterHub、JupyterHub API 和 JupyterLab。JupyterHub 是一个用于 Jupyter Notebook 的多用户服务器。它通过生成、管理和代理许多单一的 Jupyter Notebook 服务器来支持多用户。JupyterHub API 是以 REST 风格向开发者们提供的 API 接口，可以完成一系列对 Jupyter 的操作，比如生成用户环境、配置环境等。JupyterLab 号称是 Jupyter 项目的下一代用户界面，它以一个灵活且强大的用户界面向用户提供经典的 Jupyter Notebook、终端、编辑器、文件浏览器、丰富输出等模块，俨然像是朝着现代化的理想编辑器的目标进发的。</p>
+
+<p>  无论之前的 Jupyter 是什么样子，现在的 JupyterLab 已经是和曾经的 Cloud9 （一款先进的在线代码编辑器，现已被 AWS 收购）一样的支持多用户多实例的代码运行平台。对于从事科学研究的团队来说，使用 JupyterLab 搭建一个内部科学计算平台成为了可能。当然，个人用户还是可以选择使用 Anaconda 或者 PIP 来安装单用户版本。</p>
+
+<h2 id="搭建">搭建</h2>
+
+<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的<a href="https://jupyter-docker-stacks.readthedocs.io/">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks">Dockerfile 集合</a> 吧。</p>
+
+<p>  JupyterLab 提供两种方式启动多用户多实例：</p>
+<ul>
+  <li><strong>DockerSpawner 方式</strong>：每个用户独享一个 Docker 实例，能有效隔离用户。</li>
+  <li><strong>SystemSpawner 方式</strong>：共享同一个 Docker 实例，以系统用户身份运行。</li>
+</ul>
+
+<p>  事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。</p>
+
+<p><img src="https://jupyterhub.readthedocs.io/en/stable/_images/jhub-fluxogram.jpeg" alt="JupyterHub 架构图" /></p>
+
+<p>  以下为搭建所需的文件的列表：</p>
+
+<p><img src="https://i.vgy.me/4pnx0D.png" alt="vgy.me" /></p>
+
+<h3 id="构建-jupyter-notebook-实例镜像">构建 Jupyter Notebook 实例镜像</h3>
+
+<h4 id="基础镜像-base-notebook">基础镜像 base-notebook</h4>
+
+<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">base-notebook 目录</a>一致。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
+<span class="s">ARG ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04</span>
+
+<span class="s">ARG BASE_CONTAINER=$ROOT_CONTAINER</span>
+<span class="s">FROM $BASE_CONTAINER</span>
+
+<span class="s">ARG NB_USER="ubuntu"</span>
+<span class="s">ARG NB_UID="1000"</span>
+<span class="s">ARG NB_GID="100"</span>
+
+<span class="c1"># Fix DL4006</span>
+<span class="s">SHELL ["/bin/bash", "-o", "pipefail", "-c"]</span>
+
+<span class="s">USER root</span>
+
+<span class="c1"># Install all OS dependencies for notebook server that starts but lacks all</span>
+<span class="c1"># features (e.g., download as all possible file formats)</span>
+<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
+<span class="s">RUN apt-get update \</span>
+    <span class="s">&amp;&amp; apt-get install -yq --no-install-recommends wget htop vim bzip2 ca-certificates sudo locales fonts-liberation run-one \</span>
+    <span class="s">&amp;&amp; apt-get clean \</span>
+    <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
+
+<span class="s">RUN echo "en_US.UTF-8 UTF-8" &gt; /etc/locale.gen &amp;&amp; \</span>
+    <span class="s">locale-gen</span>
+
+<span class="c1"># Configure environment</span>
+<span class="s">ENV CONDA_DIR=/opt/conda \</span>
+    <span class="s">SHELL=/bin/bash \</span>
+    <span class="s">NB_USER=$NB_USER \</span>
+    <span class="s">NB_UID=$NB_UID \</span>
+    <span class="s">NB_GID=$NB_GID \</span>
+    <span class="s">LC_ALL=en_US.UTF-8 \</span>
+    <span class="s">LANG=en_US.UTF-8 \</span>
+    <span class="s">LANGUAGE=en_US.UTF-8</span>
+<span class="s">ENV PATH=$CONDA_DIR/bin:$PATH \</span>
+    <span class="s">HOME=/home/$NB_USER</span>
+
+<span class="c1"># Copy a script that we will use to correct permissions after running certain commands</span>
+<span class="s">COPY fix-permissions /usr/local/bin/fix-permissions</span>
+<span class="s">RUN chmod a+rx /usr/local/bin/fix-permissions</span>
+
+<span class="c1"># Enable prompt color in the skeleton .bashrc before creating the default NB_USER</span>
+<span class="s">RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashrc</span>
+
+<span class="c1"># Create NB_USER wtih name ubuntu user with UID=1000 and in the 'users' group</span>
+<span class="c1"># and make sure these dirs are writable by the `users` group.</span>
+<span class="s">RUN echo "auth requisite pam_deny.so" &gt;&gt; /etc/pam.d/su \</span>
+    <span class="s">&amp;&amp; sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers \</span>
+    <span class="s">&amp;&amp; sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers \</span>
+    <span class="s">&amp;&amp; useradd -m -s /bin/bash -N -u $NB_UID $NB_USER -g $NB_GID \</span>
+    <span class="s">&amp;&amp; mkdir -p $CONDA_DIR \</span>
+    <span class="s"># &amp;&amp; chown $NB_USER:$NB_GID  \</span>
+    <span class="s">&amp;&amp; chmod g+w /etc/passwd \</span>
+    <span class="s">&amp;&amp; fix-permissions $HOME \</span>
+    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
+    <span class="s">&amp;&amp; adduser ubuntu sudo \</span>
+    <span class="s">&amp;&amp; echo "ubuntu ALL=(ALL) NOPASSWD</span> <span class="err">:</span> <span class="s">ALL" | tee /etc/sudoers.d/nopasswd4sudo</span>
+
+<span class="s">USER $NB_UID</span>
+<span class="s">WORKDIR $HOME</span>
+<span class="s">ARG PYTHON_VERSION=default</span>
+
+<span class="c1"># Setup work directory for backward-compatibility</span>
+<span class="s">RUN mkdir /home/$NB_USER/work &amp;&amp; \</span>
+    <span class="s">fix-permissions /home/$NB_USER</span>
+
+<span class="c1"># Install conda as ubuntu and check the md5 sum provided on the download site</span>
+<span class="s">ENV MINICONDA_VERSION=4.9.2 \</span>
+    <span class="s">MINICONDA_MD5=122c8c9beb51e124ab32a0fa6426c656 \</span>
+    <span class="s">CONDA_VERSION=4.9.2</span>
+
+<span class="s">WORKDIR /tmp</span>
+<span class="s">RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh  \</span>
+    <span class="s">&amp;&amp; echo "${MINICONDA_MD5} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c -  \</span>
+    <span class="s">&amp;&amp; /bin/bash Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR \</span>
+    <span class="s">&amp;&amp; rm Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh \</span>
+    <span class="s">&amp;&amp; echo "conda ${CONDA_VERSION}" &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
+    <span class="s">&amp;&amp; conda config --system --prepend channels conda-forge \</span>
+    <span class="s">&amp;&amp; conda config --system --set auto_update_conda </span><span class="no">false</span><span class="s"> \</span>
+    <span class="s">&amp;&amp; conda config --system --set show_channel_urls </span><span class="no">true</span><span class="s"> \</span>
+    <span class="s">&amp;&amp; conda config --system --set channel_priority strict \</span>
+    <span class="s">&amp;&amp; if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi \</span>
+    <span class="s">&amp;&amp; conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
+    <span class="s">&amp;&amp; conda install --quiet --yes conda \</span>
+    <span class="s">&amp;&amp; conda install --quiet --yes pip \</span>
+    <span class="s">&amp;&amp; conda update --all --quiet --yes \</span>
+    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
+    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
+    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
+    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+
+<span class="c1"># Install Tini</span>
+<span class="s">RUN conda install --quiet --yes 'tini=0.18.0' \</span>
+    <span class="s">&amp;&amp; conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
+    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
+    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
+    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+
+<span class="c1"># Install Jupyter Notebook, Lab, and Hub</span>
+<span class="c1"># Generate a notebook server config</span>
+<span class="c1"># Cleanup temporary files</span>
+<span class="c1"># Correct permissions</span>
+<span class="c1"># Do all this in a single RUN command to avoid duplicating all of the</span>
+<span class="c1"># files across image layers when the permissions change</span>
+<span class="s">RUN conda install --quiet --yes \</span>
+    <span class="s">'notebook=6.4.0' \</span>
+    <span class="s">'jupyterhub=1.4.2' \</span>
+    <span class="s">'jupyterlab=3.0.16' \</span>
+    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
+    <span class="s">&amp;&amp; npm install -g npm@7.20.0 \</span>
+    <span class="s">&amp;&amp; npm cache clean --force \</span>
+    <span class="s">&amp;&amp; jupyter notebook --generate-config \</span>
+    <span class="s">&amp;&amp; rm -rf $CONDA_DIR/share/jupyter/lab/staging \</span>
+    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
+    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
+    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+
+<span class="s">EXPOSE </span><span class="m">8888</span>
+
+<span class="c1"># Configure container startup</span>
+<span class="s">ENTRYPOINT ["tini", "-g", "--"]</span>
+<span class="s">CMD ["start-notebook.sh"]</span>
+
+<span class="c1"># Copy local files as late as possible to avoid cache busting</span>
+<span class="s">COPY start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/</span>
+<span class="s">COPY jupyter_notebook_config.py /etc/jupyter/</span>
+
+<span class="c1"># Fix permissions on /etc/jupyter as root</span>
+<span class="s">USER root</span>
+<span class="s">RUN fix-permissions /etc/jupyter/</span>
+<span class="s">RUN chmod +x /usr/local/bin/start-notebook.sh /usr/local/bin/start-singleuser.sh /usr/local/bin/start.sh</span>
+
+<span class="c1"># Switch back to ubuntu to avoid accidental container runs as root</span>
+<span class="s">USER $NB_UID</span>
+
+<span class="s">WORKDIR $HOME</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> base-notebook:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<h4 id="单用户镜像-singleuser">单用户镜像 singleuser</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
+<span class="s">ARG BASE_IMAGE=base-notebook:latest</span>
+<span class="s">FROM $BASE_IMAGE</span>
+
+<span class="s">ADD install_jupyterhub /tmp/install_jupyterhub</span>
+<span class="s">ARG JUPYTERHUB_VERSION=master</span>
+<span class="c1"># install pinned jupyterhub and ensure notebook is installed</span>
+<span class="s">RUN </span><span class="no">true</span><span class="s"> &amp;&amp; \</span>
+    <span class="s">python3 -m pip install notebook jupyterhub</span>
+</code></pre></div></div>
+<p>install_jupyterhub 脚本文件</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'JUPYTERHUB_VERSION'</span><span class="p">]</span>
+
+<span class="n">pip_install</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">,</span> <span class="s">'-m'</span><span class="p">,</span> <span class="s">'pip'</span><span class="p">,</span> <span class="s">'install'</span><span class="p">,</span> <span class="s">'--no-cache'</span><span class="p">,</span> <span class="s">'--upgrade'</span><span class="p">,</span>
+    <span class="s">'--upgrade-strategy'</span><span class="p">,</span> <span class="s">'only-if-needed'</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="k">if</span> <span class="n">V</span> <span class="o">==</span> <span class="s">'master'</span><span class="p">:</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="s">'https://github.com/jupyterhub/jupyterhub/archive/master.tar.gz'</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">version_info</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">V</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">version_info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="s">'.'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">version_info</span><span class="p">))</span>
+    <span class="n">vs</span> <span class="o">=</span> <span class="s">'&gt;=%s,&lt;%s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="s">'jupyterhub%s'</span> <span class="o">%</span> <span class="n">vs</span>
+
+<span class="n">check_call</span><span class="p">(</span><span class="n">pip_install</span> <span class="o">+</span> <span class="p">[</span><span class="n">req</span><span class="p">])</span>
+
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> singleuser:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<h4 id="jupyterlab-单用户镜像-jupyter_lab_singleuser">JupyterLab 单用户镜像 jupyter_lab_singleuser</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ARG BASE_IMAGE=singleuser:latest</span>
+<span class="s">FROM ${BASE_IMAGE}</span>
+
+<span class="c1"># Install jupyterlab</span>
+<span class="s">RUN conda update -n base conda \</span>
+    <span class="s">&amp;&amp; conda install -c conda-forge jupyterlab</span>
+<span class="s">RUN jupyter serverextension enable --py jupyterlab --sys-prefix</span>
+<span class="s">USER root</span>
+<span class="s">RUN chpasswd &lt;&lt;&lt; "ubuntu:ubuntu" \</span>
+    <span class="s">&amp;&amp; sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list \</span>
+    <span class="s">&amp;&amp; apt update \</span>
+    <span class="s">&amp;&amp; apt install -y git zsh vim \</span>
+    <span class="s">&amp;&amp; usermod -s /bin/zsh ubuntu \</span>
+    <span class="s">&amp;&amp; echo 'chown -R ubuntu:users /home/ubuntu/work' &gt;&gt; /usr/local/bin/start-notebook.sh</span>
+
+<span class="c1"># Add supports for zsh and zh-CN language</span>
+<span class="s">USER ubuntu</span>
+<span class="s">RUN git clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh \</span>
+    <span class="s">&amp;&amp; cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \</span>
+    <span class="s">&amp;&amp; sed -i "s/robbyrussell/bira/" ~/.zshrc \</span>
+    <span class="s">&amp;&amp; wget -c https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/jupyterhub/jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
+    <span class="s">&amp;&amp; pip install jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
+    <span class="s">&amp;&amp; rm jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> jupyter_lab_single:latest <span class="nb">.</span>
+</code></pre></div></div>
+
+<h3 id="构建-jupyterhub-镜像">构建 JupyterHub 镜像</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
+
+<span class="s">ARG BASE_IMAGE=jupyterhub/jupyterhub:latest</span>
+<span class="s">FROM ${BASE_IMAGE}</span>
+
+<span class="s">RUN pip install --no-cache --upgrade jupyter \</span>
+    <span class="s">&amp;&amp; pip install --no-cache dockerspawner \</span>
+    <span class="s">&amp;&amp; pip install --no-cache oauthenticator</span>
+<span class="s">EXPOSE </span><span class="m">8000</span>
+</code></pre></div></div>
+
+<p>  这里配置挂载的本地目录为根据用户名而区分的目录，当 Gitlab 用户名中包含 <code class="language-plaintext highlighter-rouge">-</code> 时，<code class="language-plaintext highlighter-rouge">-</code> 会被转义为 <code class="language-plaintext highlighter-rouge">2d</code>。另外，这里的本地目录需要预先建立好，否则由于 Docker 自身的安全性而新建立的目录的所有者会是 root 用户，这样就不能够正常使用该目录。以下配置文件需放置在 docker-compose.yml 的同层目录 data 里面。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># jupyterhub_config.py
+</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">oauthenticator.gitlab</span> <span class="kn">import</span> <span class="n">GitLabOAuthenticator</span>
+<span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">authenticator_class</span> <span class="o">=</span> <span class="n">GitLabOAuthenticator</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">oauth_callback_url</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_OAUTH_CALLBACK"</span><span class="p">)</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_CLIENT"</span><span class="p">)</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_KEY"</span><span class="p">)</span>
+
+<span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">spawner_class</span> <span class="o">=</span> <span class="s">'dockerspawner.DockerSpawner'</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="s">'jupyter_lab_singleuser:latest'</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">environment</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s">'GRANT_SUDO'</span><span class="p">:</span> <span class="s">'1'</span><span class="p">,</span>
+  <span class="s">'UID'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="s">'ubuntu'</span><span class="p">}</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span><span class="p">.</span><span class="n">update</span><span class="p">({</span> <span class="s">'command'</span><span class="p">:</span> <span class="s">"start-singleuser.sh --SingleUserNotebookApp.default_url=/lab"</span> <span class="p">})</span>
+<span class="c1"># Mount the real user's Docker volume on the host to the notebook user's
+# notebook directory in the container
+</span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="s">'/home/ubuntu/work'</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="n">notebook_dir</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">volumes</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'/home/data/jupyterhub/user-data-{username}'</span><span class="p">:</span> <span class="n">notebook_dir</span> <span class="p">}</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--allow-root'</span><span class="p">]</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">remove_containers</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1">#network
+</span><span class="n">network_name</span> <span class="o">=</span> <span class="s">'jupyterhub_network'</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">use_internal_ip</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">network_name</span> <span class="o">=</span> <span class="n">network_name</span>
+<span class="c1"># Pass the network name as argument to spawned containers
+</span><span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_host_config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'network_mode'</span><span class="p">:</span> <span class="n">network_name</span> <span class="p">}</span>
+
+<span class="c1"># IP Configurations
+</span><span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">hub_ip</span>  <span class="o">=</span> <span class="s">'172.18.0.2'</span>
+<span class="c1">#c.JupyterHub.port = 8000
+</span></code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">jupyterhub</span><span class="pi">:</span>
+        <span class="na">container_name</span><span class="pi">:</span> <span class="s">jupyterlab</span>
+        <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+        <span class="na">build</span><span class="pi">:</span> <span class="s">./</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">jupyterhub:latest</span>
+        <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8000"</span>
+        <span class="na">volumes</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock</span>
+            <span class="pi">-</span> <span class="s">./data/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py</span>
+        <span class="na">networks</span><span class="pi">:</span>
+            <span class="na">network</span><span class="pi">:</span>
+                <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">172.18.0.2</span>
+        <span class="na">environment</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">GITLAB_HOST=https://{Gitlab Domain}</span>
+            <span class="pi">-</span> <span class="s">GITLAB_API_CLIENT=xxxxxx</span>
+            <span class="pi">-</span> <span class="s">GITLAB_API_KEY=xxxxxx</span>
+            <span class="pi">-</span> <span class="s">GITLAB_OAUTH_CALLBACK=https://{JupyterHub Domain}/hub/oauth_callback</span>
+<span class="na">networks</span><span class="pi">:</span>
+    <span class="na">network</span><span class="pi">:</span>
+        <span class="na">driver</span><span class="pi">:</span> <span class="s">bridge</span>
+        <span class="na">ipam</span><span class="pi">:</span>
+            <span class="na">driver</span><span class="pi">:</span> <span class="s">default</span>
+            <span class="na">config</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">172.18.0.0/24</span>
+                  <span class="na">gateway</span><span class="pi">:</span> <span class="s">172.18.0.1</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h2 id="测试">测试</h2>
+
+<p>  访问 <a href="https://{JupyterHub Domain}/">https://{JupyterHub Domain}/</a> 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://zh.wikipedia.org/wiki/Jupyter">Jupyter - 维基百科</a></li>
+  <li><a href="http://zsduo.com/archives/244.html">JupyterLab 3.0 正式发布，同时解决中文语言包下载不成功，汉化不成功的问题，jupyterlab-language-pack-zh-CN 安装失败解决方案</a></li>
+  <li><a href="https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/">Jupyterlab 安装中文语言包失败</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/258724435">使用JupyterHub向多用户提供jupyter服务的思路</a></li>
+  <li><a href="https://www.kaifa99.com/GitHub/article_117797">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/gitlab.html" class="read-next-link"></a>
+        <section>
+          <span>私有代码托管平台的搭建与运维</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1627035983655-0ceec61bb733?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/remote-ssh.html" class="read-next-link"></a>
+          <section>
+            <span>[原创]远程服务环境与本地环境互联</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1623626981328-fae05b4bc2a0?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

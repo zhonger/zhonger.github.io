@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextcloud 搭建自己的云盘 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Nextcloud 搭建自己的云盘">
+    <meta name="keywords"  content="Nextcloud, docker, lnmpa, 云盘">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Nextcloud 搭建自己的云盘 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/nextcloud.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+          
+            <a href="/tags.html#docker" class="post-tag">docker</a>
+          
+            <a href="/tags.html#lnmpa" class="post-tag">lnmpa</a>
+          
+            <a href="/tags.html#%E4%BA%91%E7%9B%98" class="post-tag">云盘</a>
+          
+        
+      </div>
+      <h1>Nextcloud 搭建自己的云盘</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="18-03-24"><i class="iconfont icon-date"></i>Sat, 24 Mar 2018 17:49:44 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 4987 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="nextcloud-简介">Nextcloud 简介</h2>
+
+<p>  今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 <a href="https://mgea.nz">Mega</a> （由于核心人员出走最近好像也不行了）、微软的 <a href="https://onedrive.live.com">OneDrive</a>、老牌网盘 <a href="https://www.dropbox.com">Dropbox</a>、<a href="https://box.com">Box</a>、谷家的 <a href="https://drive.google.com">Google drive</a>（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。</p>
+
+<h2 id="docker-搭建-nextcloud">Docker 搭建 Nextcloud</h2>
+<p>  Docker 部署软件的好处我就不多提了：简单、高效，极其适合运维人员的应用管理工具。下面就先谈使用 Docker 一键搭建 Nextcloud。</p>
+
+<h3 id="安装-docker-环境">安装 Docker 环境</h3>
+
+<p>  请移步 <a href="/tech/docker-init.html">Docker 入门</a></p>
+
+<h3 id="安装-docker-compose-工具">安装 docker-compose 工具</h3>
+<p>  docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 python3 python3-pip</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> python3 python3-pip
+
+<span class="c"># 安装 docker-compose</span>
+<span class="nb">sudo </span>pip3 <span class="nb">install </span>docker-compose
+</code></pre></div></div>
+
+<h3 id="编写-docker-composeyml">编写 docker-compose.yml</h3>
+
+<p>  docker-compose 的管理主要依赖于一个名为 <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> 的 yaml 文件来进行管理，当然这个文件也可以以任何别的名称并以 <code class="language-plaintext highlighter-rouge">-f 文件名</code> 的方式来启用，但必须是符合 yaml 格式和 Docker 官方定义的字段和方式。以下为本实验所需的内容，其中用到了 mariadb 官方提供的数据库容器 和 Nextcloud 官方提供的应用容器。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/home/data/nextcloud/db:/var/lib/mysql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">MYSQL_ROOT_PASSWORD=root</span>
+      <span class="pi">-</span> <span class="s">MYSQL_PASSWORD=nextcloud</span>
+      <span class="pi">-</span> <span class="s">MYSQL_DATABASE=nextcloud</span>
+      <span class="pi">-</span> <span class="s">MYSQL_USER=nextcloud</span>
+
+  <span class="na">app</span><span class="pi">:</span>  
+    <span class="na">image</span><span class="pi">:</span> <span class="s">nextcloud</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">7009:80</span>
+    <span class="na">links</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/home/data/nextcloud/www:/var/www/html</span>
+</code></pre></div></div>
+
+<h3 id="启动容器">启动容器</h3>
+
+<p>  以下命令即可开始拉取所需容器的镜像文件并根据 docker-compose.yml 文件配置好本地文件夹挂载和端口映射。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动容器</span>
+<span class="nb">sudo </span>docker-compose up <span class="nt">-d</span>
+
+<span class="c"># 更新nextcloud</span>
+<span class="nb">sudo </span>docker pull nextcloud
+<span class="nb">sudo </span>docker-compose down <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+<p>  然后 Nextcloud 就在 7009 端口（可自行修改 docker-compose.yml 文件来改变）开启好了，使用浏览器访问 <code class="language-plaintext highlighter-rouge">http://IP:7009</code> 。</p>
+
+<h3 id="应用初始化配置">应用初始化配置</h3>
+
+<p>  自行设置管理员用户名和密码，数据目录默认即可，数据库信息填写如 docker-composer.yml 中所示，数据库主机名填 db （配置文件中的数据库应用名）。</p>
+
+<p><img src="https://vgy.me/4rRtnu.png" alt="初始化示意图" /></p>
+
+<p>  所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见 nextcloud 的主目录页面。到此处，Docker 搭建 Nextcloud 应用就大功告成了（也可在 80 端口安装 Nginx 服务代理到 7009 端口，此处不加赘述）。</p>
+
+<h2 id="lnmpa-搭建-nextcloud">LNMPA 搭建 Nextcloud</h2>
+
+<p>  本实验采用 Ubuntu 操作系统为例，其他 Linux 操作系统可以根据系统不同类比操作，操作步骤基本一致。</p>
+
+<h3 id="安装-lnmpa-环境">安装 LNMPA 环境</h3>
+
+<h4 id="为什么选用-lnmpa-而非-lnmp-或者-lmpa架构">为什么选用 LNMPA 而非 LNMP 或者 LMPA架构</h4>
+
+<p>  LNMPA 的含义：</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">L</code>： Linux操作系统</li>
+  <li><code class="language-plaintext highlighter-rouge">N</code>： Nginx web服务器软件</li>
+  <li><code class="language-plaintext highlighter-rouge">M</code>： MySQL、Mariadb等类MySQL数据库软件</li>
+  <li><code class="language-plaintext highlighter-rouge">P</code>： PHP编译环境</li>
+  <li><code class="language-plaintext highlighter-rouge">A</code>： Apache服务</li>
+</ul>
+
+<p>  LNMPA 相比其他两种架构的优势在于充分发挥了 Nginx 和 Apache 的功能优势，即 Nginx 擅长提供静态文件服务、代理 HTTP 请求服务、Apache 擅长对于动态编程语言的结合接管编译工作。</p>
+
+<h4 id="安装">安装</h4>
+<p>  <a href="https://lnmp.org">LNMP.org</a> 提供一键式的环境安装脚本，所有软件均从各种软件官方下载源码编译安装，软件升级也相当方便。如果你的CPU 核数不够的话，那么第一次安装的时候编译可能需要花很长一段时间。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 建议使用 tmux 来管理后台任务</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> tmux
+
+<span class="c"># 新建一个后台session</span>
+tmux new <span class="nt">-s</span> lnmpa
+<span class="c"># ctrl+b+d 将任务放到后台</span>
+<span class="c"># tmux attach -t lnmpa 进入后台session</span>
+
+<span class="c"># 下载一键安装包</span>
+wget <span class="nt">-c</span> http://soft1.vpser.net/lnmp/lnmp1.4-full.tar.gz
+
+<span class="c"># 解压压缩包</span>
+<span class="nb">tar </span>zxf lnmp1.4-full.tar.gz 
+
+<span class="c"># 执行安装程序</span>
+<span class="nb">cd </span>lnmp1.4-full
+<span class="nb">sudo</span> ./install.sh lnmpa
+
+<span class="c"># 安装完成后可以通过 http://IP 直接访问</span>
+</code></pre></div></div>
+
+<h3 id="准备工作">准备工作</h3>
+
+<h4 id="新建数据库">新建数据库</h4>
+<p>  使用 LNMPA 带的 phpMyadmin 可以直接新增数据库，比如数据库名为 nextcloud，分配用户名和密码均为 nextcloud。</p>
+
+<h4 id="安装-php-扩展">安装 PHP 扩展</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 lnmpa 一键安装包文件夹的 php 的 fileinfo 扩展源码目录</span>
+<span class="nb">cd</span> ～/lnmp1.4-full/src/php-7.1.4/ext/fileinfo
+
+<span class="c"># 从源码编译 fileinfo 扩展到 php 配置中</span>
+/usr/local/php/bin/phpize
+./configure <span class="nt">--with-php-config</span><span class="o">=</span>/usr/local/php/bin/php-config
+make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
+
+<span class="c"># 查看 fileinfo 是否启动</span>
+ php <span class="nt">-i</span> | <span class="nb">grep </span>fileinfo
+</code></pre></div></div>
+
+<h4 id="修改-nginx-和-php-配置">修改 Nginx 和 PHP 配置</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /usr/local/nginx/conf/nginx.conf</span>
+<span class="c"># 修改下面一行参数为10240m(10G)，增加上传最大文件大小</span>
+client_max_body_size 10240m<span class="p">;</span>
+
+<span class="c"># /usr/local/php/etc/php.ini</span>
+<span class="c"># 添加下面一行，以生效fileinfo扩展</span>
+extension <span class="o">=</span> fileinfo.so
+
+<span class="c"># 重启服务使配置生效</span>
+<span class="nb">sudo </span>lnmp restart
+</code></pre></div></div>
+
+<h3 id="安装-nextcloud">安装 Nextcloud</h3>
+
+<h4 id="下载-nextcloud-代码">下载 Nextcloud 代码</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 Nextcloud 源码</span>
+wget <span class="nt">-c</span> https://download.nextcloud.com/server/releases/nextcloud-13.0.1.zip
+
+<span class="c"># 解压源码</span>
+unzip nextcloud-13.0.1.zip
+
+<span class="c"># 将源码拷贝至 wwwroot 目录</span>
+<span class="nb">sudo cp</span> <span class="nt">-r</span> nextcloud /home/wwwroot/nextcloud
+<span class="nb">sudo chown</span> <span class="nt">-R</span> www:www /home/wwwroot/nextcloud
+</code></pre></div></div>
+
+<h4 id="添加虚拟主机">添加虚拟主机</h4>
+<p>  一种方式是使用 <code class="language-plaintext highlighter-rouge">lnmp vhost add</code> 的方式来添加（要求要域名，一步一步设置即可），另一种是直接添加文件，下面给出后一种方法无需域名的配置文件。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /usr/local/nginx/conf/vhost/default</span>
+
+server
+    <span class="o">{</span>
+        listen 80<span class="p">;</span>
+        listen <span class="o">[</span>::]:80<span class="p">;</span>
+        server_name default<span class="p">;</span>
+        index index.html index.htm index.php default.html default.htm default.php<span class="p">;</span>
+        root  /home/wwwroot/nextcloud<span class="p">;</span>
+
+        <span class="c">#error_page   404   /404.html;</span>
+        include proxy-pass-php.conf<span class="p">;</span>
+
+        location ~ .<span class="k">*</span><span class="se">\.</span><span class="o">(</span>gif|jpg|jpeg|png|bmp|swf<span class="o">)</span><span class="err">$</span>
+        <span class="o">{</span>
+            expires      30d<span class="p">;</span>
+        <span class="o">}</span>
+
+        location ~ .<span class="k">*</span><span class="se">\.</span><span class="o">(</span>js|css<span class="o">)</span>?<span class="err">$</span>
+        <span class="o">{</span>
+            expires      12h<span class="p">;</span>
+        <span class="o">}</span>
+
+        location ~ /<span class="se">\.</span>
+        <span class="o">{</span>
+            deny all<span class="p">;</span>
+        <span class="o">}</span>
+
+        access_log  /home/wwwlogs/nextcloud.log<span class="p">;</span>
+    <span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /usr/local/apache/conf/vhost/default</span>
+
+&lt;VirtualHost <span class="k">*</span>:88&gt;
+ServerAdmin webmaster@example.com
+php_admin_value open_basedir <span class="s2">"/home/wwwroot/nextcloud:/tmp/:/var/tmp/:/proc/:Data将要放置目录的绝对路径:/dev/urandom"</span>
+DocumentRoot <span class="s2">"/home/wwwroot/nextcloud"</span>
+ServerName default
+ErrorLog <span class="s2">"/home/wwwlogs/nextcloud-error_log"</span>
+CustomLog <span class="s2">"/home/wwwlogs/nextcloud-access_log"</span> combined
+&lt;Directory <span class="s2">"/home/wwwroot/nextcloud"</span><span class="o">&gt;</span>
+    SetOutputFilter DEFLATE
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    DirectoryIndex index.html index.php
+&lt;/Directory&gt;
+&lt;/VirtualHost&gt;
+</code></pre></div></div>
+<p>  使用 <code class="language-plaintext highlighter-rouge">sudo lnmp restart</code> 重启服务生效，接着即可通过浏览器访问 <code class="language-plaintext highlighter-rouge">http://IP</code> 或者 <code class="language-plaintext highlighter-rouge">http://域名</code> 来访问。</p>
+
+<h3 id="配置-nextcloud">配置 Nextcloud</h3>
+
+<p>  自行设置管理员用户名和密码，数据目录可任意选择一处有权限的目录即可（默认的应为 /home/wwwroot/nextcloud/data，建议填一个非源代码的目录便于版本更新，比如 /home/data/nextcloud，要求所属用户和用户组为 www-data），数据库信息均填写 nextcloud，数据库主机名默认填 localhost。
+<img src="https://vgy.me/4rRtnu.png" alt="初始化示意图" /></p>
+
+<p>  所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， <code class="language-plaintext highlighter-rouge">LNMPA</code> 搭建 <code class="language-plaintext highlighter-rouge">Nextcloud</code> 应用就完成了，不过更新应用版本的话就更麻烦一点了。</p>
+
+<h3 id="更新-nextcloud">更新 Nextcloud</h3>
+
+<p>  这种方式安装的 Nextcloud 也需要通过源代码更新的方式来更新，以下为主要步骤。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 备份原来的源代码</span>
+<span class="nb">sudo mv</span> /home/wwwroot/nextcloud /home/wwwroot/netxcloud-old/
+
+<span class="c"># 下载最新的源代码</span>
+wget <span class="nt">-c</span> https://download.nextcloud.com/server/releases/latest.zip
+unzip latest.zip
+<span class="nb">cd </span>nextcloud
+<span class="nb">sudo cp</span> <span class="nt">-r</span> nextcloud /home/wwwroot/nextcloud
+<span class="nb">sudo chown</span> <span class="nt">-R</span> www:www /home/wwwroot/nextcloud
+
+<span class="c"># 应用更新</span>
+<span class="nb">cd</span> /home/wwwroot/
+<span class="nb">sudo cp </span>nextcloud-old/config/config.php nextcloud/confi/config.php
+
+<span class="nb">cd</span> /home/wwwroot/nextcloud
+<span class="nb">sudo</span> <span class="nt">-u</span> www /usr/local/php/bin/php occ maintenance:mode <span class="nt">--on</span>
+<span class="nb">sudo</span> <span class="nt">-u</span> www /usr/local/php/bin/php occ upgrade
+<span class="nb">sudo</span> <span class="nt">-u</span> www /usr/local/php/bin/php occ maintenance:mode <span class="nt">--off</span>
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/onlyoffice.html" class="read-next-link"></a>
+        <section>
+          <span>Onlyoffice 搭建</span>
+          <p>Onlyoffice 搭建</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
+          <section>
+            <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
+            <p>HTTPS 和 Let’s encrypt 简介</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

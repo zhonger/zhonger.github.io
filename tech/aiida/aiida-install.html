@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiiDA 开源数据管理软件 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="AiiDA 开源数据管理软件">
+    <meta name="keywords"  content="AiiDA, data management, calculation, postgresql, rabbitmq">
+    <!-- Open Graph -->
+    <meta property="og:title" content="AiiDA 开源数据管理软件 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/aiida/aiida-install.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#AiiDA" class="post-tag">AiiDA</a>
+          
+            <a href="/tags.html#data%20management" class="post-tag">data management</a>
+          
+            <a href="/tags.html#calculation" class="post-tag">calculation</a>
+          
+            <a href="/tags.html#postgresql" class="post-tag">postgresql</a>
+          
+            <a href="/tags.html#rabbitmq" class="post-tag">rabbitmq</a>
+          
+        
+      </div>
+      <h1>AiiDA 开源数据管理软件</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-05-12"><i class="iconfont icon-date"></i>Wed, 12 May 2021 16:30:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 6663 字 <b>·</b> 阅读全文大约需要 20 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1606765962248-7ff407b51667?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">用一个开源软件把你计算的数据管起来</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  对于机器学习来说，模型和数据是非常重要的。而模型与数据相比，模型即便是优化得再好，数据不够、不好的话，最终也不能得到一个好的预测结果。因此，我们在使用机器学习方法去建立某个领域模型的同时，也要注意相关原始数据的收集和整理。当我们需要通过庞大的计算量来获取数据的时候，通常可能需要使用大型服务器集群，甚至高性能集群、超算等等。这个时候，即使我们提交的计算在一段时间后得到了结果，恐怕也会是很多个结果文件，我们也很难从这些文件中抽取出我们关心的、想要的某些数据，更难将其整理成可直接用于机器学习的数据格式。</p>
+
+<p>  面对着这些问题，通常我们会想到可以建立一个数据库，再写一些脚本去自动解析文件内容、抽取关键字段和数值，甚至说为了编程可达需要给数据库设计一套 RESTful API 或者 GraphQL API。这样听起来工程量略大，但是一旦做好那么就可以建立类似于 Materias Project 等等那样的专业领域数据库。其实，我们并没有必要从零开始去做这些，因为现在已经有了开源数据管理软件 <a href="https://aiida.readthedocs.io">AiiDA</a>。</p>
+
+<p>  AiiDA 是一个使用 Python 编写的开源复杂工作流设计和管理框架，旨在帮助从事计算科学（计算材料学，计算生物学等）的相关研究者可以更好地管理、编写、使用和分享复杂的工作流以及计算产生的有用数据。它使得在研究中复杂的计算流程的可重复性得以保证。AiiDA 实现并支持了 ADES 模式的四大基石： (A)utomation（自动）, (D)ata（数据）, (E)nvironment（社区环境）, 和 (S)haring （分享）. AiiDA 支持的一些典型特性包括：</p>
+
+<ul>
+  <li><strong>工作流</strong>： AiiDA 可以用来创建并执行复杂的、自动文档化的工作流来连接本地和远端计算资源上的多个计算代码。</li>
+  <li><strong>高通量</strong>： AiiDA 的基于事件的工作流引擎支持成百上千（每小时）的带有检查点的计算例程。</li>
+  <li><strong>数据可验证性</strong>： AiiDA 自动追踪所有可验证性图中 (provenance graph) 的输入、输出和元数据，以保证计算的完全可重复性。</li>
+  <li><strong>高级的查询检索特性</strong>： AiiDA 的查询语言支持千万个节点的快速图查询。</li>
+  <li><strong>插件接口</strong>：: AiiDA 可以通过插件来支持各种计算代码，和各种数据分析工具，各种数据类型，任务调度工具以及远程连接方式等 (参见<a href="https://aiidateam.github.io/aiida-registry/">公共插件库</a>)。</li>
+  <li><strong>高性能集群接口</strong>： AiiDA 支持无缝地把你的计算从一个集群转换到另一个集群运行。AiiDA 兼容各种任务调度软件 <a href="https://slurm.schedmd.com/">SLURM</a>, <a href="https://www.pbspro.org/">PBS Pro</a>, <a href="http://www.adaptivecomputing.com/products/torque/">torque</a>, <a href="http://gridscheduler.sourceforge.net/">SGE</a> 或者 <a href="https://www.ibm.com/support/knowledgecenter/SSETD4/product_welcome_platform_lsf.html">LSF</a> ，对这些任务调度工具 AiiDA 都是源生支持的。</li>
+  <li><strong>开放科学</strong>： AiiDA 可以将全部或部分的数据库导出，以便于和同行分享，或上传至 <a href="https://www.materialscloud.org/">Materials Cloud</a> 以便 归档 和 检索 。</li>
+  <li><strong>开源</strong>： AiiDA 通过 <a href="https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/LICENSE.txt">MIT 开源协议</a> 发布。</li>
+</ul>
+
+<h2 id="安装">安装</h2>
+
+<p>  AiiDA 官网向用户提供了很多种安装方式，其中最简单的就是使用 Docker 一键式安装。这里不仅介绍由 AiiDA 团队构建的 <a href="https://hub.docker.com/r/aiida-team/aiida-core">aiida-team/aiida-core</a> 镜像，也介绍具有多种集成环境的 <a href="https://hub.docker.com/r/marvelnccr/quantum-mobile">Quantum Mobile</a> 镜像。除了 Docker 方式外，AiiDA 也可以直接在 Linux/Mac 系统上安装。考虑到 AiiDA 部署在 Linux 服务器操作系统上更为合适，这里就分别介绍使用 root 用户和非 root 用户如何安装 AiiDA 整体环境。</p>
+
+<h3 id="docker-安装">Docker 安装</h3>
+
+<h4 id="单独环境">单独环境</h4>
+
+<p>  使用以下 <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> 文件和命令 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 即可启动一个 aiida-team/aiida-core 容器实例。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">aiida</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">aiidateam/aiida-core:1.3.0</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">aiida</span>
+    <span class="na">stdin_open</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">volumes</span><span class="pi">:</span> 
+      <span class="pi">-</span> <span class="s">./data:/home/aiida/data</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">networks</span><span class="pi">:</span>
+       <span class="na">extnetwork</span><span class="pi">:</span>
+          <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">192.168.18.2</span>
+
+<span class="na">networks</span><span class="pi">:</span>
+   <span class="na">extnetwork</span><span class="pi">:</span>
+      <span class="na">ipam</span><span class="pi">:</span>
+         <span class="na">config</span><span class="pi">:</span>
+         <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">192.168.18.0/24</span>
+           <span class="na">gateway</span><span class="pi">:</span> <span class="s">192.168.18.1</span>
+
+</code></pre></div></div>
+
+<h4 id="多软件环境">多软件环境</h4>
+
+<p>  使用以下 <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> 文件和命令 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 即可启动一个 quantum-mobile 容器实例。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.4'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">quantum-mobile</span><span class="pi">:</span>
+    <span class="c1"># using the required tag</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">marvelnccr/quantum-mobile:20.11.2a"</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">quantum-mobile</span>
+    <span class="na">expose</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8888"</span> <span class="c1"># AiiDa Lab</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8890"</span> <span class="c1"># Jupyter Lab</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000"</span> <span class="c1"># REST API</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">22"</span>   <span class="c1"># SSH</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="c1"># local:container</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8888:8888"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8890:8890"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">22:22"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
+    <span class="c1"># privileged mode and mounting the cgroup are required for correctly running sytsemd inside the container (set as the default command)</span>
+    <span class="na">privileged</span><span class="pi">:</span> <span class="no">true</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/sys/fs/cgroup:/sys/fs/cgroup:ro"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">LC_ALL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">en_US.UTF-8"</span>
+      <span class="na">LANG</span><span class="pi">:</span> <span class="s2">"</span><span class="s">en_US.UTF-8"</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="c1"># check that the daemon has been started for the 'generic' profile</span>
+      <span class="c1"># can take a few minutes to start</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="s">systemctl is-active --quiet aiida-daemon@generic.service</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">30s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">6</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">30s</span>
+</code></pre></div></div>
+
+<h3 id="root-用户安装">root 用户安装</h3>
+
+<p>  由于 root 用户对系统具有绝对的管理权限，所以使用 root 用户安装 AiiDA 环境时比较简单，可以直接通过 APT 源安装 PostgreSQL、RabbitMQ 和 AiiDA。如下所示，完成这三种软件的安装。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># AiiDA 是一个 python 编写的软件，所有需要 python 环境和 pip 包管理工具</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>git python3-dev python3-pip
+
+<span class="c"># 安装 PostgreSQL 服务器与客户端命令</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>postgresql postgresql-server-dev-all postgresql-client
+
+<span class="c"># 安装 RabbitMQ 服务器并查询当前状态</span>
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>rabbitmq-server
+<span class="nb">sudo </span>rabbitmqctl status
+
+<span class="c"># 安装 AiiDA</span>
+pip <span class="nb">install </span>aiida-core
+</code></pre></div></div>
+
+<p>  具体配置 PostgreSQL 数据库和 AiiDA 与下一节中非 root 用户安装中相同，请参照下面内容。</p>
+
+<h3 id="非-root-用户安装">非 root 用户安装</h3>
+
+<p>  当我们在使用内网服务器时，很大可能我们只是一个普通用户，并没有管理员权限。所以如果想要以一个非 root 用户的身份来安装部署 AiiDA 服务是否也有可能呢？事实上是可以实现的，因为组成 AiiDA 运行环境的三个软件都可以以非 root 用户安装、启动。为了简化安装软件过程，这里我们采用了 <a href="https://www.anaconda.com">Anaconda</a> 来帮助我们更快、更简单地安装部署环境。（后续，笔者将会为服务器上的 Anaconda 使用特别写一篇文章进行详细介绍，这里默认已安装有 Anaconda。）</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动 Anaconda 环境</span>
+~/anaconda3/etc/profile.d/conda.sh
+</code></pre></div></div>
+
+<h4 id="安装-postgresql">安装 PostgreSQL</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 conda-forge 频道安装 PostgreSQL</span>
+conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge postgresql
+</code></pre></div></div>
+
+<h4 id="配置和启动-postgresql">配置和启动 PostgreSQL</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建 PostgreSQL 数据存储目录</span>
+<span class="c"># 为了更好地区别是从 conda 安装的 PostgreSQL，特别将存储目录放置在 conda 配置目录下</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> /home/lisz/.conda/envs/pgsql/data
+
+<span class="c"># 指定数据存储目录并后台启动 PostgreSQL，同时也开启日志记录功能</span>
+pg_ctl <span class="nt">-D</span> /home/lisz/.conda/envs/pgsql/data <span class="nt">-l</span> logfile start
+
+<span class="c"># 查看是否正常启动并监听端口 5432</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  data lsof <span class="nt">-i</span>:5432 
+COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+postgres 33906 lisz    3u  IPv6 66936721      0t0  TCP localhost:postgres <span class="o">(</span>LISTEN<span class="o">)</span>
+postgres 33906 lisz    4u  IPv4 66936722      0t0  TCP localhost:postgres <span class="o">(</span>LISTEN<span class="o">)</span>
+
+<span class="c"># 使用当前 Linux 用户身份认证直接进入 PostgreSQL 默认数据库</span>
+<span class="c"># 进入后是 PostgreSQL 的 shell 交互界面</span>
+psql <span class="nt">-d</span>  postgres
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">#</span> <span class="err">输入以下命令完成创建用户</span> <span class="n">aiida</span><span class="err">、数据库</span> <span class="n">aiidadb</span><span class="err">，并给用户赋给该数据库的完全权限</span>
+<span class="k">CREATE</span> <span class="k">USER</span> <span class="n">aiida</span> <span class="k">WITH</span> <span class="n">PASSWORD</span> <span class="s1">'&lt;password&gt;'</span><span class="p">;</span>
+<span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">aiidadb</span> <span class="k">OWNER</span> <span class="n">aiida</span> <span class="k">ENCODING</span> <span class="s1">'UTF8'</span> <span class="n">LC_COLLATE</span><span class="o">=</span><span class="s1">'en_US.UTF-8'</span> <span class="n">LC_CTYPE</span><span class="o">=</span><span class="s1">'en_US.UTF-8'</span> <span class="k">TEMPLATE</span><span class="o">=</span><span class="n">template0</span><span class="p">;</span>
+<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">aiidadb</span> <span class="k">to</span> <span class="n">aiida</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 \q 即可退出刚才的 PostgreSQL 提供的 shell</span>
+<span class="c"># 测试 aiida 用户是否可以使用密码从本地成功登录 aiidadb 数据库</span>
+psql <span class="nt">-h</span> localhost <span class="nt">-d</span> aiidadb <span class="nt">-U</span> aiida <span class="nt">-W</span>
+<span class="c"># 输入密码后，出现 PostgreSQL 的 shell 即登录成功</span>
+</code></pre></div></div>
+
+<h4 id="安装-rabbitmq">安装 RabbitMQ</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 conda-forge 频道安装 RabbitMQ 服务器</span>
+conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge rabbitmq-server
+</code></pre></div></div>
+
+<h4 id="配置和启动-rabbitmq">配置和启动 RabbitMQ</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 让 RabbitMQ 使用默认配置在后台启动</span>
+rabbitmq-server <span class="nt">-detached</span>
+
+<span class="c"># 开启 Web 管理插件</span>
+rabbitmq-plugins <span class="nb">enable </span>rabbitmq_management
+
+<span class="c"># 查看状态，验证是否正常启动</span>
+rabbitmq-server status
+
+<span class="c"># 查看是否正常监听 5672 端口</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  ~ lsof <span class="nt">-i</span>:5672             
+COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
+beam.smp 33967 lisz   95u  IPv6 66919827      0t0  TCP <span class="k">*</span>:amqp <span class="o">(</span>LISTEN<span class="o">)</span>
+</code></pre></div></div>
+
+<p>  由于 RabbitMQ 是消息队列，这里没有持久化和验证的需求，所有可以直接使用默认配置启动即可。验证正常启动后，可浏览 <a href="http://localhost:15627">http://localhost:15627</a> 来访问 RabbitMQ 的 Web 界面，默认管理员账号和密码均为 guest。这里需要注意的是，如果是服务器安装，本地机器是需要使用 ssh 代理端口的功能把服务器端的 15627 端口代理到本地的 15627 端口之后才能正常访问。当然，笔者建议使用 VS Code 来远程连接服务器，然后就可以使用 VS Code 提供的界面简单操作代理远程端口到本地。</p>
+
+<h4 id="安装-aiida">安装 AiiDA</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 pypi 安装 AiiDA 核心程序</span>
+pip <span class="nb">install </span>aiida-core
+
+<span class="c"># 如果上述安装过程提示 conda 需要 pathlib 的 error，可以直接安装并重载 AiiDA 配置</span>
+conda <span class="nb">install </span>pathlib
+reentry scan
+</code></pre></div></div>
+
+<h4 id="配置和启动-aiida">配置和启动 AiiDA</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 为 AiiDA 配置用户信息、数据库连接信息以及消息队列连接信息</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi setup
+Info: enter <span class="s2">"?"</span> <span class="k">for </span><span class="nb">help
+</span>Info: enter <span class="s2">"!"</span> to ignore the default and <span class="nb">set </span>no value
+Profile name: conquest
+Email Address <span class="o">(</span><span class="k">for </span>sharing data<span class="o">)</span>: xxxx@xxx.xxx
+First name: Ben
+Last name: Li
+Institution: NIMS
+Database engine <span class="o">(</span>postgresql_psycopg2<span class="o">)</span> <span class="o">[</span>postgresql_psycopg2]: 
+Database backend <span class="o">(</span>django, sqlalchemy<span class="o">)</span> <span class="o">[</span>django]: 
+Database host: localhost
+Database port <span class="o">[</span>5432]: 
+Database name: aiidadb
+Database username: aiida
+Database password: 
+Broker protocol <span class="o">(</span>amqp, amqps<span class="o">)</span> <span class="o">[</span>amqp]: 
+Broker username <span class="o">[</span>guest]: 
+Broker password <span class="o">[</span>guest]: 
+Broker host <span class="o">[</span>127.0.0.1]: 
+Broker port <span class="o">[</span>5672]: 
+Broker virtual host name <span class="o">[]</span>:        
+Repository directory <span class="o">[</span>/home/lisz/.aiida/repository/conquest]:
+</code></pre></div></div>
+
+<p>  至此，AiiDA 的所有软件环境就已经完全配置好了，试试觉得也不是那么难哈。</p>
+
+<h2 id="验证安装">验证安装</h2>
+
+<p>  AiiDA 的验证安装主要是检查：</p>
+<ul>
+  <li>AiiDA 主程序是否在后台正常运行？</li>
+  <li>verdi shell 是否能正常使用？</li>
+  <li>AiiDA 与数据库、消息队列是否连接正常？</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># verdi daemon status 检查后台情况</span>
+<span class="c"># 如果没有启动使用 verdi daemon start 启动</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi daemon status
+Profile: conquest
+Daemon is running as PID 25383 since 2021-05-12 16:06:03
+Active workers <span class="o">[</span>1]:
+  PID    MEM %    CPU %  started
+<span class="nt">-----</span>  <span class="nt">-------</span>  <span class="nt">-------</span>  <span class="nt">-------------------</span>
+25387     0.02        0  2021-05-12 16:06:03
+Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>num] to increase / decrease the amount of workers
+
+<span class="c"># verdi shell 进入 shell，如果无法进入则证明配置仍然存在错误</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi shell
+Python 3.8.10 | packaged by conda-forge | <span class="o">(</span>default, May 11 2021, 07:01:05<span class="o">)</span> 
+Type <span class="s1">'copyright'</span>, <span class="s1">'credits'</span> or <span class="s1">'license'</span> <span class="k">for </span>more information
+IPython 7.23.1 <span class="nt">--</span> An enhanced Interactive Python. Type <span class="s1">'?'</span> <span class="k">for </span>help.
+
+In <span class="o">[</span>1]: <span class="nb">exit</span><span class="o">()</span>
+
+<span class="c"># verdi status 查看 AiiDA 的各项配置，包括自身及与其他软件之间的连接</span>
+<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi status
+ ✔ config <span class="nb">dir</span>:  /home/lisz/.aiida
+ ✔ profile:     On profile conquest
+ ✔ repository:  /home/lisz/.aiida/repository/conquest
+ ✔ postgres:    Connected as aiida@localhost:5432
+ ✔ rabbitmq:    Connected as amqp://guest:guest@127.0.0.1:5672?heartbeat<span class="o">=</span>600
+ ✔ daemon:      Daemon is running as PID 25383 since 2021-05-12 16:06:03
+</code></pre></div></div>
+
+<h2 id="后续使用">后续使用</h2>
+
+<p>  当我们已经有了 AiiDA 的完整环境之后，我们就会想要知道该如何使用 AiiDA 为计算服务呢。由于笔者是做第一性原理计算和机器学习的研究，所以后续将以 AiiDA 和 CONQUEST 的搭配使用为实例来介绍 AiiDA 的数据管理用法。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/installation.html#installing-the-aiida-core-package">AiiDA 官网中文文档</a></li>
+  <li><a href="https://blog.csdn.net/r_nznf/article/details/108056919">Conda 安装 PostgreSQL 数据库</a></li>
+  <li><a href="https://segmentfault.com/a/1190000010480589">离线安装 RabbitMQ </a></li>
+  <li><a href="https://blog.csdn.net/yufanghu/article/details/80829108">RabbitMQ 后台启动以及关闭</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/aiida/aiida-qe.html" class="read-next-link"></a>
+        <section>
+          <span>AiiDA 与 Quantum Espresso</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1461727885569-b2ddec0c4328?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-online-editor.html" class="read-next-link"></a>
+          <section>
+            <span>个人免费博客花式搭建指南 Online Editor 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

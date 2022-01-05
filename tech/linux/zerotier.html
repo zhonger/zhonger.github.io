@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用 zerotier 搭建自己的 IPv6 网络 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="使用 zerotier 搭建自己的 IPv6 网络">
+    <meta name="keywords"  content="zerotier, IPv6, Ubuntu, Mac">
+    <!-- Open Graph -->
+    <meta property="og:title" content="使用 zerotier 搭建自己的 IPv6 网络 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/linux/zerotier.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#zerotier" class="post-tag">zerotier</a>
+          
+            <a href="/tags.html#IPv6" class="post-tag">IPv6</a>
+          
+            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          
+            <a href="/tags.html#Mac" class="post-tag">Mac</a>
+          
+        
+      </div>
+      <h1>使用 zerotier 搭建自己的 IPv6 网络</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="19-04-03"><i class="iconfont icon-date"></i>Wed, 03 Apr 2019 16:50:53 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 5244 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">自用 IPv6 网络走起</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  2019年11月27日，通过欧洲网络协调中心（RIPE NCC）的邮件确认，全球所有43亿个 IPv4 地址已全部分配完毕。事实上，IPv4 地址的数量是非常有限的，算起来全球60多亿人每个人平均不到1个。由于 IP 地址是由国际上的几大网络协调中心统一进行分配，必须由单位向所在区域的网络协调中心提出申请，并每年缴纳一定的费用。这笔费用对于单位来说算不了什么，对于个人来说就比较高。因此，在每个国家基本上是由国家网络中心进行国内的 IP 地址分配，分配的单位一般是政府、国家机构、高校、基础通信服务商、数据中心或企业等。我们通常家用的宽带主要是由中国移动、中国联通、中国电信三大基础通信服务商提供的。近年来也有由广播电视提供的家用宽带。在学校、国家科技机构单位，一般使用的是教育网、教育科技网，也有很多学校采用的基础通信服务商提供的商用网络。不管是学校，还是家里，基础通信服务商为了节约 IP 地址的使用，在进行基础通信网络搭建的时候，大部分采用了内部局域网共享一个公网 IP 地址代理上网的方式。现有家用使用的宽带网络基本上无法获取到公网 IPv4 地址，只能获得一个以<code class="language-plaintext highlighter-rouge">100</code>开头的通信专用的局域网地址。</p>
+
+<p>  随着中国 IPv6 的不断部署推进，家用宽带大部分也拥有了 IPv6 地址。相比 IPv4 地址来说，IPv6 地址的数量则非常庞大，全世界人口人均分配几十个都绰绰有余。因此，IPv6 地址在使用上比 IPv4 地址就显得非常大度。通常来说，基础通信服务商会直接分配给每一个家用账户一个<code class="language-plaintext highlighter-rouge">/64</code>段的 IPv6 地址段。</p>
+
+<blockquote>
+  <p>个人所知中国移动宽带只有在使用了中国移动的专用路由器光纤接入后会分配 IPv6 地址。</p>
+</blockquote>
+
+<p>  由于考虑到分配的 IPv6 地址直接就是公网 IP 地址，如果知道设备的 IPv6 地址，即可通过IPv6 网络直接进入设备，这对于一般没有安全意识的家用用户来说不是一件好事，所以基础通信服务商一般会在两三天内重新分配 IPv6 地址段，以此确保家用用户不可能长时间拥有同一个 IPv6 地址。</p>
+
+<blockquote>
+  <p>IPv6 地址的 DHCP 几乎没有强制性，通常来说如果知道网络段号，可以自定义 IPv6 地址的后面位数。
+比如被分配到的 IPv6 段是 2409:470:88:80::/64，则用户可以设置自己的 IPv6 地址静态为 2409:470:88:80::8/64。
+这样一来安全性会变得更低。</p>
+</blockquote>
+
+<p>  但对于喜欢“搞事情”的小伙伴来说，这就有很大的限制了。如果有内网的服务器想要暴露在公网，或者想要使用 IPv6 进行管理，就需要有静态公网可达的地址来提供服务。想要实现这一目标，有很多方法来实现。</p>
+
+<ul>
+  <li>方法一：使用 FRP、Ngrok 等技术，通过公网服务器的端口代理来实现管理和对外服务。</li>
+  <li>方法二：使用拥有公网 IP 的服务器。</li>
+  <li>方法三：使用 zerotier 来进行 SDN 组网，并构建 IPv6 网络来对外提供访问。</li>
+</ul>
+
+<p>  这里，就来尝试使用方法三来实现管理和对外服务。</p>
+
+<h2 id="实践">实践</h2>
+
+<h3 id="环境">环境</h3>
+
+<ul>
+  <li>一台 Ubuntu 公网 ECS 服务器</li>
+  <li>一台 Ubuntu 内网服务器</li>
+  <li>一台 Mac</li>
+  <li>一个可用的固定 IPv6 网段</li>
+</ul>
+
+<h3 id="申请-ipv6-网段">申请 IPv6 网段</h3>
+
+<p>  目前，全球范围内除了由基础通信服务商、数据中心、高校等拥有一大批可用的 IPv6 网段外，基本上无法个人进行申请。唯一可用的无限制 IPv6 网段申请就是<a href="https://www.tunnelbroker.net/">He.net</a>提供的 6to4 IPv6 隧道服务。可访问网站进行注册登录，登录后在左上方的User Functions 里选择 Create Regular Tunnel，然后在 You are viewing from 这个位置会显示出你访问时所用的公网 IP 地址。此处的 IPv4 Endpoint 填的是 ECS 服务器的公网 IPv4 地址，至于以下的 Tunnel Server 应该选择哪个需要在 ECS 服务器上ping 各个服务器来确定延迟，选取延迟最低的一个位置。</p>
+
+<blockquote>
+  <p>此处需要注意的，由于 He.net 的全球网络与阿里云的全球网络之间的路由不是直接到达的，往往会绕很大一圈，所以建议不要选择<strong>香港</strong>的 Tunnel Server，体验下来 Fremont,CA,US 的 Tunnel Server 效果较好。</p>
+</blockquote>
+
+<p><img src="https://i.vgy.me/2GjeM2.png" alt="vgy.me" />
+<img src="https://i.vgy.me/DQoxYB.png" alt="vgy.me" /></p>
+
+<p>  选择好 Tunnel Server 之后，点击最下方的 Create Tunnel 按钮即可获得一个 <strong>::/64</strong> 的 IPv6 网段。以下为创建完成后获得 Tunnel 详情。实际上，He.net 是支持申请 <strong>::/48</strong> 的 IPv6 网段的，只需要点击以下图片的 Assign/48 按钮即可。</p>
+
+<p><img src="https://i.vgy.me/epPqmO.png" alt="vgy.me" />
+<img src="https://i.vgy.me/f4Te3N.png" alt="vgy.me" /></p>
+
+<p>  如上所示，现在获得了<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>网段。</p>
+
+<h3 id="配置-ecs-服务器的-ipv6">配置 ECS 服务器的 IPv6</h3>
+
+<p>  由于 ECS 服务器是由 Ubuntu 16.04 升级的 18.04，网络配置仍使用 networking 进行管理，配置比较简单。编辑 /etc/network/interfaces 文件，添加如下内容。</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">auto</span> <span class="n">he</span>-<span class="n">ipv6</span>
+<span class="n">iface</span> <span class="n">he</span>-<span class="n">ipv6</span> <span class="n">inet6</span> <span class="n">v4tunnel</span>
+    <span class="n">address</span> <span class="m">2001</span>:<span class="m">470</span>:<span class="m">811</span><span class="n">d</span>::<span class="m">80</span>
+    <span class="n">netmask</span> <span class="m">64</span>
+    <span class="n">endpoint</span> <span class="m">72</span>.<span class="m">52</span>.<span class="m">104</span>.<span class="m">74</span>
+    <span class="n">local</span> <span class="n">ECS_INTERNAL_IP</span>
+    <span class="n">ttl</span> <span class="m">255</span>
+    <span class="n">gateway</span> <span class="m">2001</span>:<span class="m">470</span>:<span class="m">811</span><span class="n">d</span>::<span class="m">1</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>此处需要注意的是，local 地址一定要填写 ECS 服务器的内网 IP，直接填写公网 IP 会无法认证。如果使用的公网服务器使用 ifconfig 能够直接看到公网 IP，那么一定要填成公网 IP。只要保持与本地的 IP一致即可。</p>
+</blockquote>
+
+<p>  修改网卡配置文件完成后，执行<code class="language-plaintext highlighter-rouge">sudo service networking restart</code>来启用 IPv6 隧道。至此，公网 ECS 服务器就拥有了 IPv6 地址。</p>
+
+<h3 id="配置-zerotier">配置 zerotier</h3>
+
+<p>  zerotier 是一款先进的 SDN (软件定义网络)软件，通过发现路由来找到两台机器之间的通路。显然，如果两台机器在不同的内部局域网当中，由 zerotier 中心服务节点发现的路由通路就会非常漫长，尤其是客户端访问到 zerotier 中心服务节点的路由通路可能千差万别，造成 zerotier 本身理解建立两个客户端之间最短通路的方法也会变得无效。由此，zerotier 开放了 moon 功能，任何一台 zerotier 客户端都可以成为 moon 节点。 moon 节点可以作为辅助甚至是缩短路由通路的发现者，在国内的不同基础通信服务商的网路中就格外有用。此处就尝试将ECS 服务器加入 zerotier，成为 moon 节点不在此赘述。</p>
+
+<h4 id="安装-zerotier">安装 zerotier</h4>
+
+<p>  zerotier 的安装比较简单，Mac 操作系统、Windows 操作系统可以直接访问<a href="https://zerotier.com/download/">zerotier官网</a>获取安装包。Linux 操作系统上则只需要使用官方提供的一键脚本即可，如下所示。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://install.zerotier.com | <span class="nb">sudo </span>bash
+</code></pre></div></div>
+
+<p>  安装完成后，使用<code class="language-plaintext highlighter-rouge">sudo zerotier-cli info</code>命令获取10位的唯一设备识别码，如 <strong>1f23c0dd99</strong> 。</p>
+
+<h4 id="配置-zerotier-网络">配置 zerotier 网络</h4>
+
+<p>  访问<a href="https://my.zerotier.com/">zerotier web配置面板</a>，注册一个 zerotier 账户并登录。由于 zerotier 的免费套餐允许 100 台设备同时连入到 zerotier 网络中，所以可以放心大胆使用。登录后选择 Networks 创建一个新的网络，并进入开始配置。网络默认是隐秘网络，需要通过验证后才可以加入，这样也比较安全。此处创建完成后会获得一个网络 ID，在 ECS 服务器上执行以下命令申请加入到该 zerotier 网络。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zerotier-cli <span class="nb">join </span>159924d6308e1d7e
+</code></pre></div></div>
+
+<p>  以下的配置主要是配置 zerotier 网络的路由和 IPv6 地址分配。网络创建完成后本身会自动创建一个<code class="language-plaintext highlighter-rouge">10.147.17.0/24</code>的局域网 IPv4 网段，并添加默认路由。由于刚才已经在 ECS 服务器上申请加入了，现在需要在 Memebers 里勾选最前面的 Auth 选项。过几秒后，ECS 服务器会被自动分配在设定好的 IPv4  网段中的一个地址，这里也可以自定义某一个段内地址。</p>
+
+<p><img src="https://i.vgy.me/NRrNvF.png" alt="vgy.me" />
+<img src="https://i.vgy.me/uMWrLm.png" alt="vgy.me" />
+<img src="https://i.vgy.me/l16fjZ.png" alt="vgy.me" /></p>
+
+<p>  接下来需要做的就是配置 zerotier 可用的 IPv6 网段及相关路由。开启 zerotier IPv6，并添加可用网段<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>到可分配地址池中，如下图所示。</p>
+
+<p><img src="https://i.vgy.me/8FxdIk.png" alt="vgy.me" />
+<img src="https://i.vgy.me/B43ZQh.png" alt="vgy.me" /></p>
+
+<p>  如下图所示，读取 zerotier 根据 RFC4193 文档分配给 ECS 服务器的局域网 IPv6 地址。此处为<code class="language-plaintext highlighter-rouge">fd15:9924:d630:8e1d:7e99:9333:8a13:b4bb</code>。</p>
+
+<p><img src="https://i.vgy.me/5iFnEd.png" alt="vgy.me" /></p>
+
+<p>  接下来添加两条 IPv6 的路由到 zerotier 的默认路由中。一条是设置 ECS 服务器为 zerotier 网络中的网关，如下图所示。</p>
+
+<p><img src="https://i.vgy.me/wVmioe.png" alt="vgy.me" /></p>
+
+<p>  另一条是添加公网 IPv6 网段的默认路由，如下图所示。</p>
+
+<p><img src="https://i.vgy.me/BpJXiY.png" alt="vgy.me" />
+<img src="https://i.vgy.me/6hJfxR.png" alt="vgy.me" /></p>
+
+<p>  完成以上步骤可以看到如下图所示的 ECS 服务器也被分配到了一个可用的公网 IPv6 地址。
+<img src="https://i.vgy.me/pLimbP.png" alt="vgy.me" /></p>
+
+<p>  为了让 zerotier 可以在 ECS 服务器上成功创建公网 IPv6 地址以及添加默认路由，需要在 ECS 服务器上做如下设置。设置成功后会看到网卡上出现上图中分配的公网 IPv6 地址。所有 zerotier 初次连入都需要进行此步骤。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zerotier-cli <span class="nb">set </span>159924d6308e1d7e <span class="nv">allowGlobal</span><span class="o">=</span><span class="nb">true
+sudo </span>zerotier-cli <span class="nb">set </span>159924d6308e1d7e <span class="nv">allowDefault</span><span class="o">=</span>1
+</code></pre></div></div>
+
+<h3 id="配置-ipv6-广播">配置 IPv6 广播</h3>
+
+<p>  经过以上步骤，IPv6 网络的基本框架已经搭建好了，现在任何一台通过该 zerotier 网络认证的客户端都会获得一个可用的公网 IPv6 地址，它们彼此之间可以通信。但是现在为止除 ECS 服务器外，其他客户端依然无法访问外部 IPv6 地址及被其他 IPv6 地址访问。这是因为zerotier 申明的公网 IPv6 地址未进行正常的 IPv6 广播，不能被其他的 IPv6 地址知道。</p>
+
+<h4 id="配置-ndppd-广播">配置 NDPPD 广播</h4>
+
+<p>  在 ECS 服务器上安装 ndppd 软件以支持 IPv6 地址广播，安装后的 /etc/ndppd.conf 配置文件内容如下。eth0 修改为 ECS 服务器的默认网卡，rule 修改为对应 IPv6 地址网段。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> ndppd
+</code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">route</span>-<span class="n">ttl</span> <span class="m">30000</span>
+
+<span class="n">address</span>-<span class="n">ttl</span> <span class="m">30000</span>
+
+<span class="n">proxy</span> <span class="n">eth0</span> {
+	<span class="n">router</span> <span class="n">yes</span>
+	<span class="n">timeout</span> <span class="m">500</span>
+	<span class="n">autowire</span> <span class="n">no</span>
+	<span class="n">keepalive</span> <span class="n">yes</span>
+	<span class="n">retries</span> <span class="m">3</span>
+	<span class="n">ttl</span> <span class="m">30000</span>
+	<span class="n">rule</span> <span class="m">2001</span>:<span class="m">470</span>:<span class="m">811</span><span class="n">d</span>::/<span class="m">48</span> {
+		<span class="n">auto</span>
+		<span class="n">autovia</span> <span class="n">no</span>
+	}
+}
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#安装完成后</span>
+<span class="c">#使用以下命令重启 ndppd 服务。</span>
+<span class="nb">sudo </span>systemctl restart ndppd
+</code></pre></div></div>
+
+<h3 id="配置其他客户端">配置其他客户端</h3>
+
+<h4 id="linux-客户端">Linux 客户端</h4>
+
+<p>  仿照上述步骤安装 zerotier 并加入到 zeoriter 网络中。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://install.zerotier.com | <span class="nb">sudo </span>bash
+<span class="nb">sudo </span>zerotier-cli <span class="nb">join </span>159924d6308e1d7e
+<span class="nb">sudo </span>zerotier-cli <span class="nb">set </span>159924d6308e1d7e <span class="nv">allowGlobal</span><span class="o">=</span><span class="nb">true
+sudo </span>zerotier-cli <span class="nb">set </span>159924d6308e1d7e <span class="nv">allowDefault</span><span class="o">=</span>1
+</code></pre></div></div>
+
+<h4 id="mac-客户端">Mac 客户端</h4>
+
+<p>  下载安装包后加入到 zerotier 网络中，并在界面上允许 Global 和 Default，再勾选 connected。正常情况下能够获取到公网 IPv6 地址并添加好 IPv6 路由。如果发生能够 ping 通包括 ECS 服务器的 zerotier 网卡在内的该段公网 IPv6 地址，但无法访问其他 IPv6 地址。那么需要手动添加一条全局 IPv6 路由，命令如下。此处设置的网关是 ECS 服务器的 zerotier 网卡的根据 RFC4193 文档生成的局域网 IPv6 地址。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>route add <span class="nt">-inet6</span> <span class="nt">-prefixlen</span> 0 default fd15:9924:d630:8e1d:7e99:9333:8a13:b4bb
+</code></pre></div></div>
+
+<h3 id="测试及问题解决">测试及问题解决</h3>
+
+<p>  执行完上述步骤可以看到获取到了一个公网 IPv6 地址，尝试是否与外界相通。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ping6 <span class="nt">-c</span> 10 ip.sb
+ping6 <span class="nt">-c</span> 2001:470:811d::80
+</code></pre></div></div>
+
+<blockquote>
+  <p>如果发现网络不通，就将 zerotier web 控制面板上节点使用的公网 IPv6 段换成一个<code class="language-plaintext highlighter-rouge">::/64</code>段就可以了，比如<code class="language-plaintext highlighter-rouge">2001:470:811d:8::/64</code>。</p>
+</blockquote>
+
+<h2 id="结语">结语</h2>
+
+<p>  根据实践部分的各个步骤，我们可以搭建一个自主可控的公网 IPv6 网络来进行管理和对外服务。由于公网 IPv6 网络会被全世界 IPv6 地址访问到，每一台连入的客户端的安全都需要提前保证，如果存在弱密码或者无密码服务，就很容易被攻破。当然，zerotier web 控制面板是允许自定义 IPv6 地址的，可以根据自己的喜好将所有连入网络的地址进行更改。</p>
+
+<p>  由于 He.net 的 Tunnel Server 不在国内，所获取到的 IPv6 地址在访问国内的 IPv6 地址时延迟会比较高，毕竟需要绕一个大圈。但是对于 zerotier 网络内的客户端之间来说，通信的延迟应该还是比较低的，完全取决于原本到 ECS 服务器的延迟。ECS 服务器在这里也起到了一个路由转发、地址广播的交换机作用。</p>
+
+<p>  欢迎走进 IPv6 的世界！</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/dmoj.html" class="read-next-link"></a>
+        <section>
+          <span>用 DMOJ 搭建属于自己的 OJ</span>
+          <p>什么是 OJ</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1547605892-0da4c95beaf6?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/openldap.html" class="read-next-link"></a>
+          <section>
+            <span>OpenLDAP 安装初体验</span>
+            <p>LDAP 协议入门</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

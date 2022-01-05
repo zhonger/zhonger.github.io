@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenLDAP 安装初体验 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="OpenLDAP 安装初体验">
+    <meta name="keywords"  content="OpenLDAP, Docker, phpldapadmin">
+    <!-- Open Graph -->
+    <meta property="og:title" content="OpenLDAP 安装初体验 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/openldap.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#OpenLDAP" class="post-tag">OpenLDAP</a>
+          
+            <a href="/tags.html#Docker" class="post-tag">Docker</a>
+          
+            <a href="/tags.html#phpldapadmin" class="post-tag">phpldapadmin</a>
+          
+        
+      </div>
+      <h1>OpenLDAP 安装初体验</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="18-11-28"><i class="iconfont icon-date"></i>Wed, 28 Nov 2018 18:43:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1535 字 <b>·</b> 阅读全文大约需要 5 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">基于 LDAP 轻量级目录协议的用户管理方式</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="ldap-协议入门">LDAP 协议入门</h2>
+
+<p>  LDAP 是一种通讯协议，支持 TCP/IP 。在这套标准下，有多种的实现方式，比如 <a href="https://www.openldap.org">OpenLDAP</a>、微软大佬的 AD (Active Directory)。拿 AD 来举例子，LDAP 有点像是数据库一样，但是又不完全是，读起来非常快、写起来慢一点。同时它也有 Server端 和 Client端，其中 Server端 用来存放资源，Client端 用来操作增删改查等操作，即 AD = LDAP服务器 + LDAP应用。</p>
+
+<p>  与数据库不同的地方是，数据库是按照记录一条条存放在表中，而 LDAP 数据库是<strong>树结构</strong>的，数据存储在叶子节点上。下面举个例子来说明一下<strong>树结构</strong>上的一条记录是如何定义的。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 描述：苹果是在树的东边那个分叉上的靠西边那个分叉的再靠北边的分叉上的半红半绿的。</span>
+
+树 <span class="o">(</span><span class="nv">dc</span><span class="o">=</span>tree<span class="o">)</span>
+分叉 <span class="o">(</span><span class="nv">ou</span><span class="o">=</span>bei,ou<span class="o">=</span>xi,ou<span class="o">=</span>dong<span class="o">)</span>
+苹果 <span class="o">(</span><span class="nv">cn</span><span class="o">=</span>redApple<span class="o">)</span>
+
+<span class="c"># 综合起来描述为</span>
+dn:cn<span class="o">=</span>redApple,ou<span class="o">=</span>bei,ou<span class="o">=</span>xi,ou<span class="o">=</span>dong,dc<span class="o">=</span>tree
+</code></pre></div></div>
+
+<p>一个完整的 LDAP 树形结构数据库应包含以下几个因素：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dn: 一条记录的详细位置
+dc: 一条记录所属的区域<span class="o">(</span>即哪一棵树<span class="o">)</span>
+ou: 一条记录所属的组织<span class="o">(</span>即哪一个分支<span class="o">)</span>
+cn/uid: 一条记录的名字/ID <span class="o">(</span>即哪一个苹果名字<span class="o">)</span>
+LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准 DN"</span>
+</code></pre></div></div>
+
+<h4 id="为什么要用-ldap-目录树来存储数据用-mysql-不行吗">为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？</h4>
+
+<ul>
+  <li>用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。</li>
+  <li>把 LDAP 与传统的数据库相比，LDAP 除了快速查找的特点，它还有很多的运用场景，比如域验证等。</li>
+</ul>
+
+<h4 id="如何操作-ldap-服务器">如何操作 LDAP 服务器？</h4>
+
+<p>  LDAP 服务器的客户端操作方式有很多种，常见的有 JDBC 、 JNDI 、 phpLDAPadmin 等。由于本人不怎么用 Java，所以首选 phpLDAPadmin 来进行实战操作。</p>
+
+<h2 id="采用-docker-快速部署">采用 Docker 快速部署</h2>
+
+<p>  其实在 Ubuntu 上安装 OpenLDAP 和 phpLDAPadmin 两个软件是比较简单的，使用 <code class="language-plaintext highlighter-rouge">sudo apt install openldap phpldapadmin -y</code> 即可完成，但是配置起来就有点小麻烦了，不大适合对 LDAP 没有深入了解的人使用，最简单的方式就是使用别人已经封装好的 Docker 镜像进行快速部署。docker-compose.yml 文件内容如下：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">phpldapadmin</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">osixia/phpldapadmin</span>
+      <span class="na">environment</span><span class="pi">:</span>
+        <span class="na">PHPLDAPADMIN_LDAP_HOSTS</span><span class="pi">:</span> <span class="s">openldap</span>
+      <span class="na">links</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">openldap</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">6443:443</span>
+      <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">openldap</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">osixia/openldap</span>
+      <span class="na">environment</span><span class="pi">:</span>
+        <span class="na">LDAP_ORGANISATION</span><span class="pi">:</span> <span class="s2">"</span><span class="s">example"</span>
+        <span class="na">LDAP_DOMAIN</span><span class="pi">:</span> <span class="s">example.org</span>
+        <span class="na">LDAP_ADMIN_PASSWORD</span><span class="pi">:</span> <span class="s">admin</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">./data/slapd/database:/var/lib/ldap</span>
+        <span class="pi">-</span> <span class="s">./data/slapd/config:/etc/ldap/slapd.d</span>
+      <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">389:389</span>
+        <span class="pi">-</span> <span class="s">689:689</span>
+</code></pre></div></div>
+
+<h4 id="访问">访问</h4>
+
+<p>  安装完成之后使用<code class="language-plaintext highlighter-rouge">https://localhost:6443</code>即可访问 phpLDAPadmin ，Login DN 为 <code class="language-plaintext highlighter-rouge">cn=admin,dc=example,dc=org</code>，Password 为<code class="language-plaintext highlighter-rouge">admin</code>。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ol>
+  <li><a href="https://www.jianshu.com/p/7e4d99f6baaf">LDAP入门</a></li>
+  <li><a href="https://lostfocus.de/2018/03/openldap-and-phpldapadmin-running-in-docker-containers/">OpenLDAP and phpLDAPadmin running in Docker containers</a></li>
+</ol>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/zerotier.html" class="read-next-link"></a>
+        <section>
+          <span>使用 zerotier 搭建自己的 IPv6 网络</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/mac/black-mac.html" class="read-next-link"></a>
+          <section>
+            <span>黑苹果安装、使用初体验</span>
+            <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

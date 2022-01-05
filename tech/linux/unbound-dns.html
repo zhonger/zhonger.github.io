@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unbound + Dnscrypt 搭建无污染 DNS 服务 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Unbound + Dnscrypt 搭建无污染 DNS 服务">
+    <meta name="keywords"  content="DNS, unbound, dnscrypt">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Unbound + Dnscrypt 搭建无污染 DNS 服务 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/linux/unbound-dns.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#DNS" class="post-tag">DNS</a>
+          
+            <a href="/tags.html#unbound" class="post-tag">unbound</a>
+          
+            <a href="/tags.html#dnscrypt" class="post-tag">dnscrypt</a>
+          
+        
+      </div>
+      <h1>Unbound + Dnscrypt 搭建无污染 DNS 服务</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="17-12-03"><i class="iconfont icon-date"></i>Sun, 03 Dec 2017 19:23:41 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 4189 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">从零开始搭建一个无污染的 DNS 服务</h2>
+    
+
+    <article class="markdown-body">
+      <h1 id="引言">引言</h1>
+
+<p>  鉴于某些原因，我们日常生活中使用的公共 DNS 总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析 DNS ，因此搭建无污染 DNS 服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了 unbound 和 dnscrypt。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如 knot DNS、dnspord-sr、powerdns 等，它们也在很多大型的 ISP 提供商的 DNS 产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么 unbound 是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。</p>
+
+<h2 id="实验环境">实验环境</h2>
+
+<ul>
+  <li>操作系统：CentOS 6.9</li>
+  <li>Unbound 版本：目前最新 1.6.7 <a href="http://unbound.net/downloads/unbound-latest.tar.gz">源码下载地址</a></li>
+  <li>Dnscrypt-proxy 版本：目前最新 1.9.5 <a href="https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.9.5.tar.gz">源码下载地址</a></li>
+  <li>依赖库 libsodium 版本：目前最新 1.0.15 <a href="https://download.libsodium.org/libsodium/releases/libsodium-1.0.15.tar.gz">源码下载地址</a></li>
+  <li>依赖库 libevent 版本：目前最新 2.1.8 <a href="https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz">源码下载地址</a>(在github上，需要浏览器下载)</li>
+</ul>
+
+<h2 id="实验过程">实验过程</h2>
+
+<ol>
+  <li>安装 libsodium
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压 </span>
+<span class="nb">tar </span>zxf libsodium-1.0.15.tar.gz 
+<span class="c"># 进入文件夹</span>
+<span class="nb">cd </span>libsodium-1.0.15
+<span class="c"># 编译</span>
+./configure
+./autogen.sh
+./configure
+make <span class="nt">-j12</span> 
+<span class="c"># j 后面为 CPU 核数，加快编译</span>
+<span class="nb">sudo </span>make <span class="nb">install
+sudo </span>ldconfig
+<span class="c"># 安装完成</span>
+</code></pre></div>    </div>
+  </li>
+  <li>安装 libevent
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+<span class="nb">tar </span>zxf libevent-2.1.8-stable.tar.gz
+<span class="c"># 进入文件夹</span>
+<span class="nb">cd </span>libevent-2.1.8-stable
+<span class="c"># 编译源代码并安装</span>
+./configure <span class="nt">--prefix</span><span class="o">=</span>/usr
+./autogen.sh
+./configure
+make <span class="nt">-j12</span>
+<span class="nb">sudo </span>make <span class="nb">install
+sudo</span> <span class="nt">-i</span>
+<span class="nb">echo</span> /usr/local/lib <span class="o">&gt;</span> /etc/ld.so.conf.d/usr_local_lib.conf
+<span class="nb">sudo </span>ldconfig
+<span class="c"># 安装完成</span>
+</code></pre></div>    </div>
+  </li>
+  <li>安装 dnscrypt-proxy
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+<span class="nb">tar </span>zxf dnscrypt-proxy-1.9.5.tar.gz
+<span class="c"># 进入文件夹</span>
+<span class="nb">cd </span>dnscrypt-proxy-1.9.5
+<span class="c"># 编译源代码并安装</span>
+./configure
+make <span class="nt">-j12</span>
+<span class="nb">sudo </span>make <span class="nb">install</span>
+<span class="c"># 如果提示报错与 libevent 有关</span>
+<span class="c"># 请再次运行 sudo ldconfig 并重新运行以上命令。</span>
+</code></pre></div>    </div>
+  </li>
+  <li>配置 dnscrypt-proxy
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置文件目录</span>
+<span class="c"># /usr/local/etc/dnscrypt-proxy.conf</span>
+ResolverName cisco
+ResolversList /usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv
+Daemonize no
+PidFile /var/run/dnscrypt-proxy.pid
+User dnscrypt
+LocalAddress 127.0.0.1:5353
+<span class="c"># 可选</span>
+QueryLogFile /tmp/dns-queries.log
+<span class="c"># 添加用户 dnscrypt</span>
+<span class="nb">sudo </span>useadd <span class="nt">-d</span> /var/run/dnscrypt dnscrypt
+<span class="c"># 创建主目录并赋予权限：</span>
+<span class="nb">sudo mkdir</span> /var/run/dnscrypt <span class="o">&amp;&amp;</span> <span class="nb">sudo chown </span>dnscrypt /var/run/dnscrypt
+<span class="c"># 运行：</span>
+<span class="nb">sudo</span> /usr/local/sbin/dnscrypt-proxy /usr/local/etc/dnscrypt-proxy.conf
+<span class="c"># 如果是在 ubuntu 系统下或者能够使用 systemctl 的环境下，请在 /usr/lib/systemd/system/dnscrypt-proxy.socket 修改配置，参考资料3中所示。</span>
+</code></pre></div>    </div>
+  </li>
+  <li>安装 unbound
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+<span class="nb">tar </span>zxf unbound-1.6.7.tar.gz
+<span class="c"># 进入文件夹 </span>
+<span class="nb">cd </span>unbound-1.6.7
+<span class="c"># 编译源代码并安装</span>
+./configure <span class="nt">--with-libevent</span>
+make <span class="nt">-j12</span>
+<span class="nb">sudo </span>make <span class="nb">install</span>
+<span class="c"># 安装完成</span>
+</code></pre></div>    </div>
+  </li>
+  <li>配置 unbound
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 dnsmasq-china-list</span>
+wget <span class="nt">-c</span> https://github.com/felixonmars/dnsmasq-china-list/archive/master.zip
+<span class="c"># 解压并进入文件夹：</span>
+unzip master.zip <span class="o">&amp;&amp;</span> <span class="nb">cd </span>dnsmasq-china-list-master
+<span class="c"># 生成 accelerated-domains.china.unbound.conf</span>
+make unbound
+<span class="c"># 移动加速配置到 unbound 配置目录：</span>
+<span class="nb">sudo mv </span>accelerated-domains.china.unbound.conf /usr/local/etc/unbound
+<span class="c"># 下载 named.cache 到 /usr/local/etc/unbound 目录：</span>
+wget <span class="nt">-c</span> ftp://FTP.INTERNIC.NET/domain/named.cache 
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改配置文件 /usr/local/etc//unbound/unbound.conf</span>
+server:
+      num-threads: 2 <span class="c"># 线程数可以修改为物理核心数</span>
+      interface: 0.0.0.0 <span class="c"># 侦听所有 IPv4 地址</span>
+      interface: ::0 <span class="c"># 侦听所有 IPv6 地址</span>
+      <span class="c"># 如果只需要本机使用，则一个 interface: 127.0.0.1 即可</span>
+      so-rcvbuf: 4m
+      so-sndbuf: 4m <span class="c"># 本机使用的话，这俩 buf 可以取消注释</span>
+      so-reuseport: <span class="nb">yes</span> <span class="c"># 如果开了多线程，就写 yes</span>
+      msg-cache-size: 64m <span class="c"># 本机可以设置 4m 或者更小</span>
+      rrset-cache-size: 128m <span class="c"># 本机可以设置 4m 或者更小</span>
+      cache-max-ttl: 3600 <span class="c"># 建议设置一个不太大的值...专治各种运营商 DNS 缓存不服</span>
+      outgoing-num-tcp: 256 <span class="c"># 限制每个线程向上级查询的 TCP 并发数</span>
+      incoming-num-tcp: 1024 <span class="c"># 限制每个线程接受查询的 TCP 并发数</span>
+      <span class="c"># 下面这四个不需要解释了吧，不想用那个就写 no</span>
+      <span class="k">do</span><span class="nt">-ip4</span>: <span class="nb">yes
+      </span><span class="k">do</span><span class="nt">-ip6</span>: <span class="nb">yes
+      </span><span class="k">do</span><span class="nt">-udp</span>: <span class="nb">yes
+      </span><span class="k">do</span><span class="nt">-tcp</span>: <span class="nb">yes
+      </span>tcp-upstream: no <span class="c"># 默认是 no，隧道状态比较稳的话也不需要写 yes。一些情况下强制使用 tcp 连上游的话写 yes</span>
+      access-control: 0.0.0.0/0 allow <span class="c"># 本机用的话建议设置 127.0.0.0/8 allow，局域网用适当调整</span>
+      <span class="nb">chroot</span>: <span class="s2">"/usr/local/etc/unbound"</span>
+      username: <span class="s2">"unbound"</span>
+      root-hints: <span class="s2">"/usr/local/etc/unbound/named.cache"</span> <span class="c"># 没有的话在 ftp://FTP.INTERNIC.NET/domain/named.cache 下载一份</span>
+      hide-identity: <span class="nb">yes</span> <span class="c"># 不返回对 id.server 和 hostname.bind 的查询。</span>
+      hide-version: <span class="nb">yes</span> <span class="c"># 不返回对 version.server 和 version.bind 的查询。</span>
+      <span class="c"># 不过下面有 identity 和 version 的自定义选项，不隐藏这些的话，修改下选项还可以卖个萌(´・ω・｀)</span>
+      harden-glue: <span class="nb">yes</span> <span class="c"># 建议打开</span>
+      module-config: <span class="s2">"iterator"</span> <span class="c"># 禁用 DNSSEC 检查，如果上游不支持 DNSSEC 就关掉。注意这个选项有可能在其他 include 的文件里</span>
+      unwanted-reply-threshold: 10000000 <span class="c"># 针对各种网络不服，数值为建议值，具体可以自己修改看看效果</span>
+      <span class="k">do</span><span class="nt">-not-query-localhost</span>: no <span class="c"># 一般是为了防止扯皮丢包开着，不过等下要用 DNSCrypt 所以关掉</span>
+      directory: <span class="s2">"/usr/local/etc/unbound"</span>
+      pidfile: <span class="s2">"/usr/local/etc/unbound/unbound.pid"</span>
+      prefetch: <span class="nb">yes</span> <span class="c"># 蛮好用的，开着吧</span>
+      minimal-responses: <span class="nb">yes</span> <span class="c"># 省带宽，开着吧。本机用可以关掉</span>
+      <span class="c"># 关键部分来了，把默认查询全部丢给 DNSCrypt。使用 [地址]@[端口] 指定查询地址和端口，默认端口 53。</span>
+      <span class="c"># 然后把国内的地址丢给国内的缓存服务器。这两个选项的顺序不能错哟。</span>
+      <span class="c"># 如果使用隧道查询，把这个地址改为隧道对端的地址，或者一个国外的 DNS 服务器都可以，例如 8.8.8.8。</span>
+      <span class="c"># 具体看是在对端开 DNS 还是直接用国外的服务器。后者的话，前面 outgoing-interface 可以直接设置隧道本地端的地址，不过要配合 dnsmasq-china-list 的话，还是写路由表比较合适，否则不够灵活。</span>
+      include: <span class="s2">"/etc/unbound/accelerated-domains.china.unbound.conf"</span>
+
+forward-zone:
+    name: <span class="s2">"."</span>
+    forward-addr: 127.0.0.1@5353
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 运行：</span>
+<span class="nb">sudo</span> /usr/local/sbin/unbound <span class="nt">-c</span> /usr/local/etc/unbound/unbound.conf 
+（会自动进入后台执行）
+</code></pre></div></div>
+
+<h2 id="实验验证">实验验证</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dig facebook.com  @114.114.114.114
+dig facebook.com  @127.0.0.1
+</code></pre></div></div>
+
+<p>  将两条命令查询出的 ip 放到 ipip.net 查询一下，看是否属于 facebook 机房的。可以看出，前者不是后者是，那么就无污染 DNS 就搭建完成了。虽然这样一来你就能够获得正确的 facebook.com 的 ip，但是这并不意味着你就能正常访问 facebook，因为 ip 是不通，这也正是为什么修改 hosts 而无法访问某搜索引擎的原因了。</p>
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li>https://03k.org/linux-dnscrypt-proxy.html</li>
+  <li>http://blog.csdn.net/guowenyan001/article/details/39048893</li>
+  <li>https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/</li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
+        <section>
+          <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
+          <p>HTTPS 和 Let’s encrypt 简介</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/arch-tutorial.html" class="read-next-link"></a>
+          <section>
+            <span>Archlinux 入门初步</span>
+            <p>制作 archlinux 启动盘</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

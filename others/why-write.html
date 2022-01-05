@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作为码农，我们为什么要写作 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="作为码农，我们为什么要写作">
+    <meta name="keywords"  content="写作, 转载">
+    <!-- Open Graph -->
+    <meta property="og:title" content="作为码农，我们为什么要写作 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/others/why-write.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#%E5%86%99%E4%BD%9C" class="post-tag">写作</a>
+          
+            <a href="/tags.html#%E8%BD%AC%E8%BD%BD" class="post-tag">转载</a>
+          
+        
+      </div>
+      <h1>作为码农，我们为什么要写作</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="15-08-12"><i class="iconfont icon-date"></i>Wed, 12 Aug 2015 13:23:12 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1482 字 <b>·</b> 阅读全文大约需要 5 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1485470733090-0aae1788d5af?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">转载的一篇关于码农为什么需要写作</h2>
+    
+
+    <article class="markdown-body">
+      <p>  在程序员这个行业，坚持做技术写作的人一直比较少。我和身边的朋友沟通后，发现他们除了借口没有时间外，大多没有意识到写作带来的收益。在他们看来，将自己学到的知识简单记录下来就足够自己需要的时候回顾了。而技术写作通常需要花更多时间，因为需要将技术的细节以及来龙去脉讲清楚。</p>
+
+<p>  不得不承认，这的确是一个事实，通常情况下，把一个知识讲清楚比理解它更难。那我们为什么要花时间写作呢？我想写作至少有以下好处。</p>
+
+<h2 id="提高自己对知识的掌握层次">提高自己对知识的掌握层次</h2>
+
+<p>  美国教育心理学家<a href="https://zh.wikipedia.org/wiki/%E6%9C%AC%E5%82%91%E6%98%8E%C2%B7%E5%B8%83%E9%AD%AF%E5%A7%86">Bloom</a>将知识认知分为了两个维度，其中认知历程维度又分为6个层次，分别为：记忆、理解、应用、分析、评鉴、创造。如下图所示，层次越高，表示对知识的掌握程度越深。</p>
+
+<p><img src="https://i.vgy.me/NFff98.png" alt="image1" /></p>
+
+<p>  对于写作者来说，在写作过程中，因为需要对知识进行精确地表述，常常要对知识的细节再次的探索。在这个过程中，写作者可能会发现自己的观点不清晰的地方，通过二次学习，使自己的理解更加完善。写作者也可能会发现自己观点中的错误，从而改正自己的曲解。在经历过这段过程后，通常对于自己所写的知识的掌握程度，都上升了一个层次。</p>
+
+<p>  我自己的每次技术写作都经历了这样的提高过程。所以，我更多时候是把写作当成学习的一种方式。这种学习方式比普通的学习方式更加深入，效果更好。当然，花费的时间也更多。</p>
+
+<h2 id="提高表达和沟通的能力">提高表达和沟通的能力</h2>
+
+<p>  作为一个程序员，日常的工作大部分时间都是面对电脑。许多人周末也喜欢当一个技术宅，待在家里上网、看电影或者玩游戏来消遣。长时间的面对机器，使得我们的语言表达能力极度衰退。而写作是一个很好的机会，让我们练习自己的表达能力。</p>
+
+<p>  长时间写作之后，你会更加注意平时沟通的语言。你的用词更加精准，表达更加生动。在表达能力提高的同时，你的沟通效率也得到提高。</p>
+
+<h2 id="接受读者的沟通和反馈">接受读者的沟通和反馈</h2>
+
+<p>  当你的文章通过博客或者InfoQ网站发表出来后，你就会接着获得写作的第三个好处：来自读者的沟通和反馈。一篇好的文章通常会吸引一些读者回复，通过和读者的交流，你可以收获以下好处：</p>
+
+<ul>
+  <li>错误内容反馈：尽管文章在写作时经历过二次学习，但是人难免会犯错。写作将你的思想完全暴露出来，有水平的读者可以指出你文章中的错误，从而使你对知识的理解更加准确。我的很多博客文章都有一些细微错误，通过读者的找反馈，我很快就将错误内容改正过来了，自己的水平也得到了提高。</li>
+  <li>认识朋友：一个乐于分享的人总会比沉默寡言的人更招人喜欢。所以通过写作，你可以结交很多和你一样，乐于分享的朋友。</li>
+  <li>了解更多相关信息：一些读者会回复说：“某某框架也用了这个技术方案”，或者是：“你的这个实现方案没有另一个某某开源方案好”。这些信息，作为你当前文章知识点的补充，使你能够了解更多相关的资料，再一次完善自己所学的知识。</li>
+</ul>
+
+<h2 id="影响力">影响力</h2>
+
+<p>  当你持续的写作，坚持一年以上，你就会慢慢收获影响力。这个时候，你也会收到技术大会的分享邀请，出版社的约稿邀请，著名互联网公司的工作邀请，甚至是创业项目的合伙人邀请。你相比那些不分享的人，获得了更多的机会。当然你的技术观点也会被更多人接受，你也会收获到传递知识的乐趣。</p>
+
+<h2 id="结束语">结束语</h2>
+
+<p>在写作过程中，你将收获提高自己对知识的掌握层次和提高表达和沟通的能力的好处。<br />
+在写作结束后，你将收获错误内容反馈、认识朋友和了解更多相关信息的好处。<br />
+在坚持写作一段时间，你将收获影响力和传递知识的乐趣。</p>
+
+<p>另外，<a href="https://book.douban.com/subject/6709809/">《暗时间》</a>的作者刘未鹏在<a href="https://kb.cnblogs.com/page/517038/">他的文章</a>，也总结了很多写作的好处，大家也可以看看。</p>
+
+<p>看了写作的这么多好处，你是否心动？那赶快创建一个博客，开始你的技术写作之旅吧！</p>
+
+<p>原文转载自 <a href="http://kb.cnblogs.com/page/526625/">http://kb.cnblogs.com/page/526625/</a>（作者：唐巧）</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/others/my-daughter.html" class="read-next-link"></a>
+        <section>
+          <span>我的女儿</span>
+          <p>我的女儿</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1563858272990-ee61741967f6?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/kill-other-sshuser.html" class="read-next-link"></a>
+          <section>
+            <span>Linux 踢出其他正在 SSH 登陆用户</span>
+            <p>  在一些生产平台或者做安全审计的时候往往看到一大堆的用户 SSH 连接到同一台服务器，或者连接后没有正常关闭进程...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1428550590922-34c77f716ad4?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

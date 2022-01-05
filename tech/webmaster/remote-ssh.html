@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[原创]远程服务环境与本地环境互联 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="[原创]远程服务环境与本地环境互联">
+    <meta name="keywords"  content="多地, 组网, 互联, Zerotier">
+    <!-- Open Graph -->
+    <meta property="og:title" content="[原创]远程服务环境与本地环境互联 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/remote-ssh.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#%E5%A4%9A%E5%9C%B0" class="post-tag">多地</a>
+          
+            <a href="/tags.html#%E7%BB%84%E7%BD%91" class="post-tag">组网</a>
+          
+            <a href="/tags.html#%E4%BA%92%E8%81%94" class="post-tag">互联</a>
+          
+            <a href="/tags.html#Zerotier" class="post-tag">Zerotier</a>
+          
+        
+      </div>
+      <h1>[原创]远程服务环境与本地环境互联</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-06-15"><i class="iconfont icon-date"></i>Tue, 15 Jun 2021 14:30:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 6136 字 <b>·</b> 阅读全文大约需要 18 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1623626981328-fae05b4bc2a0?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">如何曲线实现异地组网？</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<h3 id="异地组网">异地组网</h3>
+
+<p>  谈到“异地组网”这个问题，其实已经有很多成熟的解决方案，包括最简单的拉光纤物理相连、向日葵异地组网等等。这些解决方案虽然稳定性和使用体验都极度让人舒适，但是实现的代价略微有点大，尤其财大气粗的光纤物理直接相连。不过对于某些大公司的异地数据中心互联，这仍然是最被认可的解决方案。至于向日葵异地组网，有点类似于把远程服务环境和本地环境同时连入一个网络，然后在形式上实现局域网化。由于这一解决方案往往依赖于一个由第三方提供的中心节点服务，这种局域网的带宽、速度和使用体验很大程度上受限于购买的套餐级别。那么，是否存在一种造价较低，速度和使用体验都较佳的解决方案呢？答案自然是存在的，只是有点<strong>曲线</strong>而已。</p>
+
+<h3 id="zerotier-组网">Zerotier 组网</h3>
+
+<p>  在之前的一些文章中，我们已经体验了 Zerotier 带来的软件定义网络。这种软件定义网络方式，在某种程度上会受限于 Zerotier 的 Planet 节点发现路由的效果。如果两个客户端节点到 Planet 节点的路由来自于两条不同的线路，比如一个节点位于移动局域网网络，一个节点位于联通局域网网络，Planet 节点在规划路由的时候会认为两个客户端节点直接无法找到最短的路由，需要通过 Planet 节点来进行转发流量，甚至被认为完全没有可能互通。而实际上，在国内的运营商网络中，移动网络和联通网络之间是存在交换节点的，即可能存在一条最短路由。这种情况下，Zerotier 官方建议自己使用一台国内的公网服务器提供 Moon 服务，从而为 Zerotier 的路由规划提供辅助。从理论上来说，两个客户端节点在 Moon 的帮助下很大可能找到国内网络中的最短路由，并直接建立 UDP 通道。但在实际过程中，客户端节点之间的最短路由可能仍然十分长，且不足以直接建立 UDP 通道，毕竟它们位于两个底层的局域网中。</p>
+
+<p>  那么这样就完全不能让两个客户端节点直接互联吗？实际上还是有方法的。</p>
+
+<p>  <strong>第一种方法</strong>是，将公网服务器与远程服务环境的节点使用 Zerotier 组网互通，通过 SSH 自身提供的代理功能、将本来要发给远程服务环境的节点的 ssh 连接请求发往公网服务器进行转发。因为全程采用了 SSH 无密码登录（密钥登录），所以除非你的私钥被别人窃取否则理论上是绝对安全的，这也是国际上采用的通用安全做法。</p>
+
+<p>  <strong>第二种方法</strong>是，将公网服务器分别与远程服务环境的节点、本地环境的节点使用 Zerotier 组网互通，并设置公网服务器允许转发来自 Zerotier 网卡的流量请求，然后在本地环境的节点上设置将所有发往远程服务环境的节点的网络请求经由公网服务器进行转发。因为这种方法是把公网服务器作为一个软件式的路由器，在网络上实现了本地环境与远程服务环境的完全互联，所以对于本地环境而言，远程服务环境中的任意节点的任意端口是完全可达的。这也存在某种安全上的隐患，一般来说只建议网络或服务管理用户使用这样的方式，对于普通用户来说第一种方法已经完全够用，且安全性较高。</p>
+
+<p><img src="https://i.vgy.me/BCnz9e.png" alt="vgy.me" /></p>
+
+<h2 id="实现">实现</h2>
+
+<h3 id="公网服务器的选择">公网服务器的选择</h3>
+
+<p>  无论是第一种方法还是第二种方法，都需要有一台公网服务器使用 Zerotier 与远程服务节点互通，因此第一步是需要拥有一台公网服务器。</p>
+
+<h4 id="地理位置">地理位置</h4>
+
+<p>  如果远程服务节点和本地客户端节点都在国内，那自然是国内的公网服务器最好。如果远程服务节点位于国内、本地客户端节点位于国外，也是使用国内的公网服务器最佳。因为无论哪种方式，公网服务器与远程服务节点直接都是使用 Zerotier 连接的。当然如果远程服务节点和本地客户端节点都在国外，自然使用国外的公网服务器最佳。</p>
+
+<h4 id="服务商">服务商</h4>
+
+<p>  根据笔者使用过的经验来看，按照推荐先后优先顺序，国内的 VPS 公网服务商推荐阿里云（国内国外路由较短）、腾讯云、Ucloud、华为云、百度云等等，国外的 VPS 公网服务商推荐 AWS（国内国外路由较短）、Azure、Linode、Digital Ocean、Vultr、GCP 等等。</p>
+
+<h3 id="第一种方法">第一种方法</h3>
+
+<h4 id="提前准备">提前准备</h4>
+
+<ul>
+  <li>本地客户端节点生成一对公钥和私钥</li>
+  <li>公网服务器和远程服务节点都已安装 Zerotier</li>
+</ul>
+
+<p>  如何生成一对公钥和私钥以及安装 Zerotier此处不做赘述。</p>
+
+<h4 id="规划网络">规划网络</h4>
+
+<p>  假设现在规划的 Zerotier 网段为 172.18.0.0/24，远程服务节点所在局域网网络为 192.168.1.0/24，：</p>
+<ul>
+  <li>公网服务器实际 IP：1.1.1.1</li>
+  <li>远程服务节点实际 IP：192.168.1.200</li>
+  <li>公网服务器 Zerotier 规划 IP：172.18.0.10</li>
+  <li>远程服务节点 Zerotier 规划 IP：172.18.0.200</li>
+</ul>
+
+<h4 id="配置-zerotier">配置 Zerotier</h4>
+
+<p>  登录 <a href="https://my.zerotier.com">Zerotier Web 控制面板</a>，并将公网服务器和远程服务节点的 zerotier id 加入到同一个 Zerotier 网络中。在 Web 控制面板中设置上面对应的 IP。</p>
+
+<p>  以下为在公网服务器或远程服务节点上的操作：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询公网服务器或远程服务节点的 zerotier id</span>
+<span class="nb">sudo </span>zerotier-cli info
+
+<span class="c"># 加入到同一个 Zerotier 网络中</span>
+<span class="nb">sudo </span>zerotier-cli <span class="nb">join</span> &lt;Zerotier Network Id&gt;
+
+<span class="c"># 查询网络状态</span>
+<span class="nb">sudo </span>zerotier-cli listnetworks
+</code></pre></div></div>
+
+<h4 id="验证组网结果">验证组网结果</h4>
+
+<p>  如下所示可以分别在远程服务节点和公网服务器上验证是否可以互通。一般来说，从远程服务节点上 PING 公网服务器可能较容易 PING 通。如果两边都不通，可以使用直接 PING 公网服务器的公网 IP 来帮助 Zerotier 更快找到最短路由。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在远程服务节点上 PING 公网服务器</span>
+ping <span class="nt">-c</span> 10 172.18.0.10
+
+<span class="c"># 在公网服务器上 PING 远程服务节点</span>
+ping <span class="nt">-c</span> 10 172.18.0.200
+
+<span class="c"># 在远程服务节点上 PING 公网服务器的公网 IP</span>
+ping <span class="nt">-c</span> 1.1.1.1
+</code></pre></div></div>
+
+<h4 id="配置路由转发">配置路由转发</h4>
+
+<p>  经过以上步骤就可以实现公网服务器与远程服务节点之间的互通，但是在远程服务环境中往往存在多个节点，如果每个节点都这么做那将非常冗余。因此，需要借助已经配置好 Zerotier 的远程服务节点来转发所有的请求到远程服务环境的其他节点。</p>
+
+<h5 id="远程服务节点">远程服务节点</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动转发功能，编辑 /etc/sysctl.conf 文件</span>
+<span class="nb">sudo </span>vim /etc/sysctl.conf
+
+<span class="c"># 在 /etc/sysctl.conf 文件底部添加</span>
+net.ipv4.ip_forward <span class="o">=</span> 1
+
+<span class="c"># 使修改的配置立即生效</span>
+<span class="nb">sudo </span>sysctl <span class="nt">-p</span>
+
+<span class="c"># 查看当前配置</span>
+<span class="nb">sudo </span>sysctl net.ipv4.ip_forward
+
+<span class="c"># 如输出以下内容即为修改的配置已生效</span>
+net.ipv4.ip_forward <span class="o">=</span> 1
+
+<span class="c"># 查询网卡信息</span>
+ip <span class="nb">link </span>show
+
+<span class="c"># 假设正常上网网卡为 eth0，Zerotier 虚拟网卡为 zt0</span>
+<span class="c"># 添加 iptables 规则允许 eth0 网卡转发所有 Zerotier 虚拟网卡 zt0 的流量</span>
+<span class="nb">sudo </span>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
+<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> RELATED,ESTABLISHED <span class="nt">-j</span> ACCEPT
+<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> zt0 <span class="nt">-o</span> eth0 <span class="nt">-j</span> ACCEPT
+
+<span class="c"># 由于 iptables 规则会在 VPS 重启后丢失，所以需要使用 iptables-persistent 来保存规则</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> iptables-persistent
+<span class="c"># 执行以下命令后会自动保存 IPv4 和 IPv6 规则</span>
+<span class="nb">sudo </span>netfilter-persistent save
+
+<span class="c"># 查询已保存的规则</span>
+<span class="nb">sudo </span>iptables-save
+</code></pre></div></div>
+
+<p>  执行以上命令后，远程服务节点就能接受来自其他 Zerotier 节点的流量转发请求了。</p>
+
+<h5 id="公网服务器">公网服务器</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询公网服务器的网卡</span>
+ip <span class="nb">link </span>show
+
+<span class="c"># 假设正常上网网卡为 eth0，Zertiter 虚拟网卡为 zt0</span>
+<span class="c"># 添加通往其他远程服务节点的请求交给已配置 Zerotier 的远程服务节点转发</span>
+<span class="nb">sudo </span>route add <span class="nt">-net</span> 192.168.1.0/24 gw 172.18.0.200 dev zt0
+
+<span class="c"># 验证其他远程服务节点是否可达</span>
+<span class="c"># 假设某一个其他远程服务节点 IP 为 192.168.1.201</span>
+ping <span class="nt">-c</span> 10 192.168.1.201
+</code></pre></div></div>
+
+<p>  经过以上命令即可配置公网服务器对远程服务环境中的任意节点通过已配置 Zerotier 的远程服务节点可达。</p>
+
+<h4 id="配置-ssh-代理">配置 SSH 代理</h4>
+
+<p>  SSH 是 Linux/Unix 世界中必不可少的一件神器，通常是用来从本地远程连接服务器。由于 SSH 协议本身是基于加密的，所以在连接后的数据流量是难以被攻击或破解的。当然，SSH 连接建立后，本地节点实际上还可以把远程服务节点的端口映射到本地。即使是在远程服务节点开启的是一个 Web 服务器，通过这样的方式也能在本地使用浏览器访问本地映射端口来实现对远程服务节点上的 Web 服务器的访问。而所需要的唯一一个权限就是可以 SSH 连接登录用户成功。这种方法的安全性极佳，既利用了 SSH 本身的安全性，又不暴露远程服务节点上的任何其他端口给别人。</p>
+
+<p>  SSH 代理功能其实是 SSH 端口转发的一种，其原理是利用一台公网可达的 SSH 服务作为跳板进行二次 SSH 登录。事实上，这种代理登录方式理论上可以支持二次及以上。由阮一峰大佬撰写的 <a href="https://wangdoc.com/ssh/port-forwarding.htm">SSH 教程</a> 中，对这一内容和原理做了非常详细的介绍，还包括 SSH 密钥登录、证书登录、scp 命令、rsync 命令等。这些知识在这里有非常大的用处。</p>
+
+<h5 id="公网服务器-1">公网服务器</h5>
+
+<p>  为了保障公网服务器的安全性，SSH 代理所使用的用户应该是一个不提供 SHELL 的用户，也就是说某一个客户端使用代理用户和通过验证的私钥登录公网服务器后会被立即退出，而无法停留在公网服务器上。如果为 SSH 代理用户提供了 SHELL，那么任何一个使用该服务的用户都能在公网服务器上操作，这样极不安全，公网服务器甚至可能被破坏。如下可以配置一个有家目录但不允许登录的用户用于 SSH 代理。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建一个用户名为 nologin_user 的不允许登录但有家目录的用户</span>
+<span class="nb">sudo </span>useradd <span class="nt">-d</span> /home/nologin_user <span class="nt">-m</span> <span class="nt">-s</span> /sbin/nologin nologin_user
+
+<span class="c"># 添加客户端节点的公钥到 nologin_user 的认证文件中</span>
+<span class="nb">sudo mkdir</span> /home/nologin_user/.ssh
+<span class="nb">sudo cat </span>id_rsa.pub <span class="o">&gt;&gt;</span> /home/nologin_user/.ssh/authorized_keys
+<span class="nb">sudo chown</span> <span class="nt">-R</span> nologin_user:nologin_user /home/nologin_user/.ssh
+
+<span class="c"># （可选，建议）配置 nologin_user 登录时不返回登录信息</span>
+<span class="c"># 在家目录创建一个名为 .hushlogin 的空文件</span>
+<span class="nb">sudo touch</span> /home/nologin_user/.hushlogin
+</code></pre></div></div>
+
+<h5 id="其他远程服务节点">其他远程服务节点</h5>
+
+<p>  为了使用户可以访问其他远程服务节点，在其他远程服务节点上也需要添加客户端节点的公钥到认证文件中，如下所示。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> /home/nologin_user/.ssh
+<span class="nb">sudo cat </span>id_rsa.pub <span class="o">&gt;&gt;</span> /home/&lt;username&gt;/.ssh/authorized_keys
+<span class="nb">sudo chown</span> <span class="nt">-R</span> &lt;username&gt;:&lt;username&gt; /home/nologin_user/.ssh
+</code></pre></div></div>
+
+<h5 id="本地客户端节点">本地客户端节点</h5>
+
+<p>  本地客户端节点为了可以一步直接登录其他远程服务节点，可以像以下方式一样配置本地 ssh。Linux 或者 Unix 的目录是 ~/.ssh/config，Windows 的目录也是 用户主目录/.ssh/config。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.ssh/config</span>
+
+Host remote
+    HostName 192.168.1.201
+    User ubuntu
+    Port 22
+    ProxyJump ecs
+
+Host ecs
+    HostName 1.1.1.1
+    User nologin_user
+    Port 22
+</code></pre></div></div>
+
+<p>  做好以上配置之后，即可在终端使用 <code class="language-plaintext highlighter-rouge">ssh remote</code> 命令一键无密码连接到其他远程服务节点。</p>
+
+<h3 id="第二种方法">第二种方法</h3>
+
+<h4 id="提前准备-1">提前准备</h4>
+
+<ul>
+  <li>本地客户端节点、公网服务器、远程服务节点都已安装 Zerotier</li>
+  <li>本地客户端节点 Zerotier 规划 IP 为 172.18.0.11</li>
+</ul>
+
+<p>  如何安装 Zerotier此处不做赘述。</p>
+
+<h4 id="配置互通">配置互通</h4>
+
+<p>  由于在这种方案中本地客户端节点、公网服务器、远程服务节点之间要实现网络完全互通，所以公网服务器和远程服务节点这里都要配置允许路由转发，本地客户端节点和公网服务器都要配置访问其他远程节点的路由转发。</p>
+
+<h5 id="远程服务节点-1">远程服务节点</h5>
+
+<p>  和第一种方法中 配置路由转发-远程服务节点 操作一致。</p>
+
+<h5 id="公网服务器-2">公网服务器</h5>
+
+<p>  和第一种方法中 配置路由转发-远程服务节点 操作基本一致，并且添加第一种方法中 配置路由转发-公网服务器 操作。这里不同的是 Zerotier 虚拟网卡需要转发流量，而不是将 Zerotier 虚拟网卡的流量请求转发给主要上网网卡，因此应做如下操作：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 允许 zt0 虚拟网卡转发流量请求</span>
+<span class="nb">sudo </span>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> zt0 <span class="nt">-j</span> MASQUERADE
+<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> RELATED,ESTABLISHED <span class="nt">-j</span> ACCEPT
+<span class="c"># 接受一切网卡转发流量请求</span>
+<span class="nb">sudo </span>iptables <span class="nt">-P</span> FORWARD  ACCEPT
+<span class="c"># 保存修改的 iptables 规则</span>
+<span class="nb">sudo </span>netfilter-persistent save
+<span class="c"># 查看保存的 iptables 规则</span>
+<span class="nb">sudo </span>iptables-save
+</code></pre></div></div>
+
+<h5 id="本地客户端节点-1">本地客户端节点</h5>
+
+<p>  和第一种方法中 配置路由转发-公网服务器 操作基本一致。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询本地客户端的网卡（Linux）</span>
+ip <span class="nb">link </span>show
+<span class="c"># 查询本地客户端的网卡（Mac）</span>
+ifconfig
+
+<span class="c"># 假设正常上网网卡为 eth0，Zertiter 虚拟网卡为 zt0</span>
+<span class="c"># 添加通往其他远程服务节点的请求交给已配置 Zerotier 的远程服务节点转发</span>
+<span class="nb">sudo </span>route add <span class="nt">-net</span> 192.168.1.0/24 gw 172.18.0.10 dev zt0
+
+<span class="c"># 验证其他远程服务节点是否可达</span>
+<span class="c"># 假设某一个其他远程服务节点 IP 为 192.168.1.201</span>
+ping <span class="nt">-c</span> 10 192.168.1.201
+</code></pre></div></div>
+
+<p>  网络互通之后可以直接使用 192.168.1.201 访问到其他远程服务节点，所以对应的 ssh 配置文件修改为以下内容。然后使用 <code class="language-plaintext highlighter-rouge">ssh remote</code> 命令直接访问其他远程服务节点。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.ssh/config</span>
+
+Host remote
+    HostName 192.168.1.201
+    User ubuntu
+    Port 22
+</code></pre></div></div>
+
+<h2 id="总结与讨论">总结与讨论</h2>
+
+<p>  软件定义网络在进行异地组网中发挥了很大的作用，并且有一定的安全性保障。但其中也有一些不足之处，比如说两种方法都需要通过公网服务器到远程服务节点，如果要在远程服务节点和本地客户端节点之间上传下载较大的文章，网速仍然会受到公网服务器带宽的限制。如果有一台上下行比较对称、带宽充足的公网服务器，那么就很容易弥补这一不足。</p>
+
+<p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/jupyterlab.html" class="read-next-link"></a>
+        <section>
+          <span>JupyterLab 的搭建与运维</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/aiida/aiida-qe.html" class="read-next-link"></a>
+          <section>
+            <span>AiiDA 与 Quantum Espresso</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1461727885569-b2ddec0c4328?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

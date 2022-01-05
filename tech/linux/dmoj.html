@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用 DMOJ 搭建属于自己的 OJ - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="用 DMOJ 搭建属于自己的 OJ">
+    <meta name="keywords"  content="DMOJ, 判题系统, Ubuntu, Mysql, Supervisor">
+    <!-- Open Graph -->
+    <meta property="og:title" content="用 DMOJ 搭建属于自己的 OJ - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/linux/dmoj.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#DMOJ" class="post-tag">DMOJ</a>
+          
+            <a href="/tags.html#%E5%88%A4%E9%A2%98%E7%B3%BB%E7%BB%9F" class="post-tag">判题系统</a>
+          
+            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          
+            <a href="/tags.html#Mysql" class="post-tag">Mysql</a>
+          
+            <a href="/tags.html#Supervisor" class="post-tag">Supervisor</a>
+          
+        
+      </div>
+      <h1>用 DMOJ 搭建属于自己的 OJ</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="20-08-04"><i class="iconfont icon-date"></i>Tue, 04 Aug 2020 17:06:45 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 19032 字 <b>·</b> 阅读全文大约需要 55 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1547605892-0da4c95beaf6?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">边搭边理解 OJ 是如何写成的</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="什么是-oj">什么是 OJ</h2>
+
+<p>  OJ 是 Online Judge（在线判题系统）的缩写，通常用于算法代码测试、算法竞赛等场景中，主要包含一个相对简单纯粹的代码运行沙盒环境、与用户交互的在线界面以及运行任务的管理调度等功能。国内比较重视算法竞赛（ACM）的学校都有自己的 OJ，比如有名的<a href="http://acm.hdu.edu.cn">杭州电子科大OJ</a>、<a href="http://poj.org/">北京大学OJ</a>、<a href="https://qduoj.com/">青岛大学OJ</a>、<a href="http://acmoj.shu.edu.cn/">上海大学OJ</a>等等。除此之外，国内外也有不少企业专注于给大家提供一个在线判题平台，比如有名的<a href="https://leetcode.com">LeetCode</a>、<a href="https://leetcode-cn.com">LeetCode CN</a>、<a href="https://nowcoder.com">牛客网</a>、<a href="https://dmoj.ca">DMOJ</a>等等。其实如果只是想练习算法，这些OJ系统是非常合适的。只要在具有一定名气的OJ上一直刷题，最后找算法岗工作的时候还是很有用的。</p>
+
+<h2 id="为什么选-dmoj">为什么选 DMOJ</h2>
+
+<p>  OJ系统中有一部分是开源的，比如<a href="https://github.com/QingdaoU/OnlineJudge">青岛大学OJ</a>、<a href="https://github.com/DMOJ/online-judge">DMOJ</a>等等。如果想要搭建一个自己玩一玩，可以选择青岛大学OJ，毕竟官方提供了一步到位的 docker-compose 方式安装。只要有 Docker 环境就可以从 docker-compose.yml 启动一套完整的实例。这样的搭建的确是简单易用，但是也失去了从头开始一步一步部署了解 OJ 是如何构成、运行的机会。除了这之外，还有一个非常重要的原因。大部分的开源OJ支持的编程语言是相当少的，基本上是在<code class="language-plaintext highlighter-rouge">C</code>、<code class="language-plaintext highlighter-rouge">C++</code>、<code class="language-plaintext highlighter-rouge">Java</code>、<code class="language-plaintext highlighter-rouge">Python</code>范围内，少数像 LeetCode 这样的 OJ 支持<code class="language-plaintext highlighter-rouge">Javascript</code>、<code class="language-plaintext highlighter-rouge">Go</code>等更多种常用编程语言。而 DMOJ 号称可以支持超过60种编程语言，这简直是囊括了绝大多数见过的编程语言了。所以，我最终选择了 DMOJ 来做这次实践学习。</p>
+
+<h2 id="安装-dmoj">安装 DMOJ</h2>
+
+<p>  DMOJ 官方提供的 <a href="https://docs.dmoj.ca/">文档</a> 大致上写得还是比较细致的，所有的文件配置关联与应用启动都在合适的时候进行修改，对于通过 DMOJ 来了解 OJ 的构成与运行非常有帮助。在按照文档安装的过程中，也发现了一些小问题，并通过查找其他的资料一步步解决。以下就让我们来试着完整的安装一次吧。</p>
+
+<h3 id="安装环境">安装环境</h3>
+<ul>
+  <li>Ubuntu Server 18.04 操作系统</li>
+</ul>
+
+<h3 id="正式安装前的准备工作">正式安装前的准备工作</h3>
+
+<ul>
+  <li>安装基本软件和编译环境</li>
+</ul>
+
+<p>  由于 DMOJ 是基于 Django 框架和 NodeJS 运行的，因此需要预先安装 Python 和 NodeJS。再者，在代码运行任务调度中需要有消息队列来缓冲提交的任务，所以预先安装 Redis 数据库。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>git gcc g++ make python3-dev python3-pip libxml2-dev libxslt1-dev zlib1g-dev gettext curl redis-server <span class="nt">-y</span>
+curl <span class="nt">-sL</span> https://deb.nodesource.com/setup_12.x | <span class="nb">sudo</span> <span class="nt">-E</span> bash -
+<span class="nb">sudo </span>apt <span class="nb">install </span>nodejs
+<span class="nb">sudo </span>npm <span class="nb">install</span> <span class="nt">-g</span> sass postcss-cli autoprefixer
+</code></pre></div></div>
+
+<ul>
+  <li>安装和配置数据库</li>
+</ul>
+
+<p>  这里所采用的是 Mariadb 数据库，Ubuntu 安装极为方便。由于现在的 Mariadb 数据库安装完后不会要求用户设置 root 密码，直接在本地登录密码<strong>默认为空</strong>。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install </span>mariadb-server libmysqlclient-dev <span class="nt">-y</span>
+
+<span class="nb">sudo </span>mysql <span class="nt">-u</span> root <span class="nt">-p</span>
+mariadb&gt; CREATE DATABASE dmoj DEFAULT CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_general_ci<span class="p">;</span>
+mariadb&gt; GRANT ALL PRIVILEGES ON dmoj.<span class="k">*</span> to <span class="s1">'dmoj'</span>@<span class="s1">'localhost'</span> IDENTIFIED BY <span class="s1">'&lt;password&gt;'</span><span class="p">;</span>
+mariadb&gt; <span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>  由于 DMOJ 设计时数据库用了较长的索引，此处还需要有进一步对数据库进行设置（官方文档中没有提到，可能是操作系统不同的原因）。在 /etc/mysql/mariadb.conf.d/50-server.conf 文件的 innodb 注释位置添加如下三行内容，修改完成后重启Mysql数据库生效配置。除此在外，还要在之后下载的 DMOJ 主项目代码文件 site/manage.py 中添加如下两行。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>mysqld]
+...
+
+innodb_file_format <span class="o">=</span> Barracuda
+innodb_file_per_table <span class="o">=</span> 1
+innodb_large_prefix
+
+<span class="c">#重启Mysql数据库</span>
+<span class="nb">sudo </span>service mysql restart
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">"DJANGO_SETTINGS_MODULE"</span><span class="p">,</span> <span class="s">"sampleproj.settings"</span><span class="p">)</span>
+
+    <span class="c1"># 增加下面两行
+</span>    <span class="kn">from</span> <span class="nn">django.db.backends.mysql.schema</span> <span class="kn">import</span> <span class="n">DatabaseSchemaEditor</span>
+    <span class="n">DatabaseSchemaEditor</span><span class="p">.</span><span class="n">sql_create_table</span> <span class="o">+=</span> <span class="s">" ROW_FORMAT=DYNAMIC"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>安装 python 沙盒工具</li>
+</ul>
+
+<p>  为了使本项目运行环境与操作系统中的其他 Python 项目环境不相互干扰，采用了 venv 沙盒工具。不仅在调试的工作中使用，在部署生产的时候也将采用 venv 沙盒工具。此处三条命令执行完就进入了沙盒模式，在终端提示的最前面会出现 (dmojsite) 的提示。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> python3-venv
+python3 <span class="nt">-m</span> venv dmojsite
+<span class="nb">.</span> dmojsite/bin/activate
+</code></pre></div></div>
+
+<h3 id="开始安装dmoj">开始安装DMOJ</h3>
+
+<ul>
+  <li>下载代码并安装依赖</li>
+</ul>
+
+<p>  这一步骤就是从 Github 下载 DMOJ 的主项目代码到本地，并添加子项目的 git 追踪和更新代码。在这里值得注意的是，如果决定之后采用 Docker 方式配置判定服务器的话，就不需要切换分支。如果不然，则必须要切换分支。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/DMOJ/site.git
+<span class="nb">cd </span>site
+git checkout v2.1.0  <span class="c"># 这一步只在后面使用pypi方式配置判定服务器的时候需要执行</span>
+git submodule init
+git submodule update
+pip3 <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+pip3 <span class="nb">install </span>mysqlclient
+</code></pre></div></div>
+
+<ul>
+  <li>修改项目配置</li>
+</ul>
+
+<p>  这个步骤是非常重要的，决定了主项目代码是否能正常运行。可以从官方提供的 <a href="https://github.com/DMOJ/docs/raw/master/sample_files/local_settings.py">下载地址</a> 获取基本文件，也可以直接使用我提供的配置文件 local_setting.py，内容如下。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#####################################
+########## Django settings ##########
+#####################################
+# See &lt;https://docs.djangoproject.com/en/1.11/ref/settings/&gt;
+# for more info and help. If you are stuck, you can try Googling about
+# Django - many of these settings below have external documentation about them.
+#
+# The settings listed here are of special interest in configuring the site.
+</span>
+<span class="c1"># SECURITY WARNING: keep the secret key used in production secret!
+# You may use &lt;http://www.miniwebtool.com/django-secret-key-generator/&gt;
+# to generate this key.
+#  访问前两行的URL生成一个key
+</span><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'anpsa4ko6^@b5u-)e9gm$vk(=lqb()-%0n@lr5c^=$feq45jdh'</span>
+
+<span class="c1"># SECURITY WARNING: don't run with debug turned on in production!
+# 生产环境下一定要修改成False
+</span><span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span> <span class="c1"># Change to False once you are done with runserver testing.
+</span>
+<span class="c1"># Uncomment and set to the domain names this site is intended to serve.
+# You must do this once you set DEBUG to False.
+</span><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'10.0.4.9'</span><span class="p">,</span><span class="s">'oj.lep.ac.cn'</span><span class="p">]</span>  <span class="c1">#设置成允许访问的ip或域名
+</span>
+<span class="c1"># Optional apps that DMOJ can make use of.
+</span><span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">(</span>
+<span class="p">)</span>
+
+<span class="c1"># Caching. You can use memcached or redis instead.
+# Documentation: &lt;https://docs.djangoproject.com/en/1.11/topics/cache/&gt;
+</span><span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'BACKEND'</span><span class="p">:</span> <span class="s">'django.core.cache.backends.locmem.LocMemCache'</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Your database credentials. Only MySQL is supported by DMOJ.
+# Documentation: &lt;https://docs.djangoproject.com/en/1.11/ref/databases/&gt;
+</span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'ENGINE'</span><span class="p">:</span> <span class="s">'django.db.backends.mysql'</span><span class="p">,</span>
+        <span class="s">'NAME'</span><span class="p">:</span> <span class="s">'dmoj'</span><span class="p">,</span>
+        <span class="s">'USER'</span><span class="p">:</span> <span class="s">'dmoj'</span><span class="p">,</span>
+        <span class="s">'PASSWORD'</span><span class="p">:</span> <span class="s">'&lt;password&gt;'</span><span class="p">,</span>  <span class="c1">#需要修改为自己设定的
+</span>        <span class="s">'HOST'</span><span class="p">:</span> <span class="s">'127.0.0.1'</span><span class="p">,</span>
+        <span class="s">'OPTIONS'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'charset'</span><span class="p">:</span> <span class="s">'utf8mb4'</span><span class="p">,</span>
+            <span class="s">'sql_mode'</span><span class="p">:</span> <span class="s">'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1"># Sessions.
+# Documentation: &lt;https://docs.djangoproject.com/en/1.11/topics/http/sessions/&gt;
+#SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+</span>
+<span class="c1"># Internationalization.
+# Documentation: &lt;https://docs.djangoproject.com/en/1.11/topics/i18n/&gt;
+</span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s">'zh-hans'</span>  <span class="c1"># 可以修改成符合国际规范的语言编码
+</span><span class="n">DEFAULT_USER_TIME_ZONE</span> <span class="o">=</span> <span class="s">'Asia/Shanghai'</span>  <span class="c1"># 设置时区
+</span><span class="n">USE_I18N</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">USE_L10N</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">USE_TZ</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1">## django-compressor settings, for speeding up page load times by minifying CSS and JavaScript files.
+# Documentation: https://django-compressor.readthedocs.io/en/latest/
+</span><span class="n">COMPRESS_OUTPUT_DIR</span> <span class="o">=</span> <span class="s">'cache'</span>
+<span class="n">COMPRESS_CSS_FILTERS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">'compressor.filters.css_default.CssAbsoluteFilter'</span><span class="p">,</span>
+    <span class="s">'compressor.filters.cssmin.CSSMinFilter'</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">COMPRESS_JS_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'compressor.filters.jsmin.JSMinFilter'</span><span class="p">]</span>
+<span class="n">COMPRESS_STORAGE</span> <span class="o">=</span> <span class="s">'compressor.storage.GzipCompressorFileStorage'</span>
+<span class="n">STATICFILES_FINDERS</span> <span class="o">+=</span> <span class="p">(</span><span class="s">'compressor.finders.CompressorFinder'</span><span class="p">,)</span>
+
+
+<span class="c1">#########################################
+########## Email configuration ##########
+#########################################
+# See &lt;https://docs.djangoproject.com/en/1.11/topics/email/#email-backends&gt;
+# for more documentation. You should follow the information there to define
+# your email settings.
+</span>
+<span class="c1"># Use this if you are just testing.
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+</span>
+<span class="c1"># The following block is included for your convenience, if you want
+# to use Gmail.
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_HOST_USER = '&lt;your account&gt;@gmail.com'
+#EMAIL_HOST_PASSWORD = '&lt;your password&gt;'
+#EMAIL_PORT = 587
+</span>
+<span class="c1"># To use Mailgun, uncomment this block.
+# You will need to run `pip install django-mailgun` for to get `MailgunBackend`.
+#EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
+#MAILGUN_ACCESS_KEY = '&lt;your Mailgun access key&gt;'
+#MAILGUN_SERVER_NAME = '&lt;your Mailgun domain&gt;'
+</span>
+<span class="c1"># You can also use Sendgrid, with `pip install sendgrid-django`.
+#EMAIL_BACKEND = 'sgbackend.SendGridBackend'
+#SENDGRID_API_KEY = '&lt;Your SendGrid API Key&gt;'
+</span>
+<span class="c1"># The DMOJ site is able to notify administrators of errors via email,
+# if configured as shown below.
+</span>
+<span class="c1"># A tuple of (name, email) pairs that specifies those who will be mailed
+# when the server experiences an error when DEBUG = False.
+</span><span class="n">ADMINS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s">'zhonger'</span><span class="p">,</span> <span class="s">'zhonger@lep.ac.cn'</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="c1"># The sender for the aforementioned emails.
+</span><span class="n">SERVER_EMAIL</span> <span class="o">=</span> <span class="s">'LEPOJ: Modern Online Judge &lt;zhonger@lep.ac.cn&gt;'</span>
+
+
+<span class="c1">##################################################
+########### Static files configuration. ##########
+##################################################
+# See &lt;https://docs.djangoproject.com/en/1.11/howto/static-files/&gt;.
+</span>
+<span class="c1"># Change this to somewhere more permanent., especially if you are using a
+# webserver to serve the static files. This is the directory where all the
+# static files DMOJ uses will be collected to.
+# You must configure your webserver to serve this directory as /static/ in production.
+# 这个目录是用于存放静态文件的地方
+</span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s">'/tmp/static/'</span>
+
+<span class="c1"># URL to access static files.
+#STATIC_URL = '/static/'
+</span>
+<span class="c1">#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, "static"),
+#)
+</span>
+<span class="c1"># Uncomment to use hashed filenames with the cache framework.
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
+</span>
+<span class="c1">############################################
+########## DMOJ-specific settings ##########
+############################################
+</span>
+<span class="c1">## DMOJ site display settings.
+</span><span class="n">SITE_NAME</span> <span class="o">=</span> <span class="s">'LEPOJ'</span>
+<span class="n">SITE_LONG_NAME</span> <span class="o">=</span> <span class="s">'LEPOJ: Modern Online Judge'</span>
+<span class="n">SITE_ADMIN_EMAIL</span> <span class="o">=</span> <span class="s">'zhonger@lep.ac.cn'</span>
+<span class="n">TERMS_OF_SERVICE_URL</span> <span class="o">=</span> <span class="s">'//oj.lep.ac.cn/tos'</span> <span class="c1"># Use a flatpage.
+</span>
+<span class="c1">## Bridge controls.
+# The judge connection address and port; where the judges will connect to the site.
+# You should change this to something your judges can actually connect to
+# (e.g., a port that is unused and unblocked by a firewall).
+</span><span class="n">BRIDGED_JUDGE_ADDRESS</span> <span class="o">=</span> <span class="p">[(</span><span class="s">'localhost'</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)]</span>  <span class="c1"># 任务调度服务配置
+</span>
+<span class="c1"># The bridged daemon bind address and port to communicate with the site.
+#BRIDGED_DJANGO_ADDRESS = [('localhost', 9998)]
+</span>
+<span class="c1">## DMOJ features.
+# Set to True to enable full-text searching for problems.
+</span><span class="n">ENABLE_FTS</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1"># Set of email providers to ban when a user registers, e.g., {'throwawaymail.com'}.
+</span><span class="n">BAD_MAIL_PROVIDERS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="c1"># The number of submissions that a staff user can rejudge at once without
+# requiring the permission 'Rejudge a lot of submissions'.
+# Uncomment to change the submission limit.
+#DMOJ_SUBMISSIONS_REJUDGE_LIMIT = 10
+</span>
+<span class="c1">## Event server.
+# Uncomment to enable live updating.
+#EVENT_DAEMON_USE = True
+</span>
+<span class="c1"># Uncomment this section to use websocket/daemon.js included in the site.
+#EVENT_DAEMON_POST = '&lt;ws:// URL to post to&gt;'
+</span>
+<span class="c1"># If you are using the defaults from the guide, it is this:
+</span><span class="n">EVENT_DAEMON_POST</span> <span class="o">=</span> <span class="s">'ws://127.0.0.1:15101/'</span>  <span class="c1"># 提交事件
+</span>
+<span class="c1"># These are the publicly accessed interface configurations.
+# They should match those used by the script.
+#EVENT_DAEMON_GET = '&lt;public ws:// URL for clients&gt;'
+#EVENT_DAEMON_GET_SSL = '&lt;public wss:// URL for clients&gt;'
+#EVENT_DAEMON_POLL = '&lt;public URL to access the HTTP long polling of event server&gt;'
+# i.e. the path to /channels/ exposed by the daemon, through whatever proxy setup you have.
+</span>
+<span class="c1"># Using our standard nginx configuration, these should be.
+</span><span class="n">EVENT_DAEMON_GET</span> <span class="o">=</span> <span class="s">'ws://127.0.0.1:15100/event/'</span> <span class="c1"># 获取事件
+#EVENT_DAEMON_GET_SSL = 'wss://&lt;your domain&gt;/event/' # Optional
+</span><span class="n">EVENT_DAEMON_POLL</span> <span class="o">=</span> <span class="s">'/channels/'</span>  <span class="c1"># 频道广播
+</span>
+<span class="c1"># If you would like to use the AMQP-based event server from &lt;https://github.com/DMOJ/event-server&gt;,
+# uncomment this section instead. This is more involved, and recommended to be done
+# only after you have a working event server.
+#EVENT_DAEMON_AMQP = '&lt;amqp:// URL to connect to, including username and password&gt;'
+#EVENT_DAEMON_AMQP_EXCHANGE = '&lt;AMQP exchange to use&gt;'
+</span>
+<span class="c1">## Celery 消息队列服务，需将注释去除
+</span><span class="n">CELERY_BROKER_URL</span> <span class="o">=</span> <span class="s">'redis://localhost:6379'</span> 
+<span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s">'redis://localhost:6379'</span>
+
+<span class="c1">## CDN control.
+# Base URL for a copy of ace editor.
+# Should contain ace.js, along with mode-*.js.
+</span><span class="n">ACE_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/'</span>
+<span class="n">JQUERY_JS</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'</span>
+<span class="n">SELECT2_JS_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'</span>
+<span class="n">SELECT2_CSS_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'</span>
+
+<span class="c1"># A map of Earth in Equirectangular projection, for timezone selection.
+# Please try not to hotlink this poor site.
+</span><span class="n">TIMEZONE_MAP</span> <span class="o">=</span> <span class="s">'http://naturalearth.springercarto.com/ne3_data/8192/textures/3_no_ice_clouds_8k.jpg'</span>
+
+<span class="c1">## Camo (https://github.com/atmos/camo) usage.
+#DMOJ_CAMO_URL = "&lt;URL to your camo install&gt;"
+#DMOJ_CAMO_KEY = "&lt;The CAMO_KEY environmental variable you used&gt;"
+</span>
+<span class="c1"># Domains to exclude from being camo'd.
+#DMOJ_CAMO_EXCLUDE = ("https://dmoj.ml", "https://dmoj.ca")
+</span>
+<span class="c1"># Set to True to use https when dealing with protocol-relative URLs.
+# See &lt;http://www.paulirish.com/2010/the-protocol-relative-url/&gt; for what they are.
+#DMOJ_CAMO_HTTPS = False
+</span>
+<span class="c1"># HTTPS level. Affects &lt;link rel='canonical'&gt; elements generated.
+# Set to 0 to make http URLs canonical.
+# Set to 1 to make the currently used protocol canonical.
+# Set to 2 to make https URLs canonical.
+#DMOJ_HTTPS = 0
+</span>
+<span class="c1">## PDF rendering settings.
+# Directory to cache the PDF.
+#DMOJ_PDF_PROBLEM_CACHE = '/home/dmoj-uwsgi/pdfcache'
+</span>
+<span class="c1"># Path to use for nginx's X-Accel-Redirect feature.
+# Should be an internal location mapped to the above directory.
+#DMOJ_PDF_PROBLEM_INTERNAL = '/pdfcache'
+</span>
+<span class="c1"># Enable Selenium PDF generation
+#USE_SELENIUM = True
+</span>
+<span class="c1">## Data download settings.
+# Uncomment to allow users to download their data
+#DMOJ_USER_DATA_DOWNLOAD = True
+</span>
+<span class="c1"># Directory to cache user data downloads.
+# It is the administrator's responsibility to clean up old files.
+#DMOJ_USER_DATA_CACHE = '/home/dmoj-uwsgi/datacache'
+</span>
+<span class="c1"># Path to use for nginx's X-Accel-Redirect feature.
+# Should be an internal location mapped to the above directory.
+#DMOJ_USER_DATA_INTERNAL = '/datacache'
+# How often a user can download their data.
+#DMOJ_USER_DATA_DOWNLOAD_RATELIMIT = datetime.timedelta(days=1)
+</span>
+
+<span class="c1">## ======== Logging Settings ========
+# Documentation: https://docs.djangoproject.com/en/1.9/ref/settings/#logging
+#                https://docs.python.org/2/library/logging.config.html#logging-config-dictschema
+</span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'version'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">'disable_existing_loggers'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">'formatters'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'file'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'format'</span><span class="p">:</span> <span class="s">'%(levelname)s %(asctime)s %(module)s %(message)s'</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s">'simple'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'format'</span><span class="p">:</span> <span class="s">'%(levelname)s %(message)s'</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">'handlers'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="c1"># You may use this handler as example for logging to other files..
+</span>        <span class="s">'bridge'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'level'</span><span class="p">:</span> <span class="s">'INFO'</span><span class="p">,</span>
+            <span class="s">'class'</span><span class="p">:</span> <span class="s">'logging.handlers.RotatingFileHandler'</span><span class="p">,</span>
+            <span class="s">'filename'</span><span class="p">:</span> <span class="s">'&lt;desired bridge log path&gt;'</span><span class="p">,</span>
+            <span class="s">'maxBytes'</span><span class="p">:</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+            <span class="s">'backupCount'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s">'formatter'</span><span class="p">:</span> <span class="s">'file'</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s">'mail_admins'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'level'</span><span class="p">:</span> <span class="s">'ERROR'</span><span class="p">,</span>
+            <span class="s">'class'</span><span class="p">:</span> <span class="s">'dmoj.throttle_mail.ThrottledEmailHandler'</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="s">'console'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'level'</span><span class="p">:</span> <span class="s">'DEBUG'</span><span class="p">,</span>
+            <span class="s">'class'</span><span class="p">:</span> <span class="s">'logging.StreamHandler'</span><span class="p">,</span>
+            <span class="s">'formatter'</span><span class="p">:</span> <span class="s">'file'</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s">'loggers'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="c1"># Site 500 error mails.
+</span>        <span class="s">'django.request'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mail_admins'</span><span class="p">],</span>
+            <span class="s">'level'</span><span class="p">:</span> <span class="s">'ERROR'</span><span class="p">,</span>
+            <span class="s">'propagate'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="c1"># Judging logs as received by bridged.
+</span>        <span class="s">'judge.bridge'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'bridge'</span><span class="p">,</span> <span class="s">'mail_admins'</span><span class="p">],</span>
+            <span class="s">'level'</span><span class="p">:</span> <span class="s">'INFO'</span><span class="p">,</span>
+            <span class="s">'propagate'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="c1"># Catch all log to stderr.
+</span>        <span class="s">''</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'console'</span><span class="p">],</span>
+        <span class="p">},</span>
+        <span class="c1"># Other loggers of interest. Configure at will.
+</span>        <span class="c1">#  - judge.user: logs naughty user behaviours.
+</span>        <span class="c1">#  - judge.problem.pdf: PDF generation log.
+</span>        <span class="c1">#  - judge.html: HTML parsing errors when processing problem statements etc.
+</span>        <span class="c1">#  - judge.mail.activate: logs for the reply to activate feature.
+</span>        <span class="c1">#  - event_socket_server
+</span>    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1">## ======== Integration Settings ========
+## Python Social Auth
+# Documentation: https://python-social-auth.readthedocs.io/en/latest/
+# You can define these to enable authentication through the following services.
+#SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+#SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+#SOCIAL_AUTH_FACEBOOK_KEY = ''
+#SOCIAL_AUTH_FACEBOOK_SECRET = ''
+#SOCIAL_AUTH_GITHUB_SECURE_KEY = ''
+#SOCIAL_AUTH_GITHUB_SECURE_SECRET = ''
+#SOCIAL_AUTH_DROPBOX_OAUTH2_KEY = ''
+#SOCIAL_AUTH_DROPBOX_OAUTH2_SECRET = ''
+</span>
+<span class="c1">## ======== Custom Configuration ========
+# You may add whatever django configuration you would like here.
+# Do try to keep it separate so you can quickly patch in new settings.
+</span></code></pre></div></div>
+
+<p>  在这一步，只需要修改应用秘钥、数据库密码、语言、时区、站点基本信息，其他中文标注地方可以在后续步骤进行修改。修改完成后，执行以下命令进行验证。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 manage.py check  <span class="c"># 如使用本人提供配置文件无须此步骤</span>
+</code></pre></div></div>
+
+<ul>
+  <li>生成静态文件</li>
+</ul>
+
+<p>  这一步骤会在<code class="language-plaintext highlighter-rouge">/tmp/static/</code>目录生成并优化项目需要的静态文件。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./make_style.sh
+python3 manage.py collectstatic
+python3 manage.py compilemessages
+python3 manage.py compilejsi18n
+</code></pre></div></div>
+
+<ul>
+  <li>导入数据库表</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 迁移所有表</span>
+python3 manage.py migrate
+
+<span class="c"># 导入测试数据和配置</span>
+python3 manage.py loaddata navbar
+python3 manage.py loaddata language_small
+python3 manage.py loaddata demo
+
+<span class="c"># 创建管理员用户，需输入用户名、邮箱和密码</span>
+python3 manage.py createsuperuser
+</code></pre></div></div>
+
+<ul>
+  <li>创建Celery任务队列</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动redis</span>
+<span class="nb">sudo </span>service redis-server start
+
+<span class="c">#将项目配置文件中Celery配置去除注释使其生效</span>
+
+<span class="c"># 测试运行主项目代码</span>
+python3 manage.py runserver 0.0.0.0:8000
+
+<span class="c"># 运行上一步成功后，运行调度程序，十秒内无任何回显则ctrl+c中止</span>
+python3 manage.py runbridged
+
+<span class="c"># 运行Celery任务队列，无错误回显即可</span>
+pip3 <span class="nb">install </span>redis
+celery <span class="nt">-A</span> dmoj_celery worker
+</code></pre></div></div>
+
+<ul>
+  <li>配置 uwsgi</li>
+</ul>
+
+<p>  众所周知，uwsgi 是一个用于长久运行 Python Web 项目的工具。这里的配置文件放在<code class="language-plaintext highlighter-rouge">site</code>目录下，<a href="https://github.com/DMOJ/docs/raw/master/sample_files/uwsgi.ini">官方下载地址</a>，也可以用我提供的配置文件。</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[uwsgi]</span>
+<span class="c"># Socket and pid file location/permission.
+</span><span class="py">uwsgi-socket</span> <span class="p">=</span> <span class="s">/tmp/dmoj-site.sock</span>
+<span class="py">chmod-socket</span> <span class="p">=</span> <span class="s">666</span>
+<span class="py">pidfile</span> <span class="p">=</span> <span class="s">/tmp/dmoj-site.pid</span>
+
+<span class="c"># You should create an account dedicated to running dmoj under uwsgi.
+# 为了避免因用户权限和文件夹权限导致的运行失败，这里均设置为初始用户
+</span><span class="py">uid</span> <span class="p">=</span> <span class="s">ubuntu</span>
+<span class="py">gid</span> <span class="p">=</span> <span class="s">ubuntu</span>
+
+<span class="c"># Paths. 此处的三个目录需修改为对应目录
+</span><span class="py">chdir</span> <span class="p">=</span> <span class="s">/home/ubuntu/site/  </span>
+<span class="py">pythonpath</span> <span class="p">=</span> <span class="s">/home/ubuntu/site/  </span>
+<span class="py">virtualenv</span> <span class="p">=</span> <span class="s">/home/ubuntu/dmojsite/ </span>
+
+<span class="c"># Details regarding DMOJ application.
+</span><span class="py">protocol</span> <span class="p">=</span> <span class="s">uwsgi</span>
+<span class="py">master</span> <span class="p">=</span> <span class="s">true</span>
+<span class="py">env</span> <span class="p">=</span> <span class="s">DJANGO_SETTINGS_MODULE=dmoj.settings</span>
+<span class="py">module</span> <span class="p">=</span> <span class="s">dmoj.wsgi:application</span>
+<span class="py">optimize</span> <span class="p">=</span> <span class="s">2</span>
+
+<span class="c"># Scaling settings. Tune as you like.
+</span><span class="py">memory-report</span> <span class="p">=</span> <span class="s">true</span>
+<span class="py">cheaper-algo</span> <span class="p">=</span> <span class="s">backlog</span>
+<span class="py">cheaper</span> <span class="p">=</span> <span class="s">3</span>
+<span class="py">cheaper-initial</span> <span class="p">=</span> <span class="s">5</span>
+<span class="py">cheaper-step</span> <span class="p">=</span> <span class="s">1</span>
+<span class="py">cheaper-rss-limit-soft</span> <span class="p">=</span> <span class="s">201326592</span>
+<span class="py">cheaper-rss-limit-hard</span> <span class="p">=</span> <span class="s">234881024</span>
+<span class="py">workers</span> <span class="p">=</span> <span class="s">7</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装依赖</span>
+pip3 <span class="nb">install </span>uwsgi
+
+<span class="c"># 测试配置文件是否有效</span>
+uwsgi <span class="nt">--ini</span> uwsgi.ini
+</code></pre></div></div>
+
+<p>  此处查看执行命令的回显，未报错误信息并正常启动 worker 即可。验证是否完全有效需要等后续配置 nginx。</p>
+
+<ul>
+  <li>supervisord 管理</li>
+</ul>
+
+<p>  其实以上步骤已经对 DMOJ 中非常重要的几个部分完成了部署，包括数据库 Mysql、主项目代码运行 uwsgi、任务队列 Celery、任务调度 Bridged。但是除了数据库是时刻保持在后台的服务以外，其他三项均是前台执行，因此需要用 supervisord 来给他们后台化。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 supervisord</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>supervisor <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>  安装完成后将以下三个配置文件放在 /etc/supervisor/conf.d/ 文件目录下。为了避免因用户权限和文件夹权限导致的运行失败，这里均设置为初始用户执行程序。</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># site.conf
+</span>[<span class="n">program</span>:<span class="n">site</span>]
+<span class="n">command</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">dmojsite</span>/<span class="n">bin</span>/<span class="n">uwsgi</span> --<span class="n">ini</span> <span class="n">uwsgi</span>.<span class="n">ini</span>
+<span class="n">directory</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/
+<span class="n">stopsignal</span>=<span class="n">QUIT</span>
+<span class="n">stdout_logfile</span>=/<span class="n">tmp</span>/<span class="n">site</span>.<span class="n">stdout</span>.<span class="n">log</span>
+<span class="n">stderr_logfile</span>=/<span class="n">tmp</span>/<span class="n">site</span>.<span class="n">stderr</span>.<span class="n">log</span>
+</code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># bridged.conf
+</span>[<span class="n">program</span>:<span class="n">bridged</span>]
+<span class="n">command</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">dmojsite</span>/<span class="n">bin</span>/<span class="n">python</span> <span class="n">manage</span>.<span class="n">py</span> <span class="n">runbridged</span>
+<span class="n">directory</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/
+<span class="n">stopsignal</span>=<span class="n">INT</span>
+<span class="c"># You should create a dedicated user for the bridged to run under.
+</span><span class="n">user</span>=<span class="n">ubuntu</span>
+<span class="n">group</span>=<span class="n">ubuntu</span>
+<span class="n">stdout_logfile</span>=/<span class="n">tmp</span>/<span class="n">bridge</span>.<span class="n">stdout</span>.<span class="n">log</span>
+<span class="n">stderr_logfile</span>=/<span class="n">tmp</span>/<span class="n">bridge</span>.<span class="n">stderr</span>.<span class="n">log</span>
+</code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># celery.conf
+</span>[<span class="n">program</span>:<span class="n">celery</span>]
+<span class="n">command</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">dmojsite</span>/<span class="n">bin</span>/<span class="n">celery</span> -<span class="n">A</span> <span class="n">dmoj_celery</span> <span class="n">worker</span>
+<span class="n">directory</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/
+<span class="c"># You should create a dedicated user for celery to run under.
+</span><span class="n">user</span>=<span class="n">ubuntu</span>
+<span class="n">group</span>=<span class="n">ubuntu</span>
+<span class="n">stdout_logfile</span>=/<span class="n">tmp</span>/<span class="n">celery</span>.<span class="n">stdout</span>.<span class="n">log</span>
+<span class="n">stderr_logfile</span>=/<span class="n">tmp</span>/<span class="n">celery</span>.<span class="n">stderr</span>.<span class="n">log</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 更新supervisord监控列表并查询状态，但均为running是正常运行</span>
+<span class="nb">sudo </span>supervisorctl update
+<span class="nb">sudo </span>supervisorctl status
+</code></pre></div></div>
+
+<ul>
+  <li>安装并配置 Nginx</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装nginx</span>
+<span class="nb">sudo </span>apt <span class="nb">install </span>nginx <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>  将 /etc/nginx/sites-available/default 删除并新建新的同名文件，填入以下内容。</p>
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
+    <span class="n">listen</span>       <span class="m">80</span>;
+    <span class="n">listen</span>       [::]:<span class="m">80</span>;
+
+    <span class="c"># Change port to 443 and do the nginx ssl stuff if you want it.
+</span>
+    <span class="c"># Change server name to the HTTP hostname you are using.
+</span>    <span class="c"># You may also make this the default server by listening with default_server,
+</span>    <span class="c"># if you disable the default nginx server declared.
+</span>    <span class="n">server_name</span> <span class="n">oj</span>.<span class="n">lep</span>.<span class="n">ac</span>.<span class="n">cn</span>;
+
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">UA</span>-<span class="n">Compatible</span> <span class="s2">"IE=Edge,chrome=1"</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">Content</span>-<span class="n">Type</span>-<span class="n">Options</span> <span class="n">nosniff</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">XSS</span>-<span class="n">Protection</span> <span class="s2">"1; mode=block"</span>;
+
+    <span class="n">charset</span> <span class="n">utf</span>-<span class="m">8</span>;
+    <span class="n">try_files</span> $<span class="n">uri</span> @<span class="n">icons</span>;
+    <span class="n">error_page</span> <span class="m">502</span> <span class="m">504</span> /<span class="m">502</span>.<span class="n">html</span>;
+
+    <span class="n">location</span> ~ ^/<span class="m">502</span>\.<span class="n">html</span>$|^/<span class="n">logo</span>\.<span class="n">png</span>$|^/<span class="n">robots</span>\.<span class="n">txt</span>$ {
+        <span class="n">root</span> /<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/;
+    }
+
+    <span class="n">location</span> @<span class="n">icons</span> {
+        <span class="n">root</span> /<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/<span class="n">resources</span>/<span class="n">icons</span>;
+        <span class="n">error_page</span> <span class="m">403</span> = @<span class="n">uwsgi</span>;
+        <span class="n">error_page</span> <span class="m">404</span> = @<span class="n">uwsgi</span>;
+    }
+
+    <span class="n">location</span> @<span class="n">uwsgi</span> {
+        <span class="n">uwsgi_read_timeout</span> <span class="m">600</span>;
+        <span class="c"># Change this path if you did so in uwsgi.ini
+</span>        <span class="n">uwsgi_pass</span> <span class="n">unix</span>:///<span class="n">tmp</span>/<span class="n">dmoj</span>-<span class="n">site</span>.<span class="n">sock</span>;
+        <span class="n">include</span> <span class="n">uwsgi_params</span>;
+        <span class="n">uwsgi_param</span> <span class="n">SERVER_SOFTWARE</span> <span class="n">nginx</span>/$<span class="n">nginx_version</span>;
+    }
+
+    <span class="n">location</span> /<span class="n">static</span> {
+        <span class="n">gzip_static</span> <span class="n">on</span>;
+        <span class="n">expires</span> <span class="n">max</span>;
+        <span class="c">#root /tmp/static/;
+</span>        <span class="c"># Comment out root, and use the following if it doesn't end in /static.
+</span>        <span class="n">alias</span> /<span class="n">tmp</span>/<span class="n">static</span>/; <span class="c"># 配置主项目的静态文件地址
+</span>    }
+
+    <span class="c"># Uncomment if you are using PDFs and want to serve it faster.
+</span>    <span class="c"># This location name should be set to DMOJ_PDF_PROBLEM_INTERNAL.
+</span>    <span class="c">#location /pdfcache {
+</span>    <span class="c">#    internal;
+</span>    <span class="c">#    root &lt;path to pdf cache diretory, without the final /pdfcache&gt;;
+</span>    <span class="c">#    # Default from docs:
+</span>    <span class="c">#    #root /home/dmoj-uwsgi/;
+</span>    <span class="c">#}
+</span>
+    <span class="c"># Uncomment if you are allowing user data downloads and want to serve it faster.
+</span>    <span class="c"># This location name should be set to DMOJ_USER_DATA_INTERNAL.
+</span>    <span class="c">#location /datacache {
+</span>    <span class="c">#    internal;
+</span>    <span class="c">#    root &lt;path to data cache diretory, without the final /datacache&gt;;
+</span>    <span class="c">#
+</span>    <span class="c">#    # Default from docs:
+</span>    <span class="c">#    #root /home/dmoj-uwsgi/;
+</span>    <span class="c">#}
+</span>
+    <span class="c"># Uncomment these sections if you are using the event server.
+</span>    <span class="n">location</span> /<span class="n">event</span>/ {
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>:<span class="m">15100</span>/;
+        <span class="n">proxy_http_version</span> <span class="m">1</span>.<span class="m">1</span>;
+        <span class="n">proxy_set_header</span> <span class="n">Upgrade</span> $<span class="n">http_upgrade</span>;
+        <span class="n">proxy_set_header</span> <span class="n">Connection</span> <span class="s2">"upgrade"</span>;
+        <span class="n">proxy_read_timeout</span> <span class="m">86400</span>;
+    }
+
+    <span class="n">location</span> /<span class="n">channels</span>/ {
+        <span class="n">proxy_read_timeout</span>          <span class="m">120</span>;
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>:<span class="m">15102</span>;
+    }
+}
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 测试nginx配置文件并使之生效</span>
+<span class="nb">sudo </span>nginx <span class="nt">-t</span>
+<span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
+</code></pre></div></div>
+
+<ul>
+  <li>配置 event</li>
+</ul>
+
+<p>  新建文件 site/websocket/config.js，内容如下。并根据该文件修改 nginx 的配置文件中<code class="language-plaintext highlighter-rouge">event</code>和<code class="language-plaintext highlighter-rouge">channels</code>对应端口。同时修改 local_setting.py 文件中<code class="language-plaintext highlighter-rouge">EVENT_DAEMON_POST</code>、<code class="language-plaintext highlighter-rouge">EVENT_DAEMON_GET</code>和<code class="language-plaintext highlighter-rouge">EVENT_DAEMON_POLL</code>三个变量值。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>module.exports <span class="o">=</span> <span class="o">{</span>
+    get_host: <span class="s1">'127.0.0.1'</span>,
+    get_port: 15100,
+    post_host: <span class="s1">'127.0.0.1'</span>,
+    post_port: 15101,
+    http_host: <span class="s1">'127.0.0.1'</span>,
+    http_port: 15102,
+    long_poll_timeout: 29000,
+<span class="o">}</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装ws依赖</span>
+npm <span class="nb">install </span>qu ws simplesets
+pip3 <span class="nb">install </span>websocket-client
+
+<span class="c"># 重启程序使修改的配置生效</span>
+<span class="nb">sudo </span>supervisorctl update
+<span class="nb">sudo </span>supervisorctl restart bridged
+<span class="nb">sudo </span>supervisorctl restart site
+<span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
+</code></pre></div></div>
+
+<h3 id="安装判题服务器">安装判题服务器</h3>
+
+<ul>
+  <li>安装判题后端</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>python3-dev python3-pip build-essential libseccomp-dev <span class="nt">-y</span>
+pip3 <span class="nb">install </span>dmoj
+</code></pre></div></div>
+
+<ul>
+  <li>判断系统支持判题语言</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dmoj-autoconf  <span class="c"># 执行后会打印支持的runtime</span>
+
+<span class="c"># 将刚才打印的runtime复制到新建文件judge.yml的runtime部分</span>
+<span class="c"># 此处的id和key配置与后端管理界面中判题服务器设置一直即可</span>
+<span class="nb">id</span>: &lt;judge name&gt;
+key: &lt;judge authentication key&gt;
+problem_storage_root:
+  - /home/ubunut/problem
+runtime:
+  ...
+</code></pre></div></div>
+
+<ul>
+  <li>配置 supervisord</li>
+</ul>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># judge.conf
+</span>[<span class="n">program</span>:<span class="n">judge</span>]
+<span class="n">command</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">dmojsite</span>/<span class="n">bin</span>/<span class="n">dmoj</span> -<span class="n">c</span> <span class="n">judge</span>.<span class="n">yml</span> <span class="n">localhost</span>
+<span class="n">directory</span>=/<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">site</span>/
+<span class="n">stopsignal</span>=<span class="n">QUIT</span>
+<span class="n">stdout_logfile</span>=/<span class="n">tmp</span>/<span class="n">site</span>.<span class="n">stdout</span>.<span class="n">log</span>
+<span class="n">stderr_logfile</span>=/<span class="n">tmp</span>/<span class="n">site</span>.<span class="n">stderr</span>.<span class="n">log</span>
+</code></pre></div></div>
+
+<p>  使用<code class="language-plaintext highlighter-rouge">sudo supervisord update</code>更新配置并生效，在后端管理界面发现判题服务器在线状态为<strong>在线</strong>。</p>
+
+<h3 id="验证和总结">验证和总结</h3>
+
+<p>  到此，DMOJ 就安装完成了。从整个安装过程来看，一个 OJ 系统所包含的组件的确挺多，各种各样的配置来回修改，很容易让人一不留神就落下某个配置而使得程序无法正常运行。当然也有在测试过程中是可以正常运行的，而使用 supervisord 和 nginx 之后突然就不能了。我在实践过程中，对于官方提供的不同程序使用用户可能造成的文件权限不足，从而导致程序无法运行的问题感受颇深。折腾了很久也没有找出其中哪个步骤少了或者文件路径不对，后来发现主项目目录没有权限访问执行会导致一系列的问题。如果对用户管理和文件权限安全管理非常了解的话，还是按照官方的做法来设置，毕竟这样能保证操作系统的安全。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/dmoj-runtime.html" class="read-next-link"></a>
+        <section>
+          <span>DMOJ 判题环境配置集锦</span>
+          <p>  由于 DMOJ 支持多达63种编程语言环境，每一种环境都需要特别安装。如下为笔者尝试过的一些编程语言环境配置。</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1594199679806-d543943615c8?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/zerotier.html" class="read-next-link"></a>
+          <section>
+            <span>使用 zerotier 搭建自己的 IPv6 网络</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

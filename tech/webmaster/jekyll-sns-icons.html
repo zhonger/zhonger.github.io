@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekyll 社交图标集合创建 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Jekyll 社交图标集合创建">
+    <meta name="keywords"  content="Jekyll, 主题, theme, 社交图标, sns, icons, Iconfont">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jekyll 社交图标集合创建 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/jekyll-sns-icons.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Jekyll" class="post-tag">Jekyll</a>
+          
+            <a href="/tags.html#%E4%B8%BB%E9%A2%98" class="post-tag">主题</a>
+          
+            <a href="/tags.html#theme" class="post-tag">theme</a>
+          
+            <a href="/tags.html#%E7%A4%BE%E4%BA%A4%E5%9B%BE%E6%A0%87" class="post-tag">社交图标</a>
+          
+            <a href="/tags.html#sns" class="post-tag">sns</a>
+          
+            <a href="/tags.html#icons" class="post-tag">icons</a>
+          
+            <a href="/tags.html#Iconfont" class="post-tag">Iconfont</a>
+          
+        
+      </div>
+      <h1>Jekyll 社交图标集合创建</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-12-22"><i class="iconfont icon-date"></i>Wed, 22 Dec 2021 11:30:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 4417 字 <b>·</b> 阅读全文大约需要 13 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">如何用 Iconfont 创建自己想要的社交图标集合？</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  一般来说，我们的个人博客都会放上一些社交图标以及社交链接。这样一来，想要关注我们更多的最新研究或工作的读者就可以很快找到路径。于是，在 Jekyll 博客主题设计的时候，通常会在个人简介的地方放置几个社交小图标，点击社交小图标即可把读者带到你的社交个人主页上。对于不同类型的作者，常用的或者关注的社交平台基本上不大一样，社交小图标也会有不一样的需求。比如说，对于从事科研工作的人来说，像谷歌学术、ResearchGate、ORCID 等等能够列举发表论文或者相关研究的平台就比较重要；对于一般程序员来说，像 Github、Gitlab、Segmentfault、CSDN、简书等等能够展示自己所参与的项目和技术心得体会的平台就比较重要；对于前端设计师来说，像 Instgram、UI 中国、Dribble等等能够展示 UI 设计作品的平台就比较重要。因此，对于一款 Jekyll 博客主题的设计者来说，同时要兼顾到这么多不同的需求可能会有点为难，毕竟领域不同、了解的程度也很有限。</p>
+
+<p>  俗话说得好，授人以鱼不如授人以渔。今天我们就来讲讲如何自己定制一套社交图标集合。</p>
+
+<h2 id="技术发展回顾">技术发展回顾</h2>
+
+<h3 id="图片索引">图片索引</h3>
+
+<p>  对网站前端设计有点了解的小伙伴可能知道，如果要为网站添加一些社交图标，并且支持鼠标悬停高亮显示，最早的办法是采用不同的图片进行切换的方法。具体来说就是，鼠标悬停前是一张图片，悬停后切换到另外一张图片。由于如果要支持很多个社交图标就要准备很多对这样的图片，那么同一页面内的文件 HTTP 请求数就会陡然增加，对页面加载性能有非常大的影响。</p>
+
+<p>  随之产生了一种比较可行的解决方案：将所有的社交图片拼在一张图上，然后通过定位的方式来索引到不同的社交图标，我们通常将这张图称为<strong>雪碧图</strong>。这种方法的好处比较明显，浏览器只需要发出一次请求下载雪碧图即可，减少了文件 HTTP 请求数，加载时间显著变短。比较明显的困难是，定位找起来简直不要太麻烦。而且为了能描述不同的图标悬停前后的位置，必须写很多对样式与之对应，工作量比较大。另外一个比较大的困难是，图标集合的更新很麻烦。新增图标的时候，为了能沿用原来已经写好的样式，只能在原有的雪碧图的基础上往后增加图标，当然同时也要增加对应的样式。</p>
+
+<p>  虽然雪碧图在某种程度上提升了加载效率，但是给后期的更新、维护带来了不小的麻烦。还有一个越来越凸显的问题——随着访问网站的设备类型的不断增多，图片的质量会影响到不同设备、不同平台下的效果一致性，甚至在高分辨率屏幕下会出现图标模糊的情况，用户体验极其不佳。最有效的改进方法可能就是采用分辨率更高、质量更高的图片来拼凑雪碧图，不过同时也会增大雪碧图的文件体积。这会导致虽然只发出了一个文件 HTTP 加载请求，但是由于文件体积过大、加载速度慢，而给用户带来不好的使用体验。</p>
+
+<h3 id="字体图标">字体图标</h3>
+
+<p>  接着发展出了一种<strong>字体图标</strong>的东西来解决图片索引中存在的问题。字体图标，顾名思义就是把所有的图标都变成了字体编码一样，只要我们在网页中引入字体图标文件就可以像用 Unicode 一样使用字体图标了。这种方式最好的一点就是，像操纵字体一样设置字体图标的样式。比如说，虽然我们只在字体图标文件中定义了一个图标，但是当我们使用不同的 color 定义时，图标就会改变其颜色。而且，我们操纵字体图标的大小是采用 font-size 的方式而非 width/height 的方式。这样一来，字体图标和行内文字段落一起使用时也是非常匹配的，行距等文字样式都能同等适用。</p>
+
+<p>  当然，字体图标在后期的维护、更新过程中也会有些问题。比如说，对于一个大型项目的迭代开发，每个子系统可能都会弄一套需要的字体图标，然后在代码分支合并时就会出现问题。因此，有些项目团队可能会为此而设定一位管理员来专门管理字体图标的更新。每个子系统只能向图标管理员提交他们的更新，最终更新由图标管理员来完成。虽然这样也能在某种程度上解决问题，但是对于图标管理员来说还是会很苦恼。</p>
+
+<p>  说到这里，有人可能会想起 Bootstrap 等 UI 框架中自带的字体图标集合。那我们直接使用某个框架提供的字体图标集合不就万事大吉了吗？可事实并非如此，框架所包含的字体图标集合虽然看起来还是比较全面，但是还是有可能缺少某些我们想要的字体图标。想到这里，可能会想不如把多个字体图标集合整合在一起使用不就好了吗？这样随之而来的问题是，很大可能存在大量冗余。对于前端界面来说，除了大量的 HTTP 请求是无法接受的，大量冗余代码也是无法接受的。当我们用 <a href="https://web.dev/measure/">Lighthouse</a> 类似的工具来测试网页的性能时，就可以很容易地发现请求代码的使用率情况。如果我们采用多个字体图标集合并用的方案，那么代码实际使用率可能就会很低。也就是说，请求的代码基本上不会在网页中被使用到，这对于优化页面性能来说简直就是噩梦。</p>
+
+<p>  如果我们觉得自己来手动管理、手动更新字体图标文件太麻烦了，其实也可以用阿里的 <a href="https://www.iconfont.cn">Iconfont</a> 或者其他类似工具来在线管理字体图标集合。Iconfont 会提供一个阿里 CDN 上的链接地址来直接使用你建立好的字体图标集合，这样一来基本上就解决了上面所说的维护难题。我们在 Iconfont 上更新好字体图标集合后，Iconfont 会生成一个新的链接地址。然后，我们只需要修改页面代码的对应地址就可以非常方便地应用更新。</p>
+
+<p>  这么看来，字体图标的方案好像很完美了，但事实上还是存在其他的问题。Iconfont 这类平台比较适合个人开发者或者开源项目，而对于企业开发者或者非开源项目来说可能依然不大适合。另外，字体图标因为像字体一样被操纵，所以只能支持一种颜色，无法同时支持多种颜色。除此之外，如果我们想要预览所有的图标，但是抱歉的是脱离了 Iconfont 这类平台我们可能就没有办法做到。</p>
+
+<h3 id="symbol-图标">Symbol 图标</h3>
+
+<p>  实际上除了字体图标在不同设备、不同平台上有相同的效果之外，SVG 图标也具有类似的效果，这主要是因为 SVG 图标的矢量本质，即缩放不会产生任何失真。SVG 图标还支持多种颜色、可以通过字体样式调整样式，并且支持 IE9 以上版本的浏览器。（随着时代的进步，IE 其实已经不是最新的 Windows 11 操作系统默认软件之一了，而且微软也不再提供 IE 安装包下载了，所以未来 IE 浏览器可能不会出现在考虑支持列表里。）为了能够创建一个 SVG 图标集合，我们可以使用 <code class="language-plaintext highlighter-rouge">symbol</code> 元素来定义一个图形模板对象，然后用一个 <code class="language-plaintext highlighter-rouge">&lt;use&gt;</code> 元素实例化。<code class="language-plaintext highlighter-rouge">symbol</code> 元素对图形的作用是在同一文档中多次使用，添加结构和语义。结构丰富的文档可以更生动地呈现出来，类似讲演稿或盲文，从而提升了可访问性。值得注意的是，一个 <code class="language-plaintext highlighter-rouge">symbol</code> 元素本身是不会呈现的，只有当 <code class="language-plaintext highlighter-rouge">symbol</code> 元素的实例（即，一个引用了 <code class="language-plaintext highlighter-rouge">symbol</code> 的 <code class="language-plaintext highlighter-rouge">&lt;use&gt;</code> 元素）才能呈现。</p>
+
+<p>  如下代码所示，是一个 <code class="language-plaintext highlighter-rouge">symbol</code> 图标的例子。其中，<code class="language-plaintext highlighter-rouge">symbol</code> 元素定义了两个圆圈，对应信息如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">圆的编号</th>
+      <th style="text-align: center">位置</th>
+      <th style="text-align: center">半径</th>
+      <th style="text-align: center">填充色</th>
+      <th style="text-align: center">描边宽度</th>
+      <th style="text-align: center">描边颜色</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">(50, 50)</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">红色</td>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center">红色</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">(90, 60)</td>
+      <td style="text-align: center">40</td>
+      <td style="text-align: center">白色</td>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center">绿色</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>实例化了三个 <code class="language-plaintext highlighter-rouge">symbol</code> 元素，分别为：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">实例编号</th>
+      <th style="text-align: center">位置</th>
+      <th style="text-align: center">宽度</th>
+      <th style="text-align: center">高度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">(0, 0)</td>
+      <td style="text-align: center">100</td>
+      <td style="text-align: center">50</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">(0, 50)</td>
+      <td style="text-align: center">75</td>
+      <td style="text-align: center">38</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">(0, 100)</td>
+      <td style="text-align: center">50</td>
+      <td style="text-align: center">25</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code class="language-svg">&lt;svg&gt;
+&lt;!-- symbol definition  NEVER draw --&gt;
+&lt;symbol id="sym01" viewBox="0 0 150 110"&gt;
+  &lt;circle cx="50" cy="50" r="40" stroke-width="8" stroke="red" fill="red"/&gt;
+  &lt;circle cx="90" cy="60" r="40" stroke-width="8" stroke="green" fill="white"/&gt;
+&lt;/symbol&gt;
+
+&lt;!-- actual drawing by "use" element --&gt;
+&lt;use xlink:href="#sym01"
+     x="0" y="0" width="100" height="50"/&gt;
+&lt;use xlink:href="#sym01"
+     x="0" y="50" width="75" height="38"/&gt;
+&lt;use xlink:href="#sym01"
+     x="0" y="100" width="50" height="25"/&gt;
+&lt;/svg&gt;
+</code></pre>
+<p>效果如下所示：</p>
+
+<p><img src="https://i.vgy.me/eTsY1a.png" alt="vgy.me" /></p>
+
+<h2 id="创建自定义社交图标集合">创建自定义社交图标集合</h2>
+
+<p>  现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 <a href="https://www.iconfont.cn">Iconfont 首页</a> 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。</p>
+
+<p><img src="https://i.vgy.me/RkgKa1.png" alt="vgy.me" /></p>
+
+<p>  接着点击右上角的购物车按钮如下所示可以查看已加入到购物车的所有图标，并点击<strong>添加到项目</strong>。</p>
+
+<p><img src="https://i.vgy.me/QHdhi5.png" alt="vgy.me" /></p>
+
+<p>  然后给项目取名（这里的名字随便起），点击<strong>确认</strong>按钮完成项目添加，自动跳转到项目页。</p>
+
+<p><img src="https://i.vgy.me/dymDV8.png" alt="vgy.me" /></p>
+
+<p>  点击生成代码即可生成专属链接，并出现<strong>点击复制代码</strong>按钮。</p>
+
+<p><img src="https://i.vgy.me/NNSsLJ.png" alt="vgy.me" /></p>
+
+<p>  点击<strong>收起在线链接</strong>旁边的下箭头可以看到<strong>预览字体</strong>，点击<strong>预览字体</strong>即跳转到在线预览页面，如下所示。</p>
+
+<p><img src="https://i.vgy.me/tKwaPx.png" alt="vgy.me" /></p>
+
+<p>  这里提供了三种方式来使用创建好的社交图标集合，目前平台推荐的是<strong>Symbol 引用</strong>方式。接着即可按照以下三个步骤在你的网页上轻松使用自定义好的社交图标集合了。</p>
+
+<p><img src="https://i.vgy.me/7C7G0A.png" alt="vgy.me" /></p>
+
+<h3 id="小提示">小提示</h3>
+
+<p>  如果想要实现鼠标悬停图标高亮的效果，还需要自己修改一下 CSS 样式，如下所示。这里采用了灰度遮罩滤镜的方式，给原来彩色的图标灰度化了。当鼠标悬停时，灰度化效果被移除，并且有 0.2 s 的缓慢过渡。不过如果原来的图标是黑色的话，灰度化的效果可能就比较差，悬停前后的差异不大明显，所以推荐使用彩色社交图标。Iconfont 平台实际上提供了在线编辑修改颜色的功能，如果想要知道某个图标或者品牌的主题颜色可以访问 <a href="https://www.schemecolor.com/">Schemecolor</a> 来查询。</p>
+
+<div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.icon</span> <span class="p">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1em</span><span class="p">;</span>
+    <span class="nl">height</span><span class="p">:</span> <span class="m">1em</span><span class="p">;</span>
+    <span class="nl">vertical-align</span><span class="p">:</span> <span class="m">-0.15em</span><span class="p">;</span>
+    <span class="py">fill</span><span class="p">:</span> <span class="n">currentColor</span><span class="p">;</span>
+    <span class="nl">overflow</span><span class="p">:</span> <span class="nb">hidden</span><span class="p">;</span>
+    <span class="nl">filter</span><span class="p">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="m">100%</span><span class="p">);</span>
+    <span class="nl">-webkit-filter</span><span class="p">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="m">100%</span><span class="p">);</span>
+    <span class="nl">-moz-filter</span><span class="p">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="m">100%</span><span class="p">);</span>
+    <span class="nl">-ms-filter</span><span class="p">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="m">100%</span><span class="p">);</span>
+    <span class="nl">-o-filter</span><span class="p">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="m">100%</span><span class="p">);</span>
+    <span class="nl">transition</span><span class="p">:</span> <span class="m">.2s</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.icon</span><span class="nd">:hover</span> <span class="p">{</span>
+    <span class="nl">filter</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">-webkit-filter</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">-moz-filter</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">-ms-filter</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+    <span class="nl">-o-filter</span><span class="p">:</span> <span class="nb">none</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/symbol">symbol - SVG | MDN</a></li>
+  <li><a href="https://blog.csdn.net/jys1216/article/details/8852158">使网站首页变灰色，遮罩滤镜</a></li>
+  <li><a href="https://juejin.cn/post/6844904162442870792">还在用字体图标吗，试试svg图标吧(内附vuecli-svg-sprite-loader插件)</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/new-theme-h2o-ac.html" class="read-next-link"></a>
+        <section>
+          <span>H2O-ac theme for Jekyll</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
+          <section>
+            <span>科学文献的那些事儿</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

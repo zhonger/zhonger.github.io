@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archlinux 入门初步 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Archlinux 入门初步">
+    <meta name="keywords"  content="archlinux, setup">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Archlinux 入门初步 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/linux/arch-tutorial.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#archlinux" class="post-tag">archlinux</a>
+          
+            <a href="/tags.html#setup" class="post-tag">setup</a>
+          
+        
+      </div>
+      <h1>Archlinux 入门初步</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="17-07-19"><i class="iconfont icon-date"></i>Wed, 19 Jul 2017 16:23:10 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1850 字 <b>·</b> 阅读全文大约需要 6 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">Archlinux 从安装操作系统入手</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="制作-archlinux-启动盘">制作 archlinux 启动盘</h2>
+
+<p>从 archlinux 官方或者是镜像源下载到 iso 文件
+使用以下命令制作启动U盘</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>image.iso <span class="nv">of</span><span class="o">=</span>/dev/sd[x]
+</code></pre></div></div>
+<blockquote>
+  <p>参考自 <a href="https://wiki.archlinux.org/index.php/USB_flash_installation_media">Install_from_a_USB_flash_drive</a></p>
+</blockquote>
+
+<h2 id="安装准备">安装准备</h2>
+
+<p>电脑插入启动 U盘，并选择从 U盘 的 <strong>uefi</strong> 模式启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 键盘布局:</span>
+loadkeys us
+
+<span class="c"># 验证启动模式: </span>
+<span class="nb">ls</span> /sys/firmware/efi/efivars
+<span class="c"># 如果目录不存在，系统即为 BIOS 或 CSM 模式启动</span>
+
+<span class="c"># 联网:</span>
+ping <span class="nt">-c</span> 3 www.baidu.com
+
+<span class="c"># 若发现网络不通，则使用以下命令停用dhcpcd进程</span>
+systemctl stop dhcpcd
+
+<span class="c"># 更新系统时间: </span>
+timedatectl set-ntp <span class="nb">true</span>
+<span class="c">#用`timedatectl status`检查服务状态</span>
+
+<span class="c"># 建立硬盘分区:</span>
+<span class="c"># 比如磁盘为 /dev/sda，则使用以下命令对磁盘进行操作；</span>
+fdisk /dev/sda
+<span class="c"># 首先使用 g 转换成 gpt 分区格式；</span>
+<span class="c"># 其次使用 n 分别建立 512MB 的EFI分区和剩余硬盘大小的根目录分区</span>
+
+<span class="c"># 挂载分区: </span>
+mount /dev/sda2 /mnt
+<span class="nb">mkdir</span> /mnt/boot
+mount /dev/sda1 /mnt/boot
+</code></pre></div></div>
+
+<h2 id="安装">安装</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 选择镜像地址: 编辑 /etc/pacman.d/mirrorlist ，建议使用以下首选 mirror</span>
+Server <span class="o">=</span> https://mirrors.shuosc.org/archlinux/<span class="nv">$repo</span>/os/<span class="nv">$arch</span>
+Server <span class="o">=</span> https://mirrors.ustc.edu.cn/archlinux/<span class="nv">$repo</span>/os/<span class="nv">$arch</span>
+<span class="c"># 安装基本系统及AUR: </span>
+pacstrap /mnt base base-devel<span class="sb">`</span>
+</code></pre></div></div>
+
+<h2 id="配置系统">配置系统</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Fstab: </span>
+genfstab <span class="nt">-U</span> /mnt <span class="o">&gt;&gt;</span> /mnt/etc/fstab
+
+<span class="c"># Chroot: Change root到新的安装系统</span>
+arch-chroot /mnt
+
+<span class="c"># 时区: 使用以下命令设置时区及时间标准为 UTC</span>
+<span class="nb">ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+hwclock <span class="nt">--systohc</span> <span class="nt">--utc</span>
+
+<span class="c"># Locale: 修改 /etc/locale.gen 文件，将所需语言前的注释删除，比如以下几个，再使用 locale-gen 生成locale配置文件，并提交默认语言</span>
+
+en_US.UTF-8 UTF-8
+zh_CN.UTF-8 UTF-8
+zh_SG.UTF-8 UTF-8
+zh_TW.UTF-8 UTF-8
+
+locale-gen
+<span class="nb">echo </span><span class="nv">LANG</span><span class="o">=</span>en_US.UTF-8 <span class="o">&gt;</span> /etc/locale.conf
+
+<span class="c"># 主机名: 使用 echo arch &gt; /etc/hostname 设置主机名，并添加对应信息至 /etc/hosts，如下所示：</span>
+127.0.1.1        arch.localdomain  <span class="nb">arch</span>
+
+<span class="c"># 网络配置: 让 DHCP 服务开机自启动</span>
+systemctl <span class="nb">enable </span>dhcpcd.service 
+<span class="c"># 设置用户: 首先新增用户</span>
+
+useradd username
+passwd username
+<span class="nb">mkdir</span> /home/username
+<span class="nb">chown</span> <span class="nt">-R</span> username:username /home/username
+<span class="c"># 然后往 /etc/sudoers 添加</span>
+username <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span> NOPASSWD:ALL
+
+<span class="c"># 安装引导程序: </span>
+pacman <span class="nt">-S</span> grub os-prober efibootmgr dosfstools
+grub-install <span class="nt">--target-x86_64-efi</span> <span class="nt">--efi-directory</span><span class="o">=</span>/boot <span class="nt">--bootloader-id</span><span class="o">=</span>grub <span class="nt">--recheck</span>
+grub-mkconfig <span class="nt">-o</span> /boot/grub/grub.cfg
+</code></pre></div></div>
+
+<h2 id="其他配置">其他配置</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置显卡: </span>
+pacman <span class="nt">-S</span> nvidia
+<span class="c"># 删除`/etc/pacman.conf`中的`multilib`部分注释，</span>
+pacman <span class="nt">-Syy</span>
+<span class="c"># 刷新软件缓存，</span>
+pacman <span class="nt">-S</span> lib32-nvidia-utils
+<span class="c"># 安装对应的基本库。</span>
+</code></pre></div></div>
+<p>参考自 <a href="https://wiki.archlinux.org/index.php/NVIDIA">NVIDIA</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 xorg</span>
+pacman <span class="nt">-S</span> xorg
+nvidia-xconfig
+
+<span class="c"># 安装 gnome: </span>
+pacman <span class="nt">-S</span> gnome gnome-extra
+pacman <span class="nt">-S</span> gnome gdm
+systemctl <span class="nb">enable </span>gdm
+</code></pre></div></div>
+
+<h2 id="重启">重启</h2>
+
+<p>  重启之后从硬盘启动就会进入 gdm 登录界面，使用上面设置的 username 和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录，重新创建用户即可。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/unbound-dns.html" class="read-next-link"></a>
+        <section>
+          <span>Unbound + Dnscrypt 搭建无污染 DNS 服务</span>
+          <p>引言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/linux-lvm.html" class="read-next-link"></a>
+          <section>
+            <span>在 Linux 系统上没有磁盘阵列实现合并磁盘</span>
+            <p>基本概念</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1444359989683-6e6577e29fc3?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

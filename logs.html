@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta name="keywords"  content="zhonger，zhonger的博客，nodejs，kvm">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/logs">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body>
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<div
+    class="g-banner home-banner banner-theme-default"
+    data-theme="default"
+    style=""
+>
+    <h2>Welcome to zhonger's blog!</h2>
+    <h3>Writing, writing, writing ...</h3>
+</div>
+
+<main class="g-container home-content">
+    <div class="article-list">
+        <div class="post-content" style="padding-left: 30px;padding-right: 30px;width: auto;">
+            <article class="markdown-body" style="width: auto;">
+                <h1 id="更新日志">更新日志</h1>
+
+<h2 id="大事记">大事记</h2>
+
+<h3 id="2015">2015</h3>
+
+<ul>
+  <li>
+    <p>2015年8月8日，在西部数码的虚拟主机上搭建了 WordPress，并写下了人生中的第一篇博文，开始了个人博客之路。</p>
+  </li>
+  <li>
+    <p>2015年10月1日，新购了一台 1C 1G 阿里云学生机，开始在 Ubuntu Server 上使用 LNMPA 一键安装包配置 WordPress 所需环境，并部署 WordPress 博客。</p>
+  </li>
+  <li>
+    <p>2015年12月18日，新购了一台 1C 1G 腾讯云学生机，同时使用相同环境配置。</p>
+  </li>
+</ul>
+
+<h3 id="2016">2016</h3>
+
+<ul>
+  <li>2016年3月，将原来的 WordPress 迁移到静态博客 Hexo，同时部署在腾讯云对象存储 COS、阿里云服务器上。</li>
+  <li>2016年4月之后因为忙着本科毕设，没有继续更新文章。</li>
+</ul>
+
+<h3 id="2017">2017</h3>
+
+<ul>
+  <li>2017年3月，开始手动推送博客内容到 <a href="https://github.com/zhonger/lisz.io">zhonger/lisz.io</a> 的 <code class="language-plaintext highlighter-rouge">gh-pages</code> 分支上，从而部署到 Github Page 上。同时也开始使用 lisz.io 作为主域名。</li>
+  <li>2017年5月，研一结束后，有了较多的时间来学习各种各样的东西，也有了更多实践的机会。这一年参与了上海大学开源镜像站的建设，从 V1 版本到 V2 版本，从支持几个基础源到多达七十多个源，学习到了更多知识，也有了更多关于平台建设、虚拟化、文件同步等的思考。恢复博客更新，把在实践中遇到了若干问题和思考都一一记录下来。</li>
+</ul>
+
+<h3 id="2018">2018</h3>
+
+<ul>
+  <li>
+    <p>2018年1月13日，在使用了 Hexo 一年多之后，发现了由廖柯宇大佬开发的非常好看的  <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a> Jekyll 博客主题，萌发了转投 Jekyll 的想法。说干就干，于是就建立了 <a href="https://github.com/zhonger/zhonger.github.io">zhonger/zhonger.github.io</a> 来替代原有的 <a href="https://github.com/zhonger/lisz.io">zhonger/lisz.io</a>。</p>
+  </li>
+  <li>
+    <p>2018年5月25日，接触到了 <a href="https://netlify.com">Netlify</a>，考虑到国内云服务器上部署的博客只对国内访问比较友好，对于国外访问有的时候比较吃力，于是开始将博客部署到具备多地部署的 Netlify 上。由此，开始将博客主域名转移到 Netlify 上。值得一提的是，Netlify 不仅支持多地部署，还支持 IPv6 访问，与未来接轨。</p>
+  </li>
+</ul>
+
+<h3 id="2019">2019</h3>
+
+<ul>
+  <li>2019年10月，因为在东北师大预校学习日语，博客出现了一段很长的更新停滞期。</li>
+</ul>
+
+<h3 id="2020">2020</h3>
+
+<ul>
+  <li>2020年2月，由于 lisz.io 面临到期且续费价格比较贵，续费一年几乎可以养好几个别的域名了，成本略高，所以决定用 lisz.me 来替代成为主域名。</li>
+  <li>2020年8月，完成了日语学习，也有更多时间开展实践，恢复了博客更新。</li>
+  <li>2020年12月，因博士研究室展示需要，将个人博客进行改版：
+    <ul>
+      <li>增加双语学术首页，原来博客首页移动到子目录 /blog 下；</li>
+      <li>增加归档页面 /archives.html ，集中列表展示所有文章；</li>
+      <li>增加图片放大、图片集的功能，提高可阅读性；</li>
+      <li>利用 Google Lighthouse 对页面的各项性能进行检测，并进行修复提升各项性能，在 SEO、Accessibility、Best Practices 三方面达到 100 分，在 Performance 上达到 86 分。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2021">2021</h3>
+
+<ul>
+  <li>2021年2月，在新的学习环境和学习需求下，开始了一系列第一性原理计算的学习，同时也在多平台下探索了计算环境的搭建和运行模式。开始有了做系列文章或者专题的想法。</li>
+  <li>2021年3月12日，由于学校提供给每个学生 10GB 的空间用于托管网页或者文件，所以就新增了学校托管节点。</li>
+  <li>2021年3月24日，对文章原来的单类别分类方式有点想法，想做一些系列文章或专题。所以想先把文章做成多类别，然后再添加类别页面。于是开始了<strong>类别改造</strong>的新网站改版计划。考虑到原来搜索引擎已收录页面的原因，本次改造对所有之前的文章均采用双类别模式，之后的文章一般采用单类别模式，尽量保留原有 SEO 的优势。</li>
+  <li>2021年6月16日，由于阿里云服务器续费比较昂贵，到期后不打算继续续费，所以将博客的阿里云服务器节点下线。</li>
+  <li>2021年9月，通过 U-File 正式上线又拍云 CDN 节点，但可能由于又拍云的地区限制，该节点目前只能在国内访问。</li>
+  <li>2021年12月，由于 U-File 更新服务规则，从原来的一年到现在的一月手动续签一次，经常会忘记续签而导致服务暂停，于是决定即日起下线该节点。</li>
+  <li>2021年12月22日，正式发布 <a href="https://github.com/zhonger/jekyll-theme-h2o-ac">H2O-ac</a> 主题的公开版本。</li>
+  <li>2021年12月24日，正式发布 <a href="https://github.com/zhonger/easy-to-h2o-ac">easy-to-h2o-ac</a> 一键部署工具。</li>
+</ul>
+
+<h3 id="2022">2022</h3>
+
+<ul>
+  <li>2022年1月1日，上线 <a href="https://vercel.com">Vercel</a> 节点。</li>
+</ul>
+
+<h2 id="站点节点信息">站点节点信息</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>托管方</th>
+      <th>支持访问域名</th>
+      <th>IPv4</th>
+      <th>IPv6</th>
+      <th>备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Netlify</td>
+      <td><a href="https://lisz.me">lisz.me</a></td>
+      <td>是</td>
+      <td>是</td>
+      <td>全球性节点</td>
+    </tr>
+    <tr>
+      <td>Github</td>
+      <td><a href="https://blog.lui8.cn">blog.lui8.cn</a></td>
+      <td>是</td>
+      <td>否</td>
+      <td>美国节点</td>
+    </tr>
+    <tr>
+      <td>Cloudflare</td>
+      <td><a href="https://lui.site">lui.site</a></td>
+      <td>是</td>
+      <td>是</td>
+      <td>全球性节点</td>
+    </tr>
+    <tr>
+      <td>阿里云服务器</td>
+      <td>www.lisz.ink(下线)</td>
+      <td>是</td>
+      <td>否</td>
+      <td>国内单节点</td>
+    </tr>
+    <tr>
+      <td>腾讯云服务器</td>
+      <td><a href="https://luish.cc">luish.cc</a></td>
+      <td>是</td>
+      <td>否</td>
+      <td>国内单节点</td>
+    </tr>
+    <tr>
+      <td>腾讯云 COS</td>
+      <td><a href="https://lisz.ink">lisz.ink</a></td>
+      <td>是</td>
+      <td>否</td>
+      <td>国内 CDN 节点</td>
+    </tr>
+    <tr>
+      <td>筑波大学</td>
+      <td><a href="https://www.u.tsukuba.ac.jp/~s2036012/">u.tsukuba.ac.jp</a></td>
+      <td>是</td>
+      <td>否</td>
+      <td>日本单节点</td>
+    </tr>
+    <tr>
+      <td>又拍云 CDN</td>
+      <td>blog.lisz.ink(下线)</td>
+      <td>是</td>
+      <td>是</td>
+      <td>国内 CDN 节点</td>
+    </tr>
+    <tr>
+      <td>Vercel</td>
+      <td><a href="https://zhonger.vercel.app">zhonger.vercel.app</a></td>
+      <td>是</td>
+      <td>否</td>
+      <td>美国节点</td>
+    </tr>
+  </tbody>
+</table>
+
+            </article>
+        </div>
+    </div>
+
+    <aside class="g-sidebar-wrapper">
+        <div class="g-sidebar">
+            <section class="author-card">
+                <div class="avatar">
+                    <img src="/assets/img/profile.webp" alt="">
+                </div>
+                <div class="author-name" rel="author">zhonger</div>
+                <div class="bio">
+                    <p>Developer & Maintainer</p>
+                </div>
+                
+                <ul id="sns-links" class="sns-links">
+                    
+                    <li>
+                        <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-google-scholar"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-researchgate"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-ORCID"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://github.com/zhonger" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-github"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-linkedin"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-segmentfault"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </section>
+
+            
+            <section class="tags-card">
+                
+                    
+                    <a href="/tags.html#gravatar" class="tag">gravatar</a>
+                
+                    
+                    <a href="/tags.html#wordpress" class="tag">wordpress</a>
+                
+                    
+                    <a href="/tags.html#SSH%E7%99%BB%E5%BD%95" class="tag">SSH登录</a>
+                
+                    
+                    <a href="/tags.html#%E8%BD%AC%E8%BD%BD" class="tag">转载</a>
+                
+                    
+                    <a href="/tags.html#%E5%86%99%E4%BD%9C" class="tag">写作</a>
+                
+                    
+                    <a href="/tags.html#%E9%9A%8F%E7%AC%94" class="tag">随笔</a>
+                
+                    
+                    <a href="/tags.html#%E8%AF%97" class="tag">诗</a>
+                
+                    
+                    <a href="/tags.html#windows" class="tag">windows</a>
+                
+                    
+                    <a href="/tags.html#composer" class="tag">composer</a>
+                
+                    
+                    <a href="/tags.html#laravel" class="tag">laravel</a>
+                
+                    
+                    <a href="/tags.html#ubuntu" class="tag">ubuntu</a>
+                
+                    
+                    <a href="/tags.html#nodejs" class="tag">nodejs</a>
+                
+                    
+                        
+            </section>
+            
+
+            
+            <section class="tags-card">
+                <div class="links" rel="links">Links</div>
+                
+                    <a href="https://lisz.me" target="_blank" class="tag" rel="noreferrer"> Mr Li </a>
+                
+                    <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer"> Kala Search </a>
+                
+                    <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer"> 个人导航 </a>
+                
+            </section>
+            
+
+        </div>
+
+        
+        <div class="search-card">
+            <input id="search_input" type="text" placeholder="Search..." autocomplete="off">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+            </svg>
+            <div class="search_result"></div>
+        </div>
+        
+
+    </aside>
+
+</main>
+
+<footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

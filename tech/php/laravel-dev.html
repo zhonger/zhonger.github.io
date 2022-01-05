@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel 开发和部署环境搭建 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Laravel 开发和部署环境搭建">
+    <meta name="keywords"  content="Laravel, Valet, Linux Mint, Nginx, php-fpm">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Laravel 开发和部署环境搭建 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/php/laravel-dev.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Laravel" class="post-tag">Laravel</a>
+          
+            <a href="/tags.html#Valet" class="post-tag">Valet</a>
+          
+            <a href="/tags.html#Linux%20Mint" class="post-tag">Linux Mint</a>
+          
+            <a href="/tags.html#Nginx" class="post-tag">Nginx</a>
+          
+            <a href="/tags.html#php-fpm" class="post-tag">php-fpm</a>
+          
+        
+      </div>
+      <h1>Laravel 开发和部署环境搭建</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="20-08-12"><i class="iconfont icon-date"></i>Wed, 12 Aug 2020 14:51:45 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 5177 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">利用 Valet 或传统的 Nginx+php-fpm 的方式</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  近来趁着 Ubuntu 20.04 发行版的发布，在台式机上安装了桌面版体验了一下。不知道是因为笔者的台式机（2016年组装的，CPU 还在 Intel 第4代）有点过于陈旧了，还是最新发行版的安装要求变高了，安装完成后总觉得使用起来不是很顺手。用着用着就死机了，键盘和鼠标完全失效。而且原来在 Ubuntu 上的美化操作也不是很好使了，因此就尝试了 Linux Mint 20 发行版（基于 Ubuntu 20.04）。自从安装完成后，体验下来还是比较顺畅，能够成功安装搜狗中文输入法、字体、主题、其他常用软件。于是就萌生了在 Linux Mint 上搭建 Laravel 开发环境的想法。</p>
+
+<h2 id="laravel">Laravel</h2>
+
+<p>  Laravel 是 PHP 领域内一大流行的 Web 应用框架，因开发成本低、依赖管理方便等优势深受国内外开发者的喜爱，有很多的应用案例。Laravel 官方提供了 Valet 工具专门用于 PHP 项目的开发环境管理，相当简单、强大。Valet 不但可以支持 Laravel，还可以支持 Zend、CakePHP 等多种 PHP 常用框架和 Wordpress 等多种 PHP 常用应用。以下会简要介绍该工具的配置使用。</p>
+
+<p>  在前几年撰写的 <a href="/tech/laravel-lnmpa.html">laravel5.2 在 lnmpa 一键安装包环境下的部署</a> 一文中，使用了 <a href="https://lnmp.org">lnmp.org</a> 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。</p>
+
+<h2 id="基础环境配置">基础环境配置</h2>
+
+<ul>
+  <li>安装软件依赖</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> libnss3-tools jq xsel wget curl
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> php7.4-cli php7.4-common php7.4-curl php7.4-json php7.4-mbstring php7.4-opcache
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> php7.4-readline php7.4-xml php7.4-zip php7.4-sqlite3 php7.4-mysql php7.4-pgsql
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> network-manager php7.4 php7.4-fpm nginx
+</code></pre></div></div>
+
+<ul>
+  <li>配置 PHP</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>vim /etc/php/7.4/fpm/php.ini
+
+upload_max_filesize <span class="o">=</span> 1024M
+max_file_uploads <span class="o">=</span> 20
+<span class="c"># 取消下面一句的注释，并修改如下</span>
+cgi.fix_pathinfo<span class="o">=</span>0
+</code></pre></div></div>
+
+<ul>
+  <li>安装 Composer</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget <span class="nt">-c</span> https://mirrors.aliyun.com/composer/composer.phar
+<span class="nb">chmod</span> +x composer.phar
+<span class="nb">sudo mv </span>composer.phar /usr/local/bin/composer
+</code></pre></div></div>
+
+<ul>
+  <li>验证 Composer 安装</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer diagnose
+
+Checking platform settings: OK
+Checking git settings: OK
+Checking http connectivity to packagist: OK
+Checking https connectivity to packagist: OK
+Checking github.com rate limit: OK
+Checking disk free space: OK
+Checking pubkeys: 
+Tags Public Key Fingerprint: 57815BA2 7E54DC31 7ECC7CC5 573090D0  87719BA6 8F3BB723 4E5D42D0 84A14642
+Dev Public Key Fingerprint: 4AC45767 E5EC2265 2F0C1167 CBBB8A2B  0C708369 153E328C AD90147D AFE50952
+OK
+Checking composer version: OK
+Composer version: 1.10.13
+PHP version: 7.4.3
+PHP binary path: /usr/bin/php7.4
+OpenSSL version: OpenSSL 1.1.1f  31 Mar 2020
+</code></pre></div></div>
+
+<ul>
+  <li>配置 Composer 镜像</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer config <span class="nt">-g</span> repo.packagist composer https://mirrors.aliyun.com/composer/
+</code></pre></div></div>
+
+<ul>
+  <li>安装 MariaDB</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> mariadb-client mariadb-server
+</code></pre></div></div>
+
+<ul>
+  <li>启动 MariaDB</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>mariadb
+<span class="nb">sudo </span>systemctl start mariadb
+</code></pre></div></div>
+
+<ul>
+  <li>配置 MariaDB 的 root 用户密码</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>mysql <span class="nt">-u</span> root
+MariaDB <span class="o">[</span>mysql]&gt; UPDATE mysql.user SET <span class="nv">password</span><span class="o">=</span>password<span class="o">(</span><span class="s1">'newpassword'</span><span class="o">)</span> WHERE <span class="nv">user</span><span class="o">=</span><span class="s1">'root'</span><span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; flush privileges<span class="p">;</span>  
+MariaDB <span class="o">[</span>mysql]&gt; <span class="nb">exit</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>创建新数据库</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-p</span> <span class="nt">-u</span> root
+
+MariaDB <span class="o">[(</span>none<span class="o">)]&gt;</span> CREATE DATABASE <span class="sb">`</span>blog<span class="sb">`</span> CHARACTER SET utf8 COLLATE utf8_general_ci<span class="p">;</span>
+MariaDB <span class="o">[(</span>none<span class="o">)]&gt;</span> CREATE USER <span class="s1">'bloguser'</span>@<span class="s1">'%'</span> IDENTIFIED BY <span class="s1">'password'</span><span class="p">;</span>
+MariaDB <span class="o">[(</span>none<span class="o">)]&gt;</span> use blog<span class="p">;</span>
+MariaDB <span class="o">[</span>blog]&gt; GRANT ALL ON <span class="sb">`</span>blog.<span class="k">*</span><span class="sb">`</span> TO <span class="s1">'bloguser'</span>@<span class="s1">'%'</span><span class="p">;</span>
+MariaDB <span class="o">[</span>blog]&gt; FLUSH PRIVILEGES<span class="p">;</span>
+MariaDB <span class="o">[</span>blog]&gt; EXIT<span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="安装-laravel">安装 Laravel</h2>
+
+<ul>
+  <li>新建项目</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/web <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/web
+composer global require laravel/installer
+composer create-project <span class="nt">--prefer-dist</span> laravel/laravel blog <span class="s2">"6.*"</span>
+</code></pre></div></div>
+
+<ul>
+  <li>配置文件夹权限</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> <span class="nt">-R</span> 755 ~/web/blog
+</code></pre></div></div>
+
+<ul>
+  <li>配置数据库</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim ~/web/blog/.env
+
+<span class="nv">DB_CONNECTION</span><span class="o">=</span>mysql
+<span class="nv">DB_HOST</span><span class="o">=</span>127.0.0.1
+<span class="nv">DB_PORT</span><span class="o">=</span>3306
+<span class="nv">DB_DATABASE</span><span class="o">=</span>blog
+<span class="nv">DB_USERNAME</span><span class="o">=</span>bloguser
+<span class="nv">DB_PASSWORD</span><span class="o">=</span>password
+</code></pre></div></div>
+
+<ul>
+  <li>测试应用</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/web/blog
+php artisan serve <span class="nt">--port</span><span class="o">=</span>8000
+</code></pre></div></div>
+<p>  浏览器访问<code class="language-plaintext highlighter-rouge">http://localhost:8000</code>，<code class="language-plaintext highlighter-rouge">Ctrl+C</code>停止测试。</p>
+
+<h2 id="安装和配置-valet二选一">安装和配置 Valet（二选一）</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer global require cpriego/valet-linux
+<span class="nb">tee</span> <span class="nt">-a</span> ~/.zshrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+PATH=</span><span class="nv">$PATH</span><span class="sh">:/home/</span><span class="si">$(</span><span class="nb">whoami</span><span class="si">)</span><span class="sh">/.config/composer/vendor/bin
+</span><span class="no">EOF
+</span><span class="nb">source</span> ~/.zshrc
+valet <span class="nb">install
+cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">link </span>blog
+</code></pre></div></div>
+<p>  浏览器访问<code class="language-plaintext highlighter-rouge">http://blog.test</code>。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>valet secure blog
+</code></pre></div></div>
+<p>  浏览器访问<code class="language-plaintext highlighter-rouge">https://blog.test</code>。由于最近浏览器对于 SSL 证书提升了验证的要求，对于本地签发的证书会报不信任，可以手动选择信任后访问。</p>
+
+<h2 id="配置-nginxphp-fpm-二选一">配置 Nginx+php-fpm （二选一）</h2>
+
+<ul>
+  <li>配置文件夹链接</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> ~/web/blog /var/www/blog
+</code></pre></div></div>
+
+<ul>
+  <li>配置 Nginx</li>
+</ul>
+
+<p>  以下为 /etc/nginx/sites-avaiable/blog 的内容，其中 SSL 证书为 acme.sh 工具申请的 Let’s Encrypt 提供的三个月免费通配符域名证书，<code class="language-plaintext highlighter-rouge">*.lisz.ml</code>解析 IP 为<code class="language-plaintext highlighter-rouge">127.0.0.1</code>。</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+    <span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
+    <span class="n">index</span>  <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
+    <span class="n">server_name</span>  <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
+	<span class="n">return</span> <span class="m">301</span> <span class="n">https</span>://$<span class="n">host</span>$<span class="n">request_uri</span>;
+}
+
+<span class="n">server</span> {
+	<span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span> <span class="n">http2</span>;
+	<span class="n">server_name</span> <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
+	<span class="n">ssl_certificate</span> /<span class="n">home</span>/<span class="n">zhonger</span>/<span class="n">ssl</span>/<span class="n">lisz</span>.<span class="n">ml</span>.<span class="n">cert</span>.<span class="n">pem</span>;
+	<span class="n">ssl_certificate_key</span> /<span class="n">home</span>/<span class="n">zhonger</span>/<span class="n">ssl</span>/<span class="n">lisz</span>.<span class="n">ml</span>.<span class="n">key</span>.<span class="n">pem</span>;
+	<span class="n">index</span> <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
+	<span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
+
+	<span class="n">add_header</span> <span class="n">X</span>-<span class="n">Frame</span>-<span class="n">Options</span> <span class="s2">"SAMEORIGIN"</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">XSS</span>-<span class="n">Protection</span> <span class="s2">"1; mode=block"</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">Content</span>-<span class="n">Type</span>-<span class="n">Options</span> <span class="s2">"nosniff"</span>;
+
+	<span class="n">charset</span> <span class="n">utf</span>-<span class="m">8</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">try_files</span> $<span class="n">uri</span> $<span class="n">uri</span>/ /<span class="n">index</span>.<span class="n">php</span>?$<span class="n">query_string</span>;        
+    }
+
+	<span class="n">location</span> = /<span class="n">favicon</span>.<span class="n">ico</span> { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+    <span class="n">location</span> = /<span class="n">robots</span>.<span class="n">txt</span>  { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+
+    <span class="n">error_page</span> <span class="m">404</span> /<span class="n">index</span>.<span class="n">php</span>;
+
+  
+    <span class="n">location</span> ~ \.<span class="n">php</span>$ {
+       <span class="n">include</span> <span class="n">fastcgi_params</span>;
+	   <span class="n">fastcgi_index</span> <span class="n">index</span>.<span class="n">php</span>;
+       <span class="n">fastcgi_pass</span>     <span class="n">unix</span>:/<span class="n">var</span>/<span class="n">run</span>/<span class="n">php</span>/<span class="n">php</span>-<span class="n">fpm</span>.<span class="n">sock</span>;
+       <span class="n">fastcgi_param</span>   <span class="n">SCRIPT_FILENAME</span> $<span class="n">document_root</span>$<span class="n">fastcgi_script_name</span>;
+    }
+
+	<span class="n">location</span> ~ /\.(?!<span class="n">well</span>-<span class="n">known</span>).* {
+        <span class="n">deny</span> <span class="n">all</span>;
+    }
+
+}
+</code></pre></div></div>
+
+<p>  未开启 HTTPS 的配置文件如下：</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+    <span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
+    <span class="n">index</span>  <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
+    <span class="n">server_name</span>  <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
+
+	<span class="n">add_header</span> <span class="n">X</span>-<span class="n">Frame</span>-<span class="n">Options</span> <span class="s2">"SAMEORIGIN"</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">XSS</span>-<span class="n">Protection</span> <span class="s2">"1; mode=block"</span>;
+    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">Content</span>-<span class="n">Type</span>-<span class="n">Options</span> <span class="s2">"nosniff"</span>;
+
+	<span class="n">charset</span> <span class="n">utf</span>-<span class="m">8</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">try_files</span> $<span class="n">uri</span> $<span class="n">uri</span>/ /<span class="n">index</span>.<span class="n">php</span>?$<span class="n">query_string</span>;        
+    }
+
+	<span class="n">location</span> = /<span class="n">favicon</span>.<span class="n">ico</span> { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+    <span class="n">location</span> = /<span class="n">robots</span>.<span class="n">txt</span>  { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+
+    <span class="n">error_page</span> <span class="m">404</span> /<span class="n">index</span>.<span class="n">php</span>;
+
+  
+    <span class="n">location</span> ~ \.<span class="n">php</span>$ {
+       <span class="n">include</span> <span class="n">fastcgi_params</span>;
+	   <span class="n">fastcgi_index</span> <span class="n">index</span>.<span class="n">php</span>;
+       <span class="n">fastcgi_pass</span>     <span class="n">unix</span>:/<span class="n">var</span>/<span class="n">run</span>/<span class="n">php</span>/<span class="n">php</span>-<span class="n">fpm</span>.<span class="n">sock</span>;
+       <span class="n">fastcgi_param</span>   <span class="n">SCRIPT_FILENAME</span> $<span class="n">document_root</span>$<span class="n">fastcgi_script_name</span>;
+    }
+
+	<span class="n">location</span> ~ /\.(?!<span class="n">well</span>-<span class="n">known</span>).* {
+        <span class="n">deny</span> <span class="n">all</span>;
+    }
+
+}
+</code></pre></div></div>
+
+<ul>
+  <li>Nginx 配置文件生效</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/nginx/sites-avaiable/blog /etc/nginx/sites-enabled/
+<span class="nb">sudo </span>nginx <span class="nt">-t</span>
+<span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
+</code></pre></div></div>
+
+<ul>
+  <li>开启 php-fpm</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>php-fpm
+<span class="nb">sudo </span>systemctl start php-fpm
+</code></pre></div></div>
+
+<ul>
+  <li>验证</li>
+</ul>
+
+<p>  浏览器访问<code class="language-plaintext highlighter-rouge">https://blog.lisz.ml</code>。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://www.vultr.com/docs/how-to-install-laravel-7-on-ubuntu-20-04-with-nginx-and-mariadb">How to Install Laravel 7 on Ubuntu 20.04 with Nginx and MariaDB</a></li>
+  <li><a href="https://gist.github.com/santoshachari/87bf77baeb45a65eb83b553aceb135a3">Laravel PHP7 LEMP AWS.md</a></li>
+  <li><a href="https://laravel.com/docs/6.x/installation">Laravel Installation</a></li>
+  <li><a href="https://laravel.com/docs/6.x/valet">Laravel Valet</a></li>
+  <li><a href="https://developer.aliyun.com/composer?spm=a2c6h.13651102.0.0.3e221b11rDtKLh">阿里云 Composer 全量镜像</a></li>
+  <li><a href="https://gems.ruby-china.com/">Ruby 中国镜像</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/conquest-introduction.html" class="read-next-link"></a>
+        <section>
+          <span>CONQUEST 第一性原理计算框架</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1612572767699-093823e475af?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/sharelatex.html" class="read-next-link"></a>
+          <section>
+            <span>ShareLaTeX 搭建</span>
+            <p>LaTeX 和 ShareLaTex</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

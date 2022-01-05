@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人免费博客花式搭建指南 Online Editor 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人免费博客花式搭建指南 Online Editor 篇">
+    <meta name="keywords"  content="blog, free, static, jekyll, gitbook, readthedoc, ftp, github">
+    <!-- Open Graph -->
+    <meta property="og:title" content="个人免费博客花式搭建指南 Online Editor 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/start-blog-online-editor.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#blog" class="post-tag">blog</a>
+          
+            <a href="/tags.html#free" class="post-tag">free</a>
+          
+            <a href="/tags.html#static" class="post-tag">static</a>
+          
+            <a href="/tags.html#jekyll" class="post-tag">jekyll</a>
+          
+            <a href="/tags.html#gitbook" class="post-tag">gitbook</a>
+          
+            <a href="/tags.html#readthedoc" class="post-tag">readthedoc</a>
+          
+            <a href="/tags.html#ftp" class="post-tag">ftp</a>
+          
+            <a href="/tags.html#github" class="post-tag">github</a>
+          
+        
+      </div>
+      <h1>个人免费博客花式搭建指南 Online Editor 篇</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-04-11"><i class="iconfont icon-date"></i>Sun, 11 Apr 2021 17:15:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1366 字 <b>·</b> 阅读全文大约需要 4 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  近些年，随着 Markdown 的蓬勃发展，越来越多地支持 Markdown 语法的在线编辑器和托管服务提供商出现。比如国外的 <a href="https://readthedocs.org/">Read the Docs</a>、<a href="https://gitbook.com">Gitbook</a> 等等，国内的 <a href="https://www.kancloud.cn/">看云</a> 等等。这种方式的好处主要有几点：</p>
+
+<ul>
+  <li>不需要任何环境配置，只需要浏览器就可以完成编辑和预览；</li>
+  <li>当完成编辑时即发布，无须考虑手动部署或者自动部署的问题；</li>
+  <li>可以直接把编辑的内容直接放在一起导出一本 PDF 电子书。</li>
+  <li>由于运行资源没有限制，完全与平台相关，访问速度及最大并发访问量可能较高。</li>
+</ul>
+
+<p>当然，这种方式也会有一定的缺点：</p>
+
+<ul>
+  <li>无法定制呈现内容的样式，更无法修改模板；</li>
+  <li>平台提供的在线编辑器的体验可能并没有离线编辑器的体验这么好，比如优秀的 <a href="https://typora.io">Typora</a>；</li>
+  <li>对于页面权限的控制受限，无法像博客那样可以自由控制；</li>
+  <li>不一定支持自定义域名，或需付费才支持自定义域名。</li>
+</ul>
+
+<p>  个人觉得比起搭建博客这类方式更适合搭建文档，比如说写产品文档、API 文档等等，而且其导出 PDF 的特点更加适合需求。</p>
+
+<h2 id="体验与评价">体验与评价</h2>
+
+<h3 id="read-the-docs">Read the Docs</h3>
+
+<h4 id="登录">登录</h4>
+
+<p>访问 <a href="https://readthedocs.org/">Read the Docs</a> 点击<strong>登录</strong>按钮，这里支持直接使用 Github 登录（推荐）。</p>
+
+<p><img src="https://i.vgy.me/WiYCRb.png" alt="vgy.me" /></p>
+
+<p><img src="https://i.vgy.me/ef4cKr.png" alt="vgy.me" /></p>
+
+<h4 id="导入项目">导入项目</h4>
+
+<p>由于是 Github 方式登录，可以直接从 Github 中导入项目，如下图所示。</p>
+
+<p><img src="https://i.vgy.me/PaSfl7.png" alt="vgy.me" /></p>
+
+<p>点击右侧加号按钮完成导入。</p>
+
+<p><img src="https://i.vgy.me/TQYwpR.png" alt="vgy.me" /></p>
+
+<p><img src="https://i.vgy.me/i0DQXU.png" alt="vgy.me" /></p>
+
+<h4 id="预览项目">预览项目</h4>
+
+<p>  由于这里导入的项目是 Jekyll，所以 Read the Docs 无法对其进行编译并显示预览页面。事实上，如果将 Jekylll 换成 Mkdocs，会发现能够通过编译并在线预览成功，但是 PDF 生成还是会有问题。所以最好的就是在 Github 建一个空的项目，将空的项目导入到 Read the Docs 中即可。</p>
+
+<p>  其实，Read the Docs 还不能算得上是完整的在线编辑平台，毕竟它不提供所谓的 Online Editor。我们仍然需要使用 Github 自身提供的在线编辑功能，或者利用本地编辑器 Typora 这样的编辑然后上传更新到 Github。当然，如果 Github 的内容发生了更新，Read the Docs 将会拉取最新的内容进行编译并激活预览。</p>
+
+<h3 id="gitbook">Gitbook</h3>
+
+<h4 id="登录-1">登录</h4>
+
+<p>访问 <a href="https://gitbook.com">Gitbook</a> ，可以选择 Sign Up With Github 进行快速注册。</p>
+
+<p><img src="https://i.vgy.me/DDsCsE.png" alt="vgy.me" /></p>
+
+<h4 id="创建项目">创建项目</h4>
+
+<p>点击 create a new space 按钮，输入项目名称完成创建。</p>
+
+<p><img src="https://i.vgy.me/mR46gg.png" alt="vgy.me" /></p>
+
+<h4 id="导入内容">导入内容</h4>
+
+<p>  如下图所示，可以直接导入 Markdown 文件。由于本站是采用 Jekyll 静态生成器的，所有只需将 _posts 目录下的 Markdown 文件全部拖拽到这里导入即可完成 Gitbook 的转换。</p>
+
+<p><img src="https://i.vgy.me/3lGk46.png" alt="vgy.me" /></p>
+
+<p><img src="https://i.vgy.me/J25FIN.png" alt="vgy.me" /></p>
+
+<h4 id="预览项目-1">预览项目</h4>
+
+<p>Gitbook 采用的是 https://用户名.gitbook.io/项目名/ 的方式预览，当然也支持自定义域名。</p>
+
+<h3 id="评价">评价</h3>
+
+<p>  Read the Docs 与 Gitbook 相比，后者支持完整的在线编辑功能和自定义主题功能，操作也略显复杂，前者则只负责编译生成和托管页面，不具有编辑能力。从笔者个人角度来看， Read the Docs 的方式更加方便快捷，操作性强，而 Gitbook 复杂的操作让本来编辑内容的时间都花在了一步一步的操作上了。虽然两者都支持 PDF 导出功能，但是 Read the Docs 导出的 PDF 格式更加像是一本电子书，排版精美，而 Gitbook 则是普通的格式。另外，在网页预览上，Gitbook 则更加大方、美观，比 Read the Docs 更具现代感，两者优势各异。当然也可以同时使用两种，取长而用。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/aiida/aiida-install.html" class="read-next-link"></a>
+        <section>
+          <span>AiiDA 开源数据管理软件</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1606765962248-7ff407b51667?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-vps.html" class="read-next-link"></a>
+          <section>
+            <span>个人免费博客花式搭建指南 VPS 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1587471384749-6d25c9944c5a?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

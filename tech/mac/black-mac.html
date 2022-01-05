@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑苹果安装、使用初体验 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="黑苹果安装、使用初体验">
+    <meta name="keywords"  content="黑苹果, 组装机, Nvidia">
+    <!-- Open Graph -->
+    <meta property="og:title" content="黑苹果安装、使用初体验 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/mac/black-mac.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#%E9%BB%91%E8%8B%B9%E6%9E%9C" class="post-tag">黑苹果</a>
+          
+            <a href="/tags.html#%E7%BB%84%E8%A3%85%E6%9C%BA" class="post-tag">组装机</a>
+          
+            <a href="/tags.html#Nvidia" class="post-tag">Nvidia</a>
+          
+        
+      </div>
+      <h1>黑苹果安装、使用初体验</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="18-11-09"><i class="iconfont icon-date"></i>Fri, 09 Nov 2018 10:48:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 2849 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">基于兼容的组装机体验 MAC 操作系统</h2>
+    
+
+    <article class="markdown-body">
+      <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
+
+<p><strong>特别声明：本站不提供任何下载，只是收集和整理了有关信息</strong></p>
+
+<h2 id="实验组装机配置">实验组装机配置</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">项目</th>
+      <th style="text-align: center">配置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">CPU</td>
+      <td style="text-align: center">3.41 GHz Intel Core i5</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Memory</td>
+      <td style="text-align: center">16 GB 1600 MHz DDR3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">主板</td>
+      <td style="text-align: center">技嘉</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">显卡</td>
+      <td style="text-align: center">16 GB 1600 MHz DDR3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">硬盘</td>
+      <td style="text-align: center">Samsung SSD 850 EVO 500GB</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="安装系统">安装系统</h2>
+
+<h3 id="下载镜像">下载镜像</h3>
+
+<p>  下载 <a href="https://mirrors.dtops.cc/iso/MacOS/daliansky_macos/">含Clover启动工具的Mojave镜像</a> ，感谢由 mirrors.dtops.cc 提供的这一下载地址。</p>
+
+<h3 id="刻录启动盘">刻录启动盘</h3>
+
+<p>  Windows 平台下使用 <a href="https://transmac.en.softonic.com/">TransMac</a> 制作启动盘。</p>
+
+<ol>
+  <li>点击下载 <a href="https://transmac.en.softonic.com/">TansMac</a>，并安装。</li>
+  <li>插入一个至少 8G 大小的空U盘，打开 TransMac，在要制作启动盘的U盘名称下右键选择 Format Disk for Mac，将U盘格式化成 Mac 的文件系统格式，输入格式化后的名称，并在提示确认点击 Yes 完成格式化操作。</li>
+  <li>在刚才的位置右键选择 Restore with Disk Image，然后选择上一步中下载的 dmg 镜像，点击打开，提示框点击 OK。</li>
+  <li>至此，Mac 启动盘刻录完成。</li>
+</ol>
+
+<h3 id="安装系统到硬盘">安装系统到硬盘</h3>
+
+<ol>
+  <li>重启选择从刚才制作的启动盘的 UEFI 模式启动。</li>
+  <li>先使用<code class="language-plaintext highlighter-rouge">磁盘工具</code>将即将安装用到的硬盘格式化成 Mac OS 扩展 (日志式)和 GUID 分区图，名称可以随意自定义。</li>
+  <li>根据提示选择安装介质为格式化好的硬盘，然后一直往下安装即可，因为某些不可抗因素，可能安装会卡住，但是请不要担心，Mac 的安装是可以在你重启电脑之后继续的，多次重启即可完成安装（重启启动需要从启动 U盘 启动，硬盘还没有引导项）。</li>
+  <li>根据提示创建用户等其他操作，最后进入系统，不过由于硬盘上还没有引导项，目前还必须从 U盘 加载硬盘上的Mac 系统。</li>
+</ol>
+
+<h3 id="安装引导项到硬盘">安装引导项到硬盘</h3>
+
+<ol>
+  <li>下载 <a href="https://www.tonymacx86.com/resources/multibeast-10-4-0-high-sierra.401/">MultiBeast</a> 并安装。</li>
+  <li>根据引导选择各项驱动，最后点击 Build 按钮到安装界面，确认 Install 等待几分钟即可完成。</li>
+  <li>至此，如无显卡则算完成安装，如有显卡即还需要下面一步。</li>
+</ol>
+
+<h3 id="优化显卡驱动">优化显卡驱动</h3>
+
+<ol>
+  <li>下载 <a href="https://get.lui8.cn/Webdriver%20All%20Versions.app.zip">Webdriver All Versions.app.zip</a> 并安装。</li>
+  <li>执行以下命令安装驱动。
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /Library/Extensions/NVDAStartupWeb.kext
+<span class="nb">sudo chown</span> <span class="nt">-R</span> root:wheel /Library/Extensions/NVDAStartupWeb.kext
+<span class="nb">sudo touch</span> /System/Library/Extensions/ <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
+<span class="nb">sudo touch</span> /Library/Extensions <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
+</code></pre></div>    </div>
+  </li>
+  <li>重启之后，检测显卡是否工作正常。</li>
+</ol>
+
+<p><img src="https://vgy.me/AIFxRH.jpg" alt="" /></p>
+
+<h3 id="系统升级">系统升级</h3>
+
+<p>  由于黑苹果采用 Clover 引导系统完成启动，所以对于正常操作系统的更新有可能会出现问题，不过不用担心：一种方法是反复重启，有一定几率会正常更新；另一种方法是使用启动U盘引导硬盘中的操作系统正常开机，进入操作系统之后需要将更新前有效的 EFI 目录文件覆盖一下新的就行，更新前的文件可以在 EFI_BACKUP 目录下找到，再次重启即可恢复。</p>
+
+<h2 id="使用体验">使用体验</h2>
+
+<p>  以下均为可选项操作。</p>
+
+<h3 id="允许全部应用来源被打开">允许全部应用来源被打开</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>spctl <span class="nt">--master-disable</span>
+</code></pre></div></div>
+
+<p>​<img src="https://vgy.me/ZpkhIr.jpg" alt="" /></p>
+
+<h3 id="office-for-mac-2019">Office for Mac 2019</h3>
+
+<ul>
+  <li>Office 2019 最新安装包：<a href="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.18.18101400_Installer.pkg">右键我复制链接至下载工具</a></li>
+  <li>Office 2016最后一个版本16.16.3安装包：<a href="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.16.18101500_Installer.pkg">右键我复制链接至下载工具</a></li>
+</ul>
+
+<h3 id="ntfs硬盘读写支持">NTFS硬盘读写支持</h3>
+
+<p>  建议采用免费、无毒的 <a href="https://mounty.app">Mounty</a> ，当然有钱的大佬也可以选择 Paragon 或者 Texus 这类收费软件，不管怎么样，用起来比 Mounty 是要无脑操作一点的，而且 Mounty 由于设备未正常插拔而经常出毛病（不过这些毛病的确是有原因，解决这些毛病的过程也是进一步了解操作系统和 I/O 设备之间的一种体验哈）。</p>
+
+<h3 id="视频播放类软件">视频播放类软件</h3>
+
+<p>  当然首推 <a href="https://lhc70000.github.io/iina/">IINA</a> （一款基于著名的开源视频播放软件 MPV 的、专注于 Mac 操作系统的视频播放软件），开源、免费、持续更新这些 features 绝对吸引任何一个开源爱好者。除此之外，原生的 mpv 也是不错的，使用 brew install mpv 即可安装，像 VLC Media Player 等等都是非常优秀的软件，大家可以尽情尝试。</p>
+
+<h3 id="markdown-编辑软件">Markdown 编辑软件</h3>
+
+<p>  谈到 Markdown 编辑软件，最开始接触的当然是 Web 上的各家产品，近些年印象笔记、有道笔记等都开始支持了，不过讲到全平台（Windows、Linux、Mac）支持，只有一款值得力推—— <a href="https://typora.io">Typora</a> ，界面相当美观、上手使用非常简单、支持大部分的通用 Markdown 语法，而且经常更新，该项目的维护者非常活跃。</p>
+
+<h3 id="软件安装管理">软件安装、管理</h3>
+
+<p>  Apple 公司提供了一个官方的应用仓库 app store，但是由于需要 Apple 的技术人员和内容人员进行审核的缘故，有些应用更新起来就会慢半拍，所以还是建议国内用户体验一下其他的软件安装方式。</p>
+
+<h4 id="brew">Brew</h4>
+
+<p>  <a href="https://brew.sh">Brew</a> 是 macOS 上非常成熟的软件包管理器，和 Linux 中的 apt、yum 相比只有更好，因为这个包管理器除了本身有官方维护的软件仓库之外，任何人都可以通过 <a href="http://caksroom.io">cask</a> 的方式引入 github 中的一个软件项目来提供管理，当然 dmg 文件的下载可以放在任何位置。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 Homebrew</span>
+/usr/bin/ruby <span class="nt">-e</span> <span class="s2">"</span><span class="si">$(</span>curl <span class="nt">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/master/install<span class="si">)</span><span class="s2">"</span>
+
+<span class="c"># 安装 cask</span>
+brew tap caskroom/cask
+
+<span class="c"># 安装 Chrome</span>
+brew cask <span class="nb">install </span>google-chrome
+</code></pre></div></div>
+
+<h4 id="macport">Macport</h4>
+
+<p>  <a href="https://www.macports.org/">Macport</a> 也是 macOS 上一款极具兼容性的软件包管理器，它的工作方式是下载源代码然后在本地编译，其理念是尽量减少对系统现有库的以来，比较搞的就是可能编译的时间会很长（看情况吧）。官网提供 pkg 的安装包，可以直接下载安装。</p>
+
+<p><strong>加速使用推荐</strong> <a href="https://mirrors.ustc.edu.cn">中科大开源镜像站</a></p>
+
+<h3 id="百度云盘无限制多线程下载">百度云盘无限制多线程下载</h3>
+
+<p>  推荐使用 <a href="https://github.com/proxyee-down-org/proxyee-down">Proxyee Down For Mac</a> （一款 macOS 平台的百度云盘无限制多线程下载工具，能够使用本地 http 代理服务器方式嗅探下载请求，支持所有操作系统和大部分主流浏览器，支持分段下载和断点下载）。<a href="https://github.com/proxyee-down-org/proxyee-down/releases">点击跳转到下载页</a></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ol>
+  <li><a href="https://www.travelertechie.com/2018/09/nvidia-web-drivers-mojave-workaround.html">NVIDIA Web Drivers Mojave Workaround</a></li>
+  <li><a href="https://www.tonymacx86.com/threads/success-gigabyte-z370-aorus-gaming-5-gtx-1050.261070/">Success! Gigabyte z370 Aorus Gaming 5, gtx 1050</a></li>
+  <li><a href="https://blog.csdn.net/mier9042/article/details/80541368">PC傻瓜式安装黑苹果并打造成全能逆向工作站</a></li>
+</ol>
+
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/openldap.html" class="read-next-link"></a>
+        <section>
+          <span>OpenLDAP 安装初体验</span>
+          <p>LDAP 协议入门</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/linux/ubuntu-bionic.html" class="read-next-link"></a>
+          <section>
+            <span>Ubuntu 18.04 主题美化指“北”</span>
+            <p>  Ubuntu 操作系统一直深受广大开发者喜爱，一个原因在于它的软件支持比较新，另一个原因在于它的交互更为友好、...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

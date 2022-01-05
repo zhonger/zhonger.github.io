@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta name="keywords"  content="zhonger，zhonger的博客，nodejs，kvm">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/blog/page4/">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+    <input id="nm-switch" type="hidden" value="false">
+    <div class="visible">
+      <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<div
+    class="g-banner home-banner banner-theme-default"
+    data-theme="default"
+    style=""
+>
+    <h2>Welcome to zhonger's blog!</h2>
+    <h3>Writing, writing, writing ...</h3>
+</div>
+
+<main class="g-container home-content">
+    <div class="article-list">
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/docker/openldap.html" title="OpenLDAP 安装初体验"></a>
+                    <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" href="/tech/docker/openldap.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/docker/openldap.html" title="OpenLDAP 安装初体验"></a>
+                    <h2 class="post-title">OpenLDAP 安装初体验</h2>
+                    
+                    <h3 class="post-subtitle">基于 LDAP 轻量级目录协议的用户管理方式</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#OpenLDAP class="post-tag">OpenLDAP</a>
+                            
+                            <a href=/tags.html#Docker class="post-tag">Docker</a>
+                            
+                            <a href=/tags.html#phpldapadmin class="post-tag">phpldapadmin</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-11-28">28 Nov 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/mac/black-mac.html" title="黑苹果安装、使用初体验"></a>
+                    <img src="https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900" href="/tech/mac/black-mac.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/mac/black-mac.html" title="黑苹果安装、使用初体验"></a>
+                    <h2 class="post-title">黑苹果安装、使用初体验</h2>
+                    
+                    <h3 class="post-subtitle">基于兼容的组装机体验 MAC 操作系统</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#%E9%BB%91%E8%8B%B9%E6%9E%9C class="post-tag">黑苹果</a>
+                            
+                            <a href=/tags.html#%E7%BB%84%E8%A3%85%E6%9C%BA class="post-tag">组装机</a>
+                            
+                            <a href=/tags.html#Nvidia class="post-tag">Nvidia</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-11-09">09 Nov 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/linux/ubuntu-bionic.html" title="Ubuntu 18.04 主题美化指“北”"></a>
+                    <img src="https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900" href="/tech/linux/ubuntu-bionic.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/linux/ubuntu-bionic.html" title="Ubuntu 18.04 主题美化指“北”"></a>
+                    <h2 class="post-title">Ubuntu 18.04 主题美化指“北”</h2>
+                    
+                    <h3 class="post-subtitle">为 Ubuntu 18.04 定制属于你的 Mac 主题</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#Ubuntu class="post-tag">Ubuntu</a>
+                            
+                            <a href=/tags.html#Bionic class="post-tag">Bionic</a>
+                            
+                            <a href=/tags.html#%E4%B8%BB%E9%A2%98 class="post-tag">主题</a>
+                            
+                            <a href=/tags.html#Mac class="post-tag">Mac</a>
+                            
+                            <a href=/tags.html#18.04 class="post-tag">18.04</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-08-28">28 Aug 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/linux/ubuntu-hp.html" title="Ubuntu 安装 HP 打印机、扫描仪驱动"></a>
+                    <img src="https://images.unsplash.com/photo-1533458504656-81a904b29a69?w=1600&h=900" href="/tech/linux/ubuntu-hp.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/linux/ubuntu-hp.html" title="Ubuntu 安装 HP 打印机、扫描仪驱动"></a>
+                    <h2 class="post-title">Ubuntu 安装 HP 打印机、扫描仪驱动</h2>
+                    
+                    <h3 class="post-subtitle">为 Linux 添加打印机支持</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#Ubuntu class="post-tag">Ubuntu</a>
+                            
+                            <a href=/tags.html#HP class="post-tag">HP</a>
+                            
+                            <a href=/tags.html#%E6%89%93%E5%8D%B0%E6%9C%BA class="post-tag">打印机</a>
+                            
+                            <a href=/tags.html#%E9%A9%B1%E5%8A%A8 class="post-tag">驱动</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-08-06">06 Aug 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/linux/postfix.html" title="Ubuntu 搭建 Postfix 邮件SMTP发送服务器"></a>
+                    <img src="https://images.unsplash.com/photo-1560345573-9f453083c335?w=1600&h=900" href="/tech/linux/postfix.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/linux/postfix.html" title="Ubuntu 搭建 Postfix 邮件SMTP发送服务器"></a>
+                    <h2 class="post-title">Ubuntu 搭建 Postfix 邮件SMTP发送服务器</h2>
+                    
+                    <h3 class="post-subtitle">从零开始几步搭建好自己邮件通知服务器</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#Ubuntu class="post-tag">Ubuntu</a>
+                            
+                            <a href=/tags.html#Postfix class="post-tag">Postfix</a>
+                            
+                            <a href=/tags.html#SMTP class="post-tag">SMTP</a>
+                            
+                            <a href=/tags.html#%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5 class="post-tag">邮件通知</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-06-25">25 Jun 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/docker/nextcloud-docker.html" title="Nextcloud 源码部署迁移到容器部署"></a>
+                    <img src="https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=900" href="/tech/docker/nextcloud-docker.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/docker/nextcloud-docker.html" title="Nextcloud 源码部署迁移到容器部署"></a>
+                    <h2 class="post-title">Nextcloud 源码部署迁移到容器部署</h2>
+                    
+                    <h3 class="post-subtitle">LNMPA 源码部署通常不便于更新，迁移到容器部署倒是个不错的法子</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#Nextcloud class="post-tag">Nextcloud</a>
+                            
+                            <a href=/tags.html#docker class="post-tag">docker</a>
+                            
+                            <a href=/tags.html#lnmpa class="post-tag">lnmpa</a>
+                            
+                            <a href=/tags.html#%E4%BA%91%E7%9B%98 class="post-tag">云盘</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-06-11">11 Jun 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/kvm/kvm.html" title="KVM 虚拟化"></a>
+                    <img src="https://images.unsplash.com/photo-1521566878949-d0febfb1e9bb?w=1600&h=900" href="/tech/kvm/kvm.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/kvm/kvm.html" title="KVM 虚拟化"></a>
+                    <h2 class="post-title">KVM 虚拟化</h2>
+                    
+                    <h3 class="post-subtitle">KVM + Cloud-init 快速搭建虚拟化平台</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#kvm class="post-tag">kvm</a>
+                            
+                            <a href=/tags.html#%E8%99%9A%E6%8B%9F%E5%8C%96 class="post-tag">虚拟化</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-05-01">01 May 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/webmaster/ngx-fancyindex.html" title="Nginx 目录列表美化"></a>
+                    <img src="https://images.unsplash.com/photo-1560613717-c793db79055e?w=1600&h=900" href="/tech/webmaster/ngx-fancyindex.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/webmaster/ngx-fancyindex.html" title="Nginx 目录列表美化"></a>
+                    <h2 class="post-title">Nginx 目录列表美化</h2>
+                    
+                    <h3 class="post-subtitle">使用 Ngx-fancyindex 插件一键美化Nginx目录列表</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#nginx class="post-tag">nginx</a>
+                            
+                            <a href=/tags.html#%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8 class="post-tag">目录列表</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-04-12">12 Apr 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/docker/onlyoffice.html" title="Onlyoffice 搭建"></a>
+                    <img src="https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900" href="/tech/docker/onlyoffice.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/docker/onlyoffice.html" title="Onlyoffice 搭建"></a>
+                    <h2 class="post-title">Onlyoffice 搭建</h2>
+                    
+                    <h3 class="post-subtitle">使用 Docker 搭建 Onlyoffice 如此轻松愉快</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#onlyoffice class="post-tag">onlyoffice</a>
+                            
+                            <a href=/tags.html#docker class="post-tag">docker</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-04-01">01 Apr 2018</time>
+                </footer>
+            </article>
+        
+            <article class="article-item">
+                
+                <div class="post-cover">
+                    <a class="post-link" href="/tech/docker/nextcloud.html" title="Nextcloud 搭建自己的云盘"></a>
+                    <img src="https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900" href="/tech/docker/nextcloud.html" alt="">
+                </div>
+                
+                <section class="post-preview">
+                    <a class="post-link" href="/tech/docker/nextcloud.html" title="Nextcloud 搭建自己的云盘"></a>
+                    <h2 class="post-title">Nextcloud 搭建自己的云盘</h2>
+                    
+                    <h3 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h3>
+                    
+                    
+                </section>
+                <footer class="post-meta">
+                    <div class="post-tags">
+                        
+                            
+                            <a href=/tags.html#Nextcloud class="post-tag">Nextcloud</a>
+                            
+                            <a href=/tags.html#docker class="post-tag">docker</a>
+                            
+                            <a href=/tags.html#lnmpa class="post-tag">lnmpa</a>
+                            
+                            <a href=/tags.html#%E4%BA%91%E7%9B%98 class="post-tag">云盘</a>
+                            
+                        
+                    </div>
+                    <time class="post-date" datetime="18-03-24">24 Mar 2018</time>
+                </footer>
+            </article>
+        
+
+        
+            <nav class="pagination">
+    <input type="hidden" id="total_pages" value="6">
+    <input type="hidden" id="current_pages" value="4">
+    <input type="hidden" id="base_url" value="/blog/">
+    <div class="page-links">
+        
+            
+            <a href="/blog/page3/index.html" class="page-link" title="Previous Page">&laquo;</a>
+            
+        
+        <div id="page-link-container"></div>
+        
+        <a href="/blog/page5/index.html" class="page-link">&raquo;</a>
+        
+    </div>
+</nav>
+
+        
+
+    </div>
+
+    <aside class="g-sidebar-wrapper">
+        <div class="g-sidebar">
+            <section class="author-card">
+                <div class="avatar">
+                    <img src="/assets/img/profile.webp" alt="">
+                </div>
+                <div class="author-name" rel="author">zhonger</div>
+                <div class="bio">
+                    <p>Developer & Maintainer</p>
+                </div>
+                
+                <ul id="sns-links" class="sns-links">
+                    
+                    <li>
+                        <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-google-scholar"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-researchgate"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-ORCID"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://github.com/zhonger" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-github"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-linkedin"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-segmentfault"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </section>
+
+            
+            <section class="tags-card">
+                
+                    
+                    <a href="/tags.html#gravatar" class="tag">gravatar</a>
+                
+                    
+                    <a href="/tags.html#wordpress" class="tag">wordpress</a>
+                
+                    
+                    <a href="/tags.html#SSH%E7%99%BB%E5%BD%95" class="tag">SSH登录</a>
+                
+                    
+                    <a href="/tags.html#%E8%BD%AC%E8%BD%BD" class="tag">转载</a>
+                
+                    
+                    <a href="/tags.html#%E5%86%99%E4%BD%9C" class="tag">写作</a>
+                
+                    
+                    <a href="/tags.html#%E9%9A%8F%E7%AC%94" class="tag">随笔</a>
+                
+                    
+                    <a href="/tags.html#%E8%AF%97" class="tag">诗</a>
+                
+                    
+                    <a href="/tags.html#windows" class="tag">windows</a>
+                
+                    
+                    <a href="/tags.html#composer" class="tag">composer</a>
+                
+                    
+                    <a href="/tags.html#laravel" class="tag">laravel</a>
+                
+                    
+                    <a href="/tags.html#ubuntu" class="tag">ubuntu</a>
+                
+                    
+                    <a href="/tags.html#nodejs" class="tag">nodejs</a>
+                
+                    
+                        
+            </section>
+            
+
+            
+            <section class="tags-card">
+                <div class="links" rel="links">Links</div>
+                
+                    <a href="https://lisz.me" target="_blank" class="tag" rel="noreferrer"> Mr Li </a>
+                
+                    <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer"> Kala Search </a>
+                
+                    <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer"> 个人导航 </a>
+                
+            </section>
+            
+
+        </div>
+
+        
+        <div class="search-card">
+            <input id="search_input" type="text" placeholder="Search..." autocomplete="off">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+            </svg>
+            <div class="search_result"></div>
+        </div>
+        
+
+    </aside>
+
+</main>
+
+<footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/js/prism.js"></script>
+    <script src="/assets/js/index.min.js"></script>
+</body>
+</html>

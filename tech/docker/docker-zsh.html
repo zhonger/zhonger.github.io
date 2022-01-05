@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker 镜像安装配置 zsh - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Docker 镜像安装配置 zsh">
+    <meta name="keywords"  content="Docker, Ubuntu, zsh, 免密">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Docker 镜像安装配置 zsh - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/docker-zsh.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Docker" class="post-tag">Docker</a>
+          
+            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          
+            <a href="/tags.html#zsh" class="post-tag">zsh</a>
+          
+            <a href="/tags.html#%E5%85%8D%E5%AF%86" class="post-tag">免密</a>
+          
+        
+      </div>
+      <h1>Docker 镜像安装配置 zsh</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-02-08"><i class="iconfont icon-date"></i>Mon, 08 Feb 2021 21:09:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 1731 字 <b>·</b> 阅读全文大约需要 5 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1551978429-3dbfed5cacc9?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">个性化 Docker 镜像，你值得拥有</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  Docker 具有易迁移、镜像容量小的优势，已被广泛应用于快速应用部署。对于开发者而言，Docker 的这一优势也同样适用于开发环境的快速搭建。因此，具有个性化的 Docker 镜像将会为开发者使用提供更大的便利。笔者习惯在 Mac 或者服务器上使用非 root 的 sudo 用户和 zsh，因此也希望在用于开发环境的 Docker 镜像也有这样的特点。</p>
+
+<p>  为什么要使用非 root 的 sudo 用户，而不直接使用 root 用户？Docker 镜像默认提供的一般都是 root 用户，而所有人想要把应用 Docker 化，在 Docker 镜像中用于运行程序的一般不能是 root 用户。这也是因为如果使用 root 用户的话，应用一旦被他人渗透取得程序执行权限，该 Docker 实例运行的所在宿主机也可能被入侵。因此，大部分开发者都应该养成使用非 root 的 sudo 用户的习惯，既享有 sudo 权限，也要严格控制 Docker 镜像中的权限。</p>
+
+<p>  为什么要使用 zsh 而不使用默认的 bash？一方面的原因是，bash 对于大小写的自动补全比较严格，不会像 zsh 那样可以无视大小写进行自动补全推荐。另一方面的原因是，bash 的历史功能只能在前后命令之间切换，而 zsh 可以根据历史命令进行自动补全推荐从而突破这一限制。当然，zsh 所支持的主题、插件也比较丰富，可以适应不同人的审美和使用需求。</p>
+
+<h2 id="安装配置">安装配置</h2>
+
+<p>笔者想要构建的开发环境基础 Docker 镜像主要的特点是以上两点，具体来说是：</p>
+
+<ul>
+  <li>具有 sudo 权限的非 root 用户：ubuntu</li>
+  <li>执行 sudo 命令时不需要输入密码，即免密 sudo</li>
+  <li>ubuntu 用户的默认 shell 是 zsh</li>
+</ul>
+
+<p>因此，所对应的 Docker 镜像生成配置文件（Dockerfile）如下所示。</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:latest</span>
+
+<span class="k">LABEL</span><span class="s"> maintainer="zhonger zhonger@live.cn"</span>
+
+<span class="c"># Create a no-passowrd sudo user</span>
+<span class="k">RUN </span>apt update <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt <span class="nb">install</span> <span class="nt">-y</span> <span class="nb">sudo</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> useradd <span class="nt">-m</span> ubuntu <span class="nt">-s</span> /bin/bash <span class="o">&amp;&amp;</span> adduser ubuntu <span class="nb">sudo</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"ubuntu ALL=(ALL) NOPASSWD : ALL"</span> | <span class="nb">tee</span> /etc/sudoers.d/nopasswd4sudo
+
+<span class="c"># Adjust Timezone</span>
+<span class="k">ENV</span><span class="s"> DEBIAN_FRONTEND=noninteractive</span>
+<span class="k">RUN </span>apt <span class="nb">install</span> <span class="nt">-y</span> tzdata <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">ln</span> <span class="nt">-fs</span> /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+<span class="k">USER</span><span class="s"> ubuntu</span>
+<span class="k">WORKDIR</span><span class="s"> /home/ubuntu</span>
+
+<span class="c"># Install zsh</span>
+<span class="k">RUN </span><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> git zsh <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cp</span> ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/robbyrussell/bira/"</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>usermod <span class="nt">-s</span> /bin/zsh ubuntu
+
+
+<span class="c"># Clean apt-cache</span>
+<span class="k">RUN </span><span class="nb">sudo </span>apt autoremove <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt clean <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="k">ENTRYPOINT</span><span class="s"> ["/bin/zsh"]</span>
+</code></pre></div></div>
+
+<p>使用以下命令编译生成 Docker 镜像：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nb">.</span> <span class="nt">-t</span> zhonger/ubuntu:latest
+</code></pre></div></div>
+
+<p>使用以下命令运行一个 Docker 实例验证：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">--name</span> dev zhonger/ubuntu:latest
+docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
+<span class="c"># 登录后看见 zsh 主题即安装配置 zsh 成功</span>
+
+<span class="nb">sudo </span>apt update
+<span class="c"># 输入执行命令后立刻执行无需输入密码，表示安装配置免密且具有 sudo 权限的 ubuntu 用户成功</span>
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/docker-openssh.html" class="read-next-link"></a>
+        <section>
+          <span>Docker 镜像支持 SSH 远程登录</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1612533923019-b532b3131212?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/docker/conquest-slurm.html" class="read-next-link"></a>
+          <section>
+            <span>CONQUEST 编译安装指南 Slurm 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

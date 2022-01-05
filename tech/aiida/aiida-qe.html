@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AiiDA 与 Quantum Espresso - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="AiiDA 与 Quantum Espresso">
+    <meta name="keywords"  content="AiiDA, Quantum Espresso, 联机">
+    <!-- Open Graph -->
+    <meta property="og:title" content="AiiDA 与 Quantum Espresso - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/aiida/aiida-qe.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#AiiDA" class="post-tag">AiiDA</a>
+          
+            <a href="/tags.html#Quantum%20Espresso" class="post-tag">Quantum Espresso</a>
+          
+            <a href="/tags.html#%E8%81%94%E6%9C%BA" class="post-tag">联机</a>
+          
+        
+      </div>
+      <h1>AiiDA 与 Quantum Espresso</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-05-27"><i class="iconfont icon-date"></i>Thu, 27 May 2021 15:50:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 8450 字 <b>·</b> 阅读全文大约需要 25 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1461727885569-b2ddec0c4328?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">AiiDA 的实际联机使用体验</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  <a href="https://www.quantum-espresso.org/">Quantum Espresson</a> （以下简称 QE）是一款基于平面波函数的开源第一性原理计算框架，其免费、易安装使用等优点受到了广大第一性原理计算研究人员的喜爱。QE 不仅支持 CPU 的并行高性能计算，还支持 GPU 计算。这看起来有点像是计算机专业里的深度学习框架，有完整的计算加速支持。另外，QE 与 VASP 的使用习惯类似度比较高，不管是输入文件还是赝势文件，都可以类比着使用。对于计算后的输出结果，QE 也有一套完整的工具链辅助用户完成一些常用的分析操作，比如寻找 k 路径、分析能带结构（Band Gap）等等。</p>
+
+<p>  上次我们提到的 AiiDA 这款专门应用于材料计算领域的开源数据管理软件，与 QE 可以非常方便地结合在一起使用，而且 AiiDA 官网上给出的示例就是基于 QE 计算的。现在我们就来体验一下如何把 QE 和 AiiDA 结合起来使用吧。</p>
+
+<h2 id="实践">实践</h2>
+
+<p>  上次介绍的安装部署 AiiDA 的文章中的 <a href="https://quantum-mobile.readthedocs.io/en/latest/index.html">Quantum Mobile</a>，就开发了 AiiDA 与 QE 的一体化虚拟机和 Docker 镜像，直接使用非常方便。这里为了在服务器上部署比较方便，采用了 Docker 部署的方式。为了缩短篇幅，使用 Docker 启动一个 Quantum Mobile 实例的操作就不在此赘述了，请参照 <a href="./aiida-install.html">AiiDA 开源数据管理软件</a> 中的 <strong>Docker 安装</strong> 部分。</p>
+
+<h3 id="进入环境">进入环境</h3>
+
+<p>  如果创建的容器实例名为 quantum-mobile，那么使用 <code class="language-plaintext highlighter-rouge">docker exec -ti -u max quantum-mobile /bin/bash</code> 命令进入容器。由于容器默认是不开启 Anaconda 的虚拟环境的，所以需要使用 <code class="language-plaintext highlighter-rouge">workon aiida</code> 命令开启 AiiDA 专用虚拟环境。</p>
+
+<h3 id="初始化配置">初始化配置</h3>
+
+<p>  quantum-mobile 容器中默认是没有任何配置和数据的，只有已经正常运行的 aiida-core、PostgreSQL 和 RabbitMQ。这里我们可以使用快速配置来完成初始化。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 快速初始化</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi quicksetup
+Info: enter <span class="s2">"?"</span> <span class="k">for </span><span class="nb">help
+</span>Info: enter <span class="s2">"!"</span> to ignore the default and <span class="nb">set </span>no value
+Profile name <span class="o">[</span>quicksetup]: qe
+Email Address <span class="o">(</span><span class="k">for </span>sharing data<span class="o">)</span> <span class="o">[</span>aiida@localhost]:
+First name <span class="o">[</span>Max]:
+Last name <span class="o">[</span>Scientist]:
+Institution <span class="o">[</span>Quantum Mobile]:
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
+Success: created new profile <span class="sb">`</span>qe<span class="sb">`</span><span class="nb">.</span>
+Info: migrating the database.
+Operations to perform:
+  Apply all migrations: auth, contenttypes, db
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  ......
+  Applying db.0045_dbgroup_extras... OK
+Success: database migration completed.
+
+<span class="c"># 将新建的 qe 配置设置为默认配置</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi profile setdefault qe
+Success: qe <span class="nb">set </span>as default profile
+
+</code></pre></div></div>
+
+<h3 id="导入数据">导入数据</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载测试 aiida 数据</span>
+wget http://phonondb.mtl.kyoto-u.ac.jp/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+
+<span class="c"># 导入 aiida 数据到数据库</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi import aiida_tutorial_2020_07_perovskites_v0.9.aiida
+Info: starting import: aiida_tutorial_2020_07_perovskites_v0.9.aiida
+Info: incompatible version detected <span class="k">for </span>aiida_tutorial_2020_07_perovskites_v0.9.aiida, trying migration
+Reading archive version
+Migration pathway: 0.9 -&gt; 0.10
+Extracting archive to work directory
+Info: proceeding with import of migrated archive
+
+IMPORT
+<span class="nt">--------</span>  <span class="nt">---------</span>
+Archive   extracted
+
+Parameters
+<span class="nt">--------------------------</span>  <span class="nt">------</span>
+Comment rules               newest
+New Node Extras rules       import
+Existing Node Extras rules  kcl
+Links - <span class="nv">label</span><span class="o">=</span>pseudos__O                  39.4%|██████████████████████████████████▋                                                     | 941/2388
+Summary
+<span class="nt">-----------------------</span>  <span class="nt">---------------</span>
+Auto-import Group label  20210527-074131
+User<span class="o">(</span>s<span class="o">)</span>                  1 new
+Computer<span class="o">(</span>s<span class="o">)</span>              1 new
+Node<span class="o">(</span>s<span class="o">)</span>                  1981 new
+Group<span class="o">(</span>s<span class="o">)</span>                 6 new
+Link<span class="o">(</span>s<span class="o">)</span>                  2388 new
+
+Success: imported archive aiida_tutorial_2020_07_perovskites_v0.9.aiida
+
+<span class="c"># 下载赝势数据</span>
+wget http://phonondb.mtl.kyoto-u.ac.jp/SSSP_1.1_PBE_efficiency.tar.gz
+<span class="nb">mkdir </span>sssp_pseudos
+<span class="nb">tar</span> <span class="nt">-C</span> sssp_pseudos <span class="nt">-zxvf</span> SSSP_1.1_PBE_efficiency.tar.gz
+
+<span class="c"># 导入赝势数据</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi data upf uploadfamily sssp_pseudos <span class="s1">'SSSP'</span> <span class="s1">'SSSP pseudopotential library'</span>
+Success: UPF files found: 85. New files uploaded: 74
+</code></pre></div></div>
+
+<h3 id="配置主机和-qe">配置主机和 QE</h3>
+
+<p>  使用以下配置文件 computer.yml 和命令 <code class="language-plaintext highlighter-rouge">verdi computer setup --config computer.yml</code> 一键配置本地主机，并使用命令 <code class="language-plaintext highlighter-rouge">verdi computer configure local localhost</code> 配置  localhost 主机为 local 模式连接（相关配置均使用默认即可）。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># computer.yml</span>
+<span class="nn">---</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
+<span class="na">label</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
+<span class="na">hostname</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
+<span class="na">transport</span><span class="pi">:</span> <span class="s">local</span>
+<span class="na">scheduler</span><span class="pi">:</span> <span class="s2">"</span><span class="s">direct"</span>
+<span class="na">work_dir</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/home/max/.aiida_run"</span>
+<span class="na">mpirun_command</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mpirun</span><span class="nv"> </span><span class="s">-np</span><span class="nv"> </span><span class="s">{tot_num_mpiprocs}"</span>
+<span class="na">mpiprocs_per_machine</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
+<span class="na">shebang</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#!/bin/bash"</span>
+<span class="na">prepend_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
+<span class="na">append_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
+</code></pre></div></div>
+
+<p>  使用以下配置文件 code.yml 和命令 <code class="language-plaintext highlighter-rouge">verdi code setup --config code.yml</code> 一键配置本地 QE 程序。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># code.yml</span>
+<span class="nn">---</span>
+<span class="na">label</span><span class="pi">:</span> <span class="s2">"</span><span class="s">qe-6.5-pw"</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantum_espresso</span><span class="nv"> </span><span class="s">v6.5"</span>
+<span class="na">input_plugin</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantumespresso.pw"</span>
+<span class="na">on_computer</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">remote_abs_path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/usr/local/bin/pw.x"</span>
+<span class="na">computer</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
+<span class="na">prepend_text</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ulimit</span><span class="nv"> </span><span class="s">-s</span><span class="nv"> </span><span class="s">unlimited"</span>
+<span class="na">append_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
+</code></pre></div></div>
+
+<h3 id="提交计算">提交计算</h3>
+
+<h4 id="确认-aiida-后台状态">确认 aiida 后台状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看 aiida 后台状态</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon status
+Profile: qe
+The daemon is not running
+
+<span class="c"># 若如上未运行 aiida 后台程序，则使用以下命令启动</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon start
+Starting the daemon... RUNNING
+
+<span class="c"># 再次查看 aiida 后台状态，已正常运行</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon status
+Profile: qe
+Daemon is running as PID 102244 since 2021-05-29 12:38:55
+Active workers <span class="o">[</span>1]:
+   PID    MEM %    CPU %  started
+<span class="nt">------</span>  <span class="nt">-------</span>  <span class="nt">-------</span>  <span class="nt">-------------------</span>
+102248    0.005        0  2021-05-29 12:38:55
+Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>num] to increase / decrease the amount of workers
+</code></pre></div></div>
+
+<h4 id="确认代码配置">确认代码配置</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 如下所示，列举出 qe-6.5，与已配置信息一致</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi code list
+<span class="c"># List of configured codes:</span>
+<span class="c"># (use 'verdi code show CODEID' to see the details)</span>
+<span class="k">*</span> pk 2056 - qe-6.5-pw@localhost
+</code></pre></div></div>
+
+<h4 id="准备执行脚本">准备执行脚本</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cal.py
+</span>
+<span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">load_profile</span>
+
+<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
+<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="nn">aiida.orm.nodes.data.upf</span> <span class="kn">import</span> <span class="n">get_pseudos_from_structure</span>
+
+<span class="n">load_profile</span><span class="p">()</span>
+
+<span class="n">StructureData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'structure'</span><span class="p">)</span>
+<span class="n">Dict</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'dict'</span><span class="p">)</span>
+<span class="n">KpointsData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'array.kpoints'</span><span class="p">)</span>
+
+<span class="c1">###########################################
+# Set constant values here
+</span><span class="n">codename</span> <span class="o">=</span> <span class="s">'qe-6.5-pw@localhost'</span>
+<span class="n">pseudo_family</span> <span class="o">=</span> <span class="s">'SSSP'</span>
+<span class="c1">###########################################
+</span>
+
+<span class="n">code</span> <span class="o">=</span> <span class="n">Code</span><span class="p">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">codename</span><span class="p">)</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">code</span><span class="p">.</span><span class="n">get_builder</span><span class="p">()</span>
+
+<span class="c1"># Metadata settings
+</span><span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">label</span> <span class="o">=</span> <span class="s">"PW test"</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">"My first AiiDA calc with Quantum ESPRESSO on Si"</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">resources</span> <span class="o">=</span> <span class="p">{</span><span class="s">'num_machines'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">max_wallclock_seconds</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
+
+<span class="c1"># Si structure
+</span><span class="n">alat</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># angstorm
+</span><span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">]]</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="n">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+
+<span class="c1"># kpoints-mesh
+</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">KpointsData</span><span class="p">()</span>
+<span class="n">kpoints</span><span class="p">.</span><span class="n">set_kpoints_mesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">kpoints</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+
+
+
+<span class="c1"># Input file
+</span><span class="n">parameters_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'CONTROL'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'calculation'</span><span class="p">:</span> <span class="s">'scf'</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">'SYSTEM'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'ecutwfc'</span><span class="p">:</span> <span class="mf">30.</span><span class="p">,</span>
+        <span class="s">'ecutrho'</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">'ELECTRONS'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'conv_thr'</span><span class="p">:</span> <span class="mf">1.e-6</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameters_dict</span><span class="p">)</span>
+<span class="n">parameters</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+
+<span class="c1"># Builder settings
+</span><span class="n">builder</span><span class="p">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">kpoints</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">pseudos</span> <span class="o">=</span> <span class="n">get_pseudos_from_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="s">'SSSP'</span><span class="p">)</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">store_provenance</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="c1"># Submit the job
+</span><span class="n">calculation</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+<span class="n">calculation</span><span class="p">.</span><span class="n">set_extra</span><span class="p">(</span><span class="s">"element"</span><span class="p">,</span> <span class="s">"Si"</span><span class="p">)</span>
+
+<span class="c1"># Print the job pk value
+</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'created calculation with Pk=</span><span class="si">{</span><span class="n">calculation</span><span class="p">.</span><span class="n">pk</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="验证计算及结果">验证计算及结果</h3>
+
+<h4 id="验证计算状态">验证计算状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询任务执行状态，如下为 正在排队等待执行</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi process list
+  PK  Created    Process label    Process State    Process status
+<span class="nt">----</span>  <span class="nt">---------</span>  <span class="nt">---------------</span>  <span class="nt">---------------</span>  <span class="nt">---------------------------------------</span>
+2087  9s ago     PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
+
+<span class="c"># 当执行完后上一条命令是无法查询到任务状态的，需加 -a 选项查看所有任务</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi process list <span class="nt">-a</span>
+  PK  Created    Process label    Process State     Process status
+<span class="nt">----</span>  <span class="nt">---------</span>  <span class="nt">---------------</span>  <span class="nt">----------------</span>  <span class="nt">----------------</span>
+ 648  2405D ago  PwCalculation    ⏹ Finished <span class="o">[</span>0]
+ ......
+ ......
+2087  27s ago    PwCalculation    ⏹ Finished <span class="o">[</span>0]
+
+Total results: 175
+
+Info: last <span class="nb">time </span>an entry changed state: 16s ago <span class="o">(</span>at 13:45:38 on 2021-05-29<span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="验证结果">验证结果</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询计算大致信息，如下可知一切正常并已格式化提取所需的输出信息</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi node show 2087
+Property     Value
+<span class="nt">-----------</span>  <span class="nt">-----------------------------------------------</span>
+<span class="nb">type         </span>PwCalculation
+state        Finished <span class="o">[</span>0]
+pk           2087
+uuid         f1762049-4627-4f87-acac-ad6074b87352
+label        PW <span class="nb">test
+</span>description  My first AiiDA calc with Quantum ESPRESSO on Si
+ctime        2021-05-29 13:45:27.167975+00:00
+mtime        2021-05-29 13:45:38.615649+00:00
+computer     <span class="o">[</span>2] localhost
+
+Inputs      PK    Type
+<span class="nt">----------</span>  <span class="nt">----</span>  <span class="nt">-------------</span>
+pseudos
+    Si      2043  UpfData
+code        2056  Code
+kpoints     2085  KpointsData
+parameters  2086  Dict
+structure   2084  StructureData
+
+Outputs              PK  Type
+<span class="nt">-----------------</span>  <span class="nt">----</span>  <span class="nt">--------------</span>
+output_band        2090  BandsData
+output_parameters  2092  Dict
+output_trajectory  2091  TrajectoryData
+remote_folder      2088  RemoteData
+retrieved          2089  FolderData
+
+<span class="c"># 查看计算输入文件</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob inputcat 2087 | less
+
+<span class="c"># 查看计算输出文件</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob outputcat 2087 | less
+
+<span class="c"># 查看格式化提取的计算结果</span>
+<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob res 2087
+<span class="o">{</span>
+    <span class="s2">"beta_real_space"</span>: <span class="nb">false</span>,
+    <span class="s2">"charge_density"</span>: <span class="s2">"./charge-density.dat"</span>,
+    <span class="s2">"constraint_mag"</span>: 0,
+    <span class="s2">"convergence_info"</span>: <span class="o">{</span>
+        <span class="s2">"scf_conv"</span>: <span class="o">{</span>
+            <span class="s2">"convergence_achieved"</span>: <span class="nb">true</span>,
+            <span class="s2">"n_scf_steps"</span>: 5,
+            <span class="s2">"scf_error"</span>: 2.4316966484325e-08
+        <span class="o">}</span>
+    <span class="o">}</span>,
+    <span class="s2">"creator_name"</span>: <span class="s2">"pwscf"</span>,
+    <span class="s2">"creator_version"</span>: <span class="s2">"6.5"</span>,
+    <span class="s2">"dft_exchange_correlation"</span>: <span class="s2">"PBE"</span>,
+    <span class="s2">"do_magnetization"</span>: <span class="nb">true</span>,
+    <span class="s2">"do_not_use_time_reversal"</span>: <span class="nb">false</span>,
+    <span class="s2">"energy"</span>: <span class="nt">-285</span>.72326235425,
+    <span class="s2">"energy_accuracy"</span>: 6.80284586265e-07,
+    <span class="s2">"energy_accuracy_units"</span>: <span class="s2">"eV"</span>,
+    ......
+    ......   
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="总结">总结</h2>
+
+<p>  如上所示，经过了一系列的操作 AiiDA 可以非常容易搭配 QE 完成第一性原理计算，并且对计算过程中的输入、输出数据都实现了有效的管理。不过在实践过程中发现， AiiDA 对于我们设定的 QE 输入参数并不会进行校验，甚至在 AiiDA 对这些输入参数进行格式化生成 QE 输入文件之后，QE 会视之为非法字符串。虽然参考了 <a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/sections/running.html#creating-and-launching-calculations">aiida-toturial</a> 的输入参数配置，但是其中的 mickeymouse 字段使得 QE 计算无法正常运行。</p>
+
+<p>  另外，如果我们设置了比较严苛的输入参数值，QE 计算可能会受限无法完成完整的计算，并且无法格式化抽取到预设的重要数据信息。因此只能在设置输入参数时，除必要精度需要外尽量放宽其他计算的限制。我们除了可以通过 AiiDA 提供的 verdi 命令来交互式查询计算结果之外，也可以进入到计算的目录直接查询 QE 计算的原始输入文件和输出文件（默认本地目录是 ~/.aiida_run）。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/index.html">2020 AiiDA tutorial week “Virtual Edition”</a></li>
+  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/index.html">aiida-quantumespresoo documentation</a></li>
+  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/_downloads/2dc19f2e8a6300052734f58bd000d074/pw_short_example.py">example script provided by aiida-quantumespresso</a></li>
+  <li><a href="https://github.com/atztogo/aiida-tutorials/wiki">AiiDA virtual hands-on tutorial in 2021 Spring</a></li>
+</ul>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/remote-ssh.html" class="read-next-link"></a>
+        <section>
+          <span>[原创]远程服务环境与本地环境互联</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1623626981328-fae05b4bc2a0?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/aiida/aiida-install.html" class="read-next-link"></a>
+          <section>
+            <span>AiiDA 开源数据管理软件</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1606765962248-7ff407b51667?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人免费博客花式搭建指南 Netlify 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人免费博客花式搭建指南 Netlify 篇">
+    <meta name="keywords"  content="blog, free, static, hexo, jekyll, netlify, github">
+    <!-- Open Graph -->
+    <meta property="og:title" content="个人免费博客花式搭建指南 Netlify 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/start-blog-netlify.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#blog" class="post-tag">blog</a>
+          
+            <a href="/tags.html#free" class="post-tag">free</a>
+          
+            <a href="/tags.html#static" class="post-tag">static</a>
+          
+            <a href="/tags.html#hexo" class="post-tag">hexo</a>
+          
+            <a href="/tags.html#jekyll" class="post-tag">jekyll</a>
+          
+            <a href="/tags.html#netlify" class="post-tag">netlify</a>
+          
+            <a href="/tags.html#github" class="post-tag">github</a>
+          
+        
+      </div>
+      <h1>个人免费博客花式搭建指南 Netlify 篇</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-04-07"><i class="iconfont icon-date"></i>Wed, 07 Apr 2021 17:17:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 996 字 <b>·</b> 阅读全文大约需要 3 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1617626934148-83aa91920420?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<blockquote>
+  <p>Netlify 是一家位于旧金山的云计算公司，为 Web 应用程序和静态网站提供托管和无服务后端服务。其功能包括通过 Netlify Edge、该公司的全球应用程序交付网络基础架构、无服务表单处理、对 AWS Lambda 功能的支持以及与 Let’s Encrypt 的完全集成从 Git 开始进行持续部署。</p>
+</blockquote>
+
+<p>  <a href="https://www.netlify.com/">Netlify</a> 是什么？从维基百科上可以很容易找到以上答案。Netlify 所提供的服务既有免费的，也有收费的，一般来说免费服务对于部署 Jekyll 博客就已经绰绰有余了。Netlify 与 Github 的联系非常紧密，拥有 Github 账户就可以直接登录 Netlify，Netlify 需要从 Github 拉取代码来编译、生成、部署静态站点。Netlify的每月免费套餐包含了 100GB 的免费流量、300 分钟的编译时长，1 个同时编译队列。通常一个静态网站生成器所需的编译时长可能不超过一分钟，因此只要不是一个月提交的变更次数超过 300 次编译时长完全足够。而全球访问流量因为 Netlify 本身就带流量清洗的能力，即使有人对站点发起攻击也不会有什么疯狂增加的可能，所以正常一个站点一个月可能最多只能用到 1GB 不到的流量。如果文章遵循了图片使用图库托管的策略，那么所耗流量会大大降低、访问速度也会大大提升。</p>
+
+<h2 id="部署">部署</h2>
+
+<p>1.正常使用 Github 账号一键登录之后，在 Teams 主页面点击 New site from Git 按钮。</p>
+
+<p><img src="https://i.vgy.me/Ls5FYK.png" alt="vgy.me" /></p>
+
+<p>2.点击 Github 按钮登录并授予 Netlify 访问项目权限。</p>
+
+<p><img src="https://i.vgy.me/QB1mup.png" alt="vgy.me" /></p>
+
+<p>3.在搜索框中搜索想要部署的项目，比如 zhonger/zhonger.github.io，并点击右侧箭头选中完成创建。</p>
+
+<p><img src="https://i.vgy.me/1tdTzS.png" alt="vgy.me" /></p>
+
+<p>4.在创建好的项目的 Site settings 的 Domain management 中可以对已有的 *.netlify.app 域名进行修改，或添加自定义域名。</p>
+
+<p><img src="https://i.vgy.me/DsV3WZ.png" alt="vgy.me" /></p>
+
+<p>5.拉到页面下方 HTTPS 对已有域名生成 SSL 免费证书，只要第一次设置后，以后会自动更新。</p>
+
+<p><img src="https://i.vgy.me/sNfFSP.png" alt="vgy.me" /></p>
+
+<p>6.(可选) 另外，对于编译命令和变量的设置一般在项目创建之初完成，也可以在 Site settings 的 Build &amp; deploy 中进行修改。默认的 Jekyll 设置如下所示：</p>
+
+<p><img src="https://i.vgy.me/9Zpej4.png" alt="vgy.me" /></p>
+
+<p>7.(可选) 关于编译过程可以在 Deploys 里面查看所有的日志，并且可以预览每一次编译的结果。</p>
+
+<p><img src="https://i.vgy.me/Vu5JVK.png" alt="vgy.me" />
+<img src="https://i.vgy.me/L97F3B.png" alt="vgy.me" /></p>
+
+<h2 id="验证">验证</h2>
+
+<p>  浏览器访问 *.netlify.app 域名或者自定义域名或者编译的 Preview deploy 域名，查看上线后的效果。</p>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-cloudflare.html" class="read-next-link"></a>
+        <section>
+          <span>个人免费博客花式搭建指南 Cloudflare 篇</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1610070945206-2f5cafcb4e2b?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/start-blog-github.html" class="read-next-link"></a>
+          <section>
+            <span>个人免费博客花式搭建指南 Github 篇</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1617871911112-757893b9f0df?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

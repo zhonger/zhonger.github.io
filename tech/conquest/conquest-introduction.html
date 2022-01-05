@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONQUEST 第一性原理计算框架 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="CONQUEST 第一性原理计算框架">
+    <meta name="keywords"  content="CONQUEST, 量子化学">
+    <!-- Open Graph -->
+    <meta property="og:title" content="CONQUEST 第一性原理计算框架 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/conquest/conquest-introduction.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#CONQUEST" class="post-tag">CONQUEST</a>
+          
+            <a href="/tags.html#%E9%87%8F%E5%AD%90%E5%8C%96%E5%AD%A6" class="post-tag">量子化学</a>
+          
+        
+      </div>
+      <h1>CONQUEST 第一性原理计算框架</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="21-02-07"><i class="iconfont icon-date"></i>Sun, 07 Feb 2021 21:18:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 4327 字 <b>·</b> 阅读全文大约需要 13 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1612572767699-093823e475af?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">欢迎进入量子化学的世界</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+
+<p>  随着计算机的计算能力和运行规模的不断提升，基于第一性原理计算理论的计算材料学科越来越得到重视。但是一般来说这样的模拟需要对一个包含成千上万的原子、电子而言，所需的计算框架是非常复杂的，计算代价是相当昂贵的。比如为人所熟知的商用类型<a href="https://www.vasp.at/">第一性原理计算框架 VASP</a> 授权通常需要五六万人民币以上，而且在一个普通超算集群上计算一个完整的体系结构可能需要几周，甚至几个月。无论是软件授权成本，还是时间成本，都比较高昂。对于想学习和实践第一性原理计算的小伙伴而言，当然也有比较节省的方式。首先软件可以选用免费的开源第一性原理计算框架，比如说本文中即将介绍到的 <a href="http://order-n.org/">CONQUEST</a>，以及 <a href="http://www.abinit.org/">ABINT</a>，<a href="http://smash-qc.sourceforge.net/">SMASH</a> 和 <a href="http://www.quantum-espresso.org/">QUANTUM ESPRESSO</a> 等。</p>
+
+<p>  对于普通材料专业的学生来说，可能安装任意一个开源第一性原理计算框架都不是一件容易的事，毕竟有些软件所涉及到的依赖库配置确实比较麻烦。另外，大部分这种软件也只能在 Linux 平台下运行，对于 Linux 比较陌生的人使用起来也有一定的困难。东京大学物质科学团队为此将很多第一性原理计算软件安装在一个同一个虚拟机中，并在网上公开允许下载该虚拟机镜像。用户可以在<a href="https://ma.issp.u-tokyo.ac.jp/">官网</a>获知有关下载信息，所支持的软件列表可以查看<a href="https://ma.issp.u-tokyo.ac.jp/app/">这里</a>。</p>
+
+<h2 id="conquest">CONQUEST</h2>
+
+<h3 id="conquest-是什么">CONQUEST 是什么？</h3>
+
+<p>  CONQUEST 是一款基于本地轨道密度泛函理论的、能以出色的缩放比例进行大规模并行计算的第一性原理计算软件。它使用局部轨道来表示 Kohn-Sham 本征态或者密度矩阵。 CONQUEST 可以应用于原子、分子、液体和固体，且对于大型系统特别有效。CONQUEST 可以使用哈密尔顿的精确对角化或通过线性缩放的方法来找到基态。它已被验证使用线性缩放时缩放到超过 2,000,000 个原子和 200,000 个核，以及超过 3,400 个原子和 850 个具有精确对角化的核。 CONQUEST 可以执行结构弛豫（包括单位晶胞优化）和分子动力学（在具有各种恒温器的 NVE，NVT 和 NPT 集成中）。</p>
+
+<h3 id="为什么选-conquest">为什么选 CONQUEST</h3>
+
+<h4 id="大规模模拟">大规模模拟</h4>
+
+<p>  CONQUEST 设计为使用大型对角缩放（使用精确对角化（使用多站点支持函数方法，已经证明了对3,000多个原子的计算）或线性缩放（已经证明了对超过2,000,000个原子的计算）。此外，相同的代码和基础集可用于对 1 个原子到 1,000,000 个以上原子的系统进行建模。</p>
+
+<h4 id="高效并行化">高效并行化</h4>
+
+<p>  CONQUEST 是一种固有的并行代码，可演示将其扩展到 800 多个内核，以实现精确的对角化，并通过线性缩放将近 200,000 个内核。这种扩展使高效使用 HPC 设施成为可能。CONQUEST（在线性缩放模式下，以及在一定程度上进行精确的对角化）在弱缩放下缩放效果最佳：固定每个核心（或线程）的原子数，并根据原子数选择核心数。</p>
+
+<p>  CONQUEST 还以线性缩放模式提供一些 OpenMP 并行化，每个节点的 MPI 线程数量相对较少，并使用 OpenMP 进行进一步的并行化。</p>
+
+<h4 id="线性缩放">线性缩放</h4>
+
+<p>  线性缩放的思想已经存在了二十多年，但是事实证明，编写高效、准确的代码来实现这些思想具有挑战性。尽管可以使用的基础集仍然受到一些限制，但 CONQUEST 已证明有效的线性缩放（具有出色的并行缩放）。对于使用 DFT 进行的 5,000 至 10,000 原子以上的计算，线性缩放是唯一的选择。</p>
+
+<h4 id="基础集basis-set">基础集（basis set）</h4>
+
+<p>  CONQUEST 用称为支持函数的局部轨道表示 Kohn-Sham 本征态或密度矩阵（等效）。这些支持函数由两个基本集合之一构成：伪原子轨道（PAO）或 blip 函数（B样条曲线）；在 CONQUEST 中使用的主要基础函数是 PAO。PAO 生成代码包含在CONQUEST 发行版中，其中大多数元素具有定义明确且可靠的默认基础集。</p>
+
+<p>  最简单的选择是为每个支持功能使用一个 PAO（通常这最多可以计算 1,000 个原子）。对于超出此系统大小的对角化，将使用复合基础，其中将多个 PAO 组合为较小的一组支持功能（多站点支持功能或 MSSF）。使用 MSSF，可以在 HPC 平台上计算 3,000 多个原子。对于线性缩放，需要更注意基集（更多详细信息，请参见<a href="https://conquest.readthedocs.io/en/latest/groundstate.html#gs-on">此处</a>）。</p>
+
+<h2 id="编译安装指南">编译安装指南</h2>
+
+<p>  为了更好地符合可能存在的多种环境需求，笔者就自己所有的一些平台进行了测试和实践，主要分为以下几类，并以独立文章的形式分别介绍：</p>
+
+<ul>
+  <li><a href="conquest-arm">ARM 篇</a>：该类主要包含 Mac M1，树莓派以及 ARM 服务器。</li>
+  <li><a href="conquest-intel">Intel 篇</a>：该类主要包括普通 PC 和 x86 服务器。</li>
+  <li><a href="conquest-slurm">Slurm 篇</a>：该类主要是应用于 HPC 环境下，当然也适合个人在高性能服务器上运行。</li>
+</ul>
+
+<h2 id="使用指南">使用指南</h2>
+
+<p>  CONQUEST 正常编译成功后会在源代码目录下的 bin 目录里面看见 Conquest 的可执行文件，进入 tools/BasisGeneration 编译后 bin 目录会多出一个 MakeIonFiles 的可执行文件。Conquest 命令是用来执行模拟，MakeIonfiles 是用来生成模拟所需的原子轨道描述文件。以下就以 Li 为对象介绍一下完整的 CONQUEST 运行流程。</p>
+
+<h3 id="输入文件">输入文件</h3>
+
+<p>  CONQUEST 所需的输入文件一共有三个，分别是 Conquest_input， Li.in 和 Li.ion。这三个文件中除了 Li.ion 之外都需要自己编写，首先介绍如何得到 Li.ion 文件。</p>
+
+<h4 id="生成-liion">生成 Li.ion</h4>
+
+<p>  进入 CONQUEST 源代码目录下的 pseudo-and-pao 目录，可以看到有 LDA，PBE 和 PBEsol 三个文件夹。我们这里采用 PBE 方法来模拟所以进入 PBE/Li 目录。执行 MakeIonFiles 命令就会生成我们所需的 Li.ion 文件。这里需要注意的有三点：（1）MakeIonFiles 命令执行需要引用到正确的路径，否则会提示不存在该命令，所以建议对此命令建立一个别名使用更加方便。比如在 .bashrc 文件尾部中添加一行 <code class="language-plaintext highlighter-rouge">alias cqion="~/conquest/bin/MakeIonFiles"</code> 并使该配置生效即可。（2）生成的文件名并不是 Li.ion，可以使用 <code class="language-plaintext highlighter-rouge">mv LiCQ.ion Li.ion</code>。（3）根据想要进行模拟的规模不同，可以分为 SZ(minimal)、SZP(small)、DZP(medium) 和 TZTP(large) 四种，可以在同目录的 Conquest_input 文件中修改 <code class="language-plaintext highlighter-rouge">Atom.BasisSize medium</code> 来修改 Li.ion 文件的规模。</p>
+
+<h4 id="编写-conquest_input">编写 Conquest_input</h4>
+
+<p>  Conquest_input 中完整的参数相当复杂，可以参考<a href="https://conquest.readthedocs.io/en/latest/input_tags.html">官网</a>，这里仅对以下文件中出现的参数做出简要解释。</p>
+
+<p>  IO 开头的配置是对输入输出的定义，Iprint 是指输出文件的打印类型，Title 是任务的名字，Coordinates 是坐标文件的文件名。General 开头的配置是对基础集、支持函数类型等的定义，FunctionalType 101 是指 PBE，Pseudopotential hamann 是 CONQUEST 最新支持的基础集类型，NumberOfSpecies 指的是原子的类型数。AtomMove 开头的配置是对更新迭代过程的方法的定义，TypeOfRun 是运动方式，通常有 static、cg、md 等。minE 开头的配置是收敛方法的定义，SelfConsistent 是否采用自洽方式，SCTolerance 是精确度，MaxIters 是最多迭代次数。GridCutoff 是一个关键性的参数，定义在空间中网格化的大小，随着值的变化所计算的结果也会不一样。Diag.MeshX(MeshY, MeshZ) 定义的是 k-points 的值，也就是单位晶胞 xyz 轴的相对比值。ChemicalSpeciesLabel 中定义了原子具体有什么种类，以及它们的编号和原子质量大小。此处的原子质量大小可以从 Li.ion 文件中查到。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Conquest_input_Li</span>
+
+IO.Iprint 3
+IO.Title Simulation <span class="k">for </span>bulk Li
+IO.Coordinates Li.in
+IO.FractionalAtomicCoords T
+
+General.FunctionalType 101
+General.PseudopotentialType hamann
+General.Partitions Hilbert
+General.NumberOfSpecies 1
+General.ManyProcessors F
+General.CheckDFT T
+ 
+Basis.BasisSet PAOs
+
+minE.VaryBasis F
+
+AtomMove.TypeOfRun static
+
+minE.SelfConsistent T
+minE.LTolerance 1.0e-6
+minE.SCTolerance 1.0e-6
+SC.LinearMixingFactor 0.2
+SC.KerkerFactor 0.01
+SC.MaxIters  100
+SC.MaxEarly  0
+SC.MaxPulay  5
+
+Grid.GridCutoff 150
+
+DM.SolutionMethod diagon
+Diag.kT   0.002
+Diag.MPMesh T
+Diag.MPMeshX 15
+Diag.MPMeshY 15
+Diag.MPMeshZ 15
+
+%block ChemicalSpeciesLabel
+ 1  6.94  Li
+%endblock
+</code></pre></div></div>
+
+<h4 id="编写-liin">编写 Li.in</h4>
+
+<p>  前三行为 Li 的晶格参数 a，b 和 c 的值，因为 Li 是标准的体心立方结构，这三个值相等。具体的值可以从<a href="https://periodictable.com/Elements/003/data.html">网站</a>中查到。注意此处使用的晶格参数的单位是 波尔，与 pm 的换算为 <code class="language-plaintext highlighter-rouge">0.5291772 pm = 1 bohr</code>。第四行代表在一个单位晶胞中有 2 个 Li 原子（中心 1 个 + 八个角 8 个 1/8），它们的位置一个在原点位置，一个在体心立方结构的中心位置，坐标如第五、六行前三个数字所示。后面的 1 表示这个位置有一个原子，T 表示原子可以运动，三个 T 表示 xyz 三个方向。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6.633 0.00	0.00
+0.00  6.633 0.00
+0.00  0.00  6.633
+2
+  0.000000000000E+00  0.000000000000E+00  0.000000000000E+00   1 T T T
+  0.500000000000E+00  0.500000000000E+00  0.500000000000E+00   1 T T T
+</code></pre></div></div>
+
+<h3 id="运行">运行</h3>
+
+<p>  由于 CONQUEST 定义了并行能使用的最大核数等于原子个数，因此在这里 Li 的计算中最多可以使用双核。如果单独使用编译成功的命令运行的话，默认用的是单核。</p>
+
+<h4 id="单核运行">单核运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在输入文件目录中执行</span>
+~/conquest/bin/Conquest
+</code></pre></div></div>
+
+<h4 id="双核运行">双核运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在输入文件目录中执行</span>
+mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input <span class="o">&gt;</span> Conquest_out
+</code></pre></div></div>
+
+    </article>
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/conquest/conquest-arm.html" class="read-next-link"></a>
+        <section>
+          <span>CONQUEST 编译安装指南 ARM 篇</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/php/laravel-dev.html" class="read-next-link"></a>
+          <section>
+            <span>Laravel 开发和部署环境搭建</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>
