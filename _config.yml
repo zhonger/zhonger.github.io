@@ -43,8 +43,9 @@ mathjax: true
 nightMode: false
 
 # Comments
-disqus: true
-disqus_url: 'https://zhonger.disqus.com/embed.js'
+comments:
+  disqus: true
+  disqus_url: 'https://zhonger.disqus.com/embed.js'
 
 # Share
 social-share: true
