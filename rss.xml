@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 10 Jan 2022 12:12:08 +0900</pubDate>
-    <lastBuildDate>Mon, 10 Jan 2022 12:12:08 +0900</lastBuildDate>
+    <pubDate>Mon, 10 Jan 2022 22:03:51 +0900</pubDate>
+    <lastBuildDate>Mon, 10 Jan 2022 22:03:51 +0900</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
     
       <item>
@@ -288,7 +288,7 @@
 
 &lt;p&gt;  再次感谢廖柯宇及其他小伙伴们对 H2O 主题的付出，没有 H2O 主题就没有 H2O-ac 主题！H2O-ac 主题后续也将继续更新，欢迎小伙伴们使用和 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;Star&lt;/a&gt;，也欢迎大家一起来贡献代码。&lt;/p&gt;
 
-&lt;p&gt;（Ps: 由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。）&lt;/p&gt;
+&lt;p&gt;（Ps: &lt;del&gt;由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。&lt;/del&gt; 已采用新 Logo。）（2022年1月10日更新）&lt;/p&gt;
 </description>
         <pubDate>Wed, 22 Dec 2021 20:50:00 +0900</pubDate>
         <link>https://lisz.me/tech/webmaster/new-theme-h2o-ac.html</link>
