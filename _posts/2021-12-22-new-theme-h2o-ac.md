@@ -137,4 +137,4 @@ google_analytics:
 
 &emsp;&emsp;再次感谢廖柯宇及其他小伙伴们对 H2O 主题的付出，没有 H2O 主题就没有 H2O-ac 主题！H2O-ac 主题后续也将继续更新，欢迎小伙伴们使用和 [Star](https://github.com/zhonger/jekyll-theme-H2O-ac)，也欢迎大家一起来贡献代码。
 
-（Ps: 由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。）
+（Ps: ~~由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。~~ 已采用新 Logo。）（2022年1月10日更新）
