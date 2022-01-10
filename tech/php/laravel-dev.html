@@ -158,14 +158,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">利用 Valet 或传统的 Nginx+php-fpm 的方式</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  近来趁着 Ubuntu 20.04 发行版的发布，在台式机上安装了桌面版体验了一下。不知道是因为笔者的台式机（2016年组装的，CPU 还在 Intel 第4代）有点过于陈旧了，还是最新发行版的安装要求变高了，安装完成后总觉得使用起来不是很顺手。用着用着就死机了，键盘和鼠标完全失效。而且原来在 Ubuntu 上的美化操作也不是很好使了，因此就尝试了 Linux Mint 20 发行版（基于 Ubuntu 20.04）。自从安装完成后，体验下来还是比较顺畅，能够成功安装搜狗中文输入法、字体、主题、其他常用软件。于是就萌生了在 Linux Mint 上搭建 Laravel 开发环境的想法。</p>
 
@@ -468,7 +470,14 @@ cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">li
   <li><a href="https://gems.ruby-china.com/">Ruby 中国镜像</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#laravel">Laravel</a></li><li><a href="#基础环境配置">基础环境配置</a></li><li><a href="#安装-laravel">安装 Laravel</a></li><li><a href="#安装和配置-valet二选一">安装和配置 Valet（二选一）</a></li><li><a href="#配置-nginxphp-fpm-二选一">配置 Nginx+php-fpm （二选一）</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -570,6 +579,10 @@ cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">li
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -632,6 +645,24 @@ cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">li
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

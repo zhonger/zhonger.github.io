@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">WordPress 中的 Gravatar 头像问题</h2>
     
 
-    <article class="markdown-body">
-      <p>  WordPress 使用的用户默认头像是 Gravatar Fixed 头像，由于种种原因，经常在国内载入出错。一般的解决办法有好几种，主要的是 Gravatar Fixed 插件和修改 wp-include 中文件代码。</p>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p>  WordPress 使用的用户默认头像是 Gravatar Fixed 头像，由于种种原因，经常在国内载入出错。一般的解决办法有好几种，主要的是 Gravatar Fixed 插件和修改 wp-include 中文件代码。</p>
 <h2 id="安装-gravatar-fixed-插件">安装 Gravatar Fixed 插件</h2>
 
 <p>  在管理后台搜索该插件，排在第一的应该是 <code class="language-plaintext highlighter-rouge">FV Gravatar Cache</code> 插件，然而这个插件需要使用到国外 google 的一些东西，所以载入也基本上是没什么戏。还是用第二种方法，虽然不能一劳永逸，但是不升级 wordpress 时还是蛮管用的。</p>
@@ -177,7 +179,14 @@ Author: Ray-Eldath
 <span class="nv">$url</span> <span class="o">=</span> sprintf<span class="o">(</span>‘http://cn.gravatar.com/avatar/%s’, <span class="nv">$email_hash</span> <span class="o">)</span><span class="p">;</span>
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#安装-gravatar-fixed-插件">安装 Gravatar Fixed 插件</a></li><li><a href="#修改配置文件">修改配置文件</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -267,6 +276,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -329,6 +342,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

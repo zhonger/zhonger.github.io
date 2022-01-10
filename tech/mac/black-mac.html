@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">基于兼容的组装机体验 MAC 操作系统</h2>
     
 
-    <article class="markdown-body">
-      <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
 
 <p><strong>特别声明：本站不提供任何下载，只是收集和整理了有关信息</strong></p>
 
@@ -319,7 +321,14 @@ brew cask <span class="nb">install </span>google-chrome
 </ol>
 
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#实验组装机配置">实验组装机配置</a></li><li><a href="#安装系统">安装系统</a><ul><li><a href="#下载镜像">下载镜像</a></li><li><a href="#刻录启动盘">刻录启动盘</a></li><li><a href="#安装系统到硬盘">安装系统到硬盘</a></li><li><a href="#安装引导项到硬盘">安装引导项到硬盘</a></li><li><a href="#优化显卡驱动">优化显卡驱动</a></li><li><a href="#系统升级">系统升级</a></li></ul></li><li><a href="#使用体验">使用体验</a><ul><li><a href="#允许全部应用来源被打开">允许全部应用来源被打开</a></li><li><a href="#office-for-mac-2019">Office for Mac 2019</a></li><li><a href="#ntfs硬盘读写支持">NTFS硬盘读写支持</a></li><li><a href="#视频播放类软件">视频播放类软件</a></li><li><a href="#markdown-编辑软件">Markdown 编辑软件</a></li><li><a href="#软件安装管理">软件安装、管理</a><ul><li><a href="#brew">Brew</a></li><li><a href="#macport">Macport</a></li></ul></li><li><a href="#百度云盘无限制多线程下载">百度云盘无限制多线程下载</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -421,6 +430,10 @@ brew cask <span class="nb">install </span>google-chrome
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -483,6 +496,24 @@ brew cask <span class="nb">install </span>google-chrome
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

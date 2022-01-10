@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1563858272990-ee61741967f6?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">一首随笔诗，百无聊赖</h2>
     
 
-    <article class="markdown-body">
-      <h1 id="我的女儿">我的女儿</h1>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h1 id="我的女儿">我的女儿</h1>
 
 <p>我的女儿是一个从小没有母亲的孩子 <br />
 她的母亲在战火中牺牲 <br />
@@ -187,7 +189,14 @@ Author: Ray-Eldath
 我因她而骄傲</p>
 
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#我的女儿">我的女儿</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -289,6 +298,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -351,6 +364,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

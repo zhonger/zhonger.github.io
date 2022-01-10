@@ -164,14 +164,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  近些年，随着 Markdown 的蓬勃发展，越来越多地支持 Markdown 语法的在线编辑器和托管服务提供商出现。比如国外的 <a href="https://readthedocs.org/">Read the Docs</a>、<a href="https://gitbook.com">Gitbook</a> 等等，国内的 <a href="https://www.kancloud.cn/">看云</a> 等等。这种方式的好处主要有几点：</p>
 
@@ -253,7 +255,14 @@ Author: Ray-Eldath
 
 <p>  Read the Docs 与 Gitbook 相比，后者支持完整的在线编辑功能和自定义主题功能，操作也略显复杂，前者则只负责编译生成和托管页面，不具有编辑能力。从笔者个人角度来看， Read the Docs 的方式更加方便快捷，操作性强，而 Gitbook 复杂的操作让本来编辑内容的时间都花在了一步一步的操作上了。虽然两者都支持 PDF 导出功能，但是 Read the Docs 导出的 PDF 格式更加像是一本电子书，排版精美，而 Gitbook 则是普通的格式。另外，在网页预览上，Gitbook 则更加大方、美观，比 Read the Docs 更具现代感，两者优势各异。当然也可以同时使用两种，取长而用。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#体验与评价">体验与评价</a><ul><li><a href="#read-the-docs">Read the Docs</a><ul><li><a href="#登录">登录</a></li><li><a href="#导入项目">导入项目</a></li><li><a href="#预览项目">预览项目</a></li></ul></li><li><a href="#gitbook">Gitbook</a><ul><li><a href="#登录-1">登录</a></li><li><a href="#创建项目">创建项目</a></li><li><a href="#导入内容">导入内容</a></li><li><a href="#预览项目-1">预览项目</a></li></ul></li><li><a href="#评价">评价</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -355,6 +364,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -417,6 +430,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

@@ -160,14 +160,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1587471384749-6d25c9944c5a?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  近年来，随着云计算技术的大力发展和 VPS 成本降低，越来越多的人开始用上了 VPS。与虚拟主机空间相比，VPS 具有更大的自由度。用户可以在 VPS 上安装各式各样的环境，也可以使用各种方式提供对外服务。对于 Jekyll 等静态网页来说，虚拟主机和 VPS 的使用体验差异可能在一般情况下感受不出来，如果网站流量变大、并发访问人数增多，VPS 就能展现出比虚拟主机的优越之处。其实，一般的虚拟主机也是在 VPS 上搭建的，只不过转换为一种服务提供给用户，用户能使用比较容易接受的网页进行环境的配置和其他操作。而在 VPS 上，往往需要自己从零开始动手，涉及到的专业知识要求也相对多一些。</p>
 
@@ -285,7 +287,14 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 
 <p>   VPS 所提供的最大并发访问数、访问流量、访问速度在很大程度上与购买的配置相关，但由于是个人独享资源所以各方面的性能都要比号称相同资源配置的虚拟主机要更加优秀。在静态网站的部署上，手动部署与自动部署的差异基本不大。唯一可能需要的就是手动部署需要 VPS 的无密码登录配置，如果不是在自己常用的机器上，可能这一配置就不大方便。因此，自动部署还是在一定程度上为用户提供了便捷。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#手动部署">手动部署</a><ul><li><a href="#配置-vps-环境">配置 VPS 环境</a></li><li><a href="#上传文件到-vps">上传文件到 VPS</a></li></ul></li><li><a href="#自动部署">自动部署</a></li><li><a href="#评价">评价</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -387,6 +396,10 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -449,6 +462,24 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

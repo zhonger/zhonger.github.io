@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">Iterative Machine Learning: A step towards Model Accuracy</h2>
     
 
-    <article class="markdown-body">
-      <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
 <strong>原文作者</strong>：Amarabha Benerjee</p>
 
 <p>  通过死记硬背来学习一些东西，比如重复多次，通过一遍又一遍地练习来完善一项技能，或者通过逐步对原型进行细微调整来构建某些东西，这些都是我们人类自然而然发生的事情。机器也可以学习这种方式，这被称为“迭代机器学习”。在大多数情况下，迭代是一种有效的学习方法，有助于更快、更准确地达到预期的最终结果，而不会成为资源紧缩的噩梦。</p>
@@ -260,7 +262,14 @@ Author: Ray-Eldath
 
 <p>  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#迭代学习是如何工作的">迭代学习是如何工作的</a></li><li><a href="#提升算法有监督机器学习中的迭代">提升算法：有监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的">它们是如何工作的</a></li><li><a href="#优缺点">优缺点</a></li></ul></li><li><a href="#人工神经网络无监督机器学习中的迭代">人工神经网络：无监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的-1">它们是如何工作的</a></li><li><a href="#优缺点-1">优缺点</a></li></ul></li><li><a href="#强化学习">强化学习</a></li><li><a href="#迭代的一些实际实现">迭代的一些实际实现</a></li><li><a href="#将其整合在一起">将其整合在一起</a></li><li><a href="#版权声明">版权声明</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -350,6 +359,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -412,6 +425,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

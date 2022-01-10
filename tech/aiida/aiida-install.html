@@ -158,14 +158,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1606765962248-7ff407b51667?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">用一个开源软件把你计算的数据管起来</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  对于机器学习来说，模型和数据是非常重要的。而模型与数据相比，模型即便是优化得再好，数据不够、不好的话，最终也不能得到一个好的预测结果。因此，我们在使用机器学习方法去建立某个领域模型的同时，也要注意相关原始数据的收集和整理。当我们需要通过庞大的计算量来获取数据的时候，通常可能需要使用大型服务器集群，甚至高性能集群、超算等等。这个时候，即使我们提交的计算在一段时间后得到了结果，恐怕也会是很多个结果文件，我们也很难从这些文件中抽取出我们关心的、想要的某些数据，更难将其整理成可直接用于机器学习的数据格式。</p>
 
@@ -439,7 +441,14 @@ In <span class="o">[</span>1]: <span class="nb">exit</span><span class="o">()</s
   <li><a href="https://blog.csdn.net/yufanghu/article/details/80829108">RabbitMQ 后台启动以及关闭</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#安装">安装</a><ul><li><a href="#docker-安装">Docker 安装</a><ul><li><a href="#单独环境">单独环境</a></li><li><a href="#多软件环境">多软件环境</a></li></ul></li><li><a href="#root-用户安装">root 用户安装</a></li><li><a href="#非-root-用户安装">非 root 用户安装</a><ul><li><a href="#安装-postgresql">安装 PostgreSQL</a></li><li><a href="#配置和启动-postgresql">配置和启动 PostgreSQL</a></li><li><a href="#安装-rabbitmq">安装 RabbitMQ</a></li><li><a href="#配置和启动-rabbitmq">配置和启动 RabbitMQ</a></li><li><a href="#安装-aiida">安装 AiiDA</a></li><li><a href="#配置和启动-aiida">配置和启动 AiiDA</a></li></ul></li></ul></li><li><a href="#验证安装">验证安装</a></li><li><a href="#后续使用">后续使用</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -541,6 +550,10 @@ In <span class="o">[</span>1]: <span class="nb">exit</span><span class="o">()</s
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -603,6 +616,24 @@ In <span class="o">[</span>1]: <span class="nb">exit</span><span class="o">()</s
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

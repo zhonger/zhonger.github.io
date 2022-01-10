@@ -158,14 +158,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1580574875107-2eb4a7d77040?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">只能通过内部服务器代理上网的条件下也能无障碍使用远程服务器开发吗？</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  讲起在内网环境下开发实践的经历，可能在公司上班的程序员们比较有发言权。公司为了提高大家工作时间的效率、监控工作电脑上的流量去向，都会采用内网开发的方式。这样一来，通常来说电脑与外部网络是完全隔离的，至少从外部网络是无法访问到内部网络电脑上的。如果严格到所有开发都是离线的，那么可能大家都会有点不方便，毕竟很多开发是需要加载依赖库和查阅资料的。因此，公司可能会提供了有限的上网方式，既保证大家正常的上网需求，又对员工工作期间上网内容进行监控和过滤。</p>
 
@@ -273,7 +275,14 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
 
 <p><img src="https://i.vgy.me/usZH3y.png" alt="VS Code 远程开发" /></p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#需求和环境">需求和环境</a></li><li><a href="#配置">配置</a><ul><li><a href="#http-和-https">HTTP 和 HTTPS</a><ul><li><a href="#全局设置">全局设置</a></li><li><a href="#终端设置">终端设置</a></li></ul></li><li><a href="#ssh">SSH</a></li><li><a href="#ftp">FTP</a></li></ul></li><li><a href="#远程开发使用">远程开发使用</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -375,6 +384,10 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -437,6 +450,24 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

@@ -157,7 +157,7 @@ Author: Ray-Eldath
       </div>
       <div class="post-meta">
         
-        <span>本文总共 3515 字 <b>·</b> 阅读全文大约需要 11 分钟</span>
+        <span>本文总共 3753 字 <b>·</b> 阅读全文大约需要 11 分钟</span>
         
       </div>
     </div>
@@ -166,14 +166,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">基于或许是最漂亮的 Jekyll 主题 H2O 的学术版</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  正如大家所知，Jekyll 是一款高可定制的、非常流行的静态博客生成工具。围绕着 Jekyll 也衍生出了很多优秀的 Jekyll 主题， 由 <a href="https://github.com/kaeyleo">廖柯宇</a> 开发的 <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a> 主题就是其中之一。极简主义、风格扁平化、卡片式布局、Medium 及知乎专栏的视觉风格等等特点，为我们带来了或许是迄今为止最漂亮的 Jekyll 主题。</p>
 
@@ -230,6 +232,12 @@ Author: Ray-Eldath
 <h4 id="字数统计及阅读时间估计">字数统计及阅读时间估计</h4>
 
 <p>  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。</p>
+
+<h4 id="文章侧边索引导航">文章侧边索引导航</h4>
+
+<p>(2022年1月9日更新)</p>
+
+<p>  在一些基于 Bootstrap 前端框架的 Jekyll 主题中，这个功能比较常见。由于本主题未使用 Bootstrap 前端框架，所以添加起来稍微有些麻烦，现已增加此功能。在浏览器窗口超过 1050 px 的情况下，在文章页面可以正常看到右侧的文章侧边索引导航。当窗口滑动时，侧边索引导航也会跟着滑动。在浏览器窗口不足 1050 px 的情况下，侧边索引导航自动隐藏。在 _config.yml 配置文件中，可以通过设置 <code class="language-plaintext highlighter-rouge">toc: false</code> 来全局禁用此功能。</p>
 
 <h4 id="配置项">配置项</h4>
 
@@ -310,8 +318,9 @@ Author: Ray-Eldath
 
 <p>  <del>暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。</del></p>
 
-<p>(2021年12月26日更新)
-  现已支持使用 gem 直接切换主题 <code class="language-plaintext highlighter-rouge">jekyll-theme-h2o-ac</code>。同时，也推出了一键式构建工具 <a href="https://github.com/zhonger/easy-to-h2o-ac">easy-to-h2o-ac</a>，详细可以见项目主页。</p>
+<p>(2021年12月26日更新)</p>
+
+<p>  现已支持使用 gem 直接切换主题 <code class="language-plaintext highlighter-rouge">jekyll-theme-h2o-ac</code>。同时，也推出了一键式构建工具 <a href="https://github.com/zhonger/easy-to-h2o-ac">easy-to-h2o-ac</a>，详细可以见项目主页。</p>
 
 <h3 id="本地测试">本地测试</h3>
 
@@ -327,7 +336,14 @@ Author: Ray-Eldath
 
 <p>（Ps: 由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。）</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#新特性">新特性</a><ul><li><a href="#更适合学术人和运维程序员的页面结构">更适合学术人和运维程序员的页面结构</a><ul><li><a href="#学术首页">学术首页</a></li><li><a href="#归档页">归档页</a></li><li><a href="#系统日志页">系统日志页</a></li></ul></li><li><a href="#使用体验提升">使用体验提升</a><ul><li><a href="#社交图标扩展">社交图标扩展</a></li><li><a href="#查看大图">查看大图</a></li><li><a href="#代码高亮优化">代码高亮优化</a></li><li><a href="#字数统计及阅读时间估计">字数统计及阅读时间估计</a></li><li><a href="#文章侧边索引导航">文章侧边索引导航</a></li><li><a href="#配置项">配置项</a></li><li><a href="#前端自动构建工作流优化">前端自动构建工作流优化</a></li></ul></li></ul></li><li><a href="#使用方法">使用方法</a><ul><li><a href="#初始化">初始化</a><ul><li><a href="#方式一从模板新建博客">方式一：从模板新建博客</a></li><li><a href="#方式二已有博客迁移">方式二：已有博客迁移</a></li></ul></li><li><a href="#本地测试">本地测试</a></li><li><a href="#发布部署">发布部署</a></li></ul></li><li><a href="#结束语">结束语</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -429,6 +445,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -491,6 +511,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

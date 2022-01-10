@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">内网站点也可以轻松 HTTPS 化了</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="https-和-lets-encrypt-简介">HTTPS 和 Let’s encrypt 简介</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="https-和-lets-encrypt-简介">HTTPS 和 Let’s encrypt 简介</h2>
 
 <p>  超文本传输安全协议（英语：Hypertext Transfer Protocol Secure，缩写：HTTPS，常称为 HTTP over TLS，HTTP over SSL 或 HTTP Secure ）是一种网络安全传输协议。在计算机网络上，HTTPS 经由超文本传输协议进行通信，但利用 SSL/TLS 来加密数据包。HTTPS 开发的主要目的，是提供对网络服务器的身份认证，保护交换数据的隐私与完整性。这个协议由网景公司（Netscape）在1994年首次提出，随后扩展到互联网上。</p>
 
@@ -267,7 +269,14 @@ server
 
 <p>  虽然通过这样的方式我们成功实现了免费申请内网 SSL 泛域名证书，但是经过实践发现，目前 Let’s encrypt 所提供的泛域名证书只能支持到最近一级通配。比如说，现在申请的是 <code class="language-plaintext highlighter-rouge">*.shu.aixinwu.org</code> ，如果站点域名为 <code class="language-plaintext highlighter-rouge">www.t.shu.aixinwu.org</code>即被判别为无效域名，像 <code class="language-plaintext highlighter-rouge">www.shu.aixinwu.org</code> 即可认定为合法 SSL 证书。其实因为这种泛域名证书目前并没有提出任何限制，我们可以多级通配就申请多个即可。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#https-和-lets-encrypt-简介">HTTPS 和 Let’s encrypt 简介</a><ul><li><a href="#申请泛域名">申请泛域名</a></li><li><a href="#下载acmesh工具">下载acme.sh工具</a></li><li><a href="#提交泛域名">提交泛域名</a></li><li><a href="#添加-dns-记录">添加 DNS 记录</a></li><li><a href="#生成泛域名证书">生成泛域名证书</a></li></ul></li><li><a href="#部署泛域名">部署泛域名</a><ul><li><a href="#生成-pem-证书">生成 pem 证书</a></li><li><a href="#添加到-nginx-中">添加到 Nginx 中</a></li></ul></li><li><a href="#总结">总结</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -369,6 +378,10 @@ server
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -431,6 +444,24 @@ server
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

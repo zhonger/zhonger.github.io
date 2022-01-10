@@ -160,14 +160,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">为 Jekyll 添加更多的功能支持</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  Jekyll 是一款采用 Ruby 语言编写的、非常方便简单又功能强大的静态站点生成器，适合于搭建个人博客、静态网站等。我们知道，Github Page 默认支持的也是 Jekyll，而非 Hexo、Hugo等静态站点生成器。Hexo 是用 NodeJS 语言编写的，Hugo 是用 Go 语言编写的，它们三者背后其实都有非常丰富的插件来增强它们自身，从而为用户提供一个可插拔式的个人定制功能。由于本站目前是采用 Jekyll 来搭建的，所以为了提供给读者更加高效的阅读条件，笔者在廖柯杰大佬开发的 <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a> 主题的基础上做了一些功能上的增加和优化，接下来就来详细介绍一下。</p>
 
@@ -523,7 +525,14 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
   <li><a href="https://taoalpha.github.io/blog/2015/05/21/tech-jekyll-count-of-chinese-characters/">Jekyll 中如何做中文字数统计</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#功能需求">功能需求</a></li><li><a href="#实现">实现</a><ul><li><a href="#代码高亮">代码高亮</a><ul><li><a href="#pygments">Pygments</a></li><li><a href="#rouge">Rouge</a></li><li><a href="#prism">Prism</a></li></ul></li><li><a href="#图片放大和图集">图片放大和图集</a></li><li><a href="#学术首页">学术首页</a><ul><li><a href="#移动默认首页">移动默认首页</a></li><li><a href="#添加页面模板">添加页面模板</a></li><li><a href="#编写学术首页">编写学术首页</a></li><li><a href="#修复链接">修复链接</a></li></ul></li><li><a href="#归档页">归档页</a></li><li><a href="#支持-latex-数学公式">支持 LaTex 数学公式</a></li><li><a href="#字数统计及阅读时长估算">字数统计及阅读时长估算</a></li><li><a href="#参考资料">参考资料</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -625,6 +634,10 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -687,6 +700,24 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

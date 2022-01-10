@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1499006619764-59e5b0c0e7ca?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">腾讯云服务器 CVM 安装 MySQL 的配置</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="修改mysql配置">修改mysql配置</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="修改mysql配置">修改mysql配置</h2>
 
 <p>  首先需要确认安装的 MySQL 服务器的配置文件 /etc/mysql/my.cnf 是否将 <code class="language-plaintext highlighter-rouge">bindless 120.0.0.1:0</code> 注释掉，务必保证已注释。</p>
 
@@ -184,7 +186,14 @@ Author: Ray-Eldath
 
 <p>  在客户端系统中使用 Navicat 等软件连接 MYSQL 数据库，正常连接。就这样，一台 MYSQL 数据库服务器就搭建完毕了。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#修改mysql配置">修改mysql配置</a></li><li><a href="#配置腾讯云服务器">配置腾讯云服务器</a><ul><li><a href="#更新腾讯云服务器的安全组策略">更新腾讯云服务器的安全组策略</a></li></ul></li><li><a href="#验证测试">验证测试</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -286,6 +295,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -348,6 +361,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

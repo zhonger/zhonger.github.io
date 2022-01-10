@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1627035983655-0ceec61bb733?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">如何使用 Gitlab 实现代码托管自由？</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <h3 id="版本控制">版本控制</h3>
 
@@ -454,7 +456,14 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
   <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#版本控制">版本控制</a><ul><li><a href="#本地版本控制系统">本地版本控制系统</a></li><li><a href="#集中化的版本控制系统">集中化的版本控制系统</a></li><li><a href="#分布式版本控制系统">分布式版本控制系统</a></li></ul></li><li><a href="#git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</a></li></ul></li><li><a href="#平台搭建">平台搭建</a><ul><li><a href="#准备">准备</a></li><li><a href="#修改配置">修改配置</a><ul><li><a href="#镜像版本的设置">镜像版本的设置</a></li><li><a href="#数据持久化">数据持久化</a></li><li><a href="#随机秘钥">随机秘钥</a></li><li><a href="#时区设置">时区设置</a></li><li><a href="#端口和-ssl-设置">端口和 SSL 设置</a></li><li><a href="#自动备份设置">自动备份设置</a></li><li><a href="#pages-设置">Pages 设置</a></li><li><a href="#相对路径配置">相对路径配置</a></li><li><a href="#初始-root-密码配置">初始 root 密码配置</a></li></ul></li><li><a href="#启动与测试">启动与测试</a></li><li><a href="#gitlab-runner">Gitlab Runner</a><ul><li><a href="#启动">启动</a></li><li><a href="#配置">配置</a></li></ul></li></ul></li><li><a href="#平台运维">平台运维</a><ul><li><a href="#升级">升级</a><ul><li><a href="#升级路线规划">升级路线规划</a></li><li><a href="#边备份边升级">边备份边升级</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -556,6 +565,10 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -618,6 +631,24 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

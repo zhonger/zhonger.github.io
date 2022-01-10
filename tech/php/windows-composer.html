@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1557600280-9ceddf1a3cc3?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">在 Windows 系统上配置 Composer，并应用于 Laravel 框架开发过程中。</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="安装及配置-composer">安装及配置 composer</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="安装及配置-composer">安装及配置 composer</h2>
 
 <p>  由于 getcomposer.org 的服务器在国外，国内访问网速有点慢，所以采用了<a href="http://packagist.cn/">国内镜像</a>获得 composer.phar 包，将 composer.phar 所在文件夹位置添加至环境变量 Path 中。下载 php 至电脑上，并将 php.exe 所在文件夹位置添加至环境变量 Path 中。在 composer.phar 所在文件夹按住 Shift 键点击鼠标右键选择“在此处打开 cmd 命令”，输入</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> @php <span class="s2">"%~dp0composer.phar"</span> %<span class="k">*</span><span class="o">&gt;</span>composer.bat
@@ -179,7 +181,14 @@ Author: Ray-Eldath
 <h2 id="解释">解释</h2>
 <p>  <code class="language-plaintext highlighter-rouge">composer create-project</code> 就是使用 composer 工具创建项目的意思，laravel/laravel 就是指明模板是什么， blog 是你要创建的应用的名称，后面那个就是命令的参数。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#安装及配置-composer">安装及配置 composer</a></li><li><a href="#安装-laravel-应用">安装 laravel 应用</a></li><li><a href="#解释">解释</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -281,6 +290,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -343,6 +356,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

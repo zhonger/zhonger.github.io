@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">LNMPA 源码部署通常不便于更新，迁移到容器部署倒是个不错的法子</h2>
     
 
-    <article class="markdown-body">
-      <p>  在以前我们部署 Nextcloud 都是采用 LNMPA 架构和源码来直接部署，到版本升级时一般都需要比较复杂的操作，虽然也还算比较可以接受，但是相比较 Docker 方式而言，这就显得复杂多了，而且还对宿主机的环境还有所要求。因此，今天就来尝试一下从源码部署迁移到容器部署。</p>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p>  在以前我们部署 Nextcloud 都是采用 LNMPA 架构和源码来直接部署，到版本升级时一般都需要比较复杂的操作，虽然也还算比较可以接受，但是相比较 Docker 方式而言，这就显得复杂多了，而且还对宿主机的环境还有所要求。因此，今天就来尝试一下从源码部署迁移到容器部署。</p>
 
 <h2 id="备份数据">备份数据</h2>
 
@@ -272,7 +274,14 @@ mysql&gt; <span class="nb">source</span> /opt/yun.sql
 
 <p>  当升级插件完成后，就可以正常使用 Docker 部署的 Nextcloud 了。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#备份数据">备份数据</a><ul><li><a href="#备份数据库">备份数据库</a><ul><li><a href="#从-phpmyadmin-中备份">从 phpMyadmin 中备份</a></li><li><a href="#从命令行备份">从命令行备份</a></li></ul></li></ul></li><li><a href="#恢复数据">恢复数据</a><ul><li><a href="#启动容器">启动容器</a></li><li><a href="#恢复数据库">恢复数据库</a></li><li><a href="#恢复应用配置">恢复应用配置</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -374,6 +383,10 @@ mysql&gt; <span class="nb">source</span> /opt/yun.sql
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -436,6 +449,24 @@ mysql&gt; <span class="nb">source</span> /opt/yun.sql
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

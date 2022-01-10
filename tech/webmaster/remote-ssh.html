@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1623626981328-fae05b4bc2a0?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">如何曲线实现异地组网？</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <h3 id="异地组网">异地组网</h3>
 
@@ -423,7 +425,14 @@ Host remote
 
 <p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#异地组网">异地组网</a></li><li><a href="#zerotier-组网">Zerotier 组网</a></li></ul></li><li><a href="#实现">实现</a><ul><li><a href="#公网服务器的选择">公网服务器的选择</a><ul><li><a href="#地理位置">地理位置</a></li><li><a href="#服务商">服务商</a></li></ul></li><li><a href="#第一种方法">第一种方法</a><ul><li><a href="#提前准备">提前准备</a></li><li><a href="#规划网络">规划网络</a></li><li><a href="#配置-zerotier">配置 Zerotier</a></li><li><a href="#验证组网结果">验证组网结果</a></li><li><a href="#配置路由转发">配置路由转发</a><ul><li><a href="#远程服务节点">远程服务节点</a></li><li><a href="#公网服务器">公网服务器</a></li></ul></li><li><a href="#配置-ssh-代理">配置 SSH 代理</a><ul><li><a href="#公网服务器-1">公网服务器</a></li><li><a href="#其他远程服务节点">其他远程服务节点</a></li><li><a href="#本地客户端节点">本地客户端节点</a></li></ul></li></ul></li><li><a href="#第二种方法">第二种方法</a><ul><li><a href="#提前准备-1">提前准备</a></li><li><a href="#配置互通">配置互通</a><ul><li><a href="#远程服务节点-1">远程服务节点</a></li><li><a href="#公网服务器-2">公网服务器</a></li><li><a href="#本地客户端节点-1">本地客户端节点</a></li></ul></li></ul></li></ul></li><li><a href="#总结与讨论">总结与讨论</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -525,6 +534,10 @@ Host remote
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -587,6 +600,24 @@ Host remote
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

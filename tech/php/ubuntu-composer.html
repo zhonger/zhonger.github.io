@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">Linux 下配置 laravel 环境</h2>
     
 
-    <article class="markdown-body">
-      <p>安装前提：系统已安装好 php 环境，可在全局使用 php 命令。</p>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p>安装前提：系统已安装好 php 环境，可在全局使用 php 命令。</p>
 <h2 id="安装-compsoer-并设置为全局调用">安装 compsoer 并设置为全局调用</h2>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sS</span> https://getcomposer.org/installer | php
@@ -182,7 +184,14 @@ Author: Ray-Eldath
 
 <p>  可以在全局使用<code class="language-plaintext highlighter-rouge">laravel new {应用名称}</code>了。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#安装-compsoer-并设置为全局调用">安装 compsoer 并设置为全局调用</a></li><li><a href="#使用-composer-建立-laravel-installer-安装工具">使用 composer 建立 laravel installer 安装工具</a></li><li><a href="#将-laravel-命令添加进用户环境变量">将 laravel 命令添加进用户环境变量</a></li><li><a href="#完成配置">完成配置</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -284,6 +293,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -346,6 +359,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

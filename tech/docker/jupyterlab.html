@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">多实例多用户的 Jupyterhub</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  <a href="https://jupyter.org/">Jupyter</a>， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>。不过笔者还是比较喜欢 <a href="https://code.visualstudio.com/">VS Code</a>，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。</p>
 
@@ -506,7 +508,14 @@ Author: Ray-Eldath
   <li><a href="https://www.kaifa99.com/GitHub/article_117797">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#搭建">搭建</a><ul><li><a href="#构建-jupyter-notebook-实例镜像">构建 Jupyter Notebook 实例镜像</a><ul><li><a href="#基础镜像-base-notebook">基础镜像 base-notebook</a></li><li><a href="#单用户镜像-singleuser">单用户镜像 singleuser</a></li><li><a href="#jupyterlab-单用户镜像-jupyter_lab_singleuser">JupyterLab 单用户镜像 jupyter_lab_singleuser</a></li></ul></li><li><a href="#构建-jupyterhub-镜像">构建 JupyterHub 镜像</a></li></ul></li><li><a href="#测试">测试</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -608,6 +617,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -670,6 +683,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

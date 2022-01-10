@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-01-05T23:52:12+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">[译文]迭代机器学习：迈向模型准确性的一步</title><link href="https://lisz.me/ac/ml/iterative-learning.html" rel="alternate" type="text/html" title="[译文]迭代机器学习：迈向模型准确性的一步" /><published>2022-01-05T20:30:00+09:00</published><updated>2022-01-05T20:30:00+09:00</updated><id>https://lisz.me/ac/ml/iterative-learning</id><content type="html" xml:base="https://lisz.me/ac/ml/iterative-learning.html"><![CDATA[<p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-01-10T12:12:08+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">[译文]迭代机器学习：迈向模型准确性的一步</title><link href="https://lisz.me/ac/ml/iterative-learning.html" rel="alternate" type="text/html" title="[译文]迭代机器学习：迈向模型准确性的一步" /><published>2022-01-05T20:30:00+09:00</published><updated>2022-01-05T20:30:00+09:00</updated><id>https://lisz.me/ac/ml/iterative-learning</id><content type="html" xml:base="https://lisz.me/ac/ml/iterative-learning.html"><![CDATA[<p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
 <strong>原文作者</strong>：Amarabha Benerjee</p>
 
 <p>  通过死记硬背来学习一些东西，比如重复多次，通过一遍又一遍地练习来完善一项技能，或者通过逐步对原型进行细微调整来构建某些东西，这些都是我们人类自然而然发生的事情。机器也可以学习这种方式，这被称为“迭代机器学习”。在大多数情况下，迭代是一种有效的学习方法，有助于更快、更准确地达到预期的最终结果，而不会成为资源紧缩的噩梦。</p>
@@ -151,6 +151,12 @@
 
 <p>  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。</p>
 
+<h4 id="文章侧边索引导航">文章侧边索引导航</h4>
+
+<p>(2022年1月9日更新)</p>
+
+<p>  在一些基于 Bootstrap 前端框架的 Jekyll 主题中，这个功能比较常见。由于本主题未使用 Bootstrap 前端框架，所以添加起来稍微有些麻烦，现已增加此功能。在浏览器窗口超过 1050 px 的情况下，在文章页面可以正常看到右侧的文章侧边索引导航。当窗口滑动时，侧边索引导航也会跟着滑动。在浏览器窗口不足 1050 px 的情况下，侧边索引导航自动隐藏。在 _config.yml 配置文件中，可以通过设置 <code class="language-plaintext highlighter-rouge">toc: false</code> 来全局禁用此功能。</p>
+
 <h4 id="配置项">配置项</h4>
 
 <p>  配置项中新增了<strong>友情链接</strong>、<strong>备案号</strong>、<strong>Google Analytics</strong> 和 <strong>CNZZ</strong> 统计功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。</p>
@@ -230,8 +236,9 @@
 
 <p>  <del>暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。</del></p>
 
-<p>(2021年12月26日更新)
-  现已支持使用 gem 直接切换主题 <code class="language-plaintext highlighter-rouge">jekyll-theme-h2o-ac</code>。同时，也推出了一键式构建工具 <a href="https://github.com/zhonger/easy-to-h2o-ac">easy-to-h2o-ac</a>，详细可以见项目主页。</p>
+<p>(2021年12月26日更新)</p>
+
+<p>  现已支持使用 gem 直接切换主题 <code class="language-plaintext highlighter-rouge">jekyll-theme-h2o-ac</code>。同时，也推出了一键式构建工具 <a href="https://github.com/zhonger/easy-to-h2o-ac">easy-to-h2o-ac</a>，详细可以见项目主页。</p>
 
 <h3 id="本地测试">本地测试</h3>
 

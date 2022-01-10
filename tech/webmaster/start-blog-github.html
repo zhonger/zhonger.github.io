@@ -160,14 +160,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1617871911112-757893b9f0df?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  大家都知道 Github 不仅是全球性的代码托管网站，也是世界上最大的支持 Git 版本协议的开发协作平台。绝大多数的知名的开源项目都托管在 Github 上，即使开发代码不在 Github 上，也会在 Github 上开启一个镜像项目。可以说，Github 上只有你想不到的、没有你找不到的代码。另外，我们可以从 <a href="https://pages.github.com/">Github Pages</a> 的官网上看到，Github 本身所提供的 Pages 功能，不仅仅可以用于展示项目、引导用户下载，同样也可以用于搭建个人网站或者个人博客。无论是单纯的静态网页，还是静态网站生成器生气的网页，都可以使用 Github Pages 向所有人公开展示。</p>
 
@@ -189,7 +191,14 @@ Author: Ray-Eldath
 
 <p>  浏览器访问 https://username.github.io 或自定义域名即可验证是否成功部署。如果访问失败，可能是因为编译过程失败。一般来说，在本地预览成功，Github 编译也不会有什么大问题。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#部署">部署</a></li><li><a href="#验证">验证</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -291,6 +300,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -353,6 +366,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

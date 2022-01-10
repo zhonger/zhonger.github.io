@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1611908494970-3eea5e0a773e?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">欢迎进入量子化学的世界</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  虽然笔者写过 ARM 比 Intel CPU 要有低功耗、高性能等优势，但是目前来说 Intel 芯片仍然是主流，毕竟大部分实验室所使用的服务器、工作站以及个人普通 PC 基本上都是 Intel 芯片。在 Intel 平台我们可能对于软件和依赖库的支持不需要太担心，正常来说不管 Linux 或者 Unix 系统都会有。这里笔者采用 Ubuntu Server 20.04 来举例介绍 Intel 平台下 CONQUEST 的编译安装。</p>
 
@@ -403,7 +405,14 @@ ENTRYPOINT <span class="o">[</span><span class="s2">"/bin/zsh"</span><span class
 docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#ubuntu">Ubuntu</a><ul><li><a href="#安装-openmpi">安装 OpenMPI</a></li><li><a href="#安装-fftw3">安装 FFTW3</a></li><li><a href="#安装-mkl">安装 MKL</a><ul><li><a href="#如果遇到-e-sub-process-usrbindpkg-returned-an-error-code-1怎么办">如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？</a></li></ul></li><li><a href="#编译安装-conquest">编译安装 CONQUEST</a><ul><li><a href="#编译错误解决">编译错误解决</a></li></ul></li></ul></li><li><a href="#docker-化">Docker 化</a><ul><li><a href="#运行">运行</a><ul><li><a href="#方式一">方式一</a></li><li><a href="#方式二">方式二</a></li></ul></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -505,6 +514,10 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -567,6 +580,24 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

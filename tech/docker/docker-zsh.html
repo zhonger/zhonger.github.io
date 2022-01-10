@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1551978429-3dbfed5cacc9?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">个性化 Docker 镜像，你值得拥有</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  Docker 具有易迁移、镜像容量小的优势，已被广泛应用于快速应用部署。对于开发者而言，Docker 的这一优势也同样适用于开发环境的快速搭建。因此，具有个性化的 Docker 镜像将会为开发者使用提供更大的便利。笔者习惯在 Mac 或者服务器上使用非 root 的 sudo 用户和 zsh，因此也希望在用于开发环境的 Docker 镜像也有这样的特点。</p>
 
@@ -232,7 +234,14 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
 <span class="c"># 输入执行命令后立刻执行无需输入密码，表示安装配置免密且具有 sudo 权限的 ubuntu 用户成功</span>
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#安装配置">安装配置</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -334,6 +343,10 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -396,6 +409,24 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

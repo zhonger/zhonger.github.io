@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">Archlinux 从安装操作系统入手</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="制作-archlinux-启动盘">制作 archlinux 启动盘</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="制作-archlinux-启动盘">制作 archlinux 启动盘</h2>
 
 <p>从 archlinux 官方或者是镜像源下载到 iso 文件
 使用以下命令制作启动U盘</p>
@@ -280,7 +282,14 @@ systemctl <span class="nb">enable </span>gdm
 
 <p>  重启之后从硬盘启动就会进入 gdm 登录界面，使用上面设置的 username 和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录，重新创建用户即可。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#制作-archlinux-启动盘">制作 archlinux 启动盘</a></li><li><a href="#安装准备">安装准备</a></li><li><a href="#安装">安装</a></li><li><a href="#配置系统">配置系统</a></li><li><a href="#其他配置">其他配置</a></li><li><a href="#重启">重启</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -382,6 +391,10 @@ systemctl <span class="nb">enable </span>gdm
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -444,6 +457,24 @@ systemctl <span class="nb">enable </span>gdm
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

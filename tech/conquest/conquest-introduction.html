@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1612572767699-093823e475af?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">欢迎进入量子化学的世界</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  随着计算机的计算能力和运行规模的不断提升，基于第一性原理计算理论的计算材料学科越来越得到重视。但是一般来说这样的模拟需要对一个包含成千上万的原子、电子而言，所需的计算框架是非常复杂的，计算代价是相当昂贵的。比如为人所熟知的商用类型<a href="https://www.vasp.at/">第一性原理计算框架 VASP</a> 授权通常需要五六万人民币以上，而且在一个普通超算集群上计算一个完整的体系结构可能需要几周，甚至几个月。无论是软件授权成本，还是时间成本，都比较高昂。对于想学习和实践第一性原理计算的小伙伴而言，当然也有比较节省的方式。首先软件可以选用免费的开源第一性原理计算框架，比如说本文中即将介绍到的 <a href="http://order-n.org/">CONQUEST</a>，以及 <a href="http://www.abinit.org/">ABINT</a>，<a href="http://smash-qc.sourceforge.net/">SMASH</a> 和 <a href="http://www.quantum-espresso.org/">QUANTUM ESPRESSO</a> 等。</p>
 
@@ -292,7 +294,14 @@ Diag.MPMeshZ 15
 mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input <span class="o">&gt;</span> Conquest_out
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#conquest">CONQUEST</a><ul><li><a href="#conquest-是什么">CONQUEST 是什么？</a></li><li><a href="#为什么选-conquest">为什么选 CONQUEST</a><ul><li><a href="#大规模模拟">大规模模拟</a></li><li><a href="#高效并行化">高效并行化</a></li><li><a href="#线性缩放">线性缩放</a></li><li><a href="#基础集basis-set">基础集（basis set）</a></li></ul></li></ul></li><li><a href="#编译安装指南">编译安装指南</a></li><li><a href="#使用指南">使用指南</a><ul><li><a href="#输入文件">输入文件</a><ul><li><a href="#生成-liion">生成 Li.ion</a></li><li><a href="#编写-conquest_input">编写 Conquest_input</a></li><li><a href="#编写-liin">编写 Li.in</a></li></ul></li><li><a href="#运行">运行</a><ul><li><a href="#单核运行">单核运行</a></li><li><a href="#双核运行">双核运行</a></li></ul></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -394,6 +403,10 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -456,6 +469,24 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

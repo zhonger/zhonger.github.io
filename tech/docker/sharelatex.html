@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的在线中英文 LaTex 编辑平台</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="latex-和-sharelatex">LaTeX 和 ShareLaTex</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="latex-和-sharelatex">LaTeX 和 ShareLaTex</h2>
 
 <p>  LaTex 是一种基于 TEX 的排版系统，在上世纪80年代初由美国计算机学家莱斯利·兰伯特发明。通过这种格式，即使对排版或者程序设计没有了解的人也可以利用 TEX，在几天甚至几小时内生成很多具有书籍质量的印刷品。尤其对于有生成复杂表格和数学公式的科研人员来说，LaTex 具有得天独厚的优势。因此在生成简单的信件、制作高印刷质量的技术类、学术类文档或书籍等方面，应用都非常广泛。</p>
 
@@ -377,7 +379,14 @@ tlmgr <span class="nb">install </span>csquotes
 tlmgr <span class="nb">install </span>fontspec
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#latex-和-sharelatex">LaTeX 和 ShareLaTex</a></li><li><a href="#搭建在线-latex-编辑平台">搭建在线 LaTex 编辑平台</a><ul><li><a href="#构建镜像">构建镜像</a></li><li><a href="#启动镜像">启动镜像</a></li><li><a href="#初始化平台">初始化平台</a></li></ul></li><li><a href="#后记">后记</a><ul><li><a href="#关于-latex-模板">关于 LaTex 模板</a></li><li><a href="#其他尝试">其他尝试</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -479,6 +488,10 @@ tlmgr <span class="nb">install </span>fontspec
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -541,6 +554,24 @@ tlmgr <span class="nb">install </span>fontspec
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

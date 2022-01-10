@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">欢迎使用作业任务管理的方式运行多个 CONQUEST 任务</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  在实际的生产环境中，使用单用户模式直接运行命令的机会不是很多，通常是采用提交作业任务给集群计算的方式。这样一来既能节约资源和时间，又能申请到更大规模的计算资源，对于平台管理人员还是用户来说都是非常有利的。国家超算中心，地方超算中心，学校超算中心一般都对外提供这样的服务，不过需要按核时进行计费。所谓“核时”就是一个 CPU 核运行一个小时，这也是高性能计算中通常使用的资源衡量单位。作为超算中心或者高性能集群，必不可缺的就是集群作业管理系统，它可以根据用户的需求，统一管理和调度集群的软硬件资源，保证用户作业公平合理地共享集群资源，提高系统利用率和吞吐率。</p>
 
@@ -580,7 +582,14 @@ sinfo
   <li><a href="https://zh.wikipedia.org/wiki/Slurm工作调度工具">Slurm工作调度工具</a></li>
 </ol>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#pbs-简介">PBS 简介</a><ul><li><a href="#pbs-常用命令">PBS 常用命令</a><ul><li><a href="#作业控制">作业控制</a></li><li><a href="#作业监测">作业监测</a></li><li><a href="#节点状态">节点状态</a></li></ul></li><li><a href="#pbs-作业属性">PBS 作业属性</a></li><li><a href="#pbs-脚本">PBS 脚本</a></li></ul></li><li><a href="#slurm-简介与安装">Slurm 简介与安装</a><ul><li><a href="#slurm-常用命令">Slurm 常用命令</a></li><li><a href="#资源管理系统实体">资源管理系统实体</a></li><li><a href="#作业运行模式">作业运行模式</a></li><li><a href="#ubuntu-上安装">Ubuntu 上安装</a></li><li><a href="#docker-化">Docker 化</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -682,6 +691,10 @@ sinfo
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -744,6 +757,24 @@ sinfo
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

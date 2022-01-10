@@ -164,14 +164,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1610070945206-2f5cafcb4e2b?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  众所周知，Cloudflare 是一家世界知名的 CDN 网络提供商，其在 DDoS 保护、网页应用程序防火墙、域名服务器、内容分发网络等服务上都有非常优秀。2018 年 4 月 1 日，Cloudflare 与 ASNIC 联合推出了声称“隐私第一”的域名系统解析服务。之后的 11 月 11 日又推出了 1.1.1.1 解析器的手机应用程序、电脑应用程序。并且，Cloudflare 也一直在为 HTTP 协议规范、IPv6 推广部署等方面作出了贡献。Cloudflare 提供了基础的免费服务给广大用户，同时也带来了最新的 Web 服务体验，Cloudflare Pages 就是这样的一款产品。</p>
 
@@ -209,7 +211,14 @@ Author: Ray-Eldath
 
 <p>  Cloudflare Pages 的部署步骤其实与 Netlify 大致上一致。从支持的功能上来讲，Cloudflare Pages 还是比较侧重于提供持续部署的能力，没有 Netlify 铺的面那么宽，但是也是只要是静态生成器都能完全支持。由于 Cloudflare 本身就是做 CDN 的，所以和 Netlify 在实现全球性部署的时候还是有不一样的地方的。由于 Cloudflare 的节点数量较多、网络线路较优，访问速度上可能会比 Netlify 好那么一点。不过，是否存在这样的差异还不得而知。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#cloudflare">Cloudflare</a><ul><li><a href="#登录">登录</a></li><li><a href="#创建项目">创建项目</a></li><li><a href="#预览">预览</a></li></ul></li><li><a href="#评价">评价</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -311,6 +320,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -373,6 +386,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

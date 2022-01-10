@@ -158,14 +158,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1547605892-0da4c95beaf6?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">边搭边理解 OJ 是如何写成的</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="什么是-oj">什么是 OJ</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="什么是-oj">什么是 OJ</h2>
 
 <p>  OJ 是 Online Judge（在线判题系统）的缩写，通常用于算法代码测试、算法竞赛等场景中，主要包含一个相对简单纯粹的代码运行沙盒环境、与用户交互的在线界面以及运行任务的管理调度等功能。国内比较重视算法竞赛（ACM）的学校都有自己的 OJ，比如有名的<a href="http://acm.hdu.edu.cn">杭州电子科大OJ</a>、<a href="http://poj.org/">北京大学OJ</a>、<a href="https://qduoj.com/">青岛大学OJ</a>、<a href="http://acmoj.shu.edu.cn/">上海大学OJ</a>等等。除此之外，国内外也有不少企业专注于给大家提供一个在线判题平台，比如有名的<a href="https://leetcode.com">LeetCode</a>、<a href="https://leetcode-cn.com">LeetCode CN</a>、<a href="https://nowcoder.com">牛客网</a>、<a href="https://dmoj.ca">DMOJ</a>等等。其实如果只是想练习算法，这些OJ系统是非常合适的。只要在具有一定名气的OJ上一直刷题，最后找算法岗工作的时候还是很有用的。</p>
 
@@ -923,7 +925,14 @@ runtime:
 
 <p>  到此，DMOJ 就安装完成了。从整个安装过程来看，一个 OJ 系统所包含的组件的确挺多，各种各样的配置来回修改，很容易让人一不留神就落下某个配置而使得程序无法正常运行。当然也有在测试过程中是可以正常运行的，而使用 supervisord 和 nginx 之后突然就不能了。我在实践过程中，对于官方提供的不同程序使用用户可能造成的文件权限不足，从而导致程序无法运行的问题感受颇深。折腾了很久也没有找出其中哪个步骤少了或者文件路径不对，后来发现主项目目录没有权限访问执行会导致一系列的问题。如果对用户管理和文件权限安全管理非常了解的话，还是按照官方的做法来设置，毕竟这样能保证操作系统的安全。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#什么是-oj">什么是 OJ</a></li><li><a href="#为什么选-dmoj">为什么选 DMOJ</a></li><li><a href="#安装-dmoj">安装 DMOJ</a><ul><li><a href="#安装环境">安装环境</a></li><li><a href="#正式安装前的准备工作">正式安装前的准备工作</a></li><li><a href="#开始安装dmoj">开始安装DMOJ</a></li><li><a href="#安装判题服务器">安装判题服务器</a></li><li><a href="#验证和总结">验证和总结</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -1025,6 +1034,10 @@ runtime:
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -1087,6 +1100,24 @@ runtime:
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1560345573-9f453083c335?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">从零开始几步搭建好自己邮件通知服务器</h2>
     
 
-    <article class="markdown-body">
-      <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>mailutils <span class="nt">-y</span>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>mailutils <span class="nt">-y</span>
 <span class="nb">sudo </span>vim /etc/postfix/main.cf
 
 <span class="c"># /etc/postfix/main.cf</span>
@@ -182,7 +184,14 @@ net_interfaces <span class="o">=</span> loopback-only
 <span class="nb">echo</span> <span class="s2">"This is the body of email"</span> | mail <span class="nt">-s</span> <span class="s2">"This is the subject line"</span> &lt;收件人地址&gt;
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -284,6 +293,10 @@ net_interfaces <span class="o">=</span> loopback-only
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -346,6 +359,24 @@ net_interfaces <span class="o">=</span> loopback-only
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

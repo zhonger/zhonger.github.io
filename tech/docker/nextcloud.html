@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="nextcloud-简介">Nextcloud 简介</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="nextcloud-简介">Nextcloud 简介</h2>
 
 <p>  今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 <a href="https://mgea.nz">Mega</a> （由于核心人员出走最近好像也不行了）、微软的 <a href="https://onedrive.live.com">OneDrive</a>、老牌网盘 <a href="https://www.dropbox.com">Dropbox</a>、<a href="https://box.com">Box</a>、谷家的 <a href="https://drive.google.com">Google drive</a>（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。</p>
 
@@ -408,7 +410,14 @@ unzip latest.zip
 <span class="nb">sudo</span> <span class="nt">-u</span> www /usr/local/php/bin/php occ maintenance:mode <span class="nt">--off</span>
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#nextcloud-简介">Nextcloud 简介</a></li><li><a href="#docker-搭建-nextcloud">Docker 搭建 Nextcloud</a><ul><li><a href="#安装-docker-环境">安装 Docker 环境</a></li><li><a href="#安装-docker-compose-工具">安装 docker-compose 工具</a></li><li><a href="#编写-docker-composeyml">编写 docker-compose.yml</a></li><li><a href="#启动容器">启动容器</a></li><li><a href="#应用初始化配置">应用初始化配置</a></li></ul></li><li><a href="#lnmpa-搭建-nextcloud">LNMPA 搭建 Nextcloud</a><ul><li><a href="#安装-lnmpa-环境">安装 LNMPA 环境</a><ul><li><a href="#为什么选用-lnmpa-而非-lnmp-或者-lmpa架构">为什么选用 LNMPA 而非 LNMP 或者 LMPA架构</a></li><li><a href="#安装">安装</a></li></ul></li><li><a href="#准备工作">准备工作</a><ul><li><a href="#新建数据库">新建数据库</a></li><li><a href="#安装-php-扩展">安装 PHP 扩展</a></li><li><a href="#修改-nginx-和-php-配置">修改 Nginx 和 PHP 配置</a></li></ul></li><li><a href="#安装-nextcloud">安装 Nextcloud</a><ul><li><a href="#下载-nextcloud-代码">下载 Nextcloud 代码</a></li><li><a href="#添加虚拟主机">添加虚拟主机</a></li></ul></li><li><a href="#配置-nextcloud">配置 Nextcloud</a></li><li><a href="#更新-nextcloud">更新 Nextcloud</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -510,6 +519,10 @@ unzip latest.zip
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -572,6 +585,24 @@ unzip latest.zip
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

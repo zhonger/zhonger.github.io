@@ -160,14 +160,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1601812535834-2e65e370af6d?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <h3 id="虚拟主机">虚拟主机</h3>
 
@@ -308,7 +310,14 @@ v0.ftp.upyun.com.	300	IN	A	117.21.235.5
 
 <p>  上文中笔者选择 Buddy 的原因，除了和其他的对比它更加具有安全私密性，还因为它同时支持多种部署方式。也就是说，如果想要添加一个新的部署方式，只需要添加一个部署动作即可，非常方便快捷，所有多节点部署一步到位。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#虚拟主机">虚拟主机</a></li><li><a href="#u-file">U-File</a></li></ul></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#手动部署">手动部署</a><ul><li><a href="#下载安装-filezilla">下载安装 Filezilla</a></li><li><a href="#新建主机">新建主机</a></li><li><a href="#上传最新静态博客文件">上传最新静态博客文件</a></li></ul></li><li><a href="#自动部署">自动部署</a><ul><li><a href="#创建项目">创建项目</a></li><li><a href="#创建流水线">创建流水线</a></li><li><a href="#添加-jekyll-编译动作">添加 Jekyll 编译动作</a></li><li><a href="#添加-ftp-部署动作">添加 FTP 部署动作</a></li><li><a href="#运行流水线">运行流水线</a></li></ul></li><li><a href="#评价">评价</a></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -410,6 +419,10 @@ v0.ftp.upyun.com.	300	IN	A	117.21.235.5
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -472,6 +485,24 @@ v0.ftp.upyun.com.	300	IN	A	117.21.235.5
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

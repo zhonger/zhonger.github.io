@@ -160,14 +160,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">一步一步搭建开源镜像站</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="引言">引言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="引言">引言</h2>
 <p>  构建镜像站主要是对于 linux 开源平台的软件源、 pypi 源、 cran 源、 mysql 等开源软件第三方源，大部分源支持使用 rsync 工具直接进行同步，少部分源比较特殊，比如 pypi 源必须采用官方提供的 bandsnatch 工具，mysql 源则只能采用 wget 的方式镜像整站。</p>
 
 <h2 id="linux-镜像">linux 镜像</h2>
@@ -214,7 +216,14 @@ index-url <span class="o">=</span> https://pypi.doubanio.com/simple/  （该地�
 wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <span class="nt">--adjust-extension</span> <span class="nt">--page-requisites</span> <span class="nt">--no-parent</span> http://nodejs.org/dist  <span class="nt">-e</span> <span class="nv">robots</span><span class="o">=</span>off
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#引言">引言</a></li><li><a href="#linux-镜像">linux 镜像</a></li><li><a href="#pypi-镜像">pypi 镜像</a></li><li><a href="#其他镜像">其他镜像</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -316,6 +325,10 @@ wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <s
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -378,6 +391,24 @@ wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <s
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

@@ -152,14 +152,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1612533923019-b532b3131212?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">为 Docker 镜像开启远程开发模式</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  Docker 镜像是否有 SSH 远程登录的必要？这个问题其实对于开发者来说是相对而言的，在实际的生产环境中是无必要需求就不必要，而在开发环境中则显得大有裨益。当然，即使在开发环境中也仍然应该把安全性放在首位，因此采用凭一对公钥和私钥实现无密码登录是比较安全、稳妥的办法。</p>
 
@@ -224,7 +226,14 @@ docker inspect dev <span class="c"># 查看 ip</span>
 ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
 </code></pre></div></div>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#安装配置">安装配置</a><ul><li><a href="#运行">运行</a><ul><li><a href="#方式一">方式一</a></li><li><a href="#方式二">方式二</a></li></ul></li></ul></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -326,6 +335,10 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -388,6 +401,24 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

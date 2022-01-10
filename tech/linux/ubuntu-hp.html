@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1533458504656-81a904b29a69?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">为 Linux 添加打印机支持</h2>
     
 
-    <article class="markdown-body">
-      <p>惠普打印机对于 Linux 平台的支持一向很好，官方给出来的支持列表如下（不要太全面）：</p>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <p>惠普打印机对于 Linux 平台的支持一向很好，官方给出来的支持列表如下（不要太全面）：</p>
 <ul>
   <li>SUSE Linux (13.2, 42.1, 42.2, 42.3)</li>
   <li>Fedora (22, 23, 24, 25, 26,27)</li>
@@ -201,7 +203,14 @@ Author: Ray-Eldath
 
 <p>  在<strong>系统设置</strong>中的<strong>打印机</strong>的列表中看见新添加的打印机设备，并右键选择属性可以看见打印测试页按钮，执行并观察打印结果即可验证驱动是否安装成功。</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#安装惠普打印机管理界面">安装惠普打印机管理界面</a></li><li><a href="#安装惠普打印机驱动">安装惠普打印机驱动</a></li><li><a href="#验证驱动">验证驱动</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -303,6 +312,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -365,6 +378,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

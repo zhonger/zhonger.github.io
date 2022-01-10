@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 05 Jan 2022 23:52:12 +0900</pubDate>
-    <lastBuildDate>Wed, 05 Jan 2022 23:52:12 +0900</lastBuildDate>
+    <pubDate>Mon, 10 Jan 2022 12:12:08 +0900</pubDate>
+    <lastBuildDate>Mon, 10 Jan 2022 12:12:08 +0900</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
     
       <item>
@@ -187,6 +187,12 @@
 
 &lt;p&gt;  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。&lt;/p&gt;
 
+&lt;h4 id=&quot;文章侧边索引导航&quot;&gt;文章侧边索引导航&lt;/h4&gt;
+
+&lt;p&gt;(2022年1月9日更新)&lt;/p&gt;
+
+&lt;p&gt;  在一些基于 Bootstrap 前端框架的 Jekyll 主题中，这个功能比较常见。由于本主题未使用 Bootstrap 前端框架，所以添加起来稍微有些麻烦，现已增加此功能。在浏览器窗口超过 1050 px 的情况下，在文章页面可以正常看到右侧的文章侧边索引导航。当窗口滑动时，侧边索引导航也会跟着滑动。在浏览器窗口不足 1050 px 的情况下，侧边索引导航自动隐藏。在 _config.yml 配置文件中，可以通过设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;toc: false&lt;/code&gt; 来全局禁用此功能。&lt;/p&gt;
+
 &lt;h4 id=&quot;配置项&quot;&gt;配置项&lt;/h4&gt;
 
 &lt;p&gt;  配置项中新增了&lt;strong&gt;友情链接&lt;/strong&gt;、&lt;strong&gt;备案号&lt;/strong&gt;、&lt;strong&gt;Google Analytics&lt;/strong&gt; 和 &lt;strong&gt;CNZZ&lt;/strong&gt; 统计功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。&lt;/p&gt;
@@ -266,8 +272,9 @@
 
 &lt;p&gt;  &lt;del&gt;暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。&lt;/del&gt;&lt;/p&gt;
 
-&lt;p&gt;(2021年12月26日更新)
-  现已支持使用 gem 直接切换主题 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll-theme-h2o-ac&lt;/code&gt;。同时，也推出了一键式构建工具 &lt;a href=&quot;https://github.com/zhonger/easy-to-h2o-ac&quot;&gt;easy-to-h2o-ac&lt;/a&gt;，详细可以见项目主页。&lt;/p&gt;
+&lt;p&gt;(2021年12月26日更新)&lt;/p&gt;
+
+&lt;p&gt;  现已支持使用 gem 直接切换主题 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll-theme-h2o-ac&lt;/code&gt;。同时，也推出了一键式构建工具 &lt;a href=&quot;https://github.com/zhonger/easy-to-h2o-ac&quot;&gt;easy-to-h2o-ac&lt;/a&gt;，详细可以见项目主页。&lt;/p&gt;
 
 &lt;h3 id=&quot;本地测试&quot;&gt;本地测试&lt;/h3&gt;
 

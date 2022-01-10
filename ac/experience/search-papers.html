@@ -154,14 +154,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">如何找到自己需要的科学文献，并进行阅读和管理？</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  现在有越来越多的人涌入了读研、读博的大潮当中，但是“如何搜索到自己需要的科学文献，并进行阅读和管理”却成了一个比较棘手的问题。所以，今天打算介绍一些本人在这方面的经验。</p>
 
@@ -326,7 +328,14 @@ Author: Ray-Eldath
   <li><a href="http://wr.lib.tsinghua.edu.cn/">清华大学图书馆推荐网络学术站点</a></li>
 </ul>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#文献搜索">文献搜索</a><ul><li><a href="#按关键词搜索">按关键词搜索</a></li><li><a href="#按人名搜索">按人名搜索</a></li><li><a href="#平台自动推荐">平台自动推荐</a></li></ul></li><li><a href="#文献阅读">文献阅读</a><ul><li><a href="#找到主线">找到主线</a></li><li><a href="#找到支线">找到支线</a></li><li><a href="#找到有趣之处">找到“有趣之处”</a></li><li><a href="#找到可研究点">找到可研究点</a></li></ul></li><li><a href="#文献管理">文献管理</a><ul><li><a href="#pdf-文件的管理">PDF 文件的管理</a></li><li><a href="#mendeley-的使用">Mendeley 的使用</a></li></ul></li><li><a href="#结束语">结束语</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -428,6 +437,10 @@ Author: Ray-Eldath
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -490,6 +503,24 @@ Author: Ray-Eldath
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

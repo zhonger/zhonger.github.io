@@ -156,14 +156,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">自用 IPv6 网络走起</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  2019年11月27日，通过欧洲网络协调中心（RIPE NCC）的邮件确认，全球所有43亿个 IPv4 地址已全部分配完毕。事实上，IPv4 地址的数量是非常有限的，算起来全球60多亿人每个人平均不到1个。由于 IP 地址是由国际上的几大网络协调中心统一进行分配，必须由单位向所在区域的网络协调中心提出申请，并每年缴纳一定的费用。这笔费用对于单位来说算不了什么，对于个人来说就比较高。因此，在每个国家基本上是由国家网络中心进行国内的 IP 地址分配，分配的单位一般是政府、国家机构、高校、基础通信服务商、数据中心或企业等。我们通常家用的宽带主要是由中国移动、中国联通、中国电信三大基础通信服务商提供的。近年来也有由广播电视提供的家用宽带。在学校、国家科技机构单位，一般使用的是教育网、教育科技网，也有很多学校采用的基础通信服务商提供的商用网络。不管是学校，还是家里，基础通信服务商为了节约 IP 地址的使用，在进行基础通信网络搭建的时候，大部分采用了内部局域网共享一个公网 IP 地址代理上网的方式。现有家用使用的宽带网络基本上无法获取到公网 IPv4 地址，只能获得一个以<code class="language-plaintext highlighter-rouge">100</code>开头的通信专用的局域网地址。</p>
 
@@ -366,7 +368,14 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
 <p>  欢迎走进 IPv6 的世界！</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#环境">环境</a></li><li><a href="#申请-ipv6-网段">申请 IPv6 网段</a></li><li><a href="#配置-ecs-服务器的-ipv6">配置 ECS 服务器的 IPv6</a></li><li><a href="#配置-zerotier">配置 zerotier</a><ul><li><a href="#安装-zerotier">安装 zerotier</a></li><li><a href="#配置-zerotier-网络">配置 zerotier 网络</a></li></ul></li><li><a href="#配置-ipv6-广播">配置 IPv6 广播</a><ul><li><a href="#配置-ndppd-广播">配置 NDPPD 广播</a></li></ul></li><li><a href="#配置其他客户端">配置其他客户端</a><ul><li><a href="#linux-客户端">Linux 客户端</a></li><li><a href="#mac-客户端">Mac 客户端</a></li></ul></li><li><a href="#测试及问题解决">测试及问题解决</a></li></ul></li><li><a href="#结语">结语</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -468,6 +477,10 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -530,6 +543,24 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>

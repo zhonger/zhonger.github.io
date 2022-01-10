@@ -164,14 +164,16 @@ Author: Ray-Eldath
       <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=1600&q=900') center no-repeat; background-size: cover;"></div>
     
   </header>
-
   <div class="post-content visible">
     
     <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
     
 
-    <article class="markdown-body">
-      <h2 id="前言">前言</h2>
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
 
 <p>  越来越多的人想要搭建一个属于自己的免费个人博客，记录下自己在技术上的学习历程，或是写一些文章。甚至有一天，可以将这些文章整理成集出版。这也不是没有可能的，个人所知很多深受大众喜爱的技术书籍就是这样诞生的，像阮一峰大神的<a href="https://es6.ruanyifeng.com/">《ES6 标准入门》</a>、杨宝华等的<a href="https://vuepress.mirror.docker-practice.com/">《Docker 从入门到实践》</a>、刘遄老师的<a href="https://www.linuxprobe.com/">《Linux 就该这么学》</a>等等。</p>
 
@@ -505,7 +507,14 @@ git push origin main
 
 <p>  跟着笔者了解了这些，是不是突然觉得搭建一个属于自己的免费个人博客其实也不难，而且还可以有这么多免费节点，感兴趣的话就快来试一试吧！</p>
 
-    </article>
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#markdown-的出现">Markdown 的出现</a></li><li><a href="#静态网站生成器">静态网站生成器</a></li><li><a href="#cdn">CDN</a></li><li><a href="#其他">其他</a></li></ul></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#fork-项目">Fork 项目</a></li><li><a href="#修改配置">修改配置</a></li><li><a href="#撰写文章">撰写文章</a><ul><li><a href="#书写规范">书写规范</a><ul><li><a href="#markdown-语法指南">Markdown 语法指南</a></li><li><a href="#通用文章规范">通用文章规范</a></li></ul></li></ul></li><li><a href="#预览">预览</a></li><li><a href="#发布部署">发布部署</a></li></ul></li><li><a href="#写在最后">写在最后</a></li></ul>
+      </div>
+    </div>
+    
 
     
     <div class="social-share-wrapper">
@@ -607,6 +616,10 @@ git push origin main
       
     </section>
     
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
   </section>
 
   <footer class="g-footer">
@@ -669,6 +682,24 @@ git push origin main
     });
   </script>
 
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
   
 
   <script src="/assets/js/prism.js"></script>
