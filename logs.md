@@ -60,6 +60,7 @@ description: Writing, writing, writing ...
 ### 2022
 
 - 2022年1月1日，上线 [Vercel](https://vercel.com) 节点。
+- 2022年1月11日，上线 [Azure](https://azure.microsoft.com/zh-cn/services/app-service/static/#overview) 和 [4EVERLAND](https://hosting.4everland.org) 节点。
 
 ## 站点节点信息
 
@@ -74,3 +75,5 @@ description: Writing, writing, writing ...
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
 | 又拍云 CDN | blog.lisz.ink(下线) | 是 | 是 | 国内 CDN 节点 |
 | Vercel | [zhonger.vercel.app](https://zhonger.vercel.app) | 是 | 否 | 美国节点 |
+| Azure | [blog.lisz.ink](https://blog.lisz.ink) | 是 | 否 | 国内香港节点 |
+| 4everland | [blog.lep.ink](https://blog.lep.ink) | 是 | 否 | 国内香港节点 |
