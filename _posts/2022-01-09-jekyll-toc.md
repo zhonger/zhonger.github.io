@@ -22,7 +22,7 @@ cover: 'https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=90
 
 ### Jekyll 生成目录的方案
 
-&emsp;&emsp;如参考资料一种所提到的，如果想要在 Jekyll 中实现文章目录，有三种不同的方案可供选择：
+&emsp;&emsp;如参考资料 1 中所提到的，如果想要在 Jekyll 中实现文章目录，有三种不同的方案可供选择：
 
 #### 第一种方案
 
