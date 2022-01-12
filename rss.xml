@@ -5,9 +5,217 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 11 Jan 2022 04:18:56 +0900</pubDate>
-    <lastBuildDate>Tue, 11 Jan 2022 04:18:56 +0900</lastBuildDate>
+    <pubDate>Wed, 12 Jan 2022 23:31:52 +0900</pubDate>
+    <lastBuildDate>Wed, 12 Jan 2022 23:31:52 +0900</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
+    
+      <item>
+        <title>Jekyll 文章侧边索引导航</title>
+        <description>&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#前言&quot; id=&quot;markdown-toc-前言&quot;&gt;前言&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#jekyll-生成目录的方案&quot; id=&quot;markdown-toc-jekyll-生成目录的方案&quot;&gt;Jekyll 生成目录的方案&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#第一种方案&quot; id=&quot;markdown-toc-第一种方案&quot;&gt;第一种方案&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#第二种方案&quot; id=&quot;markdown-toc-第二种方案&quot;&gt;第二种方案&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#第三种方案&quot; id=&quot;markdown-toc-第三种方案&quot;&gt;第三种方案&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#实践&quot; id=&quot;markdown-toc-实践&quot;&gt;实践&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#布局&quot; id=&quot;markdown-toc-布局&quot;&gt;布局&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#目录生成&quot; id=&quot;markdown-toc-目录生成&quot;&gt;目录生成&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#自适应&quot; id=&quot;markdown-toc-自适应&quot;&gt;自适应&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#最终代码&quot; id=&quot;markdown-toc-最终代码&quot;&gt;最终代码&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#参考资料&quot; id=&quot;markdown-toc-参考资料&quot;&gt;参考资料&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Jekyll 与 Hexo 不同之处有很多，其中一处是在文章页面中不支持原生 [TOC] Markdown 语法来自动生成目录。而在 Hexo 中，即使主题不支持侧边悬浮的优化目录导航，也可以通过最简单的方式在文章的开始位置生成目录。虽然这种目录永远固定在文章开始的地方，但是总算是能够通过大小标题来给读者一个大概的思路。&lt;/p&gt;
+
+&lt;h3 id=&quot;jekyll-生成目录的方案&quot;&gt;Jekyll 生成目录的方案&lt;/h3&gt;
+
+&lt;p&gt;  如参考资料一种所提到的，如果想要在 Jekyll 中实现文章目录，有三种不同的方案可供选择：&lt;/p&gt;
+
+&lt;h4 id=&quot;第一种方案&quot;&gt;第一种方案&lt;/h4&gt;
+
+&lt;p&gt;  利用完整的标签来生成静态目录，可以看到在本文的开头就是这样的一个实例。这种方法的好处是不需要修改什么复杂的模板或者添加什么样式，Github Pages 也默认支持这种方式。不好的地方是与标准的 Markdown 语法略有不同，而且每次都得在文章内容页面开头加上以下代码。如果你使用带有 markdownlint 插件的编辑器编辑文章时，可能会有一堆告警。当然，如果不想折腾的人，这种方法不失为一种最简单方便的解决方案。&lt;/p&gt;
+
+&lt;div class=&quot;language-markdown highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;*&lt;/span&gt; TOC
+{:toc}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;第二种方案&quot;&gt;第二种方案&lt;/h4&gt;
+
+&lt;p&gt;  利用第三方插件 &lt;a href=&quot;https://github.com/toshimaru/jekyll-toc&quot;&gt;jekyll-toc&lt;/a&gt;。这种方式在实现上比上一种要更加优雅一些，不需要自己修改或编写代码，只需要执行以下步骤即可。缺点在于 Github Pages 不支持这类自定义插件，你可能需要使用自定义的 workflow.yml 文件来指导 Github Action 来编译生成静态文件。如果不怎么了解 Github Action，恐怕这种方式部署在 Github Pages 上也不是很省心。&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# gemfile&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;jekyll-toc&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 添加后需执行 bundle install 安装插件&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 在全局配置文件中启用 jekyll-toc 插件&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;plugins&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jekyll-toc&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# 默认为所有文章启用 toc&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;values&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;toc&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;第三种方案&quot;&gt;第三种方案&lt;/h4&gt;
+
+&lt;p&gt;  采用新增 jekyll 模板的方式来支持自动生成目录。这种方式也可以直接运行在 Github Pages 下。主要的步骤是：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;将 &lt;a href=&quot;https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html&quot;&gt;toc.html&lt;/a&gt; 文件下载到 _includes 目录下；&lt;/li&gt;
+  &lt;li&gt;在 _layouts 需要使用 toc 功能的页面模板的 content 前面加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;% include toc.html html=content %&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;p&gt;  从上述三种方案综合来看，第三种方案能够同时支持自动生成目录和 Github Pages，比较适合预期的需求。另外，采用模板的方式还有一个好处，可以在全局配置文件 _config.yml 中一键设置“开启”或“关闭”，配置上比较简单。但如果仅仅照搬上述的第三种方案，还是不能完全满足实际的需求。因为第三种方案的结果是自动生成目录的内容，并不涉及到具体的布局，也就是说只能放在某一个固定的位置。总结的来说，实际的目标起码需要满足以下两点：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;目标一&lt;/strong&gt;：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;目标二&lt;/strong&gt;：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;布局&quot;&gt;布局&lt;/h3&gt;
+
+&lt;p&gt;  从目标一来看，其实在大部分的静态博客主题中都是有这样的功能的（PS：可能 Jekyll 是个例外，原生只支持静态目录）。我们可以先来看两个例子 &lt;a href=&quot;https://github.com/ahonn/hexo-theme-even&quot;&gt;hexo-theme-even&lt;/a&gt; 和 &lt;a href=&quot;https://www.markdownguide.org/getting-started/&quot;&gt;markdownguide&lt;/a&gt;。前面的例子是 Hexo 主题，其中采用的是 js 控制 toc 的 div 层在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;position: absolute&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;position: fixed&lt;/code&gt; 之间变换：当页面初始时，处于 absolute 位置；当页面在向下滑动时，处于 fixed 位置。这种方式需要有 js 代码的介入，增加了运算的成本（虽然其实很小）和维护成本（占比更大）。后面的例子是采用了 Bootstrap 框架中的 toc js 插件，能够满足目标一，且能跟踪内容位置来切换显示的二级目录，相对来说功能更加强大。唯一的缺点是，拖着 Bootstrap 这个大拖油瓶，如果本身的主题是基于 Bootstrap 框架的，那么就非常合适了。&lt;/p&gt;
+
+&lt;p&gt;  这里我们想要实践的是在未使用 Bootstrap 框架的 Jekyll 主题中增加目标一的功能，因此这两个例子的做法都不是很合适。实际上，从需要维护的代码量来说，第一个例子的做法所需的 js 代码应该是算少的，但是不是存在完全不使用 js 代码也能实现这样的功能的方案呢？实际上是存在的。据我们所知，现在已有的页面布局的方法大致有三种：&lt;strong&gt;Table 布局&lt;/strong&gt;、&lt;strong&gt;Div 布局&lt;/strong&gt;和 &lt;strong&gt;Flex 布局&lt;/strong&gt;。Table 布局算是最原始的布局方式了，主要利用 Table 的横列来组织页面中的各个元素的位置，特点是容易上手且不易出问题。缺点也比较明显，不大符合语义化 HTML 的规范，即 HTML 标签只做与它含义相同的事情。Table 标签作为表格布局标签，应该专注于展示表格数据，而非为整个页面布局操心。于是，Div 布局开始流行起来。Div 层的概念和布局的含义完全吻合，也容易理解。Div 布局比较让人头疼的地方是，页面中有很多浮动元素出现时，可能会出现各种各样想象不到的问题，某些布局之后被迫要清除浮动。Flex 布局的出现为 Div 布局提出了改善，使得页面布局不再被浮动元素和 Div 层浮动时内容大小为零所困恼。&lt;/p&gt;
+
+&lt;p&gt;  由于想要目录内容块随着内容滑动而改变 position，我们可以采用 sticky 的 position 方案。这可能是 css 的一大进步，通过定义 sticky 的 position 可以让元素根据相邻元素的滑动而改变 position。其实，sticky 就等于 absolute 加上 fixed。只是这种等价只在某些条件成立时才能生效。我们可以通过参考资料 2~4 来了解更多详情。&lt;/p&gt;
+
+&lt;h3 id=&quot;目录生成&quot;&gt;目录生成&lt;/h3&gt;
+
+&lt;p&gt;  目录生成这里直接采用的是上述的第三种方案。具体在 post 模板页使用 toc 模块的代码如最后所示。&lt;/p&gt;
+
+&lt;h3 id=&quot;自适应&quot;&gt;自适应&lt;/h3&gt;
+
+&lt;p&gt;  为了实现目标二，这里采用了最简单的 CSS 媒体查询，即在平常 PC 端宽屏时采用如下 common.sass 中的样式。显示目录时，正文内容宽度为 720 px，目录宽度为 280 px。同时为了将目录与正文拉大间距以及更好区分，这里增加了 margin-left （30 px）、border-left（2px）和 padding（10px）。总计为，720+280+30+10*2=1050 px（这里忽略了 2px 的边界）。不显示目录时，让正文占据所有宽度，并设置目录块为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;display: none&lt;/code&gt;，即隐藏该元素。具体实现如最终代码 common.sass 和 layout.sass 所示。在没有 sass 编译环境下，此处的 sass 代码可以取出转换为 css 使用。&lt;/p&gt;
+
+&lt;h3 id=&quot;最终代码&quot;&gt;最终代码&lt;/h3&gt;
+
+&lt;div class=&quot;language-liquid highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- post.html --&amp;gt;
+
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;toc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;div class=&quot;container&quot;&amp;gt;  
+    &amp;lt;div class=&quot;contents&quot;&amp;gt;
+      &amp;lt;article class=&quot;markdown-body&quot;&amp;gt;
+        &lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+      &amp;lt;/article&amp;gt;
+    &amp;lt;/div&amp;gt;   
+    &amp;lt;div class=&quot;table-of-contents&quot;&amp;gt;
+      &amp;lt;h2&amp;gt;Contents&amp;lt;/h2&amp;gt;
+      &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;toc.html&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;html&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/div&amp;gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+  &amp;lt;article class=&quot;markdown-body&quot;&amp;gt;
+    &lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;
+  &amp;lt;/article&amp;gt;
+&lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;endif&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-sass highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;common&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.sass&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;nc&quot;&gt;.container&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1050px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;auto&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;flex&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;flex-direction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;.contents&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;720px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;.table-of-contents&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;border-left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2px&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;solid&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#efefef&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;280px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;webkit-sticky&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sticky&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;80px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;margin-bottom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;80px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;fit-content&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;margin-left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;30px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;font-family&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;fantasy&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#e32e00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;ul&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;margin-left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;20px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;list-style-type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;revert&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;14px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;24px&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#005b81&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nt&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#005b81&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:hover&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;#e32e00&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+                    &lt;span class=&quot;nl&quot;&gt;text-decoration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;underline&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-sass highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.sass&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;@media&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;screen&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max-width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1050px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nc&quot;&gt;.post-content&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nc&quot;&gt;.container&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;.contents&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nl&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;nl&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;auto&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;nc&quot;&gt;.table-of-contents&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plutotree.me/jekyll/2019/01/30/jekyll-toc-solution.html&quot;&gt;jekyll自动生成目录的几种方案&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.runoob.com/css/css-positioning.html&quot;&gt;Runoob - CSS Position 定位&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000039858711&quot;&gt;position:sticky 粘性定位的几种巧妙应用&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.php.cn/css-tutorial-466057.html&quot;&gt;css3 sticky不生效怎么办&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 09 Jan 2022 22:00:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/jekyll-toc.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/jekyll-toc.html</guid>
+        
+        <category>Jekyll</category>
+        
+        <category>主题</category>
+        
+        <category>theme</category>
+        
+        <category>侧边索引</category>
+        
+        <category>TOC</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>[译文]迭代机器学习：迈向模型准确性的一步</title>
@@ -2323,117 +2531,6 @@ In &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]: &lt;span class=&quot;nb&quo
         <category>tech</category>
         
         <category>aiida</category>
-        
-      </item>
-    
-      <item>
-        <title>个人免费博客花式搭建指南 Online Editor 篇</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  近些年，随着 Markdown 的蓬勃发展，越来越多地支持 Markdown 语法的在线编辑器和托管服务提供商出现。比如国外的 &lt;a href=&quot;https://readthedocs.org/&quot;&gt;Read the Docs&lt;/a&gt;、&lt;a href=&quot;https://gitbook.com&quot;&gt;Gitbook&lt;/a&gt; 等等，国内的 &lt;a href=&quot;https://www.kancloud.cn/&quot;&gt;看云&lt;/a&gt; 等等。这种方式的好处主要有几点：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;不需要任何环境配置，只需要浏览器就可以完成编辑和预览；&lt;/li&gt;
-  &lt;li&gt;当完成编辑时即发布，无须考虑手动部署或者自动部署的问题；&lt;/li&gt;
-  &lt;li&gt;可以直接把编辑的内容直接放在一起导出一本 PDF 电子书。&lt;/li&gt;
-  &lt;li&gt;由于运行资源没有限制，完全与平台相关，访问速度及最大并发访问量可能较高。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;当然，这种方式也会有一定的缺点：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;无法定制呈现内容的样式，更无法修改模板；&lt;/li&gt;
-  &lt;li&gt;平台提供的在线编辑器的体验可能并没有离线编辑器的体验这么好，比如优秀的 &lt;a href=&quot;https://typora.io&quot;&gt;Typora&lt;/a&gt;；&lt;/li&gt;
-  &lt;li&gt;对于页面权限的控制受限，无法像博客那样可以自由控制；&lt;/li&gt;
-  &lt;li&gt;不一定支持自定义域名，或需付费才支持自定义域名。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;  个人觉得比起搭建博客这类方式更适合搭建文档，比如说写产品文档、API 文档等等，而且其导出 PDF 的特点更加适合需求。&lt;/p&gt;
-
-&lt;h2 id=&quot;体验与评价&quot;&gt;体验与评价&lt;/h2&gt;
-
-&lt;h3 id=&quot;read-the-docs&quot;&gt;Read the Docs&lt;/h3&gt;
-
-&lt;h4 id=&quot;登录&quot;&gt;登录&lt;/h4&gt;
-
-&lt;p&gt;访问 &lt;a href=&quot;https://readthedocs.org/&quot;&gt;Read the Docs&lt;/a&gt; 点击&lt;strong&gt;登录&lt;/strong&gt;按钮，这里支持直接使用 Github 登录（推荐）。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/WiYCRb.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/ef4cKr.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;导入项目&quot;&gt;导入项目&lt;/h4&gt;
-
-&lt;p&gt;由于是 Github 方式登录，可以直接从 Github 中导入项目，如下图所示。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/PaSfl7.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;点击右侧加号按钮完成导入。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/TQYwpR.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/i0DQXU.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;预览项目&quot;&gt;预览项目&lt;/h4&gt;
-
-&lt;p&gt;  由于这里导入的项目是 Jekyll，所以 Read the Docs 无法对其进行编译并显示预览页面。事实上，如果将 Jekylll 换成 Mkdocs，会发现能够通过编译并在线预览成功，但是 PDF 生成还是会有问题。所以最好的就是在 Github 建一个空的项目，将空的项目导入到 Read the Docs 中即可。&lt;/p&gt;
-
-&lt;p&gt;  其实，Read the Docs 还不能算得上是完整的在线编辑平台，毕竟它不提供所谓的 Online Editor。我们仍然需要使用 Github 自身提供的在线编辑功能，或者利用本地编辑器 Typora 这样的编辑然后上传更新到 Github。当然，如果 Github 的内容发生了更新，Read the Docs 将会拉取最新的内容进行编译并激活预览。&lt;/p&gt;
-
-&lt;h3 id=&quot;gitbook&quot;&gt;Gitbook&lt;/h3&gt;
-
-&lt;h4 id=&quot;登录-1&quot;&gt;登录&lt;/h4&gt;
-
-&lt;p&gt;访问 &lt;a href=&quot;https://gitbook.com&quot;&gt;Gitbook&lt;/a&gt; ，可以选择 Sign Up With Github 进行快速注册。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/DDsCsE.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;创建项目&quot;&gt;创建项目&lt;/h4&gt;
-
-&lt;p&gt;点击 create a new space 按钮，输入项目名称完成创建。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/mR46gg.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;导入内容&quot;&gt;导入内容&lt;/h4&gt;
-
-&lt;p&gt;  如下图所示，可以直接导入 Markdown 文件。由于本站是采用 Jekyll 静态生成器的，所有只需将 _posts 目录下的 Markdown 文件全部拖拽到这里导入即可完成 Gitbook 的转换。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/3lGk46.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/J25FIN.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;预览项目-1&quot;&gt;预览项目&lt;/h4&gt;
-
-&lt;p&gt;Gitbook 采用的是 https://用户名.gitbook.io/项目名/ 的方式预览，当然也支持自定义域名。&lt;/p&gt;
-
-&lt;h3 id=&quot;评价&quot;&gt;评价&lt;/h3&gt;
-
-&lt;p&gt;  Read the Docs 与 Gitbook 相比，后者支持完整的在线编辑功能和自定义主题功能，操作也略显复杂，前者则只负责编译生成和托管页面，不具有编辑能力。从笔者个人角度来看， Read the Docs 的方式更加方便快捷，操作性强，而 Gitbook 复杂的操作让本来编辑内容的时间都花在了一步一步的操作上了。虽然两者都支持 PDF 导出功能，但是 Read the Docs 导出的 PDF 格式更加像是一本电子书，排版精美，而 Gitbook 则是普通的格式。另外，在网页预览上，Gitbook 则更加大方、美观，比 Read the Docs 更具现代感，两者优势各异。当然也可以同时使用两种，取长而用。&lt;/p&gt;
-</description>
-        <pubDate>Sun, 11 Apr 2021 17:15:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/start-blog-online-editor.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/start-blog-online-editor.html</guid>
-        
-        <category>blog</category>
-        
-        <category>free</category>
-        
-        <category>static</category>
-        
-        <category>jekyll</category>
-        
-        <category>gitbook</category>
-        
-        <category>readthedoc</category>
-        
-        <category>ftp</category>
-        
-        <category>github</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
         
       </item>
     

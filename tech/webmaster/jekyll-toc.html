@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekyll 文章侧边索引导航 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Jekyll 文章侧边索引导航">
+    <meta name="keywords"  content="Jekyll, 主题, theme, 侧边索引, TOC">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jekyll 文章侧边索引导航 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/jekyll-toc.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Jekyll" class="post-tag">Jekyll</a>
+          
+            <a href="/tags.html#%E4%B8%BB%E9%A2%98" class="post-tag">主题</a>
+          
+            <a href="/tags.html#theme" class="post-tag">theme</a>
+          
+            <a href="/tags.html#%E4%BE%A7%E8%BE%B9%E7%B4%A2%E5%BC%95" class="post-tag">侧边索引</a>
+          
+            <a href="/tags.html#TOC" class="post-tag">TOC</a>
+          
+        
+      </div>
+      <h1>Jekyll 文章侧边索引导航</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-01-09"><i class="iconfont icon-date"></i>Sun, 09 Jan 2022 22:00:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 3815 字 <b>·</b> 阅读全文大约需要 11 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">让你的 Jekyll 文章页阅读体验更好</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <ul id="markdown-toc">
+  <li><a href="#前言" id="markdown-toc-前言">前言</a>    <ul>
+      <li><a href="#jekyll-生成目录的方案" id="markdown-toc-jekyll-生成目录的方案">Jekyll 生成目录的方案</a>        <ul>
+          <li><a href="#第一种方案" id="markdown-toc-第一种方案">第一种方案</a></li>
+          <li><a href="#第二种方案" id="markdown-toc-第二种方案">第二种方案</a></li>
+          <li><a href="#第三种方案" id="markdown-toc-第三种方案">第三种方案</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#实践" id="markdown-toc-实践">实践</a>    <ul>
+      <li><a href="#布局" id="markdown-toc-布局">布局</a></li>
+      <li><a href="#目录生成" id="markdown-toc-目录生成">目录生成</a></li>
+      <li><a href="#自适应" id="markdown-toc-自适应">自适应</a></li>
+      <li><a href="#最终代码" id="markdown-toc-最终代码">最终代码</a></li>
+    </ul>
+  </li>
+  <li><a href="#参考资料" id="markdown-toc-参考资料">参考资料</a></li>
+</ul>
+
+<h2 id="前言">前言</h2>
+
+<p>  Jekyll 与 Hexo 不同之处有很多，其中一处是在文章页面中不支持原生 [TOC] Markdown 语法来自动生成目录。而在 Hexo 中，即使主题不支持侧边悬浮的优化目录导航，也可以通过最简单的方式在文章的开始位置生成目录。虽然这种目录永远固定在文章开始的地方，但是总算是能够通过大小标题来给读者一个大概的思路。</p>
+
+<h3 id="jekyll-生成目录的方案">Jekyll 生成目录的方案</h3>
+
+<p>  如参考资料一种所提到的，如果想要在 Jekyll 中实现文章目录，有三种不同的方案可供选择：</p>
+
+<h4 id="第一种方案">第一种方案</h4>
+
+<p>  利用完整的标签来生成静态目录，可以看到在本文的开头就是这样的一个实例。这种方法的好处是不需要修改什么复杂的模板或者添加什么样式，Github Pages 也默认支持这种方式。不好的地方是与标准的 Markdown 语法略有不同，而且每次都得在文章内容页面开头加上以下代码。如果你使用带有 markdownlint 插件的编辑器编辑文章时，可能会有一堆告警。当然，如果不想折腾的人，这种方法不失为一种最简单方便的解决方案。</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">*</span> TOC
+{:toc}
+</code></pre></div></div>
+
+<h4 id="第二种方案">第二种方案</h4>
+
+<p>  利用第三方插件 <a href="https://github.com/toshimaru/jekyll-toc">jekyll-toc</a>。这种方式在实现上比上一种要更加优雅一些，不需要自己修改或编写代码，只需要执行以下步骤即可。缺点在于 Github Pages 不支持这类自定义插件，你可能需要使用自定义的 workflow.yml 文件来指导 Github Action 来编译生成静态文件。如果不怎么了解 Github Action，恐怕这种方式部署在 Github Pages 上也不是很省心。</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gemfile</span>
+
+<span class="n">gem</span> <span class="s2">"jekyll-toc"</span>
+
+<span class="c1"># 添加后需执行 bundle install 安装插件</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _config.yml</span>
+
+<span class="c1"># 在全局配置文件中启用 jekyll-toc 插件</span>
+<span class="na">plugins</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">jekyll-toc"</span><span class="pi">]</span>
+
+<span class="c1"># 默认为所有文章启用 toc</span>
+<span class="na">defaults</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">scope</span><span class="pi">:</span>
+      <span class="na">path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">values</span><span class="pi">:</span>
+      <span class="na">toc</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<h4 id="第三种方案">第三种方案</h4>
+
+<p>  采用新增 jekyll 模板的方式来支持自动生成目录。这种方式也可以直接运行在 Github Pages 下。主要的步骤是：</p>
+<ul>
+  <li>将 <a href="https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html">toc.html</a> 文件下载到 _includes 目录下；</li>
+  <li>在 _layouts 需要使用 toc 功能的页面模板的 content 前面加上 <code class="language-plaintext highlighter-rouge">% include toc.html html=content %</code>。</li>
+</ul>
+
+<h2 id="实践">实践</h2>
+
+<p>  从上述三种方案综合来看，第三种方案能够同时支持自动生成目录和 Github Pages，比较适合预期的需求。另外，采用模板的方式还有一个好处，可以在全局配置文件 _config.yml 中一键设置“开启”或“关闭”，配置上比较简单。但如果仅仅照搬上述的第三种方案，还是不能完全满足实际的需求。因为第三种方案的结果是自动生成目录的内容，并不涉及到具体的布局，也就是说只能放在某一个固定的位置。总结的来说，实际的目标起码需要满足以下两点：</p>
+<ul>
+  <li><strong>目标一</strong>：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。</li>
+  <li><strong>目标二</strong>：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。</li>
+</ul>
+
+<h3 id="布局">布局</h3>
+
+<p>  从目标一来看，其实在大部分的静态博客主题中都是有这样的功能的（PS：可能 Jekyll 是个例外，原生只支持静态目录）。我们可以先来看两个例子 <a href="https://github.com/ahonn/hexo-theme-even">hexo-theme-even</a> 和 <a href="https://www.markdownguide.org/getting-started/">markdownguide</a>。前面的例子是 Hexo 主题，其中采用的是 js 控制 toc 的 div 层在 <code class="language-plaintext highlighter-rouge">position: absolute</code> 和 <code class="language-plaintext highlighter-rouge">position: fixed</code> 之间变换：当页面初始时，处于 absolute 位置；当页面在向下滑动时，处于 fixed 位置。这种方式需要有 js 代码的介入，增加了运算的成本（虽然其实很小）和维护成本（占比更大）。后面的例子是采用了 Bootstrap 框架中的 toc js 插件，能够满足目标一，且能跟踪内容位置来切换显示的二级目录，相对来说功能更加强大。唯一的缺点是，拖着 Bootstrap 这个大拖油瓶，如果本身的主题是基于 Bootstrap 框架的，那么就非常合适了。</p>
+
+<p>  这里我们想要实践的是在未使用 Bootstrap 框架的 Jekyll 主题中增加目标一的功能，因此这两个例子的做法都不是很合适。实际上，从需要维护的代码量来说，第一个例子的做法所需的 js 代码应该是算少的，但是不是存在完全不使用 js 代码也能实现这样的功能的方案呢？实际上是存在的。据我们所知，现在已有的页面布局的方法大致有三种：<strong>Table 布局</strong>、<strong>Div 布局</strong>和 <strong>Flex 布局</strong>。Table 布局算是最原始的布局方式了，主要利用 Table 的横列来组织页面中的各个元素的位置，特点是容易上手且不易出问题。缺点也比较明显，不大符合语义化 HTML 的规范，即 HTML 标签只做与它含义相同的事情。Table 标签作为表格布局标签，应该专注于展示表格数据，而非为整个页面布局操心。于是，Div 布局开始流行起来。Div 层的概念和布局的含义完全吻合，也容易理解。Div 布局比较让人头疼的地方是，页面中有很多浮动元素出现时，可能会出现各种各样想象不到的问题，某些布局之后被迫要清除浮动。Flex 布局的出现为 Div 布局提出了改善，使得页面布局不再被浮动元素和 Div 层浮动时内容大小为零所困恼。</p>
+
+<p>  由于想要目录内容块随着内容滑动而改变 position，我们可以采用 sticky 的 position 方案。这可能是 css 的一大进步，通过定义 sticky 的 position 可以让元素根据相邻元素的滑动而改变 position。其实，sticky 就等于 absolute 加上 fixed。只是这种等价只在某些条件成立时才能生效。我们可以通过参考资料 2~4 来了解更多详情。</p>
+
+<h3 id="目录生成">目录生成</h3>
+
+<p>  目录生成这里直接采用的是上述的第三种方案。具体在 post 模板页使用 toc 模块的代码如最后所示。</p>
+
+<h3 id="自适应">自适应</h3>
+
+<p>  为了实现目标二，这里采用了最简单的 CSS 媒体查询，即在平常 PC 端宽屏时采用如下 common.sass 中的样式。显示目录时，正文内容宽度为 720 px，目录宽度为 280 px。同时为了将目录与正文拉大间距以及更好区分，这里增加了 margin-left （30 px）、border-left（2px）和 padding（10px）。总计为，720+280+30+10*2=1050 px（这里忽略了 2px 的边界）。不显示目录时，让正文占据所有宽度，并设置目录块为 <code class="language-plaintext highlighter-rouge">display: none</code>，即隐藏该元素。具体实现如最终代码 common.sass 和 layout.sass 所示。在没有 sass 编译环境下，此处的 sass 代码可以取出转换为 css 使用。</p>
+
+<h3 id="最终代码">最终代码</h3>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- post.html --&gt;
+
+<span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">toc</span><span class="w"> </span><span class="p">%}</span>
+  &lt;div class="container"&gt;  
+    &lt;div class="contents"&gt;
+      &lt;article class="markdown-body"&gt;
+        <span class="p">{{</span><span class="w"> </span><span class="nv">page</span><span class="p">.</span><span class="nv">content</span><span class="w"> </span><span class="p">}}</span>
+      &lt;/article&gt;
+    &lt;/div&gt;   
+    &lt;div class="table-of-contents"&gt;
+      &lt;h2&gt;Contents&lt;/h2&gt;
+      <span class="p">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>toc.html<span class="w"> </span><span class="na">html</span><span class="o">=</span><span class="nv">content</span><span class="w"> </span><span class="p">%}</span>
+    &lt;/div&gt;
+  &lt;/div&gt;
+<span class="p">{%</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">%}</span>
+  &lt;article class="markdown-body"&gt;
+    <span class="p">{{</span><span class="w"> </span><span class="nv">page</span><span class="p">.</span><span class="nv">content</span><span class="w"> </span><span class="p">}}</span>
+  &lt;/article&gt;
+<span class="p">{%</span><span class="w"> </span><span class="kr">endif</span><span class="w"> </span><span class="p">%}</span>
+</code></pre></div></div>
+
+<div class="language-sass highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;!</span><span class="nt">--</span> <span class="nt">common</span><span class="nc">.sass</span> <span class="nt">--</span><span class="o">&gt;</span>
+
+<span class="nc">.container</span> <span class="err">{</span>
+    <span class="nl">width</span><span class="p">:</span> <span class="m">1050px</span><span class="err">;</span>
+    <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="nb">auto</span><span class="err">;</span>
+    <span class="nl">display</span><span class="p">:</span> <span class="n">flex</span><span class="err">;</span>
+    <span class="nl">flex-direction</span><span class="p">:</span> <span class="n">row</span><span class="err">;</span>
+    <span class="nc">.contents</span><span class="err">{</span>
+        <span class="nl">width</span><span class="p">:</span> <span class="m">720px</span><span class="err">;</span>
+    <span class="err">}</span>
+    <span class="nc">.table-of-contents</span><span class="err">{</span>
+        <span class="nl">padding</span><span class="p">:</span> <span class="m">10px</span><span class="err">;</span>
+        <span class="nl">border-left</span><span class="p">:</span> <span class="m">2px</span> <span class="nb">solid</span> <span class="mh">#efefef</span><span class="err">;</span>
+        <span class="nl">width</span><span class="p">:</span> <span class="m">280px</span><span class="err">;</span>
+        <span class="nl">position</span><span class="p">:</span> <span class="o">-</span><span class="n">webkit-sticky</span><span class="err">;</span>
+        <span class="nl">position</span><span class="p">:</span> <span class="n">sticky</span><span class="err">;</span>
+        <span class="nl">top</span><span class="p">:</span> <span class="m">80px</span><span class="err">;</span>
+        <span class="nl">margin-bottom</span><span class="p">:</span> <span class="m">80px</span><span class="err">;</span>
+        <span class="nl">height</span><span class="p">:</span> <span class="n">fit-content</span><span class="err">;</span>
+        <span class="nl">margin-left</span><span class="p">:</span> <span class="m">30px</span><span class="err">;</span>
+        <span class="nt">h2</span> <span class="err">{</span>
+            <span class="nl">font-family</span><span class="p">:</span> <span class="nb">fantasy</span><span class="err">;</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="mh">#e32e00</span><span class="err">;</span>
+        <span class="err">}</span>
+        <span class="nt">ul</span><span class="err">{</span>
+            <span class="nl">margin-left</span><span class="p">:</span> <span class="m">20px</span><span class="err">;</span>
+            <span class="nl">list-style-type</span><span class="p">:</span> <span class="n">revert</span><span class="err">;</span>
+            <span class="nl">font-size</span><span class="p">:</span> <span class="m">14px</span><span class="err">;</span>
+            <span class="nl">line-height</span><span class="p">:</span> <span class="m">24px</span><span class="err">;</span>
+            <span class="nl">color</span><span class="p">:</span> <span class="mh">#005b81</span><span class="err">;</span>
+            <span class="nt">a</span><span class="err">{</span>
+                <span class="nl">color</span><span class="p">:</span> <span class="mh">#005b81</span><span class="err">;</span>
+                <span class="k">&amp;</span><span class="nd">:hover</span><span class="err">{</span>
+                    <span class="nl">color</span><span class="p">:</span> <span class="mh">#e32e00</span><span class="err">;</span>
+                    <span class="nl">text-decoration</span><span class="p">:</span> <span class="nb">underline</span><span class="err">;</span>
+                <span class="err">}</span>
+            <span class="err">}</span>
+        <span class="err">}</span>
+    <span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<div class="language-sass highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;!</span><span class="nt">--</span> <span class="nt">layout</span><span class="nc">.sass</span> <span class="nt">--</span><span class="o">&gt;</span>
+
+<span class="k">@media</span> <span class="n">screen</span> <span class="nf">and</span> <span class="p">(</span><span class="n">max-width</span><span class="o">:</span> <span class="m">1050px</span><span class="p">)</span> <span class="err">{</span>
+    <span class="nc">.post-content</span> <span class="err">{</span>
+        <span class="nc">.container</span> <span class="err">{</span>
+            <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="err">;</span>
+            <span class="nc">.contents</span> <span class="err">{</span>
+                <span class="nl">width</span><span class="p">:</span> <span class="m">100%</span><span class="err">;</span>
+                <span class="nl">float</span><span class="p">:</span> <span class="nb">none</span><span class="err">;</span>
+                <span class="nl">margin</span><span class="p">:</span> <span class="m">0</span> <span class="nb">auto</span><span class="err">;</span>
+            <span class="err">}</span>
+            <span class="nc">.table-of-contents</span> <span class="err">{</span>
+                <span class="nl">display</span><span class="p">:</span> <span class="nb">none</span><span class="err">;</span>
+            <span class="err">}</span>
+        <span class="err">}</span>
+    <span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://plutotree.me/jekyll/2019/01/30/jekyll-toc-solution.html">jekyll自动生成目录的几种方案</a></li>
+  <li><a href="https://www.runoob.com/css/css-positioning.html">Runoob - CSS Position 定位</a></li>
+  <li><a href="https://segmentfault.com/a/1190000039858711">position:sticky 粘性定位的几种巧妙应用</a></li>
+  <li><a href="https://www.php.cn/css-tutorial-466057.html">css3 sticky不生效怎么办</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#jekyll-生成目录的方案">Jekyll 生成目录的方案</a><ul><li><a href="#第一种方案">第一种方案</a></li><li><a href="#第二种方案">第二种方案</a></li><li><a href="#第三种方案">第三种方案</a></li></ul></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#布局">布局</a></li><li><a href="#目录生成">目录生成</a></li><li><a href="#自适应">自适应</a></li><li><a href="#最终代码">最终代码</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/ac/ml/iterative-learning.html" class="read-next-link"></a>
+          <section>
+            <span>[译文]迭代机器学习：迈向模型准确性的一步</span>
+            <p>原文标题：Iterative Machine Learning: A step towards Model Acc...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

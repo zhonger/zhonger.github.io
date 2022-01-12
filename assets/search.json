@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "Jekyll 文章侧边索引导航",
+      "tags"     : "Jekyll 主题 theme 侧边索引 TOC",
+      "url"      : "/tech/webmaster/jekyll-toc.html"
+    } ,
+  
+    {
       "title"    : "[译文]迭代机器学习：迈向模型准确性的一步",
       "tags"     : "迭代学习 机器学习 iterative learning machine learning",
       "url"      : "/ac/ml/iterative-learning.html"
