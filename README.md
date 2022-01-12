@@ -6,7 +6,7 @@
 ## 多节点访问支持
 
 | 托管方 | 支持访问域名 | IPv4 | IPv6 | 备注 |
-| ---- | ---- | ---- | ---- |
+| ------------- | ------------- | ------------- | ------------- | ------------- |
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
