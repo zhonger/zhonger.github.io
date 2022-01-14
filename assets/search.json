@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "Gitlab 升级那些事儿",
+      "tags"     : "Nextcloud Upgrade Fix 升级 修复",
+      "url"      : "/tech/webmaster/gitlab-upgrade.html"
+    } ,
+  
+    {
+      "title"    : "Nextcloud 升级那些事儿",
+      "tags"     : "Nextcloud Upgrade Docker 升级 修复",
+      "url"      : "/tech/webmaster/nextcloud-upgrade.html"
+    } ,
+  
+    {
       "title"    : "Jekyll 文章侧边索引导航",
       "tags"     : "Jekyll 主题 theme 侧边索引 TOC",
       "url"      : "/tech/webmaster/jekyll-toc.html"

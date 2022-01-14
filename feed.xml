@@ -1,4 +1,327 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-01-12T23:47:40+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">Jekyll 文章侧边索引导航</title><link href="https://lisz.me/tech/webmaster/jekyll-toc.html" rel="alternate" type="text/html" title="Jekyll 文章侧边索引导航" /><published>2022-01-09T22:00:00+09:00</published><updated>2022-01-09T22:00:00+09:00</updated><id>https://lisz.me/tech/webmaster/jekyll-toc</id><content type="html" xml:base="https://lisz.me/tech/webmaster/jekyll-toc.html"><![CDATA[<ul id="markdown-toc">
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-01-14T15:12:24+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">Gitlab 升级那些事儿</title><link href="https://lisz.me/tech/webmaster/gitlab-upgrade.html" rel="alternate" type="text/html" title="Gitlab 升级那些事儿" /><published>2022-01-14T11:13:00+09:00</published><updated>2022-01-14T11:13:00+09:00</updated><id>https://lisz.me/tech/webmaster/gitlab-upgrade</id><content type="html" xml:base="https://lisz.me/tech/webmaster/gitlab-upgrade.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  Gitlab 的升级策略似乎已经在 <a href="../docker/gitlab.html">私有代码托管平台的搭建与运维</a> 中解释得比较详细了，但实际上忽略了秘钥文件 /home/git/gitlab/config/secrets.yml 和 /home/git/gitlab/config/gitlab.yml 的备份。这两个文件不是在容器内的代码文件里面吗？为什么又需要备份这两个秘钥文件呢？其实为了安全性的考虑，Gitlab 自带的备份工具只会备份包括数据库、数据文件以及基本配置信息，而秘钥作为安全文件不在备份之列。这两个秘钥文件涉及到数据库中某些加密字段的加密和解密过程，如果没有这两个原始文件或者使用了新的文件，那么 Gitlab 将无法对这些数据库中已有的加密字段进行解密，从而影响到某些页面的使用，尤其是管理员界面。</p>
+
+<h2 id="升级及修复">升级及修复</h2>
+
+<h3 id="升级">升级</h3>
+
+<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#边备份边升级">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
+
+<h3 id="修复管理员设置-500-错误">修复管理员设置 500 错误</h3>
+
+<p>  前面已经提到当两个秘钥文件与加密数据库字段的密钥文件不一致时，加密字段无法被解析，从而导致在管理页面修改任何涉及到加密字段的内容都会弹出 500 错误。官方给出的解决方案是将这些加密字段都置空，加密字段无法置空的记录均删除。</p>
+
+<h4 id="验证错误情况">验证错误情况</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 验证秘钥引发的错误情况</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rake gitlab:doctor:secrets
+
+<span class="c"># 打印信息</span>
+I, <span class="o">[</span>2022-01-14T12:11:06.976367 <span class="c">#207818]  INFO -- : Checking encrypted values in the database</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.207746 <span class="c">#207818]  INFO -- : - Ci::InstanceVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.236285 <span class="c">#207818]  INFO -- : - Ci::PipelineScheduleVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.264758 <span class="c">#207818]  INFO -- : - Ci::Variable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.289639 <span class="c">#207818]  INFO -- : - Ci::GroupVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.311448 <span class="c">#207818]  INFO -- : - Ci::PipelineVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.330957 <span class="c">#207818]  INFO -- : - Ci::JobVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.364695 <span class="c">#207818]  INFO -- : - ApplicationSetting failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.457574 <span class="c">#207818]  INFO -- : - User failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.483107 <span class="c">#207818]  INFO -- : - Clusters::Platforms::Kubernetes failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.504624 <span class="c">#207818]  INFO -- : - Snippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.507763 <span class="c">#207818]  INFO -- : - PersonalSnippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.510827 <span class="c">#207818]  INFO -- : - ProjectSnippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.534412 <span class="c">#207818]  INFO -- : - Clusters::Applications::Helm failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.552858 <span class="c">#207818]  INFO -- : - Clusters::Applications::Prometheus failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.572631 <span class="c">#207818]  INFO -- : - AlertManagement::HttpIntegration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.591745 <span class="c">#207818]  INFO -- : - ProjectImportData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.612651 <span class="c">#207818]  INFO -- : - RemoteMirror failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.634588 <span class="c">#207818]  INFO -- : - GrafanaIntegration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.657573 <span class="c">#207818]  INFO -- : - PagesDomainAcmeOrder failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.678924 <span class="c">#207818]  INFO -- : - JiraConnectInstallation failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.701446 <span class="c">#207818]  INFO -- : - PagesDomain failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.723396 <span class="c">#207818]  INFO -- : - WebHook failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.728267 <span class="c">#207818]  INFO -- : - ProjectHook failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.732394 <span class="c">#207818]  INFO -- : - ServiceHook failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.735019 <span class="c">#207818]  INFO -- : - SystemHook failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.756876 <span class="c">#207818]  INFO -- : - Integrations::IssueTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.775782 <span class="c">#207818]  INFO -- : - Integrations::JiraTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.797853 <span class="c">#207818]  INFO -- : - Integrations::ZentaoTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.818263 <span class="c">#207818]  INFO -- : - BulkImports::Configuration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.838087 <span class="c">#207818]  INFO -- : - Clusters::KubernetesNamespace failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.859981 <span class="c">#207818]  INFO -- : - Atlassian::Identity failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.881123 <span class="c">#207818]  INFO -- : - IncidentManagement::ProjectIncidentManagementSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.903973 <span class="c">#207818]  INFO -- : - ErrorTracking::ProjectErrorTrackingSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.922100 <span class="c">#207818]  INFO -- : - Alerting::ProjectAlertingSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.941501 <span class="c">#207818]  INFO -- : - Serverless::DomainCluster failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.944543 <span class="c">#207818]  INFO -- : - Clusters::Integrations::Prometheus failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.965724 <span class="c">#207818]  INFO -- : - Clusters::Providers::Gcp failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.985521 <span class="c">#207818]  INFO -- : - Clusters::Providers::Aws failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.005871 <span class="c">#207818]  INFO -- : - Packages::Debian::ProjectDistributionKey failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.025454 <span class="c">#207818]  INFO -- : - Packages::Debian::GroupDistributionKey failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.029060 <span class="c">#207818]  INFO -- : - Gitlab::BackgroundMigration::BackfillJiraTrackerDeploymentType2::JiraTrackerDataTemp failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.081215 <span class="c">#207818]  INFO -- : - Ci::Runner failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.309755 <span class="c">#207818]  INFO -- : - Ci::Build failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.449126 <span class="c">#207818]  INFO -- : - Group failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.662949 <span class="c">#207818]  INFO -- : - Project failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.710390 <span class="c">#207818]  INFO -- : - DeployToken failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.740096 <span class="c">#207818]  INFO -- : - Clusters::AgentToken failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762011 <span class="c">#207818]  INFO -- : - Operations::FeatureFlagsClient failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762112 <span class="c">#207818]  INFO -- : Total: 5 row(s) affected</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762150 <span class="c">#207818]  INFO -- : Done!</span>
+</code></pre></div></div>
+<h4 id="连接数据库">连接数据库</h4>
+
+<p>  以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Omnibus GitLab 14.1 and earlier:</span>
+<span class="nb">sudo </span>gitlab-rails dbconsole
+
+<span class="c"># For Omnibus GitLab 14.2 and later:</span>
+<span class="nb">sudo </span>gitlab-rails dbconsole <span class="nt">--database</span> main
+
+<span class="c"># For installations from source, GitLab 14.1 and earlier:</span>
+<span class="nb">sudo</span> <span class="nt">-u</span> git <span class="nt">-H</span> bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production
+
+<span class="c"># For installations from source, GitLab 14.2 and later:</span>
+<span class="nb">sudo</span> <span class="nt">-u</span> git <span class="nt">-H</span> bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production <span class="nt">--database</span> main
+
+<span class="c"># 容器 sameersbn/docker-gitlab 连接数据库</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production <span class="nt">--database</span> main
+</code></pre></div></div>
+
+<h4 id="查询并重置-cicd-数据">查询并重置 CI/CD 数据</h4>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">--  查询所有 CI/CD 记录</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">public</span><span class="p">.</span><span class="nv">"ci_group_variables"</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">public</span><span class="p">.</span><span class="nv">"ci_variables"</span><span class="p">;</span>
+
+<span class="c1">-- 删除所有 CI/CD 记录</span>
+<span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">ci_group_variables</span><span class="p">;</span>
+<span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">ci_variables</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="清除加密-token">清除加密 TOKEN</h4>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Clear project tokens</span>
+<span class="k">UPDATE</span> <span class="n">projects</span> <span class="k">SET</span> <span class="n">runners_token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">runners_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear group tokens</span>
+<span class="k">UPDATE</span> <span class="n">namespaces</span> <span class="k">SET</span> <span class="n">runners_token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">runners_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear instance tokens</span>
+<span class="k">UPDATE</span> <span class="n">application_settings</span> <span class="k">SET</span> <span class="n">runners_registration_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear key used for JWT authentication</span>
+<span class="c1">-- This may break the $CI_JWT_TOKEN job variable:</span>
+<span class="c1">-- https://gitlab.com/gitlab-org/gitlab/-/issues/325965</span>
+<span class="k">UPDATE</span> <span class="n">application_settings</span> <span class="k">SET</span> <span class="n">encrypted_ci_jwt_signing_key</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear runner tokens</span>
+<span class="k">UPDATE</span> <span class="n">ci_runners</span> <span class="k">SET</span> <span class="n">token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear build tokens</span>
+<span class="k">UPDATE</span> <span class="n">ci_builds</span> <span class="k">SET</span> <span class="n">token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- truncate web_hooks table</span>
+<span class="k">TRUNCATE</span> <span class="n">web_hooks</span> <span class="k">CASCADE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="重新验证错误">重新验证错误</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 验证秘钥引发的错误情况</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rake gitlab:doctor:secrets
+
+<span class="c"># 发现所有错误均为 0 表示修复成功。可以访问管理员设置页面进行验证。</span>
+</code></pre></div></div>
+
+<h3 id="修复指标和分析-500-错误">修复指标和分析 500 错误</h3>
+
+<p>  指标和分析 500 错误是从升级到 14.0.5 版本之后开始出现的，主要是因为在指标和分析中新增了指向 tmpfs 的配置项 prometheus_multiproc_dir。在默认的 sameersbn/docker-gitlab 容器中还未添加这一配置项，从而导致指标和分析页面无法访问。修复方法是，在 docker-compose.yml 中添加该配置项，如下所示。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2.3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.2.6</span>
+    <span class="na">command</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">--loglevel warning</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./redis-data:/data</span>
+
+  <span class="na">postgresql</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/postgresql:12-20200524</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./postgresql-data:/var/lib/postgresql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DB_USER=gitlab</span>
+    <span class="pi">-</span> <span class="s">DB_PASS=password</span>
+    <span class="pi">-</span> <span class="s">DB_NAME=gitlabhq_production</span>
+    <span class="pi">-</span> <span class="s">DB_EXTENSION=pg_trgm,btree_gist</span>
+
+  <span class="na">gitlab</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/gitlab:14.6.1</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">redis</span>
+    <span class="pi">-</span> <span class="s">postgresql</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">80:80"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">22:22"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./gitlab-data:/home/git/data</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/sbin/healthcheck"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">5m</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">5m</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DEBUG=false</span>
+    <span class="pi">-</span> <span class="s">prometheus_multiproc_dir=/dev/shm</span>
+    <span class="s">......</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost">When the secrets file is lost</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files">Storing configuration files</a></li>
+  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory">Metrics shared directory</a></li>
+  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
+  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
+  <li><a href="https://lintian.co/archives/16">GitLab 备份恢复后 500 错误修复</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387">metrics and profiling not working after upgrade to 14.0.5</a></li>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Nextcloud" /><category term="Upgrade" /><category term="Fix" /><category term="升级" /><category term="修复" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">Nextcloud 升级那些事儿</title><link href="https://lisz.me/tech/webmaster/nextcloud-upgrade.html" rel="alternate" type="text/html" title="Nextcloud 升级那些事儿" /><published>2022-01-13T11:26:00+09:00</published><updated>2022-01-13T11:26:00+09:00</updated><id>https://lisz.me/tech/webmaster/nextcloud-upgrade</id><content type="html" xml:base="https://lisz.me/tech/webmaster/nextcloud-upgrade.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  Nextcloud 的升级根据部署方式的不同也会有所差异。比如源码部署的 Nextcloud 的升级，一般是通过在网页端的管理页面点击升级按钮、经过漫长的等待然后完成。由于这种方式的升级要对本地的源代码同时进行升级，因此存在本地环境与升级所需环境不一致而导致升级失败的可能性。当然，一般来说源码升级总是要先看看环境要求是否相同，如果不同则应该先满足环境要求、再进行后续的升级。</p>
+
+<p>  而对于 Docker 方式部署的 Nextcloud 来说，源代码、数据文件（包括配置文件和网盘文件）、数据库、缓存数据库四者之间既可独立维护，也可搭配使用。这样一来，每次的升级基本上都只需要升级一下源代码的容器镜像即可。数据文件一般是直接本地持久化的，数据库容器镜像一般不太更新，除非是 Nextcloud 进行数据库大版本升级的大更新。至于缓存数据库（比如 Redis），升不升级都不大会影响 Nextcloud 的正常运行，除非是缓存数据库新旧版本的差异导致源代码无法直接使用新版本的缓存数据库。</p>
+
+<p>  之前笔者也写过两篇关于 Nextcloud 的文章： <a href="../webmaster/nextcloud.html">Nextcloud 搭建自己的云盘</a> 和 <a href="../docker/nextcloud-docker.html">Nextcloud 源码部署迁移到容器部署</a>。其中前一篇中其实也包括正常的 Docker 部署方式的 Nextcloud 升级，那为什么又要重新写一篇专门关于 Nextcloud 升级的文章呢？主要还是因为在实际升级过程中，发现了一些容易出问题的升级方式，而“如何在此基础上进行修复”是一件非常有意思的事情。那么接下来就来看看 Nextcloud 升级过程中到底能遇到哪些问题呢。</p>
+
+<h2 id="问题及修复">问题及修复</h2>
+
+<h3 id="问题一跨版本升级">问题一：跨版本升级</h3>
+
+<h4 id="问题描述">问题描述</h4>
+
+<p>  所谓跨版本升级就是指跳过某些重要版本更新而直接升级到另一个大版本。之前在 <a href="../docker/gitlab.html">私有代码托管平台的搭建与运维</a> 一文也提到过 Gitlab 的版本升级中不能直接从一个旧版本直接升级到最新版本，Nextcloud 亦然。比如，从 Nextcloud 22.0 版本升级到 Nextcloud 23.0 版本的话，就属于跨版本升级（在它们之间有一个重要版本更新 Nextcloud 22.2）。</p>
+
+<h4 id="修复方案">修复方案</h4>
+
+<p>  如果你在更新 Nextcloud 时未对版本更新可行性进行检验而直接跨版本更新，那么你将会在 Docker 容器的日志上看到提示无法跨版本更新。此时，由于容器只修改了 www/version.php 文件（如下所示），未对数据库及其他文件进行修改，还是可以修复回来的。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- version.php --&gt;</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$OC_Version</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="nv">$OC_VersionString</span> <span class="o">=</span> <span class="s1">'23.0.0'</span><span class="p">;</span>
+<span class="nv">$OC_Edition</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$OC_Channel</span> <span class="o">=</span> <span class="s1">'stable'</span><span class="p">;</span>
+<span class="nv">$OC_VersionCanBeUpgradedFrom</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+  <span class="s1">'nextcloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'22.2'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'23.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+  <span class="s1">'owncloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'10.5'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+<span class="p">);</span>
+<span class="nv">$OC_Build</span> <span class="o">=</span> <span class="s1">'2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980'</span><span class="p">;</span>
+<span class="nv">$vendor</span> <span class="o">=</span> <span class="s1">'nextcloud'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>  修复的主要步骤分为以下两步：</p>
+<ul>
+  <li>将 version.php 文件修改为以下内容，然后重新使用 nextcloud:22.0 容器启动。</li>
+  <li>启动后会发现一切恢复正常，然后根据 22.0 -&gt; 22.2 -&gt; 23.0 的规划路线进行正常升级即可。一般来说，升级镜像后镜像内部会自动运行更新命令，并在更新完成后自动关闭维护模式。如果镜像内部为自动运行，可以参考下面命令手动完成相关插件更新。</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- modified version.php --&gt;</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$OC_Version</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">);</span>   <span class="c1">// 修改为升级前版本号</span>
+<span class="nv">$OC_VersionString</span> <span class="o">=</span> <span class="s1">'22.0.0.12'</span><span class="p">;</span>  <span class="c1">// 修改为升级前版本号</span>
+<span class="nv">$OC_Edition</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$OC_Channel</span> <span class="o">=</span> <span class="s1">'stable'</span><span class="p">;</span>
+<span class="nv">$OC_VersionCanBeUpgradedFrom</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+  <span class="s1">'nextcloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'22.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>               <span class="c1">// 添加支持从升级前版本号开始升级</span>
+    <span class="s1">'22.2'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'23.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+  <span class="s1">'owncloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'10.5'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+<span class="p">);</span>
+<span class="nv">$OC_Build</span> <span class="o">=</span> <span class="s1">'2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980'</span><span class="p">;</span>
+<span class="nv">$vendor</span> <span class="o">=</span> <span class="s1">'nextcloud'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 手动更新镜像内部插件，并在更新后关闭维护模式。</span>
+
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ maintenance:mode <span class="nt">--on</span>
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ upgrade
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ maintenance:mode <span class="nt">--off</span>
+</code></pre></div></div>
+
+<h3 id="问题二数据库索引缺失">问题二：数据库索引缺失</h3>
+
+<h4 id="问题描述-1">问题描述</h4>
+
+<p>  在完成新版本更新后，打开管理员的概览界面，有的时候会看到如下报错：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>在数据表 “oc_share” 中无法找到索引 “share_with_index”。
+在数据表 “oc_share” 中无法找到索引 “parent_index”。
+在数据表 “oc_share” 中无法找到索引 “owner_index”。
+在数据表 “oc_share” 中无法找到索引 “initiator_index”。
+在数据表 “oc_filecache” 中无法找到索引 “fs_mtime”。
+</code></pre></div></div>
+
+<h4 id="修复方案-1">修复方案</h4>
+
+<p>  一般我们可以在报错的提示中看到建议执行命令 <code class="language-plaintext highlighter-rouge">occ db:add-missing-indices</code> 来修复丢失的索引。在容器外我们可以采用以下命令执行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ db:add-missing-indices
+</code></pre></div></div>
+
+<h3 id="问题三数据库类型转换失败">问题三：数据库类型转换失败</h3>
+
+<h4 id="问题描述-2">问题描述</h4>
+
+<p>  数据库中的一些列由于进行长整型转换而缺失。由于在较大的数据表重改变列类型会耗费一些时间，因此程序没有自动对其更改。以下为可能提示的列：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>activity.activity_id
+activity.object_id
+activity_mq.mail_id
+filecache.fileid
+filecache.storage
+filecache.parent
+filecache.mimetype
+filecache.mimepart
+filecache.mtime
+filecache.storage_mtime
+mimetypes.id
+mounts.storage_id
+mounts.root_id
+mounts.mount_id
+storages.numeric_id
+</code></pre></div></div>
+
+<h4 id="修复方案-2">修复方案</h4>
+
+<p>  这种问题也比较容易修正，一般会提示执行命令 <code class="language-plaintext highlighter-rouge">occ db:convert-filecache-bigint</code> 来修复。在容器外我们可以采用以下命令执行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ db:convert-filecache-bigint
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://nicolasbouliane.com/blog/nextcloud-docker-upgrade-error">How to fix an accidental Nextcloud docker image update</a></li>
+  <li><a href="https://blog.csdn.net/robin_cai/article/details/119530743">Nextcloud 升级后问题解决</a></li>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Nextcloud" /><category term="Upgrade" /><category term="Docker" /><category term="升级" /><category term="修复" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">Jekyll 文章侧边索引导航</title><link href="https://lisz.me/tech/webmaster/jekyll-toc.html" rel="alternate" type="text/html" title="Jekyll 文章侧边索引导航" /><published>2022-01-09T22:00:00+09:00</published><updated>2022-01-09T22:00:00+09:00</updated><id>https://lisz.me/tech/webmaster/jekyll-toc</id><content type="html" xml:base="https://lisz.me/tech/webmaster/jekyll-toc.html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#前言" id="markdown-toc-前言">前言</a>    <ul>
       <li><a href="#jekyll-生成目录的方案" id="markdown-toc-jekyll-生成目录的方案">Jekyll 生成目录的方案</a>        <ul>
           <li><a href="#第一种方案" id="markdown-toc-第一种方案">第一种方案</a></li>
@@ -985,8 +1308,8 @@ wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/dock
 
 <h4 id="配置">配置</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 gitlab-runner 容器</span>
-docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner register
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 gitlab-runner 容器并执行 gitlab-runner 命令</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner gitlab-runner register
 <span class="c"># 根据提示输入内容</span>
 <span class="c"># 输入 Gitlab 服务的 URL，比如 https://git.example.com</span>
 <span class="c"># 输入 Token，可以在 Gitlab 的管理员配置的 Runner 里面看到</span>
@@ -995,6 +1318,8 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner re
 <span class="c"># 选择 runner executor 为 docker</span>
 <span class="c"># 输入默认的编译环境镜像，比如 python:alpine</span>
 </code></pre></div></div>
+
+<p>（2022年1月14日更新，gitlab-runner 容器现采用 gitlab-runner 命令来统一管理。）</p>
 
 <h2 id="平台运维">平台运维</h2>
 
@@ -1667,618 +1992,4 @@ Host remote
 
 <p>  软件定义网络在进行异地组网中发挥了很大的作用，并且有一定的安全性保障。但其中也有一些不足之处，比如说两种方法都需要通过公网服务器到远程服务节点，如果要在远程服务节点和本地客户端节点之间上传下载较大的文章，网速仍然会受到公网服务器带宽的限制。如果有一台上下行比较对称、带宽充足的公网服务器，那么就很容易弥补这一不足。</p>
 
-<p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="多地" /><category term="组网" /><category term="互联" /><category term="Zerotier" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">AiiDA 与 Quantum Espresso</title><link href="https://lisz.me/tech/aiida/aiida-qe.html" rel="alternate" type="text/html" title="AiiDA 与 Quantum Espresso" /><published>2021-05-27T15:50:00+09:00</published><updated>2021-05-27T15:50:00+09:00</updated><id>https://lisz.me/tech/aiida/aiida-qe</id><content type="html" xml:base="https://lisz.me/tech/aiida/aiida-qe.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<p>  <a href="https://www.quantum-espresso.org/">Quantum Espresson</a> （以下简称 QE）是一款基于平面波函数的开源第一性原理计算框架，其免费、易安装使用等优点受到了广大第一性原理计算研究人员的喜爱。QE 不仅支持 CPU 的并行高性能计算，还支持 GPU 计算。这看起来有点像是计算机专业里的深度学习框架，有完整的计算加速支持。另外，QE 与 VASP 的使用习惯类似度比较高，不管是输入文件还是赝势文件，都可以类比着使用。对于计算后的输出结果，QE 也有一套完整的工具链辅助用户完成一些常用的分析操作，比如寻找 k 路径、分析能带结构（Band Gap）等等。</p>
-
-<p>  上次我们提到的 AiiDA 这款专门应用于材料计算领域的开源数据管理软件，与 QE 可以非常方便地结合在一起使用，而且 AiiDA 官网上给出的示例就是基于 QE 计算的。现在我们就来体验一下如何把 QE 和 AiiDA 结合起来使用吧。</p>
-
-<h2 id="实践">实践</h2>
-
-<p>  上次介绍的安装部署 AiiDA 的文章中的 <a href="https://quantum-mobile.readthedocs.io/en/latest/index.html">Quantum Mobile</a>，就开发了 AiiDA 与 QE 的一体化虚拟机和 Docker 镜像，直接使用非常方便。这里为了在服务器上部署比较方便，采用了 Docker 部署的方式。为了缩短篇幅，使用 Docker 启动一个 Quantum Mobile 实例的操作就不在此赘述了，请参照 <a href="./aiida-install.html">AiiDA 开源数据管理软件</a> 中的 <strong>Docker 安装</strong> 部分。</p>
-
-<h3 id="进入环境">进入环境</h3>
-
-<p>  如果创建的容器实例名为 quantum-mobile，那么使用 <code class="language-plaintext highlighter-rouge">docker exec -ti -u max quantum-mobile /bin/bash</code> 命令进入容器。由于容器默认是不开启 Anaconda 的虚拟环境的，所以需要使用 <code class="language-plaintext highlighter-rouge">workon aiida</code> 命令开启 AiiDA 专用虚拟环境。</p>
-
-<h3 id="初始化配置">初始化配置</h3>
-
-<p>  quantum-mobile 容器中默认是没有任何配置和数据的，只有已经正常运行的 aiida-core、PostgreSQL 和 RabbitMQ。这里我们可以使用快速配置来完成初始化。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 快速初始化</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi quicksetup
-Info: enter <span class="s2">"?"</span> <span class="k">for </span><span class="nb">help
-</span>Info: enter <span class="s2">"!"</span> to ignore the default and <span class="nb">set </span>no value
-Profile name <span class="o">[</span>quicksetup]: qe
-Email Address <span class="o">(</span><span class="k">for </span>sharing data<span class="o">)</span> <span class="o">[</span>aiida@localhost]:
-First name <span class="o">[</span>Max]:
-Last name <span class="o">[</span>Scientist]:
-Institution <span class="o">[</span>Quantum Mobile]:
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Trying to become <span class="s1">'postgres'</span> user. You may be asked <span class="k">for </span>your <span class="s1">'sudo'</span> password.
-Success: created new profile <span class="sb">`</span>qe<span class="sb">`</span><span class="nb">.</span>
-Info: migrating the database.
-Operations to perform:
-  Apply all migrations: auth, contenttypes, db
-Running migrations:
-  Applying contenttypes.0001_initial... OK
-  ......
-  Applying db.0045_dbgroup_extras... OK
-Success: database migration completed.
-
-<span class="c"># 将新建的 qe 配置设置为默认配置</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi profile setdefault qe
-Success: qe <span class="nb">set </span>as default profile
-
-</code></pre></div></div>
-
-<h3 id="导入数据">导入数据</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载测试 aiida 数据</span>
-wget http://phonondb.mtl.kyoto-u.ac.jp/aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
-<span class="c"># 导入 aiida 数据到数据库</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi import aiida_tutorial_2020_07_perovskites_v0.9.aiida
-Info: starting import: aiida_tutorial_2020_07_perovskites_v0.9.aiida
-Info: incompatible version detected <span class="k">for </span>aiida_tutorial_2020_07_perovskites_v0.9.aiida, trying migration
-Reading archive version
-Migration pathway: 0.9 -&gt; 0.10
-Extracting archive to work directory
-Info: proceeding with import of migrated archive
-
-IMPORT
-<span class="nt">--------</span>  <span class="nt">---------</span>
-Archive   extracted
-
-Parameters
-<span class="nt">--------------------------</span>  <span class="nt">------</span>
-Comment rules               newest
-New Node Extras rules       import
-Existing Node Extras rules  kcl
-Links - <span class="nv">label</span><span class="o">=</span>pseudos__O                  39.4%|██████████████████████████████████▋                                                     | 941/2388
-Summary
-<span class="nt">-----------------------</span>  <span class="nt">---------------</span>
-Auto-import Group label  20210527-074131
-User<span class="o">(</span>s<span class="o">)</span>                  1 new
-Computer<span class="o">(</span>s<span class="o">)</span>              1 new
-Node<span class="o">(</span>s<span class="o">)</span>                  1981 new
-Group<span class="o">(</span>s<span class="o">)</span>                 6 new
-Link<span class="o">(</span>s<span class="o">)</span>                  2388 new
-
-Success: imported archive aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
-<span class="c"># 下载赝势数据</span>
-wget http://phonondb.mtl.kyoto-u.ac.jp/SSSP_1.1_PBE_efficiency.tar.gz
-<span class="nb">mkdir </span>sssp_pseudos
-<span class="nb">tar</span> <span class="nt">-C</span> sssp_pseudos <span class="nt">-zxvf</span> SSSP_1.1_PBE_efficiency.tar.gz
-
-<span class="c"># 导入赝势数据</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi data upf uploadfamily sssp_pseudos <span class="s1">'SSSP'</span> <span class="s1">'SSSP pseudopotential library'</span>
-Success: UPF files found: 85. New files uploaded: 74
-</code></pre></div></div>
-
-<h3 id="配置主机和-qe">配置主机和 QE</h3>
-
-<p>  使用以下配置文件 computer.yml 和命令 <code class="language-plaintext highlighter-rouge">verdi computer setup --config computer.yml</code> 一键配置本地主机，并使用命令 <code class="language-plaintext highlighter-rouge">verdi computer configure local localhost</code> 配置  localhost 主机为 local 模式连接（相关配置均使用默认即可）。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># computer.yml</span>
-<span class="nn">---</span>
-<span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
-<span class="na">label</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
-<span class="na">hostname</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
-<span class="na">transport</span><span class="pi">:</span> <span class="s">local</span>
-<span class="na">scheduler</span><span class="pi">:</span> <span class="s2">"</span><span class="s">direct"</span>
-<span class="na">work_dir</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/home/max/.aiida_run"</span>
-<span class="na">mpirun_command</span><span class="pi">:</span> <span class="s2">"</span><span class="s">mpirun</span><span class="nv"> </span><span class="s">-np</span><span class="nv"> </span><span class="s">{tot_num_mpiprocs}"</span>
-<span class="na">mpiprocs_per_machine</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2"</span>
-<span class="na">shebang</span><span class="pi">:</span> <span class="s2">"</span><span class="s">#!/bin/bash"</span>
-<span class="na">prepend_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
-<span class="na">append_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
-</code></pre></div></div>
-
-<p>  使用以下配置文件 code.yml 和命令 <code class="language-plaintext highlighter-rouge">verdi code setup --config code.yml</code> 一键配置本地 QE 程序。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># code.yml</span>
-<span class="nn">---</span>
-<span class="na">label</span><span class="pi">:</span> <span class="s2">"</span><span class="s">qe-6.5-pw"</span>
-<span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantum_espresso</span><span class="nv"> </span><span class="s">v6.5"</span>
-<span class="na">input_plugin</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantumespresso.pw"</span>
-<span class="na">on_computer</span><span class="pi">:</span> <span class="no">true</span>
-<span class="na">remote_abs_path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/usr/local/bin/pw.x"</span>
-<span class="na">computer</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
-<span class="na">prepend_text</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ulimit</span><span class="nv"> </span><span class="s">-s</span><span class="nv"> </span><span class="s">unlimited"</span>
-<span class="na">append_text</span><span class="pi">:</span> <span class="s2">"</span><span class="nv"> </span><span class="s">"</span>
-</code></pre></div></div>
-
-<h3 id="提交计算">提交计算</h3>
-
-<h4 id="确认-aiida-后台状态">确认 aiida 后台状态</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看 aiida 后台状态</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon status
-Profile: qe
-The daemon is not running
-
-<span class="c"># 若如上未运行 aiida 后台程序，则使用以下命令启动</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon start
-Starting the daemon... RUNNING
-
-<span class="c"># 再次查看 aiida 后台状态，已正常运行</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi daemon status
-Profile: qe
-Daemon is running as PID 102244 since 2021-05-29 12:38:55
-Active workers <span class="o">[</span>1]:
-   PID    MEM %    CPU %  started
-<span class="nt">------</span>  <span class="nt">-------</span>  <span class="nt">-------</span>  <span class="nt">-------------------</span>
-102248    0.005        0  2021-05-29 12:38:55
-Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>num] to increase / decrease the amount of workers
-</code></pre></div></div>
-
-<h4 id="确认代码配置">确认代码配置</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 如下所示，列举出 qe-6.5，与已配置信息一致</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi code list
-<span class="c"># List of configured codes:</span>
-<span class="c"># (use 'verdi code show CODEID' to see the details)</span>
-<span class="k">*</span> pk 2056 - qe-6.5-pw@localhost
-</code></pre></div></div>
-
-<h4 id="准备执行脚本">准备执行脚本</h4>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cal.py
-</span>
-<span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">load_profile</span>
-
-<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
-<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
-<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
-<span class="kn">from</span> <span class="nn">aiida.orm.nodes.data.upf</span> <span class="kn">import</span> <span class="n">get_pseudos_from_structure</span>
-
-<span class="n">load_profile</span><span class="p">()</span>
-
-<span class="n">StructureData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'structure'</span><span class="p">)</span>
-<span class="n">Dict</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'dict'</span><span class="p">)</span>
-<span class="n">KpointsData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'array.kpoints'</span><span class="p">)</span>
-
-<span class="c1">###########################################
-# Set constant values here
-</span><span class="n">codename</span> <span class="o">=</span> <span class="s">'qe-6.5-pw@localhost'</span>
-<span class="n">pseudo_family</span> <span class="o">=</span> <span class="s">'SSSP'</span>
-<span class="c1">###########################################
-</span>
-
-<span class="n">code</span> <span class="o">=</span> <span class="n">Code</span><span class="p">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">codename</span><span class="p">)</span>
-<span class="n">builder</span> <span class="o">=</span> <span class="n">code</span><span class="p">.</span><span class="n">get_builder</span><span class="p">()</span>
-
-<span class="c1"># Metadata settings
-</span><span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">label</span> <span class="o">=</span> <span class="s">"PW test"</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">"My first AiiDA calc with Quantum ESPRESSO on Si"</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">resources</span> <span class="o">=</span> <span class="p">{</span><span class="s">'num_machines'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">options</span><span class="p">.</span><span class="n">max_wallclock_seconds</span> <span class="o">=</span> <span class="mi">30</span> <span class="o">*</span> <span class="mi">60</span>
-
-<span class="c1"># Si structure
-</span><span class="n">alat</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># angstorm
-</span><span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">]]</span>
-<span class="n">structure</span> <span class="o">=</span> <span class="n">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
-
-<span class="c1"># kpoints-mesh
-</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">KpointsData</span><span class="p">()</span>
-<span class="n">kpoints</span><span class="p">.</span><span class="n">set_kpoints_mesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">kpoints</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
-
-
-
-<span class="c1"># Input file
-</span><span class="n">parameters_dict</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">'CONTROL'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'calculation'</span><span class="p">:</span> <span class="s">'scf'</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s">'SYSTEM'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'ecutwfc'</span><span class="p">:</span> <span class="mf">30.</span><span class="p">,</span>
-        <span class="s">'ecutrho'</span><span class="p">:</span> <span class="mf">200.</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s">'ELECTRONS'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'conv_thr'</span><span class="p">:</span> <span class="mf">1.e-6</span><span class="p">,</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameters_dict</span><span class="p">)</span>
-<span class="n">parameters</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
-
-<span class="c1"># Builder settings
-</span><span class="n">builder</span><span class="p">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">kpoints</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">pseudos</span> <span class="o">=</span> <span class="n">get_pseudos_from_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="s">'SSSP'</span><span class="p">)</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">store_provenance</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="c1"># Submit the job
-</span><span class="n">calculation</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
-<span class="n">calculation</span><span class="p">.</span><span class="n">set_extra</span><span class="p">(</span><span class="s">"element"</span><span class="p">,</span> <span class="s">"Si"</span><span class="p">)</span>
-
-<span class="c1"># Print the job pk value
-</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'created calculation with Pk=</span><span class="si">{</span><span class="n">calculation</span><span class="p">.</span><span class="n">pk</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
-</code></pre></div></div>
-
-<h3 id="验证计算及结果">验证计算及结果</h3>
-
-<h4 id="验证计算状态">验证计算状态</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询任务执行状态，如下为 正在排队等待执行</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi process list
-  PK  Created    Process label    Process State    Process status
-<span class="nt">----</span>  <span class="nt">---------</span>  <span class="nt">---------------</span>  <span class="nt">---------------</span>  <span class="nt">---------------------------------------</span>
-2087  9s ago     PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
-
-<span class="c"># 当执行完后上一条命令是无法查询到任务状态的，需加 -a 选项查看所有任务</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi process list <span class="nt">-a</span>
-  PK  Created    Process label    Process State     Process status
-<span class="nt">----</span>  <span class="nt">---------</span>  <span class="nt">---------------</span>  <span class="nt">----------------</span>  <span class="nt">----------------</span>
- 648  2405D ago  PwCalculation    ⏹ Finished <span class="o">[</span>0]
- ......
- ......
-2087  27s ago    PwCalculation    ⏹ Finished <span class="o">[</span>0]
-
-Total results: 175
-
-Info: last <span class="nb">time </span>an entry changed state: 16s ago <span class="o">(</span>at 13:45:38 on 2021-05-29<span class="o">)</span>
-</code></pre></div></div>
-
-<h4 id="验证结果">验证结果</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询计算大致信息，如下可知一切正常并已格式化提取所需的输出信息</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi node show 2087
-Property     Value
-<span class="nt">-----------</span>  <span class="nt">-----------------------------------------------</span>
-<span class="nb">type         </span>PwCalculation
-state        Finished <span class="o">[</span>0]
-pk           2087
-uuid         f1762049-4627-4f87-acac-ad6074b87352
-label        PW <span class="nb">test
-</span>description  My first AiiDA calc with Quantum ESPRESSO on Si
-ctime        2021-05-29 13:45:27.167975+00:00
-mtime        2021-05-29 13:45:38.615649+00:00
-computer     <span class="o">[</span>2] localhost
-
-Inputs      PK    Type
-<span class="nt">----------</span>  <span class="nt">----</span>  <span class="nt">-------------</span>
-pseudos
-    Si      2043  UpfData
-code        2056  Code
-kpoints     2085  KpointsData
-parameters  2086  Dict
-structure   2084  StructureData
-
-Outputs              PK  Type
-<span class="nt">-----------------</span>  <span class="nt">----</span>  <span class="nt">--------------</span>
-output_band        2090  BandsData
-output_parameters  2092  Dict
-output_trajectory  2091  TrajectoryData
-remote_folder      2088  RemoteData
-retrieved          2089  FolderData
-
-<span class="c"># 查看计算输入文件</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob inputcat 2087 | less
-
-<span class="c"># 查看计算输出文件</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob outputcat 2087 | less
-
-<span class="c"># 查看格式化提取的计算结果</span>
-<span class="o">(</span>aiida<span class="o">)</span> max@37440764beb9:~<span class="nv">$ </span>verdi calcjob res 2087
-<span class="o">{</span>
-    <span class="s2">"beta_real_space"</span>: <span class="nb">false</span>,
-    <span class="s2">"charge_density"</span>: <span class="s2">"./charge-density.dat"</span>,
-    <span class="s2">"constraint_mag"</span>: 0,
-    <span class="s2">"convergence_info"</span>: <span class="o">{</span>
-        <span class="s2">"scf_conv"</span>: <span class="o">{</span>
-            <span class="s2">"convergence_achieved"</span>: <span class="nb">true</span>,
-            <span class="s2">"n_scf_steps"</span>: 5,
-            <span class="s2">"scf_error"</span>: 2.4316966484325e-08
-        <span class="o">}</span>
-    <span class="o">}</span>,
-    <span class="s2">"creator_name"</span>: <span class="s2">"pwscf"</span>,
-    <span class="s2">"creator_version"</span>: <span class="s2">"6.5"</span>,
-    <span class="s2">"dft_exchange_correlation"</span>: <span class="s2">"PBE"</span>,
-    <span class="s2">"do_magnetization"</span>: <span class="nb">true</span>,
-    <span class="s2">"do_not_use_time_reversal"</span>: <span class="nb">false</span>,
-    <span class="s2">"energy"</span>: <span class="nt">-285</span>.72326235425,
-    <span class="s2">"energy_accuracy"</span>: 6.80284586265e-07,
-    <span class="s2">"energy_accuracy_units"</span>: <span class="s2">"eV"</span>,
-    ......
-    ......   
-<span class="o">}</span>
-</code></pre></div></div>
-
-<h2 id="总结">总结</h2>
-
-<p>  如上所示，经过了一系列的操作 AiiDA 可以非常容易搭配 QE 完成第一性原理计算，并且对计算过程中的输入、输出数据都实现了有效的管理。不过在实践过程中发现， AiiDA 对于我们设定的 QE 输入参数并不会进行校验，甚至在 AiiDA 对这些输入参数进行格式化生成 QE 输入文件之后，QE 会视之为非法字符串。虽然参考了 <a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/sections/running.html#creating-and-launching-calculations">aiida-toturial</a> 的输入参数配置，但是其中的 mickeymouse 字段使得 QE 计算无法正常运行。</p>
-
-<p>  另外，如果我们设置了比较严苛的输入参数值，QE 计算可能会受限无法完成完整的计算，并且无法格式化抽取到预设的重要数据信息。因此只能在设置输入参数时，除必要精度需要外尽量放宽其他计算的限制。我们除了可以通过 AiiDA 提供的 verdi 命令来交互式查询计算结果之外，也可以进入到计算的目录直接查询 QE 计算的原始输入文件和输出文件（默认本地目录是 ~/.aiida_run）。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/index.html">2020 AiiDA tutorial week “Virtual Edition”</a></li>
-  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/index.html">aiida-quantumespresoo documentation</a></li>
-  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/_downloads/2dc19f2e8a6300052734f58bd000d074/pw_short_example.py">example script provided by aiida-quantumespresso</a></li>
-  <li><a href="https://github.com/atztogo/aiida-tutorials/wiki">AiiDA virtual hands-on tutorial in 2021 Spring</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="aiida" /><category term="AiiDA" /><category term="Quantum Espresso" /><category term="联机" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">AiiDA 开源数据管理软件</title><link href="https://lisz.me/tech/aiida/aiida-install.html" rel="alternate" type="text/html" title="AiiDA 开源数据管理软件" /><published>2021-05-12T16:30:00+09:00</published><updated>2021-05-12T16:30:00+09:00</updated><id>https://lisz.me/tech/aiida/aiida-install</id><content type="html" xml:base="https://lisz.me/tech/aiida/aiida-install.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<p>  对于机器学习来说，模型和数据是非常重要的。而模型与数据相比，模型即便是优化得再好，数据不够、不好的话，最终也不能得到一个好的预测结果。因此，我们在使用机器学习方法去建立某个领域模型的同时，也要注意相关原始数据的收集和整理。当我们需要通过庞大的计算量来获取数据的时候，通常可能需要使用大型服务器集群，甚至高性能集群、超算等等。这个时候，即使我们提交的计算在一段时间后得到了结果，恐怕也会是很多个结果文件，我们也很难从这些文件中抽取出我们关心的、想要的某些数据，更难将其整理成可直接用于机器学习的数据格式。</p>
-
-<p>  面对着这些问题，通常我们会想到可以建立一个数据库，再写一些脚本去自动解析文件内容、抽取关键字段和数值，甚至说为了编程可达需要给数据库设计一套 RESTful API 或者 GraphQL API。这样听起来工程量略大，但是一旦做好那么就可以建立类似于 Materias Project 等等那样的专业领域数据库。其实，我们并没有必要从零开始去做这些，因为现在已经有了开源数据管理软件 <a href="https://aiida.readthedocs.io">AiiDA</a>。</p>
-
-<p>  AiiDA 是一个使用 Python 编写的开源复杂工作流设计和管理框架，旨在帮助从事计算科学（计算材料学，计算生物学等）的相关研究者可以更好地管理、编写、使用和分享复杂的工作流以及计算产生的有用数据。它使得在研究中复杂的计算流程的可重复性得以保证。AiiDA 实现并支持了 ADES 模式的四大基石： (A)utomation（自动）, (D)ata（数据）, (E)nvironment（社区环境）, 和 (S)haring （分享）. AiiDA 支持的一些典型特性包括：</p>
-
-<ul>
-  <li><strong>工作流</strong>： AiiDA 可以用来创建并执行复杂的、自动文档化的工作流来连接本地和远端计算资源上的多个计算代码。</li>
-  <li><strong>高通量</strong>： AiiDA 的基于事件的工作流引擎支持成百上千（每小时）的带有检查点的计算例程。</li>
-  <li><strong>数据可验证性</strong>： AiiDA 自动追踪所有可验证性图中 (provenance graph) 的输入、输出和元数据，以保证计算的完全可重复性。</li>
-  <li><strong>高级的查询检索特性</strong>： AiiDA 的查询语言支持千万个节点的快速图查询。</li>
-  <li><strong>插件接口</strong>：: AiiDA 可以通过插件来支持各种计算代码，和各种数据分析工具，各种数据类型，任务调度工具以及远程连接方式等 (参见<a href="https://aiidateam.github.io/aiida-registry/">公共插件库</a>)。</li>
-  <li><strong>高性能集群接口</strong>： AiiDA 支持无缝地把你的计算从一个集群转换到另一个集群运行。AiiDA 兼容各种任务调度软件 <a href="https://slurm.schedmd.com/">SLURM</a>, <a href="https://www.pbspro.org/">PBS Pro</a>, <a href="http://www.adaptivecomputing.com/products/torque/">torque</a>, <a href="http://gridscheduler.sourceforge.net/">SGE</a> 或者 <a href="https://www.ibm.com/support/knowledgecenter/SSETD4/product_welcome_platform_lsf.html">LSF</a> ，对这些任务调度工具 AiiDA 都是源生支持的。</li>
-  <li><strong>开放科学</strong>： AiiDA 可以将全部或部分的数据库导出，以便于和同行分享，或上传至 <a href="https://www.materialscloud.org/">Materials Cloud</a> 以便 归档 和 检索 。</li>
-  <li><strong>开源</strong>： AiiDA 通过 <a href="https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/LICENSE.txt">MIT 开源协议</a> 发布。</li>
-</ul>
-
-<h2 id="安装">安装</h2>
-
-<p>  AiiDA 官网向用户提供了很多种安装方式，其中最简单的就是使用 Docker 一键式安装。这里不仅介绍由 AiiDA 团队构建的 <a href="https://hub.docker.com/r/aiida-team/aiida-core">aiida-team/aiida-core</a> 镜像，也介绍具有多种集成环境的 <a href="https://hub.docker.com/r/marvelnccr/quantum-mobile">Quantum Mobile</a> 镜像。除了 Docker 方式外，AiiDA 也可以直接在 Linux/Mac 系统上安装。考虑到 AiiDA 部署在 Linux 服务器操作系统上更为合适，这里就分别介绍使用 root 用户和非 root 用户如何安装 AiiDA 整体环境。</p>
-
-<h3 id="docker-安装">Docker 安装</h3>
-
-<h4 id="单独环境">单独环境</h4>
-
-<p>  使用以下 <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> 文件和命令 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 即可启动一个 aiida-team/aiida-core 容器实例。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.9'</span>
-
-<span class="na">services</span><span class="pi">:</span>
-  <span class="na">aiida</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">aiidateam/aiida-core:1.3.0</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">aiida</span>
-    <span class="na">stdin_open</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">tty</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">volumes</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="s">./data:/home/aiida/data</span>
-    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
-    <span class="na">networks</span><span class="pi">:</span>
-       <span class="na">extnetwork</span><span class="pi">:</span>
-          <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">192.168.18.2</span>
-
-<span class="na">networks</span><span class="pi">:</span>
-   <span class="na">extnetwork</span><span class="pi">:</span>
-      <span class="na">ipam</span><span class="pi">:</span>
-         <span class="na">config</span><span class="pi">:</span>
-         <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">192.168.18.0/24</span>
-           <span class="na">gateway</span><span class="pi">:</span> <span class="s">192.168.18.1</span>
-
-</code></pre></div></div>
-
-<h4 id="多软件环境">多软件环境</h4>
-
-<p>  使用以下 <code class="language-plaintext highlighter-rouge">docker-compose.yml</code> 文件和命令 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 即可启动一个 quantum-mobile 容器实例。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.4'</span>
-
-<span class="na">services</span><span class="pi">:</span>
-  <span class="na">quantum-mobile</span><span class="pi">:</span>
-    <span class="c1"># using the required tag</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">marvelnccr/quantum-mobile:20.11.2a"</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">quantum-mobile</span>
-    <span class="na">expose</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8888"</span> <span class="c1"># AiiDa Lab</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8890"</span> <span class="c1"># Jupyter Lab</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000"</span> <span class="c1"># REST API</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">22"</span>   <span class="c1"># SSH</span>
-    <span class="na">ports</span><span class="pi">:</span>
-      <span class="c1"># local:container</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8888:8888"</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">8890:8890"</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">22:22"</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">5000:5000"</span>
-    <span class="c1"># privileged mode and mounting the cgroup are required for correctly running sytsemd inside the container (set as the default command)</span>
-    <span class="na">privileged</span><span class="pi">:</span> <span class="no">true</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">/sys/fs/cgroup:/sys/fs/cgroup:ro"</span>
-    <span class="na">environment</span><span class="pi">:</span>
-      <span class="na">LC_ALL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">en_US.UTF-8"</span>
-      <span class="na">LANG</span><span class="pi">:</span> <span class="s2">"</span><span class="s">en_US.UTF-8"</span>
-    <span class="na">healthcheck</span><span class="pi">:</span>
-      <span class="c1"># check that the daemon has been started for the 'generic' profile</span>
-      <span class="c1"># can take a few minutes to start</span>
-      <span class="na">test</span><span class="pi">:</span> <span class="s">systemctl is-active --quiet aiida-daemon@generic.service</span>
-      <span class="na">interval</span><span class="pi">:</span> <span class="s">30s</span>
-      <span class="na">retries</span><span class="pi">:</span> <span class="m">6</span>
-      <span class="na">start_period</span><span class="pi">:</span> <span class="s">30s</span>
-</code></pre></div></div>
-
-<h3 id="root-用户安装">root 用户安装</h3>
-
-<p>  由于 root 用户对系统具有绝对的管理权限，所以使用 root 用户安装 AiiDA 环境时比较简单，可以直接通过 APT 源安装 PostgreSQL、RabbitMQ 和 AiiDA。如下所示，完成这三种软件的安装。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># AiiDA 是一个 python 编写的软件，所有需要 python 环境和 pip 包管理工具</span>
-<span class="nb">sudo </span>apt-get <span class="nb">install </span>git python3-dev python3-pip
-
-<span class="c"># 安装 PostgreSQL 服务器与客户端命令</span>
-<span class="nb">sudo </span>apt-get <span class="nb">install </span>postgresql postgresql-server-dev-all postgresql-client
-
-<span class="c"># 安装 RabbitMQ 服务器并查询当前状态</span>
-<span class="nb">sudo </span>apt-get <span class="nb">install </span>rabbitmq-server
-<span class="nb">sudo </span>rabbitmqctl status
-
-<span class="c"># 安装 AiiDA</span>
-pip <span class="nb">install </span>aiida-core
-</code></pre></div></div>
-
-<p>  具体配置 PostgreSQL 数据库和 AiiDA 与下一节中非 root 用户安装中相同，请参照下面内容。</p>
-
-<h3 id="非-root-用户安装">非 root 用户安装</h3>
-
-<p>  当我们在使用内网服务器时，很大可能我们只是一个普通用户，并没有管理员权限。所以如果想要以一个非 root 用户的身份来安装部署 AiiDA 服务是否也有可能呢？事实上是可以实现的，因为组成 AiiDA 运行环境的三个软件都可以以非 root 用户安装、启动。为了简化安装软件过程，这里我们采用了 <a href="https://www.anaconda.com">Anaconda</a> 来帮助我们更快、更简单地安装部署环境。（后续，笔者将会为服务器上的 Anaconda 使用特别写一篇文章进行详细介绍，这里默认已安装有 Anaconda。）</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动 Anaconda 环境</span>
-~/anaconda3/etc/profile.d/conda.sh
-</code></pre></div></div>
-
-<h4 id="安装-postgresql">安装 PostgreSQL</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 conda-forge 频道安装 PostgreSQL</span>
-conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge postgresql
-</code></pre></div></div>
-
-<h4 id="配置和启动-postgresql">配置和启动 PostgreSQL</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建 PostgreSQL 数据存储目录</span>
-<span class="c"># 为了更好地区别是从 conda 安装的 PostgreSQL，特别将存储目录放置在 conda 配置目录下</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> /home/lisz/.conda/envs/pgsql/data
-
-<span class="c"># 指定数据存储目录并后台启动 PostgreSQL，同时也开启日志记录功能</span>
-pg_ctl <span class="nt">-D</span> /home/lisz/.conda/envs/pgsql/data <span class="nt">-l</span> logfile start
-
-<span class="c"># 查看是否正常启动并监听端口 5432</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  data lsof <span class="nt">-i</span>:5432 
-COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
-postgres 33906 lisz    3u  IPv6 66936721      0t0  TCP localhost:postgres <span class="o">(</span>LISTEN<span class="o">)</span>
-postgres 33906 lisz    4u  IPv4 66936722      0t0  TCP localhost:postgres <span class="o">(</span>LISTEN<span class="o">)</span>
-
-<span class="c"># 使用当前 Linux 用户身份认证直接进入 PostgreSQL 默认数据库</span>
-<span class="c"># 进入后是 PostgreSQL 的 shell 交互界面</span>
-psql <span class="nt">-d</span>  postgres
-</code></pre></div></div>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">#</span> <span class="err">输入以下命令完成创建用户</span> <span class="n">aiida</span><span class="err">、数据库</span> <span class="n">aiidadb</span><span class="err">，并给用户赋给该数据库的完全权限</span>
-<span class="k">CREATE</span> <span class="k">USER</span> <span class="n">aiida</span> <span class="k">WITH</span> <span class="n">PASSWORD</span> <span class="s1">'&lt;password&gt;'</span><span class="p">;</span>
-<span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">aiidadb</span> <span class="k">OWNER</span> <span class="n">aiida</span> <span class="k">ENCODING</span> <span class="s1">'UTF8'</span> <span class="n">LC_COLLATE</span><span class="o">=</span><span class="s1">'en_US.UTF-8'</span> <span class="n">LC_CTYPE</span><span class="o">=</span><span class="s1">'en_US.UTF-8'</span> <span class="k">TEMPLATE</span><span class="o">=</span><span class="n">template0</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">aiidadb</span> <span class="k">to</span> <span class="n">aiida</span><span class="p">;</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 \q 即可退出刚才的 PostgreSQL 提供的 shell</span>
-<span class="c"># 测试 aiida 用户是否可以使用密码从本地成功登录 aiidadb 数据库</span>
-psql <span class="nt">-h</span> localhost <span class="nt">-d</span> aiidadb <span class="nt">-U</span> aiida <span class="nt">-W</span>
-<span class="c"># 输入密码后，出现 PostgreSQL 的 shell 即登录成功</span>
-</code></pre></div></div>
-
-<h4 id="安装-rabbitmq">安装 RabbitMQ</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 conda-forge 频道安装 RabbitMQ 服务器</span>
-conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge rabbitmq-server
-</code></pre></div></div>
-
-<h4 id="配置和启动-rabbitmq">配置和启动 RabbitMQ</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 让 RabbitMQ 使用默认配置在后台启动</span>
-rabbitmq-server <span class="nt">-detached</span>
-
-<span class="c"># 开启 Web 管理插件</span>
-rabbitmq-plugins <span class="nb">enable </span>rabbitmq_management
-
-<span class="c"># 查看状态，验证是否正常启动</span>
-rabbitmq-server status
-
-<span class="c"># 查看是否正常监听 5672 端口</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  ~ lsof <span class="nt">-i</span>:5672             
-COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
-beam.smp 33967 lisz   95u  IPv6 66919827      0t0  TCP <span class="k">*</span>:amqp <span class="o">(</span>LISTEN<span class="o">)</span>
-</code></pre></div></div>
-
-<p>  由于 RabbitMQ 是消息队列，这里没有持久化和验证的需求，所有可以直接使用默认配置启动即可。验证正常启动后，可浏览 <a href="http://localhost:15627">http://localhost:15627</a> 来访问 RabbitMQ 的 Web 界面，默认管理员账号和密码均为 guest。这里需要注意的是，如果是服务器安装，本地机器是需要使用 ssh 代理端口的功能把服务器端的 15627 端口代理到本地的 15627 端口之后才能正常访问。当然，笔者建议使用 VS Code 来远程连接服务器，然后就可以使用 VS Code 提供的界面简单操作代理远程端口到本地。</p>
-
-<h4 id="安装-aiida">安装 AiiDA</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 pypi 安装 AiiDA 核心程序</span>
-pip <span class="nb">install </span>aiida-core
-
-<span class="c"># 如果上述安装过程提示 conda 需要 pathlib 的 error，可以直接安装并重载 AiiDA 配置</span>
-conda <span class="nb">install </span>pathlib
-reentry scan
-</code></pre></div></div>
-
-<h4 id="配置和启动-aiida">配置和启动 AiiDA</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 为 AiiDA 配置用户信息、数据库连接信息以及消息队列连接信息</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi setup
-Info: enter <span class="s2">"?"</span> <span class="k">for </span><span class="nb">help
-</span>Info: enter <span class="s2">"!"</span> to ignore the default and <span class="nb">set </span>no value
-Profile name: conquest
-Email Address <span class="o">(</span><span class="k">for </span>sharing data<span class="o">)</span>: xxxx@xxx.xxx
-First name: Ben
-Last name: Li
-Institution: NIMS
-Database engine <span class="o">(</span>postgresql_psycopg2<span class="o">)</span> <span class="o">[</span>postgresql_psycopg2]: 
-Database backend <span class="o">(</span>django, sqlalchemy<span class="o">)</span> <span class="o">[</span>django]: 
-Database host: localhost
-Database port <span class="o">[</span>5432]: 
-Database name: aiidadb
-Database username: aiida
-Database password: 
-Broker protocol <span class="o">(</span>amqp, amqps<span class="o">)</span> <span class="o">[</span>amqp]: 
-Broker username <span class="o">[</span>guest]: 
-Broker password <span class="o">[</span>guest]: 
-Broker host <span class="o">[</span>127.0.0.1]: 
-Broker port <span class="o">[</span>5672]: 
-Broker virtual host name <span class="o">[]</span>:        
-Repository directory <span class="o">[</span>/home/lisz/.aiida/repository/conquest]:
-</code></pre></div></div>
-
-<p>  至此，AiiDA 的所有软件环境就已经完全配置好了，试试觉得也不是那么难哈。</p>
-
-<h2 id="验证安装">验证安装</h2>
-
-<p>  AiiDA 的验证安装主要是检查：</p>
-<ul>
-  <li>AiiDA 主程序是否在后台正常运行？</li>
-  <li>verdi shell 是否能正常使用？</li>
-  <li>AiiDA 与数据库、消息队列是否连接正常？</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># verdi daemon status 检查后台情况</span>
-<span class="c"># 如果没有启动使用 verdi daemon start 启动</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi daemon status
-Profile: conquest
-Daemon is running as PID 25383 since 2021-05-12 16:06:03
-Active workers <span class="o">[</span>1]:
-  PID    MEM %    CPU %  started
-<span class="nt">-----</span>  <span class="nt">-------</span>  <span class="nt">-------</span>  <span class="nt">-------------------</span>
-25387     0.02        0  2021-05-12 16:06:03
-Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>num] to increase / decrease the amount of workers
-
-<span class="c"># verdi shell 进入 shell，如果无法进入则证明配置仍然存在错误</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi shell
-Python 3.8.10 | packaged by conda-forge | <span class="o">(</span>default, May 11 2021, 07:01:05<span class="o">)</span> 
-Type <span class="s1">'copyright'</span>, <span class="s1">'credits'</span> or <span class="s1">'license'</span> <span class="k">for </span>more information
-IPython 7.23.1 <span class="nt">--</span> An enhanced Interactive Python. Type <span class="s1">'?'</span> <span class="k">for </span>help.
-
-In <span class="o">[</span>1]: <span class="nb">exit</span><span class="o">()</span>
-
-<span class="c"># verdi status 查看 AiiDA 的各项配置，包括自身及与其他软件之间的连接</span>
-<span class="o">(</span>base<span class="o">)</span> ➜  ~ verdi status
- ✔ config <span class="nb">dir</span>:  /home/lisz/.aiida
- ✔ profile:     On profile conquest
- ✔ repository:  /home/lisz/.aiida/repository/conquest
- ✔ postgres:    Connected as aiida@localhost:5432
- ✔ rabbitmq:    Connected as amqp://guest:guest@127.0.0.1:5672?heartbeat<span class="o">=</span>600
- ✔ daemon:      Daemon is running as PID 25383 since 2021-05-12 16:06:03
-</code></pre></div></div>
-
-<h2 id="后续使用">后续使用</h2>
-
-<p>  当我们已经有了 AiiDA 的完整环境之后，我们就会想要知道该如何使用 AiiDA 为计算服务呢。由于笔者是做第一性原理计算和机器学习的研究，所以后续将以 AiiDA 和 CONQUEST 的搭配使用为实例来介绍 AiiDA 的数据管理用法。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/installation.html#installing-the-aiida-core-package">AiiDA 官网中文文档</a></li>
-  <li><a href="https://blog.csdn.net/r_nznf/article/details/108056919">Conda 安装 PostgreSQL 数据库</a></li>
-  <li><a href="https://segmentfault.com/a/1190000010480589">离线安装 RabbitMQ </a></li>
-  <li><a href="https://blog.csdn.net/yufanghu/article/details/80829108">RabbitMQ 后台启动以及关闭</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="aiida" /><category term="AiiDA" /><category term="data management" /><category term="calculation" /><category term="postgresql" /><category term="rabbitmq" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+<p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="多地" /><category term="组网" /><category term="互联" /><category term="Zerotier" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>

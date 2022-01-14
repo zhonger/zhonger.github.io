@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gitlab 升级那些事儿 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Gitlab 升级那些事儿">
+    <meta name="keywords"  content="Nextcloud, Upgrade, Fix, 升级, 修复">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Gitlab 升级那些事儿 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/gitlab-upgrade.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+          
+            <a href="/tags.html#Upgrade" class="post-tag">Upgrade</a>
+          
+            <a href="/tags.html#Fix" class="post-tag">Fix</a>
+          
+            <a href="/tags.html#%E5%8D%87%E7%BA%A7" class="post-tag">升级</a>
+          
+            <a href="/tags.html#%E4%BF%AE%E5%A4%8D" class="post-tag">修复</a>
+          
+        
+      </div>
+      <h1>Gitlab 升级那些事儿</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-01-14"><i class="iconfont icon-date"></i>Fri, 14 Jan 2022 11:13:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 7400 字 <b>·</b> 阅读全文大约需要 22 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1640554518394-5c45f8f95deb?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">了解更加深入的 Gitlab 升级及修复</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
+
+<p>  Gitlab 的升级策略似乎已经在 <a href="../docker/gitlab.html">私有代码托管平台的搭建与运维</a> 中解释得比较详细了，但实际上忽略了秘钥文件 /home/git/gitlab/config/secrets.yml 和 /home/git/gitlab/config/gitlab.yml 的备份。这两个文件不是在容器内的代码文件里面吗？为什么又需要备份这两个秘钥文件呢？其实为了安全性的考虑，Gitlab 自带的备份工具只会备份包括数据库、数据文件以及基本配置信息，而秘钥作为安全文件不在备份之列。这两个秘钥文件涉及到数据库中某些加密字段的加密和解密过程，如果没有这两个原始文件或者使用了新的文件，那么 Gitlab 将无法对这些数据库中已有的加密字段进行解密，从而影响到某些页面的使用，尤其是管理员界面。</p>
+
+<h2 id="升级及修复">升级及修复</h2>
+
+<h3 id="升级">升级</h3>
+
+<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#边备份边升级">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
+
+<h3 id="修复管理员设置-500-错误">修复管理员设置 500 错误</h3>
+
+<p>  前面已经提到当两个秘钥文件与加密数据库字段的密钥文件不一致时，加密字段无法被解析，从而导致在管理页面修改任何涉及到加密字段的内容都会弹出 500 错误。官方给出的解决方案是将这些加密字段都置空，加密字段无法置空的记录均删除。</p>
+
+<h4 id="验证错误情况">验证错误情况</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 验证秘钥引发的错误情况</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rake gitlab:doctor:secrets
+
+<span class="c"># 打印信息</span>
+I, <span class="o">[</span>2022-01-14T12:11:06.976367 <span class="c">#207818]  INFO -- : Checking encrypted values in the database</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.207746 <span class="c">#207818]  INFO -- : - Ci::InstanceVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.236285 <span class="c">#207818]  INFO -- : - Ci::PipelineScheduleVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.264758 <span class="c">#207818]  INFO -- : - Ci::Variable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.289639 <span class="c">#207818]  INFO -- : - Ci::GroupVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.311448 <span class="c">#207818]  INFO -- : - Ci::PipelineVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.330957 <span class="c">#207818]  INFO -- : - Ci::JobVariable failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.364695 <span class="c">#207818]  INFO -- : - ApplicationSetting failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.457574 <span class="c">#207818]  INFO -- : - User failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.483107 <span class="c">#207818]  INFO -- : - Clusters::Platforms::Kubernetes failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.504624 <span class="c">#207818]  INFO -- : - Snippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.507763 <span class="c">#207818]  INFO -- : - PersonalSnippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.510827 <span class="c">#207818]  INFO -- : - ProjectSnippet failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.534412 <span class="c">#207818]  INFO -- : - Clusters::Applications::Helm failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.552858 <span class="c">#207818]  INFO -- : - Clusters::Applications::Prometheus failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.572631 <span class="c">#207818]  INFO -- : - AlertManagement::HttpIntegration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.591745 <span class="c">#207818]  INFO -- : - ProjectImportData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.612651 <span class="c">#207818]  INFO -- : - RemoteMirror failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.634588 <span class="c">#207818]  INFO -- : - GrafanaIntegration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.657573 <span class="c">#207818]  INFO -- : - PagesDomainAcmeOrder failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.678924 <span class="c">#207818]  INFO -- : - JiraConnectInstallation failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.701446 <span class="c">#207818]  INFO -- : - PagesDomain failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.723396 <span class="c">#207818]  INFO -- : - WebHook failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.728267 <span class="c">#207818]  INFO -- : - ProjectHook failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.732394 <span class="c">#207818]  INFO -- : - ServiceHook failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.735019 <span class="c">#207818]  INFO -- : - SystemHook failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.756876 <span class="c">#207818]  INFO -- : - Integrations::IssueTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.775782 <span class="c">#207818]  INFO -- : - Integrations::JiraTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.797853 <span class="c">#207818]  INFO -- : - Integrations::ZentaoTrackerData failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.818263 <span class="c">#207818]  INFO -- : - BulkImports::Configuration failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.838087 <span class="c">#207818]  INFO -- : - Clusters::KubernetesNamespace failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.859981 <span class="c">#207818]  INFO -- : - Atlassian::Identity failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.881123 <span class="c">#207818]  INFO -- : - IncidentManagement::ProjectIncidentManagementSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.903973 <span class="c">#207818]  INFO -- : - ErrorTracking::ProjectErrorTrackingSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.922100 <span class="c">#207818]  INFO -- : - Alerting::ProjectAlertingSetting failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.941501 <span class="c">#207818]  INFO -- : - Serverless::DomainCluster failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.944543 <span class="c">#207818]  INFO -- : - Clusters::Integrations::Prometheus failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.965724 <span class="c">#207818]  INFO -- : - Clusters::Providers::Gcp failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:14.985521 <span class="c">#207818]  INFO -- : - Clusters::Providers::Aws failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.005871 <span class="c">#207818]  INFO -- : - Packages::Debian::ProjectDistributionKey failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.025454 <span class="c">#207818]  INFO -- : - Packages::Debian::GroupDistributionKey failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.029060 <span class="c">#207818]  INFO -- : - Gitlab::BackgroundMigration::BackfillJiraTrackerDeploymentType2::JiraTrackerDataTemp failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.081215 <span class="c">#207818]  INFO -- : - Ci::Runner failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.309755 <span class="c">#207818]  INFO -- : - Ci::Build failures: 1</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.449126 <span class="c">#207818]  INFO -- : - Group failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.662949 <span class="c">#207818]  INFO -- : - Project failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.710390 <span class="c">#207818]  INFO -- : - DeployToken failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.740096 <span class="c">#207818]  INFO -- : - Clusters::AgentToken failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762011 <span class="c">#207818]  INFO -- : - Operations::FeatureFlagsClient failures: 0</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762112 <span class="c">#207818]  INFO -- : Total: 5 row(s) affected</span>
+I, <span class="o">[</span>2022-01-14T12:11:15.762150 <span class="c">#207818]  INFO -- : Done!</span>
+</code></pre></div></div>
+<h4 id="连接数据库">连接数据库</h4>
+
+<p>  以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Omnibus GitLab 14.1 and earlier:</span>
+<span class="nb">sudo </span>gitlab-rails dbconsole
+
+<span class="c"># For Omnibus GitLab 14.2 and later:</span>
+<span class="nb">sudo </span>gitlab-rails dbconsole <span class="nt">--database</span> main
+
+<span class="c"># For installations from source, GitLab 14.1 and earlier:</span>
+<span class="nb">sudo</span> <span class="nt">-u</span> git <span class="nt">-H</span> bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production
+
+<span class="c"># For installations from source, GitLab 14.2 and later:</span>
+<span class="nb">sudo</span> <span class="nt">-u</span> git <span class="nt">-H</span> bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production <span class="nt">--database</span> main
+
+<span class="c"># 容器 sameersbn/docker-gitlab 连接数据库</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rails dbconsole <span class="nt">-e</span> production <span class="nt">--database</span> main
+</code></pre></div></div>
+
+<h4 id="查询并重置-cicd-数据">查询并重置 CI/CD 数据</h4>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">--  查询所有 CI/CD 记录</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">public</span><span class="p">.</span><span class="nv">"ci_group_variables"</span><span class="p">;</span>
+<span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">public</span><span class="p">.</span><span class="nv">"ci_variables"</span><span class="p">;</span>
+
+<span class="c1">-- 删除所有 CI/CD 记录</span>
+<span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">ci_group_variables</span><span class="p">;</span>
+<span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">ci_variables</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="清除加密-token">清除加密 TOKEN</h4>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">-- Clear project tokens</span>
+<span class="k">UPDATE</span> <span class="n">projects</span> <span class="k">SET</span> <span class="n">runners_token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">runners_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear group tokens</span>
+<span class="k">UPDATE</span> <span class="n">namespaces</span> <span class="k">SET</span> <span class="n">runners_token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">runners_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear instance tokens</span>
+<span class="k">UPDATE</span> <span class="n">application_settings</span> <span class="k">SET</span> <span class="n">runners_registration_token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear key used for JWT authentication</span>
+<span class="c1">-- This may break the $CI_JWT_TOKEN job variable:</span>
+<span class="c1">-- https://gitlab.com/gitlab-org/gitlab/-/issues/325965</span>
+<span class="k">UPDATE</span> <span class="n">application_settings</span> <span class="k">SET</span> <span class="n">encrypted_ci_jwt_signing_key</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear runner tokens</span>
+<span class="k">UPDATE</span> <span class="n">ci_runners</span> <span class="k">SET</span> <span class="n">token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- Clear build tokens</span>
+<span class="k">UPDATE</span> <span class="n">ci_builds</span> <span class="k">SET</span> <span class="n">token</span> <span class="o">=</span> <span class="k">null</span><span class="p">,</span> <span class="n">token_encrypted</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+<span class="c1">-- truncate web_hooks table</span>
+<span class="k">TRUNCATE</span> <span class="n">web_hooks</span> <span class="k">CASCADE</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="重新验证错误">重新验证错误</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 验证秘钥引发的错误情况</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt">-u</span> git gitlab_gitlab_1 bundle <span class="nb">exec </span>rake gitlab:doctor:secrets
+
+<span class="c"># 发现所有错误均为 0 表示修复成功。可以访问管理员设置页面进行验证。</span>
+</code></pre></div></div>
+
+<h3 id="修复指标和分析-500-错误">修复指标和分析 500 错误</h3>
+
+<p>  指标和分析 500 错误是从升级到 14.0.5 版本之后开始出现的，主要是因为在指标和分析中新增了指向 tmpfs 的配置项 prometheus_multiproc_dir。在默认的 sameersbn/docker-gitlab 容器中还未添加这一配置项，从而导致指标和分析页面无法访问。修复方法是，在 docker-compose.yml 中添加该配置项，如下所示。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2.3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.2.6</span>
+    <span class="na">command</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">--loglevel warning</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./redis-data:/data</span>
+
+  <span class="na">postgresql</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/postgresql:12-20200524</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./postgresql-data:/var/lib/postgresql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DB_USER=gitlab</span>
+    <span class="pi">-</span> <span class="s">DB_PASS=password</span>
+    <span class="pi">-</span> <span class="s">DB_NAME=gitlabhq_production</span>
+    <span class="pi">-</span> <span class="s">DB_EXTENSION=pg_trgm,btree_gist</span>
+
+  <span class="na">gitlab</span><span class="pi">:</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/gitlab:14.6.1</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">redis</span>
+    <span class="pi">-</span> <span class="s">postgresql</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">80:80"</span>
+    <span class="pi">-</span> <span class="s2">"</span><span class="s">22:22"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">./gitlab-data:/home/git/data</span>
+    <span class="na">healthcheck</span><span class="pi">:</span>
+      <span class="na">test</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">CMD"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/sbin/healthcheck"</span><span class="pi">]</span>
+      <span class="na">interval</span><span class="pi">:</span> <span class="s">5m</span>
+      <span class="na">timeout</span><span class="pi">:</span> <span class="s">10s</span>
+      <span class="na">retries</span><span class="pi">:</span> <span class="m">3</span>
+      <span class="na">start_period</span><span class="pi">:</span> <span class="s">5m</span>
+    <span class="na">environment</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">DEBUG=false</span>
+    <span class="pi">-</span> <span class="s">prometheus_multiproc_dir=/dev/shm</span>
+    <span class="s">......</span>
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost">When the secrets file is lost</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files">Storing configuration files</a></li>
+  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory">Metrics shared directory</a></li>
+  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
+  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
+  <li><a href="https://lintian.co/archives/16">GitLab 备份恢复后 500 错误修复</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387">metrics and profiling not working after upgrade to 14.0.5</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#升级及修复">升级及修复</a><ul><li><a href="#升级">升级</a></li><li><a href="#修复管理员设置-500-错误">修复管理员设置 500 错误</a><ul><li><a href="#验证错误情况">验证错误情况</a></li><li><a href="#连接数据库">连接数据库</a></li><li><a href="#查询并重置-cicd-数据">查询并重置 CI/CD 数据</a></li><li><a href="#清除加密-token">清除加密 TOKEN</a></li><li><a href="#重新验证错误">重新验证错误</a></li></ul></li><li><a href="#修复指标和分析-500-错误">修复指标和分析 500 错误</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/nextcloud-upgrade.html" class="read-next-link"></a>
+          <section>
+            <span>Nextcloud 升级那些事儿</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1640554518394-5c45f8f95deb?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

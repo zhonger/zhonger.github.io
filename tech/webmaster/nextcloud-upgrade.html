@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nextcloud 升级那些事儿 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="Nextcloud 升级那些事儿">
+    <meta name="keywords"  content="Nextcloud, Upgrade, Docker, 升级, 修复">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Nextcloud 升级那些事儿 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/nextcloud-upgrade.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+          
+            <a href="/tags.html#Upgrade" class="post-tag">Upgrade</a>
+          
+            <a href="/tags.html#Docker" class="post-tag">Docker</a>
+          
+            <a href="/tags.html#%E5%8D%87%E7%BA%A7" class="post-tag">升级</a>
+          
+            <a href="/tags.html#%E4%BF%AE%E5%A4%8D" class="post-tag">修复</a>
+          
+        
+      </div>
+      <h1>Nextcloud 升级那些事儿</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-01-13"><i class="iconfont icon-date"></i>Thu, 13 Jan 2022 11:26:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 3091 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1640554518394-5c45f8f95deb?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">了解更加深入的 Nextcloud 升级及修复</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
+
+<p>  Nextcloud 的升级根据部署方式的不同也会有所差异。比如源码部署的 Nextcloud 的升级，一般是通过在网页端的管理页面点击升级按钮、经过漫长的等待然后完成。由于这种方式的升级要对本地的源代码同时进行升级，因此存在本地环境与升级所需环境不一致而导致升级失败的可能性。当然，一般来说源码升级总是要先看看环境要求是否相同，如果不同则应该先满足环境要求、再进行后续的升级。</p>
+
+<p>  而对于 Docker 方式部署的 Nextcloud 来说，源代码、数据文件（包括配置文件和网盘文件）、数据库、缓存数据库四者之间既可独立维护，也可搭配使用。这样一来，每次的升级基本上都只需要升级一下源代码的容器镜像即可。数据文件一般是直接本地持久化的，数据库容器镜像一般不太更新，除非是 Nextcloud 进行数据库大版本升级的大更新。至于缓存数据库（比如 Redis），升不升级都不大会影响 Nextcloud 的正常运行，除非是缓存数据库新旧版本的差异导致源代码无法直接使用新版本的缓存数据库。</p>
+
+<p>  之前笔者也写过两篇关于 Nextcloud 的文章： <a href="../webmaster/nextcloud.html">Nextcloud 搭建自己的云盘</a> 和 <a href="../docker/nextcloud-docker.html">Nextcloud 源码部署迁移到容器部署</a>。其中前一篇中其实也包括正常的 Docker 部署方式的 Nextcloud 升级，那为什么又要重新写一篇专门关于 Nextcloud 升级的文章呢？主要还是因为在实际升级过程中，发现了一些容易出问题的升级方式，而“如何在此基础上进行修复”是一件非常有意思的事情。那么接下来就来看看 Nextcloud 升级过程中到底能遇到哪些问题呢。</p>
+
+<h2 id="问题及修复">问题及修复</h2>
+
+<h3 id="问题一跨版本升级">问题一：跨版本升级</h3>
+
+<h4 id="问题描述">问题描述</h4>
+
+<p>  所谓跨版本升级就是指跳过某些重要版本更新而直接升级到另一个大版本。之前在 <a href="../docker/gitlab.html">私有代码托管平台的搭建与运维</a> 一文也提到过 Gitlab 的版本升级中不能直接从一个旧版本直接升级到最新版本，Nextcloud 亦然。比如，从 Nextcloud 22.0 版本升级到 Nextcloud 23.0 版本的话，就属于跨版本升级（在它们之间有一个重要版本更新 Nextcloud 22.2）。</p>
+
+<h4 id="修复方案">修复方案</h4>
+
+<p>  如果你在更新 Nextcloud 时未对版本更新可行性进行检验而直接跨版本更新，那么你将会在 Docker 容器的日志上看到提示无法跨版本更新。此时，由于容器只修改了 www/version.php 文件（如下所示），未对数据库及其他文件进行修改，还是可以修复回来的。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- version.php --&gt;</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$OC_Version</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+<span class="nv">$OC_VersionString</span> <span class="o">=</span> <span class="s1">'23.0.0'</span><span class="p">;</span>
+<span class="nv">$OC_Edition</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$OC_Channel</span> <span class="o">=</span> <span class="s1">'stable'</span><span class="p">;</span>
+<span class="nv">$OC_VersionCanBeUpgradedFrom</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+  <span class="s1">'nextcloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'22.2'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'23.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+  <span class="s1">'owncloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'10.5'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+<span class="p">);</span>
+<span class="nv">$OC_Build</span> <span class="o">=</span> <span class="s1">'2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980'</span><span class="p">;</span>
+<span class="nv">$vendor</span> <span class="o">=</span> <span class="s1">'nextcloud'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>  修复的主要步骤分为以下两步：</p>
+<ul>
+  <li>将 version.php 文件修改为以下内容，然后重新使用 nextcloud:22.0 容器启动。</li>
+  <li>启动后会发现一切恢复正常，然后根据 22.0 -&gt; 22.2 -&gt; 23.0 的规划路线进行正常升级即可。一般来说，升级镜像后镜像内部会自动运行更新命令，并在更新完成后自动关闭维护模式。如果镜像内部为自动运行，可以参考下面命令手动完成相关插件更新。</li>
+</ul>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- modified version.php --&gt;</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$OC_Version</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">);</span>   <span class="c1">// 修改为升级前版本号</span>
+<span class="nv">$OC_VersionString</span> <span class="o">=</span> <span class="s1">'22.0.0.12'</span><span class="p">;</span>  <span class="c1">// 修改为升级前版本号</span>
+<span class="nv">$OC_Edition</span> <span class="o">=</span> <span class="s1">''</span><span class="p">;</span>
+<span class="nv">$OC_Channel</span> <span class="o">=</span> <span class="s1">'stable'</span><span class="p">;</span>
+<span class="nv">$OC_VersionCanBeUpgradedFrom</span> <span class="o">=</span> <span class="k">array</span> <span class="p">(</span>
+  <span class="s1">'nextcloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'22.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>               <span class="c1">// 添加支持从升级前版本号开始升级</span>
+    <span class="s1">'22.2'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="s1">'23.0'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+  <span class="s1">'owncloud'</span> <span class="o">=&gt;</span>
+  <span class="k">array</span> <span class="p">(</span>
+    <span class="s1">'10.5'</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">),</span>
+<span class="p">);</span>
+<span class="nv">$OC_Build</span> <span class="o">=</span> <span class="s1">'2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980'</span><span class="p">;</span>
+<span class="nv">$vendor</span> <span class="o">=</span> <span class="s1">'nextcloud'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 手动更新镜像内部插件，并在更新后关闭维护模式。</span>
+
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ maintenance:mode <span class="nt">--on</span>
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ upgrade
+docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ maintenance:mode <span class="nt">--off</span>
+</code></pre></div></div>
+
+<h3 id="问题二数据库索引缺失">问题二：数据库索引缺失</h3>
+
+<h4 id="问题描述-1">问题描述</h4>
+
+<p>  在完成新版本更新后，打开管理员的概览界面，有的时候会看到如下报错：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>在数据表 “oc_share” 中无法找到索引 “share_with_index”。
+在数据表 “oc_share” 中无法找到索引 “parent_index”。
+在数据表 “oc_share” 中无法找到索引 “owner_index”。
+在数据表 “oc_share” 中无法找到索引 “initiator_index”。
+在数据表 “oc_filecache” 中无法找到索引 “fs_mtime”。
+</code></pre></div></div>
+
+<h4 id="修复方案-1">修复方案</h4>
+
+<p>  一般我们可以在报错的提示中看到建议执行命令 <code class="language-plaintext highlighter-rouge">occ db:add-missing-indices</code> 来修复丢失的索引。在容器外我们可以采用以下命令执行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ db:add-missing-indices
+</code></pre></div></div>
+
+<h3 id="问题三数据库类型转换失败">问题三：数据库类型转换失败</h3>
+
+<h4 id="问题描述-2">问题描述</h4>
+
+<p>  数据库中的一些列由于进行长整型转换而缺失。由于在较大的数据表重改变列类型会耗费一些时间，因此程序没有自动对其更改。以下为可能提示的列：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>activity.activity_id
+activity.object_id
+activity_mq.mail_id
+filecache.fileid
+filecache.storage
+filecache.parent
+filecache.mimetype
+filecache.mimepart
+filecache.mtime
+filecache.storage_mtime
+mimetypes.id
+mounts.storage_id
+mounts.root_id
+mounts.mount_id
+storages.numeric_id
+</code></pre></div></div>
+
+<h4 id="修复方案-2">修复方案</h4>
+
+<p>  这种问题也比较容易修正，一般会提示执行命令 <code class="language-plaintext highlighter-rouge">occ db:convert-filecache-bigint</code> 来修复。在容器外我们可以采用以下命令执行：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-u</span> www-data <span class="nt">-ti</span> nextcloud_app_1 php occ db:convert-filecache-bigint
+</code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://nicolasbouliane.com/blog/nextcloud-docker-upgrade-error">How to fix an accidental Nextcloud docker image update</a></li>
+  <li><a href="https://blog.csdn.net/robin_cai/article/details/119530743">Nextcloud 升级后问题解决</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#问题及修复">问题及修复</a><ul><li><a href="#问题一跨版本升级">问题一：跨版本升级</a><ul><li><a href="#问题描述">问题描述</a></li><li><a href="#修复方案">修复方案</a></li></ul></li><li><a href="#问题二数据库索引缺失">问题二：数据库索引缺失</a><ul><li><a href="#问题描述-1">问题描述</a></li><li><a href="#修复方案-1">修复方案</a></li></ul></li><li><a href="#问题三数据库类型转换失败">问题三：数据库类型转换失败</a><ul><li><a href="#问题描述-2">问题描述</a></li><li><a href="#修复方案-2">修复方案</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/gitlab-upgrade.html" class="read-next-link"></a>
+        <section>
+          <span>Gitlab 升级那些事儿</span>
+          <p>前言</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://images.unsplash.com/photo-1640554518394-5c45f8f95deb?w=1600&q=900" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/jekyll-toc.html" class="read-next-link"></a>
+          <section>
+            <span>Jekyll 文章侧边索引导航</span>
+            <p></p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+</body>
+
+</html>

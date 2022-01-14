@@ -5,9 +5,382 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 12 Jan 2022 23:47:40 +0900</pubDate>
-    <lastBuildDate>Wed, 12 Jan 2022 23:47:40 +0900</lastBuildDate>
+    <pubDate>Fri, 14 Jan 2022 15:12:24 +0900</pubDate>
+    <lastBuildDate>Fri, 14 Jan 2022 15:12:24 +0900</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
+    
+      <item>
+        <title>Gitlab 升级那些事儿</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Gitlab 的升级策略似乎已经在 &lt;a href=&quot;../docker/gitlab.html&quot;&gt;私有代码托管平台的搭建与运维&lt;/a&gt; 中解释得比较详细了，但实际上忽略了秘钥文件 /home/git/gitlab/config/secrets.yml 和 /home/git/gitlab/config/gitlab.yml 的备份。这两个文件不是在容器内的代码文件里面吗？为什么又需要备份这两个秘钥文件呢？其实为了安全性的考虑，Gitlab 自带的备份工具只会备份包括数据库、数据文件以及基本配置信息，而秘钥作为安全文件不在备份之列。这两个秘钥文件涉及到数据库中某些加密字段的加密和解密过程，如果没有这两个原始文件或者使用了新的文件，那么 Gitlab 将无法对这些数据库中已有的加密字段进行解密，从而影响到某些页面的使用，尤其是管理员界面。&lt;/p&gt;
+
+&lt;h2 id=&quot;升级及修复&quot;&gt;升级及修复&lt;/h2&gt;
+
+&lt;h3 id=&quot;升级&quot;&gt;升级&lt;/h3&gt;
+
+&lt;p&gt;  本次的升级及修复过程以 14.0.6 -&amp;gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&amp;gt; 14.1.Z -&amp;gt; latest 14.Y.Z 以及 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/docker-gitlab&lt;/a&gt; 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&amp;gt; 14.1.3 -&amp;gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&amp;gt; 14.1.3 -&amp;gt; 14.2.5 -&amp;gt; 14.3.3 -&amp;gt; 14.4.4 -&amp;gt; 14.5.2 -&amp;gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 &lt;a href=&quot;https://docs.gitlab.com/ee/update/#1410&quot;&gt;版本更新说明&lt;/a&gt; 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 &lt;a href=&quot;../docker/gitlab.html#边备份边升级&quot;&gt;私有代码托管平台的搭建与运维 - 边备份边升级&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;修复管理员设置-500-错误&quot;&gt;修复管理员设置 500 错误&lt;/h3&gt;
+
+&lt;p&gt;  前面已经提到当两个秘钥文件与加密数据库字段的密钥文件不一致时，加密字段无法被解析，从而导致在管理页面修改任何涉及到加密字段的内容都会弹出 500 错误。官方给出的解决方案是将这些加密字段都置空，加密字段无法置空的记录均删除。&lt;/p&gt;
+
+&lt;h4 id=&quot;验证错误情况&quot;&gt;验证错误情况&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 验证秘钥引发的错误情况&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rake gitlab:doctor:secrets
+
+&lt;span class=&quot;c&quot;&gt;# 打印信息&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:06.976367 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Checking encrypted values in the database&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.207746 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::InstanceVariable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.236285 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::PipelineScheduleVariable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.264758 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Variable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.289639 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::GroupVariable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.311448 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::PipelineVariable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.330957 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::JobVariable failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.364695 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ApplicationSetting failures: 1&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.457574 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - User failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.483107 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Platforms::Kubernetes failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.504624 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Snippet failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.507763 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PersonalSnippet failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.510827 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectSnippet failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.534412 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Applications::Helm failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.552858 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Applications::Prometheus failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.572631 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - AlertManagement::HttpIntegration failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.591745 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectImportData failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.612651 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - RemoteMirror failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.634588 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - GrafanaIntegration failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.657573 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PagesDomainAcmeOrder failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.678924 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - JiraConnectInstallation failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.701446 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PagesDomain failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.723396 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - WebHook failures: 1&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.728267 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectHook failures: 1&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.732394 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ServiceHook failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.735019 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - SystemHook failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.756876 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::IssueTrackerData failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.775782 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::JiraTrackerData failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.797853 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::ZentaoTrackerData failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.818263 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - BulkImports::Configuration failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.838087 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::KubernetesNamespace failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.859981 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Atlassian::Identity failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.881123 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - IncidentManagement::ProjectIncidentManagementSetting failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.903973 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ErrorTracking::ProjectErrorTrackingSetting failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.922100 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Alerting::ProjectAlertingSetting failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.941501 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Serverless::DomainCluster failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.944543 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Integrations::Prometheus failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.965724 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Providers::Gcp failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.985521 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Providers::Aws failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.005871 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Packages::Debian::ProjectDistributionKey failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.025454 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Packages::Debian::GroupDistributionKey failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.029060 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Gitlab::BackgroundMigration::BackfillJiraTrackerDeploymentType2::JiraTrackerDataTemp failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.081215 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Runner failures: 1&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.309755 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Build failures: 1&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.449126 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Group failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.662949 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Project failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.710390 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - DeployToken failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.740096 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::AgentToken failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762011 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Operations::FeatureFlagsClient failures: 0&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762112 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Total: 5 row(s) affected&lt;/span&gt;
+I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762150 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Done!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h4 id=&quot;连接数据库&quot;&gt;连接数据库&lt;/h4&gt;
+
+&lt;p&gt;  以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# For Omnibus GitLab 14.1 and earlier:&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gitlab-rails dbconsole
+
+&lt;span class=&quot;c&quot;&gt;# For Omnibus GitLab 14.2 and later:&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gitlab-rails dbconsole &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
+
+&lt;span class=&quot;c&quot;&gt;# For installations from source, GitLab 14.1 and earlier:&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production
+
+&lt;span class=&quot;c&quot;&gt;# For installations from source, GitLab 14.2 and later:&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
+
+&lt;span class=&quot;c&quot;&gt;# 容器 sameersbn/docker-gitlab 连接数据库&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;查询并重置-cicd-数据&quot;&gt;查询并重置 CI/CD 数据&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;--  查询所有 CI/CD 记录&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;ci_group_variables&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;ci_variables&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- 删除所有 CI/CD 记录&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;DELETE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_group_variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;DELETE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;清除加密-token&quot;&gt;清除加密 TOKEN&lt;/h4&gt;
+
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Clear project tokens&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;projects&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- Clear group tokens&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;namespaces&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- Clear instance tokens&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application_settings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_registration_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- Clear key used for JWT authentication&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- This may break the $CI_JWT_TOKEN job variable:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- https://gitlab.com/gitlab-org/gitlab/-/issues/325965&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application_settings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encrypted_ci_jwt_signing_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- Clear runner tokens&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_runners&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- Clear build tokens&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_builds&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- truncate web_hooks table&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;TRUNCATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;web_hooks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CASCADE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;重新验证错误&quot;&gt;重新验证错误&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 验证秘钥引发的错误情况&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rake gitlab:doctor:secrets
+
+&lt;span class=&quot;c&quot;&gt;# 发现所有错误均为 0 表示修复成功。可以访问管理员设置页面进行验证。&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;修复指标和分析-500-错误&quot;&gt;修复指标和分析 500 错误&lt;/h3&gt;
+
+&lt;p&gt;  指标和分析 500 错误是从升级到 14.0.5 版本之后开始出现的，主要是因为在指标和分析中新增了指向 tmpfs 的配置项 prometheus_multiproc_dir。在默认的 sameersbn/docker-gitlab 容器中还未添加这一配置项，从而导致指标和分析页面无法访问。修复方法是，在 docker-compose.yml 中添加该配置项，如下所示。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2.3&apos;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;redis&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis:6.2.6&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;--loglevel warning&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./redis-data:/data&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;postgresql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sameersbn/postgresql:12-20200524&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./postgresql-data:/var/lib/postgresql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_USER=gitlab&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_PASS=password&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_NAME=gitlabhq_production&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_EXTENSION=pg_trgm,btree_gist&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;gitlab&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sameersbn/gitlab:14.6.1&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;80:80&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;22:22&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./gitlab-data:/home/git/data&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;healthcheck&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CMD&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/local/sbin/healthcheck&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5m&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10s&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;retries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;start_period&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5m&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DEBUG=false&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;prometheus_multiproc_dir=/dev/shm&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost&quot;&gt;When the secrets file is lost&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files&quot;&gt;Storing configuration files&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory&quot;&gt;Metrics shared directory&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_44295157/article/details/119618816&quot;&gt;Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Shawn_wang_0919/article/details/115895292&quot;&gt;gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lintian.co/archives/16&quot;&gt;GitLab 备份恢复后 500 错误修复&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/sameersbn/docker-gitlab/issues/2387&quot;&gt;metrics and profiling not working after upgrade to 14.0.5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 14 Jan 2022 11:13:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/gitlab-upgrade.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/gitlab-upgrade.html</guid>
+        
+        <category>Nextcloud</category>
+        
+        <category>Upgrade</category>
+        
+        <category>Fix</category>
+        
+        <category>升级</category>
+        
+        <category>修复</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
+    
+      <item>
+        <title>Nextcloud 升级那些事儿</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Nextcloud 的升级根据部署方式的不同也会有所差异。比如源码部署的 Nextcloud 的升级，一般是通过在网页端的管理页面点击升级按钮、经过漫长的等待然后完成。由于这种方式的升级要对本地的源代码同时进行升级，因此存在本地环境与升级所需环境不一致而导致升级失败的可能性。当然，一般来说源码升级总是要先看看环境要求是否相同，如果不同则应该先满足环境要求、再进行后续的升级。&lt;/p&gt;
+
+&lt;p&gt;  而对于 Docker 方式部署的 Nextcloud 来说，源代码、数据文件（包括配置文件和网盘文件）、数据库、缓存数据库四者之间既可独立维护，也可搭配使用。这样一来，每次的升级基本上都只需要升级一下源代码的容器镜像即可。数据文件一般是直接本地持久化的，数据库容器镜像一般不太更新，除非是 Nextcloud 进行数据库大版本升级的大更新。至于缓存数据库（比如 Redis），升不升级都不大会影响 Nextcloud 的正常运行，除非是缓存数据库新旧版本的差异导致源代码无法直接使用新版本的缓存数据库。&lt;/p&gt;
+
+&lt;p&gt;  之前笔者也写过两篇关于 Nextcloud 的文章： &lt;a href=&quot;../webmaster/nextcloud.html&quot;&gt;Nextcloud 搭建自己的云盘&lt;/a&gt; 和 &lt;a href=&quot;../docker/nextcloud-docker.html&quot;&gt;Nextcloud 源码部署迁移到容器部署&lt;/a&gt;。其中前一篇中其实也包括正常的 Docker 部署方式的 Nextcloud 升级，那为什么又要重新写一篇专门关于 Nextcloud 升级的文章呢？主要还是因为在实际升级过程中，发现了一些容易出问题的升级方式，而“如何在此基础上进行修复”是一件非常有意思的事情。那么接下来就来看看 Nextcloud 升级过程中到底能遇到哪些问题呢。&lt;/p&gt;
+
+&lt;h2 id=&quot;问题及修复&quot;&gt;问题及修复&lt;/h2&gt;
+
+&lt;h3 id=&quot;问题一跨版本升级&quot;&gt;问题一：跨版本升级&lt;/h3&gt;
+
+&lt;h4 id=&quot;问题描述&quot;&gt;问题描述&lt;/h4&gt;
+
+&lt;p&gt;  所谓跨版本升级就是指跳过某些重要版本更新而直接升级到另一个大版本。之前在 &lt;a href=&quot;../docker/gitlab.html&quot;&gt;私有代码托管平台的搭建与运维&lt;/a&gt; 一文也提到过 Gitlab 的版本升级中不能直接从一个旧版本直接升级到最新版本，Nextcloud 亦然。比如，从 Nextcloud 22.0 版本升级到 Nextcloud 23.0 版本的话，就属于跨版本升级（在它们之间有一个重要版本更新 Nextcloud 22.2）。&lt;/p&gt;
+
+&lt;h4 id=&quot;修复方案&quot;&gt;修复方案&lt;/h4&gt;
+
+&lt;p&gt;  如果你在更新 Nextcloud 时未对版本更新可行性进行检验而直接跨版本更新，那么你将会在 Docker 容器的日志上看到提示无法跨版本更新。此时，由于容器只修改了 www/version.php 文件（如下所示），未对数据库及其他文件进行修改，还是可以修复回来的。&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- version.php --&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_VersionString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;23.0.0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Edition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;stable&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_VersionCanBeUpgradedFrom&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;22.2&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;23.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&apos;owncloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;10.5&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$vendor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  修复的主要步骤分为以下两步：&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;将 version.php 文件修改为以下内容，然后重新使用 nextcloud:22.0 容器启动。&lt;/li&gt;
+  &lt;li&gt;启动后会发现一切恢复正常，然后根据 22.0 -&amp;gt; 22.2 -&amp;gt; 23.0 的规划路线进行正常升级即可。一般来说，升级镜像后镜像内部会自动运行更新命令，并在更新完成后自动关闭维护模式。如果镜像内部为自动运行，可以参考下面命令手动完成相关插件更新。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- modified version.php --&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// 修改为升级前版本号&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_VersionString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;22.0.0.12&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 修改为升级前版本号&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Edition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;stable&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_VersionCanBeUpgradedFrom&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;22.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;// 添加支持从升级前版本号开始升级&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;22.2&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;23.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+  &lt;span class=&quot;s1&quot;&gt;&apos;owncloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;s1&quot;&gt;&apos;10.5&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$OC_Build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$vendor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 手动更新镜像内部插件，并在更新后关闭维护模式。&lt;/span&gt;
+
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ maintenance:mode &lt;span class=&quot;nt&quot;&gt;--on&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ upgrade
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ maintenance:mode &lt;span class=&quot;nt&quot;&gt;--off&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;问题二数据库索引缺失&quot;&gt;问题二：数据库索引缺失&lt;/h3&gt;
+
+&lt;h4 id=&quot;问题描述-1&quot;&gt;问题描述&lt;/h4&gt;
+
+&lt;p&gt;  在完成新版本更新后，打开管理员的概览界面，有的时候会看到如下报错：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;在数据表 “oc_share” 中无法找到索引 “share_with_index”。
+在数据表 “oc_share” 中无法找到索引 “parent_index”。
+在数据表 “oc_share” 中无法找到索引 “owner_index”。
+在数据表 “oc_share” 中无法找到索引 “initiator_index”。
+在数据表 “oc_filecache” 中无法找到索引 “fs_mtime”。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;修复方案-1&quot;&gt;修复方案&lt;/h4&gt;
+
+&lt;p&gt;  一般我们可以在报错的提示中看到建议执行命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;occ db:add-missing-indices&lt;/code&gt; 来修复丢失的索引。在容器外我们可以采用以下命令执行：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ db:add-missing-indices
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;问题三数据库类型转换失败&quot;&gt;问题三：数据库类型转换失败&lt;/h3&gt;
+
+&lt;h4 id=&quot;问题描述-2&quot;&gt;问题描述&lt;/h4&gt;
+
+&lt;p&gt;  数据库中的一些列由于进行长整型转换而缺失。由于在较大的数据表重改变列类型会耗费一些时间，因此程序没有自动对其更改。以下为可能提示的列：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;activity.activity_id
+activity.object_id
+activity_mq.mail_id
+filecache.fileid
+filecache.storage
+filecache.parent
+filecache.mimetype
+filecache.mimepart
+filecache.mtime
+filecache.storage_mtime
+mimetypes.id
+mounts.storage_id
+mounts.root_id
+mounts.mount_id
+storages.numeric_id
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;修复方案-2&quot;&gt;修复方案&lt;/h4&gt;
+
+&lt;p&gt;  这种问题也比较容易修正，一般会提示执行命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;occ db:convert-filecache-bigint&lt;/code&gt; 来修复。在容器外我们可以采用以下命令执行：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ db:convert-filecache-bigint
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nicolasbouliane.com/blog/nextcloud-docker-upgrade-error&quot;&gt;How to fix an accidental Nextcloud docker image update&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/robin_cai/article/details/119530743&quot;&gt;Nextcloud 升级后问题解决&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 13 Jan 2022 11:26:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/nextcloud-upgrade.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/nextcloud-upgrade.html</guid>
+        
+        <category>Nextcloud</category>
+        
+        <category>Upgrade</category>
+        
+        <category>Docker</category>
+        
+        <category>升级</category>
+        
+        <category>修复</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>Jekyll 文章侧边索引导航</title>
@@ -1129,8 +1502,8 @@ wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://raw.githubusercont
 
 &lt;h4 id=&quot;配置&quot;&gt;配置&lt;/h4&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 进入 gitlab-runner 容器&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; gitlab-runner register
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 进入 gitlab-runner 容器并执行 gitlab-runner 命令&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; gitlab-runner gitlab-runner register
 &lt;span class=&quot;c&quot;&gt;# 根据提示输入内容&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 输入 Gitlab 服务的 URL，比如 https://git.example.com&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 输入 Token，可以在 Gitlab 的管理员配置的 Runner 里面看到&lt;/span&gt;
@@ -1139,6 +1512,8 @@ docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;n
 &lt;span class=&quot;c&quot;&gt;# 选择 runner executor 为 docker&lt;/span&gt;
 &lt;span class=&quot;c&quot;&gt;# 输入默认的编译环境镜像，比如 python:alpine&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;（2022年1月14日更新，gitlab-runner 容器现采用 gitlab-runner 命令来统一管理。）&lt;/p&gt;
 
 &lt;h2 id=&quot;平台运维&quot;&gt;平台运维&lt;/h2&gt;
 
@@ -1871,666 +2246,6 @@ Host remote
         <category>tech</category>
         
         <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>AiiDA 与 Quantum Espresso</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  &lt;a href=&quot;https://www.quantum-espresso.org/&quot;&gt;Quantum Espresson&lt;/a&gt; （以下简称 QE）是一款基于平面波函数的开源第一性原理计算框架，其免费、易安装使用等优点受到了广大第一性原理计算研究人员的喜爱。QE 不仅支持 CPU 的并行高性能计算，还支持 GPU 计算。这看起来有点像是计算机专业里的深度学习框架，有完整的计算加速支持。另外，QE 与 VASP 的使用习惯类似度比较高，不管是输入文件还是赝势文件，都可以类比着使用。对于计算后的输出结果，QE 也有一套完整的工具链辅助用户完成一些常用的分析操作，比如寻找 k 路径、分析能带结构（Band Gap）等等。&lt;/p&gt;
-
-&lt;p&gt;  上次我们提到的 AiiDA 这款专门应用于材料计算领域的开源数据管理软件，与 QE 可以非常方便地结合在一起使用，而且 AiiDA 官网上给出的示例就是基于 QE 计算的。现在我们就来体验一下如何把 QE 和 AiiDA 结合起来使用吧。&lt;/p&gt;
-
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;p&gt;  上次介绍的安装部署 AiiDA 的文章中的 &lt;a href=&quot;https://quantum-mobile.readthedocs.io/en/latest/index.html&quot;&gt;Quantum Mobile&lt;/a&gt;，就开发了 AiiDA 与 QE 的一体化虚拟机和 Docker 镜像，直接使用非常方便。这里为了在服务器上部署比较方便，采用了 Docker 部署的方式。为了缩短篇幅，使用 Docker 启动一个 Quantum Mobile 实例的操作就不在此赘述了，请参照 &lt;a href=&quot;./aiida-install.html&quot;&gt;AiiDA 开源数据管理软件&lt;/a&gt; 中的 &lt;strong&gt;Docker 安装&lt;/strong&gt; 部分。&lt;/p&gt;
-
-&lt;h3 id=&quot;进入环境&quot;&gt;进入环境&lt;/h3&gt;
-
-&lt;p&gt;  如果创建的容器实例名为 quantum-mobile，那么使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker exec -ti -u max quantum-mobile /bin/bash&lt;/code&gt; 命令进入容器。由于容器默认是不开启 Anaconda 的虚拟环境的，所以需要使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;workon aiida&lt;/code&gt; 命令开启 AiiDA 专用虚拟环境。&lt;/p&gt;
-
-&lt;h3 id=&quot;初始化配置&quot;&gt;初始化配置&lt;/h3&gt;
-
-&lt;p&gt;  quantum-mobile 容器中默认是没有任何配置和数据的，只有已经正常运行的 aiida-core、PostgreSQL 和 RabbitMQ。这里我们可以使用快速配置来完成初始化。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 快速初始化&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi quicksetup
-Info: enter &lt;span class=&quot;s2&quot;&gt;&quot;?&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help
-&lt;/span&gt;Info: enter &lt;span class=&quot;s2&quot;&gt;&quot;!&quot;&lt;/span&gt; to ignore the default and &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;no value
-Profile name &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;quicksetup]: qe
-Email Address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;sharing data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;aiida@localhost]:
-First name &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Max]:
-Last name &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Scientist]:
-Institution &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Quantum Mobile]:
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Trying to become &lt;span class=&quot;s1&quot;&gt;&apos;postgres&apos;&lt;/span&gt; user. You may be asked &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;your &lt;span class=&quot;s1&quot;&gt;&apos;sudo&apos;&lt;/span&gt; password.
-Success: created new profile &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;qe&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Info: migrating the database.
-Operations to perform:
-  Apply all migrations: auth, contenttypes, db
-Running migrations:
-  Applying contenttypes.0001_initial... OK
-  ......
-  Applying db.0045_dbgroup_extras... OK
-Success: database migration completed.
-
-&lt;span class=&quot;c&quot;&gt;# 将新建的 qe 配置设置为默认配置&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi profile setdefault qe
-Success: qe &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;as default profile
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;导入数据&quot;&gt;导入数据&lt;/h3&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载测试 aiida 数据&lt;/span&gt;
-wget http://phonondb.mtl.kyoto-u.ac.jp/aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
-&lt;span class=&quot;c&quot;&gt;# 导入 aiida 数据到数据库&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi import aiida_tutorial_2020_07_perovskites_v0.9.aiida
-Info: starting import: aiida_tutorial_2020_07_perovskites_v0.9.aiida
-Info: incompatible version detected &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;aiida_tutorial_2020_07_perovskites_v0.9.aiida, trying migration
-Reading archive version
-Migration pathway: 0.9 -&amp;gt; 0.10
-Extracting archive to work directory
-Info: proceeding with import of migrated archive
-
-IMPORT
-&lt;span class=&quot;nt&quot;&gt;--------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;
-Archive   extracted
-
-Parameters
-&lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;
-Comment rules               newest
-New Node Extras rules       import
-Existing Node Extras rules  kcl
-Links - &lt;span class=&quot;nv&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;pseudos__O                  39.4%|██████████████████████████████████▋                                                     | 941/2388
-Summary
-&lt;span class=&quot;nt&quot;&gt;-----------------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;
-Auto-import Group label  20210527-074131
-User&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                  1 new
-Computer&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;              1 new
-Node&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                  1981 new
-Group&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                 6 new
-Link&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                  2388 new
-
-Success: imported archive aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
-&lt;span class=&quot;c&quot;&gt;# 下载赝势数据&lt;/span&gt;
-wget http://phonondb.mtl.kyoto-u.ac.jp/SSSP_1.1_PBE_efficiency.tar.gz
-&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;sssp_pseudos
-&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-C&lt;/span&gt; sssp_pseudos &lt;span class=&quot;nt&quot;&gt;-zxvf&lt;/span&gt; SSSP_1.1_PBE_efficiency.tar.gz
-
-&lt;span class=&quot;c&quot;&gt;# 导入赝势数据&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi data upf uploadfamily sssp_pseudos &lt;span class=&quot;s1&quot;&gt;&apos;SSSP&apos;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;SSSP pseudopotential library&apos;&lt;/span&gt;
-Success: UPF files found: 85. New files uploaded: 74
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;配置主机和-qe&quot;&gt;配置主机和 QE&lt;/h3&gt;
-
-&lt;p&gt;  使用以下配置文件 computer.yml 和命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;verdi computer setup --config computer.yml&lt;/code&gt; 一键配置本地主机，并使用命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;verdi computer configure local localhost&lt;/code&gt; 配置  localhost 主机为 local 模式连接（相关配置均使用默认即可）。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# computer.yml&lt;/span&gt;
-&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;localhost&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;localhost&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;localhost&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;transport&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;local&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;scheduler&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;direct&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;work_dir&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/home/max/.aiida_run&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;mpirun_command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mpirun&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-np&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{tot_num_mpiprocs}&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;mpiprocs_per_machine&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;shebang&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#!/bin/bash&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;prepend_text&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;append_text&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  使用以下配置文件 code.yml 和命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;verdi code setup --config code.yml&lt;/code&gt; 一键配置本地 QE 程序。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# code.yml&lt;/span&gt;
-&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;qe-6.5-pw&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;quantum_espresso&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;v6.5&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;input_plugin&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;quantumespresso.pw&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;on_computer&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;remote_abs_path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/local/bin/pw.x&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;computer&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;localhost&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;prepend_text&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ulimit&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-s&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;unlimited&quot;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;append_text&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;提交计算&quot;&gt;提交计算&lt;/h3&gt;
-
-&lt;h4 id=&quot;确认-aiida-后台状态&quot;&gt;确认 aiida 后台状态&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看 aiida 后台状态&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi daemon status
-Profile: qe
-The daemon is not running
-
-&lt;span class=&quot;c&quot;&gt;# 若如上未运行 aiida 后台程序，则使用以下命令启动&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi daemon start
-Starting the daemon... RUNNING
-
-&lt;span class=&quot;c&quot;&gt;# 再次查看 aiida 后台状态，已正常运行&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi daemon status
-Profile: qe
-Daemon is running as PID 102244 since 2021-05-29 12:38:55
-Active workers &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]:
-   PID    MEM %    CPU %  started
-&lt;span class=&quot;nt&quot;&gt;------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------------------&lt;/span&gt;
-102248    0.005        0  2021-05-29 12:38:55
-Use verdi daemon &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;incr | decr] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;num] to increase / decrease the amount of workers
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;确认代码配置&quot;&gt;确认代码配置&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 如下所示，列举出 qe-6.5，与已配置信息一致&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi code list
-&lt;span class=&quot;c&quot;&gt;# List of configured codes:&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# (use &apos;verdi code show CODEID&apos; to see the details)&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; pk 2056 - qe-6.5-pw@localhost
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;准备执行脚本&quot;&gt;准备执行脚本&lt;/h4&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# cal.py
-&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aiida&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;load_profile&lt;/span&gt;
-
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aiida.orm&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Code&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aiida.plugins&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFactory&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aiida.engine&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;submit&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;aiida.orm.nodes.data.upf&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_pseudos_from_structure&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;load_profile&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;StructureData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;structure&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;Dict&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;dict&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;KpointsData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DataFactory&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;array.kpoints&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;###########################################
-# Set constant values here
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;codename&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;qe-6.5-pw@localhost&apos;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;pseudo_family&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;SSSP&apos;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;###########################################
-&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;code&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_from_string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;codename&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get_builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Metadata settings
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;label&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;PW test&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;My first AiiDA calc with Quantum ESPRESSO on Si&quot;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;resources&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;num_machines&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_wallclock_seconds&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Si structure
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# angstorm
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unit_cell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;StructureData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cell&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unit_cell&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append_atom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;4.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;4.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alat&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;4.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Si&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;append_atom&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;symbols&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Si&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# kpoints-mesh
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kpoints&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;KpointsData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;kpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_kpoints_mesh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;kpoints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-
-
-&lt;span class=&quot;c1&quot;&gt;# Input file
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parameters_dict&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;CONTROL&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&apos;calculation&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;scf&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;SYSTEM&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&apos;ecutwfc&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;30.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&apos;ecutrho&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;200.&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;ELECTRONS&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s&quot;&gt;&apos;conv_thr&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;1.e-6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;dict&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parameters_dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;store&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Builder settings
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kpoints&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;kpoints&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pseudos&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_pseudos_from_structure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;structure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;SSSP&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;parameters&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dry_run&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;store_provenance&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Submit the job
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;calculation&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;submit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;builder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;calculation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set_extra&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;element&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Si&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Print the job pk value
-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sa&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;created calculation with Pk=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;calculation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pk&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;验证计算及结果&quot;&gt;验证计算及结果&lt;/h3&gt;
-
-&lt;h4 id=&quot;验证计算状态&quot;&gt;验证计算状态&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查询任务执行状态，如下为 正在排队等待执行&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi process list
-  PK  Created    Process label    Process State    Process status
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------------------------------------&lt;/span&gt;
-2087  9s ago     PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
-
-&lt;span class=&quot;c&quot;&gt;# 当执行完后上一条命令是无法查询到任务状态的，需加 -a 选项查看所有任务&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi process list &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
-  PK  Created    Process label    Process State     Process status
-&lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;---------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----------------&lt;/span&gt;
- 648  2405D ago  PwCalculation    ⏹ Finished &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0]
- ......
- ......
-2087  27s ago    PwCalculation    ⏹ Finished &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0]
-
-Total results: 175
-
-Info: last &lt;span class=&quot;nb&quot;&gt;time &lt;/span&gt;an entry changed state: 16s ago &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;at 13:45:38 on 2021-05-29&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;验证结果&quot;&gt;验证结果&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查询计算大致信息，如下可知一切正常并已格式化提取所需的输出信息&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi node show 2087
-Property     Value
-&lt;span class=&quot;nt&quot;&gt;-----------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-----------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;type         &lt;/span&gt;PwCalculation
-state        Finished &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0]
-pk           2087
-uuid         f1762049-4627-4f87-acac-ad6074b87352
-label        PW &lt;span class=&quot;nb&quot;&gt;test
-&lt;/span&gt;description  My first AiiDA calc with Quantum ESPRESSO on Si
-ctime        2021-05-29 13:45:27.167975+00:00
-mtime        2021-05-29 13:45:38.615649+00:00
-computer     &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2] localhost
-
-Inputs      PK    Type
-&lt;span class=&quot;nt&quot;&gt;----------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------------&lt;/span&gt;
-pseudos
-    Si      2043  UpfData
-code        2056  Code
-kpoints     2085  KpointsData
-parameters  2086  Dict
-structure   2084  StructureData
-
-Outputs              PK  Type
-&lt;span class=&quot;nt&quot;&gt;-----------------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;----&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;--------------&lt;/span&gt;
-output_band        2090  BandsData
-output_parameters  2092  Dict
-output_trajectory  2091  TrajectoryData
-remote_folder      2088  RemoteData
-retrieved          2089  FolderData
-
-&lt;span class=&quot;c&quot;&gt;# 查看计算输入文件&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi calcjob inputcat 2087 | less
-
-&lt;span class=&quot;c&quot;&gt;# 查看计算输出文件&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi calcjob outputcat 2087 | less
-
-&lt;span class=&quot;c&quot;&gt;# 查看格式化提取的计算结果&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;aiida&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; max@37440764beb9:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;verdi calcjob res 2087
-&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;s2&quot;&gt;&quot;beta_real_space&quot;&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;charge_density&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;./charge-density.dat&quot;&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;constraint_mag&quot;&lt;/span&gt;: 0,
-    &lt;span class=&quot;s2&quot;&gt;&quot;convergence_info&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;s2&quot;&gt;&quot;scf_conv&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;s2&quot;&gt;&quot;convergence_achieved&quot;&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,
-            &lt;span class=&quot;s2&quot;&gt;&quot;n_scf_steps&quot;&lt;/span&gt;: 5,
-            &lt;span class=&quot;s2&quot;&gt;&quot;scf_error&quot;&lt;/span&gt;: 2.4316966484325e-08
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;creator_name&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;pwscf&quot;&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;creator_version&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;6.5&quot;&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;dft_exchange_correlation&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;PBE&quot;&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;do_magnetization&quot;&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;do_not_use_time_reversal&quot;&lt;/span&gt;: &lt;span class=&quot;nb&quot;&gt;false&lt;/span&gt;,
-    &lt;span class=&quot;s2&quot;&gt;&quot;energy&quot;&lt;/span&gt;: &lt;span class=&quot;nt&quot;&gt;-285&lt;/span&gt;.72326235425,
-    &lt;span class=&quot;s2&quot;&gt;&quot;energy_accuracy&quot;&lt;/span&gt;: 6.80284586265e-07,
-    &lt;span class=&quot;s2&quot;&gt;&quot;energy_accuracy_units&quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&quot;eV&quot;&lt;/span&gt;,
-    ......
-    ......   
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
-
-&lt;p&gt;  如上所示，经过了一系列的操作 AiiDA 可以非常容易搭配 QE 完成第一性原理计算，并且对计算过程中的输入、输出数据都实现了有效的管理。不过在实践过程中发现， AiiDA 对于我们设定的 QE 输入参数并不会进行校验，甚至在 AiiDA 对这些输入参数进行格式化生成 QE 输入文件之后，QE 会视之为非法字符串。虽然参考了 &lt;a href=&quot;https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/sections/running.html#creating-and-launching-calculations&quot;&gt;aiida-toturial&lt;/a&gt; 的输入参数配置，但是其中的 mickeymouse 字段使得 QE 计算无法正常运行。&lt;/p&gt;
-
-&lt;p&gt;  另外，如果我们设置了比较严苛的输入参数值，QE 计算可能会受限无法完成完整的计算，并且无法格式化抽取到预设的重要数据信息。因此只能在设置输入参数时，除必要精度需要外尽量放宽其他计算的限制。我们除了可以通过 AiiDA 提供的 verdi 命令来交互式查询计算结果之外，也可以进入到计算的目录直接查询 QE 计算的原始输入文件和输出文件（默认本地目录是 ~/.aiida_run）。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/index.html&quot;&gt;2020 AiiDA tutorial week “Virtual Edition”&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/index.html&quot;&gt;aiida-quantumespresoo documentation&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://aiida-quantumespresso.readthedocs.io/en/latest/_downloads/2dc19f2e8a6300052734f58bd000d074/pw_short_example.py&quot;&gt;example script provided by aiida-quantumespresso&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/atztogo/aiida-tutorials/wiki&quot;&gt;AiiDA virtual hands-on tutorial in 2021 Spring&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 27 May 2021 15:50:00 +0900</pubDate>
-        <link>https://lisz.me/tech/aiida/aiida-qe.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/aiida/aiida-qe.html</guid>
-        
-        <category>AiiDA</category>
-        
-        <category>Quantum Espresso</category>
-        
-        <category>联机</category>
-        
-        
-        <category>tech</category>
-        
-        <category>aiida</category>
-        
-      </item>
-    
-      <item>
-        <title>AiiDA 开源数据管理软件</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  对于机器学习来说，模型和数据是非常重要的。而模型与数据相比，模型即便是优化得再好，数据不够、不好的话，最终也不能得到一个好的预测结果。因此，我们在使用机器学习方法去建立某个领域模型的同时，也要注意相关原始数据的收集和整理。当我们需要通过庞大的计算量来获取数据的时候，通常可能需要使用大型服务器集群，甚至高性能集群、超算等等。这个时候，即使我们提交的计算在一段时间后得到了结果，恐怕也会是很多个结果文件，我们也很难从这些文件中抽取出我们关心的、想要的某些数据，更难将其整理成可直接用于机器学习的数据格式。&lt;/p&gt;
-
-&lt;p&gt;  面对着这些问题，通常我们会想到可以建立一个数据库，再写一些脚本去自动解析文件内容、抽取关键字段和数值，甚至说为了编程可达需要给数据库设计一套 RESTful API 或者 GraphQL API。这样听起来工程量略大，但是一旦做好那么就可以建立类似于 Materias Project 等等那样的专业领域数据库。其实，我们并没有必要从零开始去做这些，因为现在已经有了开源数据管理软件 &lt;a href=&quot;https://aiida.readthedocs.io&quot;&gt;AiiDA&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;  AiiDA 是一个使用 Python 编写的开源复杂工作流设计和管理框架，旨在帮助从事计算科学（计算材料学，计算生物学等）的相关研究者可以更好地管理、编写、使用和分享复杂的工作流以及计算产生的有用数据。它使得在研究中复杂的计算流程的可重复性得以保证。AiiDA 实现并支持了 ADES 模式的四大基石： (A)utomation（自动）, (D)ata（数据）, (E)nvironment（社区环境）, 和 (S)haring （分享）. AiiDA 支持的一些典型特性包括：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;工作流&lt;/strong&gt;： AiiDA 可以用来创建并执行复杂的、自动文档化的工作流来连接本地和远端计算资源上的多个计算代码。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;高通量&lt;/strong&gt;： AiiDA 的基于事件的工作流引擎支持成百上千（每小时）的带有检查点的计算例程。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;数据可验证性&lt;/strong&gt;： AiiDA 自动追踪所有可验证性图中 (provenance graph) 的输入、输出和元数据，以保证计算的完全可重复性。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;高级的查询检索特性&lt;/strong&gt;： AiiDA 的查询语言支持千万个节点的快速图查询。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;插件接口&lt;/strong&gt;：: AiiDA 可以通过插件来支持各种计算代码，和各种数据分析工具，各种数据类型，任务调度工具以及远程连接方式等 (参见&lt;a href=&quot;https://aiidateam.github.io/aiida-registry/&quot;&gt;公共插件库&lt;/a&gt;)。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;高性能集群接口&lt;/strong&gt;： AiiDA 支持无缝地把你的计算从一个集群转换到另一个集群运行。AiiDA 兼容各种任务调度软件 &lt;a href=&quot;https://slurm.schedmd.com/&quot;&gt;SLURM&lt;/a&gt;, &lt;a href=&quot;https://www.pbspro.org/&quot;&gt;PBS Pro&lt;/a&gt;, &lt;a href=&quot;http://www.adaptivecomputing.com/products/torque/&quot;&gt;torque&lt;/a&gt;, &lt;a href=&quot;http://gridscheduler.sourceforge.net/&quot;&gt;SGE&lt;/a&gt; 或者 &lt;a href=&quot;https://www.ibm.com/support/knowledgecenter/SSETD4/product_welcome_platform_lsf.html&quot;&gt;LSF&lt;/a&gt; ，对这些任务调度工具 AiiDA 都是源生支持的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;开放科学&lt;/strong&gt;： AiiDA 可以将全部或部分的数据库导出，以便于和同行分享，或上传至 &lt;a href=&quot;https://www.materialscloud.org/&quot;&gt;Materials Cloud&lt;/a&gt; 以便 归档 和 检索 。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;开源&lt;/strong&gt;： AiiDA 通过 &lt;a href=&quot;https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/LICENSE.txt&quot;&gt;MIT 开源协议&lt;/a&gt; 发布。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-
-&lt;p&gt;  AiiDA 官网向用户提供了很多种安装方式，其中最简单的就是使用 Docker 一键式安装。这里不仅介绍由 AiiDA 团队构建的 &lt;a href=&quot;https://hub.docker.com/r/aiida-team/aiida-core&quot;&gt;aiida-team/aiida-core&lt;/a&gt; 镜像，也介绍具有多种集成环境的 &lt;a href=&quot;https://hub.docker.com/r/marvelnccr/quantum-mobile&quot;&gt;Quantum Mobile&lt;/a&gt; 镜像。除了 Docker 方式外，AiiDA 也可以直接在 Linux/Mac 系统上安装。考虑到 AiiDA 部署在 Linux 服务器操作系统上更为合适，这里就分别介绍使用 root 用户和非 root 用户如何安装 AiiDA 整体环境。&lt;/p&gt;
-
-&lt;h3 id=&quot;docker-安装&quot;&gt;Docker 安装&lt;/h3&gt;
-
-&lt;h4 id=&quot;单独环境&quot;&gt;单独环境&lt;/h4&gt;
-
-&lt;p&gt;  使用以下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; 文件和命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 即可启动一个 aiida-team/aiida-core 容器实例。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.9&apos;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;aiida&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;aiidateam/aiida-core:1.3.0&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;aiida&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;stdin_open&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;tty&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/home/aiida/data&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-       &lt;span class=&quot;na&quot;&gt;extnetwork&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;ipv4_address&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.18.2&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-   &lt;span class=&quot;na&quot;&gt;extnetwork&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;ipam&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-         &lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-         &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;subnet&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.18.0/24&lt;/span&gt;
-           &lt;span class=&quot;na&quot;&gt;gateway&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.18.1&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;多软件环境&quot;&gt;多软件环境&lt;/h4&gt;
-
-&lt;p&gt;  使用以下 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose.yml&lt;/code&gt; 文件和命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 即可启动一个 quantum-mobile 容器实例。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.4&apos;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;quantum-mobile&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# using the required tag&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;marvelnccr/quantum-mobile:20.11.2a&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;quantum-mobile&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;expose&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8888&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# AiiDa Lab&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8890&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Jupyter Lab&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;5000&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# REST API&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;22&quot;&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;# SSH&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;# local:container&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8888:8888&quot;&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8890:8890&quot;&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;22:22&quot;&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;5000:5000&quot;&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# privileged mode and mounting the cgroup are required for correctly running sytsemd inside the container (set as the default command)&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;privileged&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/sys/fs/cgroup:/sys/fs/cgroup:ro&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;LC_ALL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;en_US.UTF-8&quot;&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;LANG&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;en_US.UTF-8&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;healthcheck&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;# check that the daemon has been started for the &apos;generic&apos; profile&lt;/span&gt;
-      &lt;span class=&quot;c1&quot;&gt;# can take a few minutes to start&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;systemctl is-active --quiet aiida-daemon@generic.service&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;30s&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;retries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;start_period&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;30s&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;root-用户安装&quot;&gt;root 用户安装&lt;/h3&gt;
-
-&lt;p&gt;  由于 root 用户对系统具有绝对的管理权限，所以使用 root 用户安装 AiiDA 环境时比较简单，可以直接通过 APT 源安装 PostgreSQL、RabbitMQ 和 AiiDA。如下所示，完成这三种软件的安装。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# AiiDA 是一个 python 编写的软件，所有需要 python 环境和 pip 包管理工具&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;git python3-dev python3-pip
-
-&lt;span class=&quot;c&quot;&gt;# 安装 PostgreSQL 服务器与客户端命令&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;postgresql postgresql-server-dev-all postgresql-client
-
-&lt;span class=&quot;c&quot;&gt;# 安装 RabbitMQ 服务器并查询当前状态&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;rabbitmq-server
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;rabbitmqctl status
-
-&lt;span class=&quot;c&quot;&gt;# 安装 AiiDA&lt;/span&gt;
-pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;aiida-core
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  具体配置 PostgreSQL 数据库和 AiiDA 与下一节中非 root 用户安装中相同，请参照下面内容。&lt;/p&gt;
-
-&lt;h3 id=&quot;非-root-用户安装&quot;&gt;非 root 用户安装&lt;/h3&gt;
-
-&lt;p&gt;  当我们在使用内网服务器时，很大可能我们只是一个普通用户，并没有管理员权限。所以如果想要以一个非 root 用户的身份来安装部署 AiiDA 服务是否也有可能呢？事实上是可以实现的，因为组成 AiiDA 运行环境的三个软件都可以以非 root 用户安装、启动。为了简化安装软件过程，这里我们采用了 &lt;a href=&quot;https://www.anaconda.com&quot;&gt;Anaconda&lt;/a&gt; 来帮助我们更快、更简单地安装部署环境。（后续，笔者将会为服务器上的 Anaconda 使用特别写一篇文章进行详细介绍，这里默认已安装有 Anaconda。）&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 启动 Anaconda 环境&lt;/span&gt;
-~/anaconda3/etc/profile.d/conda.sh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;安装-postgresql&quot;&gt;安装 PostgreSQL&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 从 conda-forge 频道安装 PostgreSQL&lt;/span&gt;
-conda &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; conda-forge postgresql
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;配置和启动-postgresql&quot;&gt;配置和启动 PostgreSQL&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 创建 PostgreSQL 数据存储目录&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 为了更好地区别是从 conda 安装的 PostgreSQL，特别将存储目录放置在 conda 配置目录下&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /home/lisz/.conda/envs/pgsql/data
-
-&lt;span class=&quot;c&quot;&gt;# 指定数据存储目录并后台启动 PostgreSQL，同时也开启日志记录功能&lt;/span&gt;
-pg_ctl &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; /home/lisz/.conda/envs/pgsql/data &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; logfile start
-
-&lt;span class=&quot;c&quot;&gt;# 查看是否正常启动并监听端口 5432&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  data lsof &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;:5432 
-COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
-postgres 33906 lisz    3u  IPv6 66936721      0t0  TCP localhost:postgres &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-postgres 33906 lisz    4u  IPv4 66936722      0t0  TCP localhost:postgres &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 使用当前 Linux 用户身份认证直接进入 PostgreSQL 默认数据库&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 进入后是 PostgreSQL 的 shell 交互界面&lt;/span&gt;
-psql &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;  postgres
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;输入以下命令完成创建用户&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiida&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;、数据库&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiidadb&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;，并给用户赋给该数据库的完全权限&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;USER&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiida&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;WITH&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;PASSWORD&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&amp;lt;password&amp;gt;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;CREATE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DATABASE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiidadb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;OWNER&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiida&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ENCODING&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;UTF8&apos;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LC_COLLATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;en_US.UTF-8&apos;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LC_CTYPE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;en_US.UTF-8&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;TEMPLATE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;template0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;GRANT&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ALL&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;PRIVILEGES&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;DATABASE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiidadb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;aiida&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 使用 \q 即可退出刚才的 PostgreSQL 提供的 shell&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 测试 aiida 用户是否可以使用密码从本地成功登录 aiidadb 数据库&lt;/span&gt;
-psql &lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt; localhost &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; aiidadb &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; aiida &lt;span class=&quot;nt&quot;&gt;-W&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 输入密码后，出现 PostgreSQL 的 shell 即登录成功&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;安装-rabbitmq&quot;&gt;安装 RabbitMQ&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 从 conda-forge 频道安装 RabbitMQ 服务器&lt;/span&gt;
-conda &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; conda-forge rabbitmq-server
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;配置和启动-rabbitmq&quot;&gt;配置和启动 RabbitMQ&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 让 RabbitMQ 使用默认配置在后台启动&lt;/span&gt;
-rabbitmq-server &lt;span class=&quot;nt&quot;&gt;-detached&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 开启 Web 管理插件&lt;/span&gt;
-rabbitmq-plugins &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;rabbitmq_management
-
-&lt;span class=&quot;c&quot;&gt;# 查看状态，验证是否正常启动&lt;/span&gt;
-rabbitmq-server status
-
-&lt;span class=&quot;c&quot;&gt;# 查看是否正常监听 5672 端口&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  ~ lsof &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;:5672             
-COMMAND    PID USER   FD   TYPE   DEVICE SIZE/OFF NODE NAME
-beam.smp 33967 lisz   95u  IPv6 66919827      0t0  TCP &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:amqp &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LISTEN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  由于 RabbitMQ 是消息队列，这里没有持久化和验证的需求，所有可以直接使用默认配置启动即可。验证正常启动后，可浏览 &lt;a href=&quot;http://localhost:15627&quot;&gt;http://localhost:15627&lt;/a&gt; 来访问 RabbitMQ 的 Web 界面，默认管理员账号和密码均为 guest。这里需要注意的是，如果是服务器安装，本地机器是需要使用 ssh 代理端口的功能把服务器端的 15627 端口代理到本地的 15627 端口之后才能正常访问。当然，笔者建议使用 VS Code 来远程连接服务器，然后就可以使用 VS Code 提供的界面简单操作代理远程端口到本地。&lt;/p&gt;
-
-&lt;h4 id=&quot;安装-aiida&quot;&gt;安装 AiiDA&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 从 pypi 安装 AiiDA 核心程序&lt;/span&gt;
-pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;aiida-core
-
-&lt;span class=&quot;c&quot;&gt;# 如果上述安装过程提示 conda 需要 pathlib 的 error，可以直接安装并重载 AiiDA 配置&lt;/span&gt;
-conda &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;pathlib
-reentry scan
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;配置和启动-aiida&quot;&gt;配置和启动 AiiDA&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 为 AiiDA 配置用户信息、数据库连接信息以及消息队列连接信息&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  ~ verdi setup
-Info: enter &lt;span class=&quot;s2&quot;&gt;&quot;?&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;help
-&lt;/span&gt;Info: enter &lt;span class=&quot;s2&quot;&gt;&quot;!&quot;&lt;/span&gt; to ignore the default and &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;no value
-Profile name: conquest
-Email Address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;sharing data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: xxxx@xxx.xxx
-First name: Ben
-Last name: Li
-Institution: NIMS
-Database engine &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;postgresql_psycopg2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;postgresql_psycopg2]: 
-Database backend &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;django, sqlalchemy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;django]: 
-Database host: localhost
-Database port &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5432]: 
-Database name: aiidadb
-Database username: aiida
-Database password: 
-Broker protocol &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;amqp, amqps&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;amqp]: 
-Broker username &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;guest]: 
-Broker password &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;guest]: 
-Broker host &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;127.0.0.1]: 
-Broker port &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;5672]: 
-Broker virtual host name &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:        
-Repository directory &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;/home/lisz/.aiida/repository/conquest]:
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  至此，AiiDA 的所有软件环境就已经完全配置好了，试试觉得也不是那么难哈。&lt;/p&gt;
-
-&lt;h2 id=&quot;验证安装&quot;&gt;验证安装&lt;/h2&gt;
-
-&lt;p&gt;  AiiDA 的验证安装主要是检查：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;AiiDA 主程序是否在后台正常运行？&lt;/li&gt;
-  &lt;li&gt;verdi shell 是否能正常使用？&lt;/li&gt;
-  &lt;li&gt;AiiDA 与数据库、消息队列是否连接正常？&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# verdi daemon status 检查后台情况&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 如果没有启动使用 verdi daemon start 启动&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  ~ verdi daemon status
-Profile: conquest
-Daemon is running as PID 25383 since 2021-05-12 16:06:03
-Active workers &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]:
-  PID    MEM %    CPU %  started
-&lt;span class=&quot;nt&quot;&gt;-----&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-------------------&lt;/span&gt;
-25387     0.02        0  2021-05-12 16:06:03
-Use verdi daemon &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;incr | decr] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;num] to increase / decrease the amount of workers
-
-&lt;span class=&quot;c&quot;&gt;# verdi shell 进入 shell，如果无法进入则证明配置仍然存在错误&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  ~ verdi shell
-Python 3.8.10 | packaged by conda-forge | &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default, May 11 2021, 07:01:05&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
-Type &lt;span class=&quot;s1&quot;&gt;&apos;copyright&apos;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&apos;credits&apos;&lt;/span&gt; or &lt;span class=&quot;s1&quot;&gt;&apos;license&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;more information
-IPython 7.23.1 &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; An enhanced Interactive Python. Type &lt;span class=&quot;s1&quot;&gt;&apos;?&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;help.
-
-In &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]: &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# verdi status 查看 AiiDA 的各项配置，包括自身及与其他软件之间的连接&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  ~ verdi status
- ✔ config &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt;:  /home/lisz/.aiida
- ✔ profile:     On profile conquest
- ✔ repository:  /home/lisz/.aiida/repository/conquest
- ✔ postgres:    Connected as aiida@localhost:5432
- ✔ rabbitmq:    Connected as amqp://guest:guest@127.0.0.1:5672?heartbeat&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;600
- ✔ daemon:      Daemon is running as PID 25383 since 2021-05-12 16:06:03
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;后续使用&quot;&gt;后续使用&lt;/h2&gt;
-
-&lt;p&gt;  当我们已经有了 AiiDA 的完整环境之后，我们就会想要知道该如何使用 AiiDA 为计算服务呢。由于笔者是做第一性原理计算和机器学习的研究，所以后续将以 AiiDA 和 CONQUEST 的搭配使用为实例来介绍 AiiDA 的数据管理用法。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/installation.html#installing-the-aiida-core-package&quot;&gt;AiiDA 官网中文文档&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/r_nznf/article/details/108056919&quot;&gt;Conda 安装 PostgreSQL 数据库&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000010480589&quot;&gt;离线安装 RabbitMQ &lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/yufanghu/article/details/80829108&quot;&gt;RabbitMQ 后台启动以及关闭&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 12 May 2021 16:30:00 +0900</pubDate>
-        <link>https://lisz.me/tech/aiida/aiida-install.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/aiida/aiida-install.html</guid>
-        
-        <category>AiiDA</category>
-        
-        <category>data management</category>
-        
-        <category>calculation</category>
-        
-        <category>postgresql</category>
-        
-        <category>rabbitmq</category>
-        
-        
-        <category>tech</category>
-        
-        <category>aiida</category>
         
       </item>
     

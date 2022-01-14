@@ -241,6 +241,14 @@
 <lastmod>2022-01-09T22:00:00+09:00</lastmod>
 </url>
 <url>
+<loc>https://lisz.me/tech/webmaster/nextcloud-upgrade.html</loc>
+<lastmod>2022-01-13T11:26:00+09:00</lastmod>
+</url>
+<url>
+<loc>https://lisz.me/tech/webmaster/gitlab-upgrade.html</loc>
+<lastmod>2022-01-14T11:13:00+09:00</lastmod>
+</url>
+<url>
 <loc>https://lisz.me/404</loc>
 </url>
 <url>
@@ -272,5 +280,8 @@
 </url>
 <url>
 <loc>https://lisz.me/blog/page6/</loc>
+</url>
+<url>
+<loc>https://lisz.me/blog/page7/</loc>
 </url>
 </urlset>

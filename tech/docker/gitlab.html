@@ -145,7 +145,7 @@ Author: Ray-Eldath
       </div>
       <div class="post-meta">
         
-        <span>本文总共 9586 字 <b>·</b> 阅读全文大约需要 28 分钟</span>
+        <span>本文总共 9671 字 <b>·</b> 阅读全文大约需要 28 分钟</span>
         
       </div>
     </div>
@@ -373,8 +373,8 @@ wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/dock
 
 <h4 id="配置">配置</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 gitlab-runner 容器</span>
-docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner register
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 gitlab-runner 容器并执行 gitlab-runner 命令</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner gitlab-runner register
 <span class="c"># 根据提示输入内容</span>
 <span class="c"># 输入 Gitlab 服务的 URL，比如 https://git.example.com</span>
 <span class="c"># 输入 Token，可以在 Gitlab 的管理员配置的 Runner 里面看到</span>
@@ -383,6 +383,8 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner re
 <span class="c"># 选择 runner executor 为 docker</span>
 <span class="c"># 输入默认的编译环境镜像，比如 python:alpine</span>
 </code></pre></div></div>
+
+<p>（2022年1月14日更新，gitlab-runner 容器现采用 gitlab-runner 命令来统一管理。）</p>
 
 <h2 id="平台运维">平台运维</h2>
 
