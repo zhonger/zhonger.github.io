@@ -1,7 +1,7 @@
 # zhonger 的个人技术博客
 
-- 采用基于 [jekyll-theme-H2O](https://github.com/kaeyleo/jekyll-theme-H2O) 的 [jekyll-theme-H2O-ac](https://github.com/zhonger/jekyll-theme-H2O-ac) 主题
-- 主要包含 **前端、后端、运维、技术架构、机器学习** 等主题的内容
+- 采用基于 [jekyll-theme-H2O](https://github.com/kaeyleo/jekyll-theme-H2O) 的 [jekyll-theme-H2O-ac](https://github.com/zhonger/jekyll-theme-H2O-ac) 主题；
+- 主要包含 **前端、后端、运维、技术架构、机器学习** 等主题的内容。
 
 ## 多节点访问支持
 
