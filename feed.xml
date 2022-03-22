@@ -1,4 +1,151 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-01-20T10:27:04+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">Gitlab 升级那些事儿</title><link href="https://lisz.me/tech/webmaster/gitlab-upgrade.html" rel="alternate" type="text/html" title="Gitlab 升级那些事儿" /><published>2022-01-14T11:13:00+09:00</published><updated>2022-01-14T11:13:00+09:00</updated><id>https://lisz.me/tech/webmaster/gitlab-upgrade</id><content type="html" xml:base="https://lisz.me/tech/webmaster/gitlab-upgrade.html"><![CDATA[<h2 id="前言">前言</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-03-22T16:58:19+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</title><link href="https://lisz.me/ac/ml/utility-vs-understanding.html" rel="alternate" type="text/html" title="[译文]实用性 vs 理解力：进入 2022 年的机器学习领域" /><published>2022-03-21T14:30:00+09:00</published><updated>2022-03-21T14:30:00+09:00</updated><id>https://lisz.me/ac/ml/utility-vs-understanding</id><content type="html" xml:base="https://lisz.me/ac/ml/utility-vs-understanding.html"><![CDATA[<p><strong>原文标题</strong>：<a href="https://www.aidancooper.co.uk/utility-vs-understanding/">Utility vs Understanding: the State of Machine Learning Entering 2022</a><br />
+<strong>原文作者</strong>：Aidan Cooper</p>
+
+<p>  机器学习在某些领域中的经验实用性已经远远超出了我们对基础理论的理解：这些模型不合理地非常有效，但我们并不完全确定原因。相反，在其他相对容易理解的研究领域中难以实现或者在实践中的适用性有限。本文试图就机器学习的实用性和理解力绘制不同角度的图，并探讨科学和技术进步如何在这一框架内体现。</p>
+
+<hr />
+
+<p><strong>声明：</strong><br />
+  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。<br />
+  本文主要旨在讨论经验效用和理论理解之间的对比，以及它们与科学或者技术进步的关系。在矩阵中精确定位研究领域并不是目标。</p>
+
+<hr />
+
+<p>  我所说的<strong>经验效用</strong>是指一种综合衡量方法，它考虑了一种方法的适用性广度、实施的难易程度，最重要的是：它在现实世界中的有用程度。一些具有高实用性的方法具有更广泛的适用性，而另一些则更强大，但仅限于狭窄的领域。可靠、可预测且没有重大缺陷的方法也被认为具有更高的效用。</p>
+
+<p>  我所说的<strong>理论理解</strong>是指一种综合衡量方法（比如，输入和输出之间的关系如何？如何可以获得预期的结果？这种技术的内部机制是什么？），它考虑了直观可解释性（interpretability）和理论可解释性（explainability），以及其文献的深度和完整性。<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>理解程度低的方法通常在实施时采用启发式方法或大量试错。理解程度高的方法往往具有公式化的实现，具有强大的理论基础和可预测的结果。更简单的方法（例如线性回归）具有较低的理论上限，而更复杂的方法（例如深度学习）具有更高的理论上限。当谈到一个领域的文献的深度和完整性时，我已经更具其假设的理论上限来评估该领域——一个来自直觉的想象值。</p>
+
+<p>  我们可以将矩阵构造为四个象限，轴的交点代表一个假设的、半成熟的参考领域，具有平均理解和平均效用。这让我们能够以定性的方式解释矩阵中的领域，具体取决于领域所在的象限，如下图所示。给定象限中的领域可能具有部分或全部这些普遍特征。</p>
+
+<p>  一般来说，我们期待效用和理解是松散相关的，因为被很好理解的东西比那些不被理解的东西可能更有用。这意味着大多数领域应位于左下象限或右上象限。远离对角线的领域代表着有趣的例外。通常，实用性落后于理论，因为将新兴的研究转化为实际应用需要时间。因此，对角线应该位于原点上方，而不是直接穿过它。</p>
+
+<p><img src="https://i.vgy.me/iACCdD.png" alt="vgy.me" /></p>
+
+<h2 id="2022-年的机器学习领域">2022 年的机器学习领域</h2>
+
+<p>  并非所有的领域都完全包含在机器学习（ML）中，但它们都可以应用在机器学习的上下文中或与之密切相关。许多评估的领域重叠并且无法清晰地描述：强化学习、联邦学习和图学习等高级机器学习方法通常基于深度学习。在这些情况下，我考虑了与它们的理论和实用性的非深度学习方面相关的领域。</p>
+
+<h3 id="右上象限高理解高效用">右上象限：高理解，高效用</h3>
+
+<p>  <strong>线性回归</strong>是一种简单、易于理解且高效的技术的典型示例。它是被低估的、默默无闻的英雄，经常被时尚同行所忽视。它的使用广度和透彻的理论基础不仅将其置于右上角，而且将其固定在右上角。</p>
+
+<p>  传统（非深度）<strong>机器学习</strong>已经成熟为一个具有高度理解性和实用性的领域。复杂的机器学习算法，例如梯度决策树，已证明自己在非平凡的预测任务中通常优于线性回归。大数据问题无疑就是这种情况。可以说，对过度参数化模型的理论理解仍然存在漏洞，但实施机器学习是一个精炼的方法论过程，并且模型可以在行业环境中可靠地操作（如果做得好）。然而，额外的复杂性和灵活性确实会导致错误的实现，这就是为什么我将机器学习放在线性回归的左侧。一般来说，<strong>有监督的</strong>机器学习会比<strong>无监督的</strong>机器学习更精细，影响更大，但两种方法都有效地解决了不同的问题空间。</p>
+
+<p>  <strong>贝叶斯方法</strong>有一群狂热的从业者，他们宣扬它优于更流行的经典统计方法。在某些情况下，贝叶斯模型特别有用：当仅有点估计不够时，不确定性的估计就显得很重要；当数据有限或高度缺失时；并且当您了解要在模型中明确包含的数据生成过程时。贝叶斯模型的实用性受到了以下事实的限制：对于许多问题，点估计已经足够好，人们只是默认使用非贝叶斯方法。更重要的是，有一些方法可以量化传统机器学习的不确定性（它们只是很少被使用）。通常，将机器学习算法简单地应用于数据会更容易，而不必考虑数据生成机制和先验。贝叶斯模型在计算上也很昂贵，如果理论进步产生更好的采样和逼近方法，它会具有更高的效用。</p>
+
+<h3 id="右下象限低理解高效用">右下象限：低理解，高效用</h3>
+
+<p>  与大多数领域的进展相反，<strong>深度学习</strong>取得了一些惊人的成功，尽管理论方面被证明从根本上难以取得进展。深度学习体现了一种鲜为人知的方法的许多特征：模型不稳定、难以可靠地构建、基于弱启发式进行配置以及产生不可预测的结果。像随机种子之类的可疑调参方法非常普遍，而且工作模型的内部机制也很难解释。然而，深度学习继续推进并在计算机视觉和自然语言处理等领域达到了超人的水平，开辟了一个充满其他难以完成的任务的世界，如自动驾驶。</p>
+
+<p>  假设，<strong>通用人工智能</strong>将占据右下角，因为根据定义，超级智能超出了人类的理解范围，可以用于解决任何问题。目前，它仅作为思想实验包含在内。</p>
+
+<p><img src="https://i.vgy.me/ux7cCx.png" alt="vgy.me" />
+<strong><center>图1. 每个象限的定性描述。领域可以通过其对应区域的部分或全部描述来描述。</center></strong></p>
+
+<h3 id="左上象限高理解低效用">左上象限：高理解，低效用</h3>
+
+<p>  大多数的<strong>因果推断</strong>不是机器学习，但有时是，并且总是对预测模型感兴趣。因果关系可以分为随机对照实验（RCT）和更复杂的因果推理方法，后者试图从观察数据中衡量因果效应。RCT 在理论上很简单并给出严格的结果，但在现实世界中进行通常既昂贵又不切实际——如果不是不可能的话——因此效用有限。因果推理方法本质上是模拟随机对照实验，而无需做任何事情，这使得它们执行起来不那么令人望而却步，但有许多限制和陷阱可能使结果无效。总体而言，因果关系仍然是一个令人沮丧的追求，其中当前的方法通常不能满足我们想要问的问题，除非这些问题可以通过随机对照实验进行探索，或者它们恰好适合某些框架（例如，作为“自然实验”的偶然结果）。</p>
+
+<p>  <strong>联邦学习</strong>（FL）是一个很酷的概念，但却很少受到关注——可能是因为它最引人注目的应用程序需要分发到大量智能手机设备，因此联邦学习只有两个参与者才能真正研究：Apple 和 Google。联邦学习还存在其他用例，例如汇集专有数据集，但协调这些倡议存在政治和物流挑战，限制了它们在实践中的效用。尽管如此，对于听起来像是一个奇特的概念（大致概括为：“将模型引入数据，而不是将数据引入模型”），联邦学习是有效的，并且在键盘文本预测和个性化新闻推荐等领域有切实的成功案例。联邦学习背后的基本理论和技术似乎具有足够的鲁棒性，以让联邦学习得到更广泛的应用。</p>
+
+<p>  <strong>强化学习</strong>（RL）在国际象棋、围棋、扑克和 Dota 2 等游戏中达到了前所未有的能力水平。但在视频游戏和模拟环境之外，强化学习还没有令人信服地转化为现实世界的应用程序。机器人技术本应成为强化学习的下一个前沿领域，但这并没有实现——现实似乎比高度受限的玩具环境更具挑战性。也就是说，到目前为止，强化学习的成就是鼓舞人心的，真正喜欢国际象棋的人可能会认为它的效用应该更高。我期待看到强化学习在被置于矩阵右侧之前实现一些潜在的实际应用。</p>
+
+<h3 id="左下象限低理解低效用">左下象限：低理解，低效用</h3>
+
+<p>  <strong>图神经网络</strong>（GNNs）是目前机器学习的一个非常热门的领域，在多个领域都取得了可喜的成果。但对于其中许多示例，尚不清楚图神经网络是否比使用更传统的结构化数据与深度学习架构组合的替代方法更好。数据本身是图结构的问题，例如化学信息学中的分子似乎具有更引人注目的图神经网络结果（尽管这些通常不如非图相关的方法）。与大多数领域相比，用于大规模训练图神经网络的开源工具与工业中使用的内部工具之间似乎存在很大差异，这限制了大型图神经网络在这些有围墙的花园之外的可行性。该领域的复杂性和广度表明理论上限很高，因此图神经网络应该有成熟的空间并令人信服地证明某些任务的优势，这将带来更大的实用性。图神经网络也可以从技术进步中获益，因为图目前还不能自然地适用于现有的计算硬件。</p>
+
+<p>  <strong>直观可解释的机器学习</strong>（Interpretable machine learning，IML）是一个重要且有前途的领域，并且持续受到关注。SHAP 和 LIME 等技术已经成为真正可用的工具来处理机器学习模型。由于有限的采用，现有方法的效用尚未完全实现——尚未建立健全的最佳实践和实施指南。然而，直观可解释的机器学习目前的主要弱点是它没有解决我们真正感兴趣的因果问题。直观可解释的机器学习解释了模型如何进行预测，但没有解释数据背后隐含的因果关系（尽管经常被错误地解释）。在取得重大理论进展之前，直观可解释的机器学习的合法用途大多仅限于模型调试或监控和假设生成。</p>
+
+<p>  <strong>量子机器学习</strong>（Quantum machine learning，QML）远远超出了我的知识，但目前似乎是一种假设性的尝试，耐心地等待着可行的量子计算机变成可用。在那之前，量子机器学习先暂时默默地置于左下角。</p>
+
+<h2 id="渐进式进展技术飞跃和范式转变">渐进式进展、技术飞跃和范式转变</h2>
+
+<p>  领域可以通过三种主要机制来遍历理论理解与经验效用矩阵（图2）。</p>
+
+<p>  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的<strong>有监督机器学习</strong>就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。</p>
+
+<p><img src="https://i.vgy.me/Gbml7H.png" alt="vgy.me" />
+<strong><center>图2. 领域可以遍历矩阵的方式的说明性示例。</center></strong></p>
+
+<p>  由于技术的飞跃，一些领域看到了科学进步的阶梯式变化。<strong>深度学习</strong>领域并没有因其理论基础而解锁，这些理论基础是在 2010 年代深度学习热潮之前 20 多年发现的——它是由消费级 GPU 支持的并行处理推动了它的复兴。技术飞跃通常表现为沿经验效用轴向右跳跃。然而，并非所有以技术为主导的进步都是飞跃。今天的深度学习的特点是通过使用更多的计算能力和越来越专业的硬件训练越来越大的模型来实现跃进式进步。</p>
+
+<p>  在这个框架内科学进步的最终机制是<strong>范式转变</strong>。正如托马斯·库恩（Thomas Kuhn）在他的著作《科学革命的结构》中所指出的，范式转变代表了科学学科的基本概念和实验实践的重要变化。Donald Rubin 和 Judea Pearl 开创的因果框架就是这样的一个例子，它将因果关系领域从随机对照实验和传统的统计分析提升为<strong>因果推理</strong>形式的更强大的数学化学科。范式转变通常表现为理解的向上运动，这可能会跟随或伴随着效用的增加。</p>
+
+<p>  但是，范式转变可以在任何方向上遍历矩阵。当神经网络（以及随后的深度神经网络）将自己确立为传统机器学习的独立范式时，这最初对应着实用性和理解力的下降。许多新兴领域以这种方式从更成熟的研究领域分化出来。</p>
+
+<h2 id="预测和深度学习的科学革命">预测和深度学习的科学革命</h2>
+
+<p>  总而言之，以下是我认为未来可能发生的一些推测性预测（表1）。右上象限中的领域被省略，因为它们太成熟而看不到重大进展。</p>
+
+<p><strong><center>表1. 机器学习的特定领域未来可能会或可能不会取得进展的预测。</center></strong></p>
+
+<p><img src="https://i.vgy.me/XPymki.png" alt="vgy.me" /></p>
+
+<!-- | 研究领域 | 2022 年以后的预测 |
+| -- | -- |
+| 深度学习 | 深度学习将继续从扩展越来越大的模型中看到渐近式进展，而基础理论没有显著进步。我不知道这是否会（单独）伴随着 2022 年范式转变级别的科学突破，但让我们希望如此！ |
+| 因果推断 | 在受控因果框架之外研究现实世界中的因果关系将继续具有挑战性并充满陷阱。 ML 是否以及如何学习和发现因果关系仍然不明显。我认为这是一个本质上很难解决的问题，无论是理论上还是实践上都不会很快解决。 |
+| 联邦学习 | 联合学习将继续成熟并在智能手机设备（由 Apple 领导）上找到进一步的用途，这得益于设备上 AI 芯片组的进步。我预计到 2022 年，随着联合学习在智能手机上的效用赶上现有理论的潜力，将会有渐进式的进步。这最终可能会因监管压力或消费者对数据隐私的担忧而加速，尽管我预计这些不会成为 2022 年的巨大推动力。 |
+| 强化学习 | 乐观地说：到 2022 年，DeepMind 将在将深度强化学习应用于现实世界问题方面取得显着进步，这将使强化学习进入右上象限。模仿学习将成为训练强化学习模型越来越普遍的起点。 |
+| 图神经网络 | 我认为 GNN 在建模图表示（例如分子和其他自然图结构数据）方面将比节点表示更成功。在 2022 年，我认为我们会看到更多图神经网络的例子，其在与化学结构相关的问题上的表现优于替代方法。我预测在理解和实用性方面都会有适度的进步，但仅限于狭窄的领域（其他深度学习方法将证明对大多数任务都有优势）。 |
+| 直观可解释的机器学习 | 2022 年，现有的可解释机器学习技术将在行业内得到更广泛的采用。 SHAP 将把自己确立为事实上的起点（如果还没有的话）。神经网络仍然难以理解。随着标准化最佳实践的出现，大部分进展将沿着效用轴进行。 |
+| 量子机器学习 | 在量子计算实现技术飞跃之前，量子机器学习不会取得进展，这在 2022 年不会发生。预计不会有任何进展。 |
+| 通用人工智能 | 我们不要得意忘形... | -->
+
+<p>  然而，比个别领域将如何发展更重要的观察是经验主义的总体趋势，以及越来越愿意承认全面的理论理解。</p>
+
+<p>  从历史上看，理论（假设）先出现，然后再制定想法。深度学习引领了一个新的科学过程，颠覆了这一点。在人们关注理论之前，方法有望展示最先进的性能。实证结果为王，理论是可选的。</p>
+
+<p>  这导致了机器学习研究中系统的广泛博弈，通过简单地修改现有方法并依靠随机性来超越基线，而不是有意义地推进该领域的理论，从而获得最新成果。但也许这就是我们为新一波机器学习的繁荣所付出的代价。</p>
+
+<p><img src="https://i.vgy.me/LFfZrr.png" alt="vgy.me" />
+<strong><center>图3. 2022 年深度学习三种潜在的进展。</center></strong></p>
+
+<p>  2022 年可能被证明是“深度学习是否不可逆转地采用这种以结果为导向的新过程并将理论理解降级为可选”的转折点。这些是我们应该思考的问题（图 3）：</p>
+
+<ul>
+  <li>理论突破能否让我们的理解赶上实用性，并将深度学习转变为像传统机器学习一样更有条理的学科？</li>
+  <li>现有的深度学习文献是否足以让效用无限增长，仅仅通过扩展越来越大的模型？</li>
+  <li>或者，一个经验性的突破会带领我们进一步深入兔子洞，进入一种增强效用的新范式，尽管我们对这种范式理解得更少？</li>
+  <li>这些路线中的任何一条都会导致通用人工智能吗？</li>
+</ul>
+
+<p>  只有时间会给出答案。</p>
+
+<h2 id="笔者感想">笔者感想</h2>
+
+<p>  这篇文章从实用性和理解力两个角度描述了机器学习中的各个分支，并对它们进行了宏观上的把握，还给出了一些未来可能的进展预测，内容十分丰富精彩。诚如原文作者所言，计算机硬件 GPU 和智能设备 AI 芯片的进步给深度学习带来了一种新的前进思路，即先实现高效用再慢慢提升理论理解。可能对于某些只要求结果的领域，比如人脸识别、游戏、自然语言处理等，这种思路完全没有什么问题。但是对于一些基础领域，比如物理化学、生物、材料等，并不能一味地只追求结果，还是需要在理论理解上稳扎稳打，才能完善和推动基础学科领域的发展。</p>
+
+<p>  另外对文中有些内容个人存在不同的看法。</p>
+
+<h3 id="联邦学习的适用和研究领域">联邦学习的适用和研究领域</h3>
+
+<p>  联邦学习的本质是保护隐私，即在不能完全窥探数据全貌的情况下进行多数据源的交叉融合学习。联邦学习可以在分布式的智能设备上独立运行并汇集数据，也可以在不同的分布式服务器集群间汇集数据。这在银行的机器学习实践中应用较多，香港科技大学的杨强教授（微众银行首席人工智能官）就曾主持过很多这类的研究。</p>
+
+<h3 id="可解释性的两个英语单词">可解释性的两个英语单词</h3>
+
+<p>  脚注中有原文作者所注的说明，但本人对此持怀疑态度。interpretability 和 explainability 这两个单词从翻译上来看中文意义完全一样，这也导致大家觉得两者没有差别。但是从两个单词的词根来看，interpret 这个解释是指表面上地、直观地解释某样东西，而 explain 这个解释是在有一定的背景知识等前提条件下理论上解释某样东西。简而言之，前者突出解释的直观性，后者更突出解释的前提和逻辑。</p>
+
+<p>  举个例子，有一个二次函数 \(y=ax^2+bx+c\)。如果给出这个二次函数对应的图，我们就能很容易地看出这个二次函数是否有最大值或者最小值，且具体的最大值或最小值为多少。这种可解释性就是 interpretability。当我们只知道二次函数的数学表达形式时，如果我们知道二次函数的对称轴和最值的固定公式，我们能够通过代入 \(a、b、c\) 的值计算出来结果。这种可解释性就是 explainability。</p>
+
+<h2 id="版权声明">版权声明</h2>
+
+<p>  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。</p>
+
+<p>  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.</p>
+
+<h2 id="脚注来自原文">脚注（来自原文）</h2>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>机器学习中的术语“直观可解释性”（interpretability）和“理论可解释性”（explainability）没有统一的定义，许多研究人员互换使用它们。 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>例如随机森林算法的出现不会增加对之前的支持向量机算法的理解或实用性，但它确实推进了有监督机器学习的总体领域。 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name>zhonger</name></author><category term="ac" /><category term="ml" /><category term="机器学习" /><category term="实用性" /><category term="理解力" /><category term="machine learning" /><category term="utility" /><summary type="html"><![CDATA[原文标题：Utility vs Understanding: the State of Machine Learning Entering 2022 原文作者：Aidan Cooper]]></summary></entry><entry><title type="html">Gitlab 升级那些事儿</title><link href="https://lisz.me/tech/webmaster/gitlab-upgrade.html" rel="alternate" type="text/html" title="Gitlab 升级那些事儿" /><published>2022-01-14T11:13:00+09:00</published><updated>2022-01-14T11:13:00+09:00</updated><id>https://lisz.me/tech/webmaster/gitlab-upgrade</id><content type="html" xml:base="https://lisz.me/tech/webmaster/gitlab-upgrade.html"><![CDATA[<h2 id="前言">前言</h2>
 
 <p>  Gitlab 的升级策略似乎已经在 <a href="../docker/gitlab.html">私有代码托管平台的搭建与运维</a> 中解释得比较详细了，但实际上忽略了秘钥文件 /home/git/gitlab/config/secrets.yml 和 /home/git/gitlab/config/gitlab.yml 的备份。这两个文件不是在容器内的代码文件里面吗？为什么又需要备份这两个秘钥文件呢？其实为了安全性的考虑，Gitlab 自带的备份工具只会备份包括数据库、数据文件以及基本配置信息，而秘钥作为安全文件不在备份之列。这两个秘钥文件涉及到数据库中某些加密字段的加密和解密过程，如果没有这两个原始文件或者使用了新的文件，那么 Gitlab 将无法对这些数据库中已有的加密字段进行解密，从而影响到某些页面的使用，尤其是管理员界面。</p>
 
@@ -1734,262 +1881,4 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
   <li><a href="https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/">Jupyterlab 安装中文语言包失败</a></li>
   <li><a href="https://zhuanlan.zhihu.com/p/258724435">使用JupyterHub向多用户提供jupyter服务的思路</a></li>
   <li><a href="https://www.kaifa99.com/GitHub/article_117797">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="docker" /><category term="JupyterLab" /><category term="Docker" /><category term="Gitlab" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">[原创]远程服务环境与本地环境互联</title><link href="https://lisz.me/tech/webmaster/remote-ssh.html" rel="alternate" type="text/html" title="[原创]远程服务环境与本地环境互联" /><published>2021-06-15T14:30:00+09:00</published><updated>2021-06-15T14:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/remote-ssh</id><content type="html" xml:base="https://lisz.me/tech/webmaster/remote-ssh.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<h3 id="异地组网">异地组网</h3>
-
-<p>  谈到“异地组网”这个问题，其实已经有很多成熟的解决方案，包括最简单的拉光纤物理相连、向日葵异地组网等等。这些解决方案虽然稳定性和使用体验都极度让人舒适，但是实现的代价略微有点大，尤其财大气粗的光纤物理直接相连。不过对于某些大公司的异地数据中心互联，这仍然是最被认可的解决方案。至于向日葵异地组网，有点类似于把远程服务环境和本地环境同时连入一个网络，然后在形式上实现局域网化。由于这一解决方案往往依赖于一个由第三方提供的中心节点服务，这种局域网的带宽、速度和使用体验很大程度上受限于购买的套餐级别。那么，是否存在一种造价较低，速度和使用体验都较佳的解决方案呢？答案自然是存在的，只是有点<strong>曲线</strong>而已。</p>
-
-<h3 id="zerotier-组网">Zerotier 组网</h3>
-
-<p>  在之前的一些文章中，我们已经体验了 Zerotier 带来的软件定义网络。这种软件定义网络方式，在某种程度上会受限于 Zerotier 的 Planet 节点发现路由的效果。如果两个客户端节点到 Planet 节点的路由来自于两条不同的线路，比如一个节点位于移动局域网网络，一个节点位于联通局域网网络，Planet 节点在规划路由的时候会认为两个客户端节点直接无法找到最短的路由，需要通过 Planet 节点来进行转发流量，甚至被认为完全没有可能互通。而实际上，在国内的运营商网络中，移动网络和联通网络之间是存在交换节点的，即可能存在一条最短路由。这种情况下，Zerotier 官方建议自己使用一台国内的公网服务器提供 Moon 服务，从而为 Zerotier 的路由规划提供辅助。从理论上来说，两个客户端节点在 Moon 的帮助下很大可能找到国内网络中的最短路由，并直接建立 UDP 通道。但在实际过程中，客户端节点之间的最短路由可能仍然十分长，且不足以直接建立 UDP 通道，毕竟它们位于两个底层的局域网中。</p>
-
-<p>  那么这样就完全不能让两个客户端节点直接互联吗？实际上还是有方法的。</p>
-
-<p>  <strong>第一种方法</strong>是，将公网服务器与远程服务环境的节点使用 Zerotier 组网互通，通过 SSH 自身提供的代理功能、将本来要发给远程服务环境的节点的 ssh 连接请求发往公网服务器进行转发。因为全程采用了 SSH 无密码登录（密钥登录），所以除非你的私钥被别人窃取否则理论上是绝对安全的，这也是国际上采用的通用安全做法。</p>
-
-<p>  <strong>第二种方法</strong>是，将公网服务器分别与远程服务环境的节点、本地环境的节点使用 Zerotier 组网互通，并设置公网服务器允许转发来自 Zerotier 网卡的流量请求，然后在本地环境的节点上设置将所有发往远程服务环境的节点的网络请求经由公网服务器进行转发。因为这种方法是把公网服务器作为一个软件式的路由器，在网络上实现了本地环境与远程服务环境的完全互联，所以对于本地环境而言，远程服务环境中的任意节点的任意端口是完全可达的。这也存在某种安全上的隐患，一般来说只建议网络或服务管理用户使用这样的方式，对于普通用户来说第一种方法已经完全够用，且安全性较高。</p>
-
-<p><img src="https://i.vgy.me/BCnz9e.png" alt="vgy.me" /></p>
-
-<h2 id="实现">实现</h2>
-
-<h3 id="公网服务器的选择">公网服务器的选择</h3>
-
-<p>  无论是第一种方法还是第二种方法，都需要有一台公网服务器使用 Zerotier 与远程服务节点互通，因此第一步是需要拥有一台公网服务器。</p>
-
-<h4 id="地理位置">地理位置</h4>
-
-<p>  如果远程服务节点和本地客户端节点都在国内，那自然是国内的公网服务器最好。如果远程服务节点位于国内、本地客户端节点位于国外，也是使用国内的公网服务器最佳。因为无论哪种方式，公网服务器与远程服务节点直接都是使用 Zerotier 连接的。当然如果远程服务节点和本地客户端节点都在国外，自然使用国外的公网服务器最佳。</p>
-
-<h4 id="服务商">服务商</h4>
-
-<p>  根据笔者使用过的经验来看，按照推荐先后优先顺序，国内的 VPS 公网服务商推荐阿里云（国内国外路由较短）、腾讯云、Ucloud、华为云、百度云等等，国外的 VPS 公网服务商推荐 AWS（国内国外路由较短）、Azure、Linode、Digital Ocean、Vultr、GCP 等等。</p>
-
-<h3 id="第一种方法">第一种方法</h3>
-
-<h4 id="提前准备">提前准备</h4>
-
-<ul>
-  <li>本地客户端节点生成一对公钥和私钥</li>
-  <li>公网服务器和远程服务节点都已安装 Zerotier</li>
-</ul>
-
-<p>  如何生成一对公钥和私钥以及安装 Zerotier此处不做赘述。</p>
-
-<h4 id="规划网络">规划网络</h4>
-
-<p>  假设现在规划的 Zerotier 网段为 172.18.0.0/24，远程服务节点所在局域网网络为 192.168.1.0/24，：</p>
-<ul>
-  <li>公网服务器实际 IP：1.1.1.1</li>
-  <li>远程服务节点实际 IP：192.168.1.200</li>
-  <li>公网服务器 Zerotier 规划 IP：172.18.0.10</li>
-  <li>远程服务节点 Zerotier 规划 IP：172.18.0.200</li>
-</ul>
-
-<h4 id="配置-zerotier">配置 Zerotier</h4>
-
-<p>  登录 <a href="https://my.zerotier.com">Zerotier Web 控制面板</a>，并将公网服务器和远程服务节点的 zerotier id 加入到同一个 Zerotier 网络中。在 Web 控制面板中设置上面对应的 IP。</p>
-
-<p>  以下为在公网服务器或远程服务节点上的操作：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询公网服务器或远程服务节点的 zerotier id</span>
-<span class="nb">sudo </span>zerotier-cli info
-
-<span class="c"># 加入到同一个 Zerotier 网络中</span>
-<span class="nb">sudo </span>zerotier-cli <span class="nb">join</span> &lt;Zerotier Network Id&gt;
-
-<span class="c"># 查询网络状态</span>
-<span class="nb">sudo </span>zerotier-cli listnetworks
-</code></pre></div></div>
-
-<h4 id="验证组网结果">验证组网结果</h4>
-
-<p>  如下所示可以分别在远程服务节点和公网服务器上验证是否可以互通。一般来说，从远程服务节点上 PING 公网服务器可能较容易 PING 通。如果两边都不通，可以使用直接 PING 公网服务器的公网 IP 来帮助 Zerotier 更快找到最短路由。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在远程服务节点上 PING 公网服务器</span>
-ping <span class="nt">-c</span> 10 172.18.0.10
-
-<span class="c"># 在公网服务器上 PING 远程服务节点</span>
-ping <span class="nt">-c</span> 10 172.18.0.200
-
-<span class="c"># 在远程服务节点上 PING 公网服务器的公网 IP</span>
-ping <span class="nt">-c</span> 1.1.1.1
-</code></pre></div></div>
-
-<h4 id="配置路由转发">配置路由转发</h4>
-
-<p>  经过以上步骤就可以实现公网服务器与远程服务节点之间的互通，但是在远程服务环境中往往存在多个节点，如果每个节点都这么做那将非常冗余。因此，需要借助已经配置好 Zerotier 的远程服务节点来转发所有的请求到远程服务环境的其他节点。</p>
-
-<h5 id="远程服务节点">远程服务节点</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动转发功能，编辑 /etc/sysctl.conf 文件</span>
-<span class="nb">sudo </span>vim /etc/sysctl.conf
-
-<span class="c"># 在 /etc/sysctl.conf 文件底部添加</span>
-net.ipv4.ip_forward <span class="o">=</span> 1
-
-<span class="c"># 使修改的配置立即生效</span>
-<span class="nb">sudo </span>sysctl <span class="nt">-p</span>
-
-<span class="c"># 查看当前配置</span>
-<span class="nb">sudo </span>sysctl net.ipv4.ip_forward
-
-<span class="c"># 如输出以下内容即为修改的配置已生效</span>
-net.ipv4.ip_forward <span class="o">=</span> 1
-
-<span class="c"># 查询网卡信息</span>
-ip <span class="nb">link </span>show
-
-<span class="c"># 假设正常上网网卡为 eth0，Zerotier 虚拟网卡为 zt0</span>
-<span class="c"># 添加 iptables 规则允许 eth0 网卡转发所有 Zerotier 虚拟网卡 zt0 的流量</span>
-<span class="nb">sudo </span>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> eth0 <span class="nt">-j</span> MASQUERADE
-<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> RELATED,ESTABLISHED <span class="nt">-j</span> ACCEPT
-<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-i</span> zt0 <span class="nt">-o</span> eth0 <span class="nt">-j</span> ACCEPT
-
-<span class="c"># 由于 iptables 规则会在 VPS 重启后丢失，所以需要使用 iptables-persistent 来保存规则</span>
-<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> iptables-persistent
-<span class="c"># 执行以下命令后会自动保存 IPv4 和 IPv6 规则</span>
-<span class="nb">sudo </span>netfilter-persistent save
-
-<span class="c"># 查询已保存的规则</span>
-<span class="nb">sudo </span>iptables-save
-</code></pre></div></div>
-
-<p>  执行以上命令后，远程服务节点就能接受来自其他 Zerotier 节点的流量转发请求了。</p>
-
-<h5 id="公网服务器">公网服务器</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询公网服务器的网卡</span>
-ip <span class="nb">link </span>show
-
-<span class="c"># 假设正常上网网卡为 eth0，Zertiter 虚拟网卡为 zt0</span>
-<span class="c"># 添加通往其他远程服务节点的请求交给已配置 Zerotier 的远程服务节点转发</span>
-<span class="nb">sudo </span>route add <span class="nt">-net</span> 192.168.1.0/24 gw 172.18.0.200 dev zt0
-
-<span class="c"># 验证其他远程服务节点是否可达</span>
-<span class="c"># 假设某一个其他远程服务节点 IP 为 192.168.1.201</span>
-ping <span class="nt">-c</span> 10 192.168.1.201
-</code></pre></div></div>
-
-<p>  经过以上命令即可配置公网服务器对远程服务环境中的任意节点通过已配置 Zerotier 的远程服务节点可达。</p>
-
-<h4 id="配置-ssh-代理">配置 SSH 代理</h4>
-
-<p>  SSH 是 Linux/Unix 世界中必不可少的一件神器，通常是用来从本地远程连接服务器。由于 SSH 协议本身是基于加密的，所以在连接后的数据流量是难以被攻击或破解的。当然，SSH 连接建立后，本地节点实际上还可以把远程服务节点的端口映射到本地。即使是在远程服务节点开启的是一个 Web 服务器，通过这样的方式也能在本地使用浏览器访问本地映射端口来实现对远程服务节点上的 Web 服务器的访问。而所需要的唯一一个权限就是可以 SSH 连接登录用户成功。这种方法的安全性极佳，既利用了 SSH 本身的安全性，又不暴露远程服务节点上的任何其他端口给别人。</p>
-
-<p>  SSH 代理功能其实是 SSH 端口转发的一种，其原理是利用一台公网可达的 SSH 服务作为跳板进行二次 SSH 登录。事实上，这种代理登录方式理论上可以支持二次及以上。由阮一峰大佬撰写的 <a href="https://wangdoc.com/ssh/port-forwarding.htm">SSH 教程</a> 中，对这一内容和原理做了非常详细的介绍，还包括 SSH 密钥登录、证书登录、scp 命令、rsync 命令等。这些知识在这里有非常大的用处。</p>
-
-<h5 id="公网服务器-1">公网服务器</h5>
-
-<p>  为了保障公网服务器的安全性，SSH 代理所使用的用户应该是一个不提供 SHELL 的用户，也就是说某一个客户端使用代理用户和通过验证的私钥登录公网服务器后会被立即退出，而无法停留在公网服务器上。如果为 SSH 代理用户提供了 SHELL，那么任何一个使用该服务的用户都能在公网服务器上操作，这样极不安全，公网服务器甚至可能被破坏。如下可以配置一个有家目录但不允许登录的用户用于 SSH 代理。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建一个用户名为 nologin_user 的不允许登录但有家目录的用户</span>
-<span class="nb">sudo </span>useradd <span class="nt">-d</span> /home/nologin_user <span class="nt">-m</span> <span class="nt">-s</span> /sbin/nologin nologin_user
-
-<span class="c"># 添加客户端节点的公钥到 nologin_user 的认证文件中</span>
-<span class="nb">sudo mkdir</span> /home/nologin_user/.ssh
-<span class="nb">sudo cat </span>id_rsa.pub <span class="o">&gt;&gt;</span> /home/nologin_user/.ssh/authorized_keys
-<span class="nb">sudo chown</span> <span class="nt">-R</span> nologin_user:nologin_user /home/nologin_user/.ssh
-
-<span class="c"># （可选，建议）配置 nologin_user 登录时不返回登录信息</span>
-<span class="c"># 在家目录创建一个名为 .hushlogin 的空文件</span>
-<span class="nb">sudo touch</span> /home/nologin_user/.hushlogin
-</code></pre></div></div>
-
-<h5 id="其他远程服务节点">其他远程服务节点</h5>
-
-<p>  为了使用户可以访问其他远程服务节点，在其他远程服务节点上也需要添加客户端节点的公钥到认证文件中，如下所示。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> /home/nologin_user/.ssh
-<span class="nb">sudo cat </span>id_rsa.pub <span class="o">&gt;&gt;</span> /home/&lt;username&gt;/.ssh/authorized_keys
-<span class="nb">sudo chown</span> <span class="nt">-R</span> &lt;username&gt;:&lt;username&gt; /home/nologin_user/.ssh
-</code></pre></div></div>
-
-<h5 id="本地客户端节点">本地客户端节点</h5>
-
-<p>  本地客户端节点为了可以一步直接登录其他远程服务节点，可以像以下方式一样配置本地 ssh。Linux 或者 Unix 的目录是 ~/.ssh/config，Windows 的目录也是 用户主目录/.ssh/config。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.ssh/config</span>
-
-Host remote
-    HostName 192.168.1.201
-    User ubuntu
-    Port 22
-    ProxyJump ecs
-
-Host ecs
-    HostName 1.1.1.1
-    User nologin_user
-    Port 22
-</code></pre></div></div>
-
-<p>  做好以上配置之后，即可在终端使用 <code class="language-plaintext highlighter-rouge">ssh remote</code> 命令一键无密码连接到其他远程服务节点。</p>
-
-<h3 id="第二种方法">第二种方法</h3>
-
-<h4 id="提前准备-1">提前准备</h4>
-
-<ul>
-  <li>本地客户端节点、公网服务器、远程服务节点都已安装 Zerotier</li>
-  <li>本地客户端节点 Zerotier 规划 IP 为 172.18.0.11</li>
-</ul>
-
-<p>  如何安装 Zerotier此处不做赘述。</p>
-
-<h4 id="配置互通">配置互通</h4>
-
-<p>  由于在这种方案中本地客户端节点、公网服务器、远程服务节点之间要实现网络完全互通，所以公网服务器和远程服务节点这里都要配置允许路由转发，本地客户端节点和公网服务器都要配置访问其他远程节点的路由转发。</p>
-
-<h5 id="远程服务节点-1">远程服务节点</h5>
-
-<p>  和第一种方法中 配置路由转发-远程服务节点 操作一致。</p>
-
-<h5 id="公网服务器-2">公网服务器</h5>
-
-<p>  和第一种方法中 配置路由转发-远程服务节点 操作基本一致，并且添加第一种方法中 配置路由转发-公网服务器 操作。这里不同的是 Zerotier 虚拟网卡需要转发流量，而不是将 Zerotier 虚拟网卡的流量请求转发给主要上网网卡，因此应做如下操作：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 允许 zt0 虚拟网卡转发流量请求</span>
-<span class="nb">sudo </span>iptables <span class="nt">-t</span> nat <span class="nt">-A</span> POSTROUTING <span class="nt">-o</span> zt0 <span class="nt">-j</span> MASQUERADE
-<span class="nb">sudo </span>iptables <span class="nt">-A</span> FORWARD <span class="nt">-m</span> conntrack <span class="nt">--ctstate</span> RELATED,ESTABLISHED <span class="nt">-j</span> ACCEPT
-<span class="c"># 接受一切网卡转发流量请求</span>
-<span class="nb">sudo </span>iptables <span class="nt">-P</span> FORWARD  ACCEPT
-<span class="c"># 保存修改的 iptables 规则</span>
-<span class="nb">sudo </span>netfilter-persistent save
-<span class="c"># 查看保存的 iptables 规则</span>
-<span class="nb">sudo </span>iptables-save
-</code></pre></div></div>
-
-<h5 id="本地客户端节点-1">本地客户端节点</h5>
-
-<p>  和第一种方法中 配置路由转发-公网服务器 操作基本一致。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询本地客户端的网卡（Linux）</span>
-ip <span class="nb">link </span>show
-<span class="c"># 查询本地客户端的网卡（Mac）</span>
-ifconfig
-
-<span class="c"># 假设正常上网网卡为 eth0，Zertiter 虚拟网卡为 zt0</span>
-<span class="c"># 添加通往其他远程服务节点的请求交给已配置 Zerotier 的远程服务节点转发</span>
-<span class="nb">sudo </span>route add <span class="nt">-net</span> 192.168.1.0/24 gw 172.18.0.10 dev zt0
-
-<span class="c"># 验证其他远程服务节点是否可达</span>
-<span class="c"># 假设某一个其他远程服务节点 IP 为 192.168.1.201</span>
-ping <span class="nt">-c</span> 10 192.168.1.201
-</code></pre></div></div>
-
-<p>  网络互通之后可以直接使用 192.168.1.201 访问到其他远程服务节点，所以对应的 ssh 配置文件修改为以下内容。然后使用 <code class="language-plaintext highlighter-rouge">ssh remote</code> 命令直接访问其他远程服务节点。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># ~/.ssh/config</span>
-
-Host remote
-    HostName 192.168.1.201
-    User ubuntu
-    Port 22
-</code></pre></div></div>
-
-<h2 id="总结与讨论">总结与讨论</h2>
-
-<p>  软件定义网络在进行异地组网中发挥了很大的作用，并且有一定的安全性保障。但其中也有一些不足之处，比如说两种方法都需要通过公网服务器到远程服务节点，如果要在远程服务节点和本地客户端节点之间上传下载较大的文章，网速仍然会受到公网服务器带宽的限制。如果有一台上下行比较对称、带宽充足的公网服务器，那么就很容易弥补这一不足。</p>
-
-<p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="多地" /><category term="组网" /><category term="互联" /><category term="Zerotier" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="docker" /><category term="JupyterLab" /><category term="Docker" /><category term="Gitlab" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
