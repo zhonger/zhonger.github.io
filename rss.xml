@@ -5,9 +5,227 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 23 Mar 2022 13:34:10 +0900</pubDate>
-    <lastBuildDate>Wed, 23 Mar 2022 13:34:10 +0900</lastBuildDate>
+    <pubDate>Wed, 06 Apr 2022 14:07:50 +0900</pubDate>
+    <lastBuildDate>Wed, 06 Apr 2022 14:07:50 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>给 Nginx 站点套上一层 Cloudflare </title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  站点访问速度及安全一直以来都是站长们建站所关注的重要内容。为了满足站点能够被全球用户的访问需求，通常我们会采用云服务商提供的 CDN 来加速访问速度。比如国外比较知名的 AWS 提供的 &lt;a href=&quot;https://aws.amazon.com/cn/cloudfront/&quot;&gt;Cloudfront&lt;/a&gt;、GCP 提供的 &lt;a href=&quot;https://cloud.google.com/cdn&quot;&gt;Cloud CDN&lt;/a&gt; 以及 Cloudflare 公司提供的 &lt;a href=&quot;https://www.cloudflare.com/&quot;&gt;Cloudflare&lt;/a&gt; 等，国内比较知名的腾讯云提供的 &lt;a href=&quot;https://cloud.tencent.com/product/cdn&quot;&gt;CDN&lt;/a&gt;、阿里云提供的 &lt;a href=&quot;https://cn.aliyun.com/product/cdn&quot;&gt;CDN&lt;/a&gt;、又拍云提供的 &lt;a href=&quot;https://www.upyun.com/products/cdn&quot;&gt;CDN&lt;/a&gt; 以及七牛云提供的 &lt;a href=&quot;https://www.qiniu.com/products/qcdn&quot;&gt;CDN&lt;/a&gt; 等。(PS：其实国内的其他云服务商比如华为云、百度云、滴滴云、京东云等等都提供了 CDN 解决方案。)&lt;/p&gt;
+
+&lt;p&gt;  CDN 除了常规的多地、多节点缓存加速之外，还可以清洗流量，从而预防和对抗 DDoS 攻击。如果我们购买的服务器不是固定带宽、流量无限，而是大带宽、流量按量付费的话，遇到 DDoS 就会受到很大损失。DDoS 攻击不仅会让服务器上的服务无法正常响应请求，从而造成 Nginx 或 Apache 服务过饱和，甚至服务器宕机，还会产生很大的无效入站流量消耗。一般来说，流量按量计费是对入站流量进行计费。这样一来，光流量这一项的经济损失就可能会是非常庞大的数字。&lt;/p&gt;
+
+&lt;p&gt;  当我们给 Nginx 站点套上一层 Cloudflare 或者其他 CDN 服务之后，用户访问服务时会先经过 Cloudflare。Cloudflare 免费版就具有清洗流量的功能：当 Cloudflare 发现流量来自僵尸网络或者异常流量请求时，就会拒绝响应或者只响应某些请求，而这些请求也会转给真实的服务器进行响应。从这里也可以看出来，用上 Cloudflare 之后，用户根本不知道真实服务器的 IP 地址或其他信息，能进一步保障服务器的安全。&lt;/p&gt;
+
+&lt;p&gt;  这里，为了在实际的应用场景中来实践，特地选取了适合个人搭建的个人短地址服务 &lt;a href=&quot;https://yourls.org&quot;&gt;Yourls&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;yourls&quot;&gt;Yourls&lt;/h3&gt;
+
+&lt;h4 id=&quot;简介&quot;&gt;简介&lt;/h4&gt;
+
+&lt;p&gt;  Yourls （&lt;strong&gt;Y&lt;/strong&gt;our &lt;strong&gt;O&lt;/strong&gt;wn &lt;strong&gt;URL&lt;/strong&gt; &lt;strong&gt;S&lt;/strong&gt;hortener） 是一款基于 PHP 的允许你运行自己的短地址服务的免费和开源的软件。你可以完全控制你的数据、详细的统计和分析、插件以及更多。以下是源代码和官方推荐插件的仓库：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/YOURLS/YOURLS&quot;&gt;YOURLS/YOURLS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/YOURLS/awesome-yourls&quot;&gt;YOURLS/awesome-yourls&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;部署&quot;&gt;部署&lt;/h4&gt;
+
+&lt;p&gt;  为了更加快速地部署 Yourls 服务，这里选用 docker-compose 的方式进行部署。以下是配置文件内容：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.1&apos;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;yourls&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;yourls&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;8080:80&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;YOURLS_DB_PASS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;abcdefgh&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;YOURLS_SITE&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://url.com&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;YOURLS_USER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;admin&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;YOURLS_PASS&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;admin@2022&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;mysql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;mysql:5.7&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./db:/var/lib/mysql&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;MYSQL_ROOT_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;abcdefgh&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;MYSQL_DATABASE&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;yourls&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 &lt;a href=&quot;https://hub.docker.com/ibmcom/mysql-s390x&quot;&gt;ibmcom/mysql-s390x:5.7.34&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/iY2gFc.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  编辑完配置文件后执行以下命令启动 Yourls 服务：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;cloudflare-配置&quot;&gt;Cloudflare 配置&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;访问 &lt;a href=&quot;https://dashcloudflare.com&quot;&gt;Cloudflare 控制台&lt;/a&gt;，选择进入已添加的域名操作面板。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;添加域名记录&quot;&gt;添加域名记录&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;进入 &lt;strong&gt;DNS&lt;/strong&gt; 面板，点击&lt;strong&gt;添加记录&lt;/strong&gt;按钮。&lt;/li&gt;
+  &lt;li&gt;采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/PeqQd6.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;生成证书&quot;&gt;生成证书&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;进入 &lt;strong&gt;SSL/TLS&lt;/strong&gt; 的 &lt;strong&gt;源服务器&lt;/strong&gt; 面板，点击&lt;strong&gt;创建证书&lt;/strong&gt;按钮。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/wQIIGc.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用默认配置点击&lt;strong&gt;创建&lt;/strong&gt;按钮即可。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/NutABj.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/uzEZNP.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;保存完成后，点击&lt;strong&gt;确定&lt;/strong&gt;按钮结束操作。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;部署证书&quot;&gt;部署证书&lt;/h4&gt;
+
+&lt;p&gt;  可以使用以下命令远程拷贝源证书和私钥到目标服务器，或者刚才直接保存在目标服务器上。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;scp url.com.&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; nginx:/home/ubuntu/ssl/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;nginx-配置&quot;&gt;Nginx 配置&lt;/h3&gt;
+
+&lt;h4 id=&quot;添加配置&quot;&gt;添加配置&lt;/h4&gt;
+
+&lt;p&gt;  在 Nginx 配置目录 /etc/nginx/sites-available 下新增 yourls 配置文件（需使用 sudo 权限方可新增），配置文件内容如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# /etc/nginx/sites-available/yourls&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ssl&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;kn&quot;&gt;ssl_certificate&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.pem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kn&quot;&gt;ssl_certificate_key&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;kn&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;url.com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kn&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.php&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.html&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.htm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;kn&quot;&gt;access_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.access.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kn&quot;&gt;error_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.error.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;kn&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;kn&quot;&gt;proxy_pass&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://127.0.0.1:8080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Real-IP&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Forwarded-For&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;可选只允许-cloudflare-访问&quot;&gt;（可选）只允许 Cloudflare 访问&lt;/h4&gt;
+
+&lt;p&gt;  为了进一步确保真实服务器只响应来自 Cloudflare 转发的请求，我们可以在 Nginx 的配置文件中增加对于允许访问 IP 地址的限制。如下配置文件中的 IPv4/IPv6 的 IP 地址段均来自 Cloudflare 官方声明。此 cf.conf 文件放置在 /etc/nginx 目录下。&lt;/p&gt;
+
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# cf.conf&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# https://www.cloudflare.com/ips&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# IPv4&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;103&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.21.244.0/22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;103&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.22.200.0/22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;103&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.31.4.0/22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;104&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.16.0.0/12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;108&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.162.192.0/18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;131&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.0.72.0/22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;141&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.101.64.0/18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;162&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.158.0.0/15&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;172&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.64.0.0/13&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;173&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.245.48.0/20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;188&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.114.96.0/20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;190&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.93.240.0/20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;197&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.234.240.0/22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;198&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.41.128.0/17&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# IPv6&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2400&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;cb00::/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;2606&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4700&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2803&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;f800::/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2405&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;b500::/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;2405&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;2a06&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;98&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;c0::/29&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;allow&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;2c0f:f248::/32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  另外，如要启用该配置文件，需在刚才写好的站点配置文件 yourls 中再增加两行来使其生效，内容如下所示:&lt;/p&gt;
+
+&lt;div class=&quot;language-nginx highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;...&lt;/span&gt;
+    
+    &lt;span class=&quot;s&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cf.conf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;kn&quot;&gt;deny&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;生效配置&quot;&gt;生效配置&lt;/h4&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /etc/nginx/sites-available/yourls /etc/nginx/sites-enabled/yourls
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nginx &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; reload
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;验证&quot;&gt;验证&lt;/h2&gt;
+
+&lt;p&gt;  访问 &lt;a href=&quot;https://url.com/install.php&quot;&gt;https://url.com/install.php&lt;/a&gt; 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 &lt;strong&gt;Install YOURLS&lt;/strong&gt; 按钮即可完成安装。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/IsDZVr.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.gingerdoc.com/tutorials/how-to-host-a-website-using-cloudflare-and-nginx-on-ubuntu-20-04&quot;&gt;如何在 Ubuntu 20.04 上使用 Cloudflare 和 Nginx 托管网站&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nova.moe/nginx-block-non-cloudflare-ips/&quot;&gt;让 Nginx 只允许 Cloudflare 反向代理流量以隐藏源站&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 05 Apr 2022 15:44:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/nginx-cloudflare.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/nginx-cloudflare.html</guid>
+        
+        <category>Nginx</category>
+        
+        <category>Cloudflare</category>
+        
+        <category>加速</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</title>
@@ -1768,370 +1986,6 @@ docker-compose run &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; gitlab app
         <category>Gitlab</category>
         
         <category>docker</category>
-        
-        
-        <category>tech</category>
-        
-        <category>docker</category>
-        
-      </item>
-    
-      <item>
-        <title>JupyterLab 的搭建与运维</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  &lt;a href=&quot;https://jupyter.org/&quot;&gt;Jupyter&lt;/a&gt;， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 &lt;a href=&quot;https://www.jetbrains.com/pycharm/&quot;&gt;PyCharm&lt;/a&gt;。不过笔者还是比较喜欢 &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;VS Code&lt;/a&gt;，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。&lt;/p&gt;
-
-&lt;p&gt;  在 Jupyter 出现之前，也有可以替代 Python 自带的 Python Shell 的 &lt;a href=&quot;https://ipython.org/&quot;&gt;IPython&lt;/a&gt;。笔者在早期也曾使用过，体验还不错。其实，Jupyter 就是2014 年从 IPython 中衍生出来的，所以从 IPython 过渡到 Jupyter 毫无困难。如果说 IPython 是为了 Python 而量身定制的话，那么 Jupyter 则是为包括 Julia、Python、R 在内的几十种编程语言（&lt;a href=&quot;https://github.com/jupyter/jupyter/wiki/Jupyter-kernels&quot;&gt;详情连接&lt;/a&gt;）的交互式数据科学和科学计算而生的。&lt;/p&gt;
-
-&lt;p&gt;  早期的 Jupyter 只包含 Jupyter Kernels 和 Jupyter Notebook，其中 Jupyter Kernels 是用于支持编程语言的内核，Jupyter Notebook 是基于 Web 的交互式计算环境，前身是 IPython Notebook。现在的 Jupyter 除了这两者以外还有 JupyterHub、JupyterHub API 和 JupyterLab。JupyterHub 是一个用于 Jupyter Notebook 的多用户服务器。它通过生成、管理和代理许多单一的 Jupyter Notebook 服务器来支持多用户。JupyterHub API 是以 REST 风格向开发者们提供的 API 接口，可以完成一系列对 Jupyter 的操作，比如生成用户环境、配置环境等。JupyterLab 号称是 Jupyter 项目的下一代用户界面，它以一个灵活且强大的用户界面向用户提供经典的 Jupyter Notebook、终端、编辑器、文件浏览器、丰富输出等模块，俨然像是朝着现代化的理想编辑器的目标进发的。&lt;/p&gt;
-
-&lt;p&gt;  无论之前的 Jupyter 是什么样子，现在的 JupyterLab 已经是和曾经的 Cloud9 （一款先进的在线代码编辑器，现已被 AWS 收购）一样的支持多用户多实例的代码运行平台。对于从事科学研究的团队来说，使用 JupyterLab 搭建一个内部科学计算平台成为了可能。当然，个人用户还是可以选择使用 Anaconda 或者 PIP 来安装单用户版本。&lt;/p&gt;
-
-&lt;h2 id=&quot;搭建&quot;&gt;搭建&lt;/h2&gt;
-
-&lt;p&gt;  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的&lt;a href=&quot;https://jupyter-docker-stacks.readthedocs.io/&quot;&gt;文档网站&lt;/a&gt;，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 &lt;a href=&quot;https://github.com/jupyter/docker-stacks&quot;&gt;Dockerfile 集合&lt;/a&gt; 吧。&lt;/p&gt;
-
-&lt;p&gt;  JupyterLab 提供两种方式启动多用户多实例：&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;DockerSpawner 方式&lt;/strong&gt;：每个用户独享一个 Docker 实例，能有效隔离用户。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SystemSpawner 方式&lt;/strong&gt;：共享同一个 Docker 实例，以系统用户身份运行。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;  事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://jupyterhub.readthedocs.io/en/stable/_images/jhub-fluxogram.jpeg&quot; alt=&quot;JupyterHub 架构图&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  以下为搭建所需的文件的列表：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/4pnx0D.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;构建-jupyter-notebook-实例镜像&quot;&gt;构建 Jupyter Notebook 实例镜像&lt;/h3&gt;
-
-&lt;h4 id=&quot;基础镜像-base-notebook&quot;&gt;基础镜像 base-notebook&lt;/h4&gt;
-
-&lt;p&gt;  这里的基础镜像可以根据需要自行选择，与 &lt;a href=&quot;https://github.com/jupyter/docker-stacks/tree/master/base-notebook&quot;&gt;jupyter/docker-stacks&lt;/a&gt; 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 &lt;a href=&quot;https://github.com/jupyter/docker-stacks/tree/master/base-notebook&quot;&gt;base-notebook 目录&lt;/a&gt;一致。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Dockerfile&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;ARG BASE_CONTAINER=$ROOT_CONTAINER&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;FROM $BASE_CONTAINER&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;ARG NB_USER=&quot;ubuntu&quot;&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG NB_UID=&quot;1000&quot;&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG NB_GID=&quot;100&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Fix DL4006&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;SHELL [&quot;/bin/bash&quot;, &quot;-o&quot;, &quot;pipefail&quot;, &quot;-c&quot;]&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;USER root&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Install all OS dependencies for notebook server that starts but lacks all&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# features (e.g., download as all possible file formats)&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ENV DEBIAN_FRONTEND noninteractive&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN apt-get update \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; apt-get install -yq --no-install-recommends wget htop vim bzip2 ca-certificates sudo locales fonts-liberation run-one \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; apt-get clean \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm -rf /var/lib/apt/lists/*&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;RUN echo &quot;en_US.UTF-8 UTF-8&quot; &amp;gt; /etc/locale.gen &amp;amp;&amp;amp; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;locale-gen&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Configure environment&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ENV CONDA_DIR=/opt/conda \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;SHELL=/bin/bash \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;NB_USER=$NB_USER \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;NB_UID=$NB_UID \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;NB_GID=$NB_GID \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;LC_ALL=en_US.UTF-8 \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;LANG=en_US.UTF-8 \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;LANGUAGE=en_US.UTF-8&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ENV PATH=$CONDA_DIR/bin:$PATH \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;HOME=/home/$NB_USER&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Copy a script that we will use to correct permissions after running certain commands&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;COPY fix-permissions /usr/local/bin/fix-permissions&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN chmod a+rx /usr/local/bin/fix-permissions&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Enable prompt color in the skeleton .bashrc before creating the default NB_USER&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN sed -i &apos;s/^#force_color_prompt=yes/force_color_prompt=yes/&apos; /etc/skel/.bashrc&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Create NB_USER wtih name ubuntu user with UID=1000 and in the &apos;users&apos; group&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# and make sure these dirs are writable by the `users` group.&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN echo &quot;auth requisite pam_deny.so&quot; &amp;gt;&amp;gt; /etc/pam.d/su \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; sed -i.bak -e &apos;s/^%admin/#%admin/&apos; /etc/sudoers \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; sed -i.bak -e &apos;s/^%sudo/#%sudo/&apos; /etc/sudoers \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; useradd -m -s /bin/bash -N -u $NB_UID $NB_USER -g $NB_GID \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; mkdir -p $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;# &amp;amp;&amp;amp; chown $NB_USER:$NB_GID  \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; chmod g+w /etc/passwd \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions $HOME \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; adduser ubuntu sudo \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; echo &quot;ubuntu ALL=(ALL) NOPASSWD&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ALL&quot; | tee /etc/sudoers.d/nopasswd4sudo&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;USER $NB_UID&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;WORKDIR $HOME&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG PYTHON_VERSION=default&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Setup work directory for backward-compatibility&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN mkdir /home/$NB_USER/work &amp;amp;&amp;amp; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;fix-permissions /home/$NB_USER&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Install conda as ubuntu and check the md5 sum provided on the download site&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ENV MINICONDA_VERSION=4.9.2 \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;MINICONDA_MD5=122c8c9beb51e124ab32a0fa6426c656 \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;CONDA_VERSION=4.9.2&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;WORKDIR /tmp&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh  \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; echo &quot;${MINICONDA_MD5} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh&quot; | md5sum -c -  \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; /bin/bash Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; echo &quot;conda ${CONDA_VERSION}&quot; &amp;gt;&amp;gt; $CONDA_DIR/conda-meta/pinned \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda config --system --prepend channels conda-forge \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda config --system --set auto_update_conda &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda config --system --set show_channel_urls &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda config --system --set channel_priority strict \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; if [ ! $PYTHON_VERSION = &apos;default&apos; ]; then conda install --yes python=$PYTHON_VERSION; fi \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda list python | grep &apos;^python &apos; | tr -s &apos; &apos; | cut -d &apos;.&apos; -f 1,2 | sed &apos;s/$/.*/&apos; &amp;gt;&amp;gt; $CONDA_DIR/conda-meta/pinned \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda install --quiet --yes conda \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda install --quiet --yes pip \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda update --all --quiet --yes \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda clean --all -f -y \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm -rf /home/$NB_USER/.cache/yarn \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions /home/$NB_USER&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Install Tini&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN conda install --quiet --yes &apos;tini=0.18.0&apos; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda list tini | grep tini | tr -s &apos; &apos; | cut -d &apos; &apos; -f 1,2 &amp;gt;&amp;gt; $CONDA_DIR/conda-meta/pinned \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda clean --all -f -y \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions /home/$NB_USER&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Install Jupyter Notebook, Lab, and Hub&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Generate a notebook server config&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Cleanup temporary files&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Correct permissions&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Do all this in a single RUN command to avoid duplicating all of the&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# files across image layers when the permissions change&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN conda install --quiet --yes \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;notebook=6.4.0&apos; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;jupyterhub=1.4.2&apos; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;jupyterlab=3.0.16&apos; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda clean --all -f -y \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; npm install -g npm@7.20.0 \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; npm cache clean --force \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; jupyter notebook --generate-config \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm -rf $CONDA_DIR/share/jupyter/lab/staging \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm -rf /home/$NB_USER/.cache/yarn \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions $CONDA_DIR \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; fix-permissions /home/$NB_USER&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;EXPOSE &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8888&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Configure container startup&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ENTRYPOINT [&quot;tini&quot;, &quot;-g&quot;, &quot;--&quot;]&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;CMD [&quot;start-notebook.sh&quot;]&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Copy local files as late as possible to avoid cache busting&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;COPY start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;COPY jupyter_notebook_config.py /etc/jupyter/&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Fix permissions on /etc/jupyter as root&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;USER root&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN fix-permissions /etc/jupyter/&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN chmod +x /usr/local/bin/start-notebook.sh /usr/local/bin/start-singleuser.sh /usr/local/bin/start.sh&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Switch back to ubuntu to avoid accidental container runs as root&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;USER $NB_UID&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;WORKDIR $HOME&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; base-notebook:latest &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;单用户镜像-singleuser&quot;&gt;单用户镜像 singleuser&lt;/h4&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Dockerfile&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG BASE_IMAGE=base-notebook:latest&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;FROM $BASE_IMAGE&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;ADD install_jupyterhub /tmp/install_jupyterhub&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;ARG JUPYTERHUB_VERSION=master&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# install pinned jupyterhub and ensure notebook is installed&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; &amp;amp;&amp;amp; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;python3 -m pip install notebook jupyterhub&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;install_jupyterhub 脚本文件&lt;/p&gt;
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env python
-&lt;/span&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;subprocess&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;check_call&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;environ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;JUPYTERHUB_VERSION&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;pip_install&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;executable&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;-m&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;pip&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;install&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;--no-cache&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;--upgrade&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&apos;--upgrade-strategy&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;only-if-needed&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;master&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;https://github.com/jupyterhub/jupyterhub/archive/master.tar.gz&apos;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;version_info&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;part&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;part&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;.&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;version_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;upper_bound&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;.&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;version_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;vs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&amp;gt;=%s,&amp;lt;%s&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;V&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;upper_bound&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;req&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;jupyterhub%s&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vs&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;check_call&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pip_install&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;req&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; singleuser:latest &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;jupyterlab-单用户镜像-jupyter_lab_singleuser&quot;&gt;JupyterLab 单用户镜像 jupyter_lab_singleuser&lt;/h4&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;ARG BASE_IMAGE=singleuser:latest&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;FROM ${BASE_IMAGE}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Install jupyterlab&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN conda update -n base conda \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; conda install -c conda-forge jupyterlab&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN jupyter serverextension enable --py jupyterlab --sys-prefix&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;USER root&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN chpasswd &amp;lt;&amp;lt;&amp;lt; &quot;ubuntu:ubuntu&quot; \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; sed -i &apos;s/http:\/\/archive.ubuntu.com/https:\/\/mirrors.sjtug.sjtu.edu.cn/g&apos; /etc/apt/sources.list \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; apt update \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; apt install -y git zsh vim \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; usermod -s /bin/zsh ubuntu \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; echo &apos;chown -R ubuntu:users /home/ubuntu/work&apos; &amp;gt;&amp;gt; /usr/local/bin/start-notebook.sh&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Add supports for zsh and zh-CN language&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;USER ubuntu&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;RUN git clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; sed -i &quot;s/robbyrussell/bira/&quot; ~/.zshrc \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; wget -c https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/jupyterhub/jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; pip install jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; rm jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker build &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; jupyter_lab_single:latest &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;构建-jupyterhub-镜像&quot;&gt;构建 JupyterHub 镜像&lt;/h3&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Dockerfile&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;ARG BASE_IMAGE=jupyterhub/jupyterhub:latest&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;FROM ${BASE_IMAGE}&lt;/span&gt;
-
-&lt;span class=&quot;s&quot;&gt;RUN pip install --no-cache --upgrade jupyter \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; pip install --no-cache dockerspawner \&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;&amp;amp;&amp;amp; pip install --no-cache oauthenticator&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;EXPOSE &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8000&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  这里配置挂载的本地目录为根据用户名而区分的目录，当 Gitlab 用户名中包含 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-&lt;/code&gt; 时，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-&lt;/code&gt; 会被转义为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;2d&lt;/code&gt;。另外，这里的本地目录需要预先建立好，否则由于 Docker 自身的安全性而新建立的目录的所有者会是 root 用户，这样就不能够正常使用该目录。以下配置文件需放置在 docker-compose.yml 的同层目录 data 里面。&lt;/p&gt;
-
-&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# jupyterhub_config.py
-&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;os&lt;/span&gt;
-&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;oauthenticator.gitlab&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GitLabOAuthenticator&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JupyterHub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;authenticator_class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;GitLabOAuthenticator&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GitLabOAuthenticator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;oauth_callback_url&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getenv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GITLAB_OAUTH_CALLBACK&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GitLabOAuthenticator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getenv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GITLAB_API_CLIENT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GitLabOAuthenticator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;client_secret&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;os&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;getenv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;GITLAB_API_KEY&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JupyterHub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;spawner_class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;dockerspawner.DockerSpawner&apos;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;image&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;jupyter_lab_singleuser:latest&apos;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;environment&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&apos;GRANT_SUDO&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;1&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&apos;UID&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extra_create_kwargs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;user&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;ubuntu&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extra_create_kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;command&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;start-singleuser.sh --SingleUserNotebookApp.default_url=/lab&quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Mount the real user&apos;s Docker volume on the host to the notebook user&apos;s
-# notebook directory in the container
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;notebook_dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;/home/ubuntu/work&apos;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;notebook_dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;notebook_dir&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;volumes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;/home/data/jupyterhub/user-data-{username}&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;notebook_dir&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;args&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;--allow-root&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;remove_containers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;#network
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;jupyterhub_network&apos;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;use_internal_ip&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;network_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;network_name&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# Pass the network name as argument to spawned containers
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DockerSpawner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;extra_host_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;network_mode&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;network_name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# IP Configurations
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;JupyterHub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;hub_ip&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;172.18.0.2&apos;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#c.JupyterHub.port = 8000
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;jupyterhub&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;jupyterlab&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;jupyterhub:latest&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;8000:8000&quot;&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/var/run/docker.sock:/var/run/docker.sock&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;na&quot;&gt;ipv4_address&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;172.18.0.2&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GITLAB_HOST=https://{Gitlab Domain}&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GITLAB_API_CLIENT=xxxxxx&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GITLAB_API_KEY=xxxxxx&lt;/span&gt;
-            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;GITLAB_OAUTH_CALLBACK=https://{JupyterHub Domain}/hub/oauth_callback&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;networks&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;network&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;bridge&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;ipam&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;driver&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default&lt;/span&gt;
-            &lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-                &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;subnet&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;172.18.0.0/24&lt;/span&gt;
-                  &lt;span class=&quot;na&quot;&gt;gateway&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;172.18.0.1&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker-compose up &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;测试&quot;&gt;测试&lt;/h2&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;https://{JupyterHub Domain}/&quot;&gt;https://{JupyterHub Domain}/&lt;/a&gt; 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/wiki/Jupyter&quot;&gt;Jupyter - 维基百科&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://zsduo.com/archives/244.html&quot;&gt;JupyterLab 3.0 正式发布，同时解决中文语言包下载不成功，汉化不成功的问题，jupyterlab-language-pack-zh-CN 安装失败解决方案&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/&quot;&gt;Jupyterlab 安装中文语言包失败&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/258724435&quot;&gt;使用JupyterHub向多用户提供jupyter服务的思路&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.kaifa99.com/GitHub/article_117797&quot;&gt;dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 25 Jul 2021 08:20:00 +0900</pubDate>
-        <link>https://lisz.me/tech/docker/jupyterlab.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/docker/jupyterlab.html</guid>
-        
-        <category>JupyterLab</category>
-        
-        <category>Docker</category>
-        
-        <category>Gitlab</category>
         
         
         <category>tech</category>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给 Nginx 站点套上一层 Cloudflare  - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="给 Nginx 站点套上一层 Cloudflare ">
+    <meta name="keywords"  content="Nginx, Cloudflare, 加速">
+    <!-- Open Graph -->
+    <meta property="og:title" content="给 Nginx 站点套上一层 Cloudflare  - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/nginx-cloudflare.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#Nginx" class="post-tag">Nginx</a>
+          
+            <a href="/tags.html#Cloudflare" class="post-tag">Cloudflare</a>
+          
+            <a href="/tags.html#%E5%8A%A0%E9%80%9F" class="post-tag">加速</a>
+          
+        
+      </div>
+      <h1>给 Nginx 站点套上一层 Cloudflare </h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-04-05"><i class="iconfont icon-date"></i>Tue, 05 Apr 2022 15:44:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 3310 字 <b>·</b> 阅读全文大约需要 10 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1649017049683-94ddea424f46?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">如何通过 Cloudflare 来提升 Nginx 站点访问速度</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
+
+<p>  站点访问速度及安全一直以来都是站长们建站所关注的重要内容。为了满足站点能够被全球用户的访问需求，通常我们会采用云服务商提供的 CDN 来加速访问速度。比如国外比较知名的 AWS 提供的 <a href="https://aws.amazon.com/cn/cloudfront/">Cloudfront</a>、GCP 提供的 <a href="https://cloud.google.com/cdn">Cloud CDN</a> 以及 Cloudflare 公司提供的 <a href="https://www.cloudflare.com/">Cloudflare</a> 等，国内比较知名的腾讯云提供的 <a href="https://cloud.tencent.com/product/cdn">CDN</a>、阿里云提供的 <a href="https://cn.aliyun.com/product/cdn">CDN</a>、又拍云提供的 <a href="https://www.upyun.com/products/cdn">CDN</a> 以及七牛云提供的 <a href="https://www.qiniu.com/products/qcdn">CDN</a> 等。(PS：其实国内的其他云服务商比如华为云、百度云、滴滴云、京东云等等都提供了 CDN 解决方案。)</p>
+
+<p>  CDN 除了常规的多地、多节点缓存加速之外，还可以清洗流量，从而预防和对抗 DDoS 攻击。如果我们购买的服务器不是固定带宽、流量无限，而是大带宽、流量按量付费的话，遇到 DDoS 就会受到很大损失。DDoS 攻击不仅会让服务器上的服务无法正常响应请求，从而造成 Nginx 或 Apache 服务过饱和，甚至服务器宕机，还会产生很大的无效入站流量消耗。一般来说，流量按量计费是对入站流量进行计费。这样一来，光流量这一项的经济损失就可能会是非常庞大的数字。</p>
+
+<p>  当我们给 Nginx 站点套上一层 Cloudflare 或者其他 CDN 服务之后，用户访问服务时会先经过 Cloudflare。Cloudflare 免费版就具有清洗流量的功能：当 Cloudflare 发现流量来自僵尸网络或者异常流量请求时，就会拒绝响应或者只响应某些请求，而这些请求也会转给真实的服务器进行响应。从这里也可以看出来，用上 Cloudflare 之后，用户根本不知道真实服务器的 IP 地址或其他信息，能进一步保障服务器的安全。</p>
+
+<p>  这里，为了在实际的应用场景中来实践，特地选取了适合个人搭建的个人短地址服务 <a href="https://yourls.org">Yourls</a>。</p>
+
+<h2 id="实践">实践</h2>
+
+<h3 id="yourls">Yourls</h3>
+
+<h4 id="简介">简介</h4>
+
+<p>  Yourls （<strong>Y</strong>our <strong>O</strong>wn <strong>URL</strong> <strong>S</strong>hortener） 是一款基于 PHP 的允许你运行自己的短地址服务的免费和开源的软件。你可以完全控制你的数据、详细的统计和分析、插件以及更多。以下是源代码和官方推荐插件的仓库：</p>
+
+<ul>
+  <li><a href="https://github.com/YOURLS/YOURLS">YOURLS/YOURLS</a></li>
+  <li><a href="https://github.com/YOURLS/awesome-yourls">YOURLS/awesome-yourls</a></li>
+</ul>
+
+<h4 id="部署">部署</h4>
+
+<p>  为了更加快速地部署 Yourls 服务，这里选用 docker-compose 的方式进行部署。以下是配置文件内容：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.1'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">yourls</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">yourls</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">8080:80</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">YOURLS_DB_PASS</span><span class="pi">:</span> <span class="s">abcdefgh</span>
+      <span class="na">YOURLS_SITE</span><span class="pi">:</span> <span class="s">https://url.com</span>
+      <span class="na">YOURLS_USER</span><span class="pi">:</span> <span class="s">admin</span>
+      <span class="na">YOURLS_PASS</span><span class="pi">:</span> <span class="s">admin@2022</span>
+
+  <span class="na">mysql</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:5.7</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./db:/var/lib/mysql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">abcdefgh</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">yourls</span>
+</code></pre></div></div>
+
+<p>  Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 <a href="https://hub.docker.com/ibmcom/mysql-s390x">ibmcom/mysql-s390x:5.7.34</a>。</p>
+
+<p><img src="https://i.vgy.me/iY2gFc.png" alt="vgy.me" /></p>
+
+<p>  编辑完配置文件后执行以下命令启动 Yourls 服务：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h3 id="cloudflare-配置">Cloudflare 配置</h3>
+
+<ul>
+  <li>访问 <a href="https://dashcloudflare.com">Cloudflare 控制台</a>，选择进入已添加的域名操作面板。</li>
+</ul>
+
+<h4 id="添加域名记录">添加域名记录</h4>
+
+<ul>
+  <li>进入 <strong>DNS</strong> 面板，点击<strong>添加记录</strong>按钮。</li>
+  <li>采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/PeqQd6.png" alt="vgy.me" /></p>
+
+<h4 id="生成证书">生成证书</h4>
+
+<ul>
+  <li>进入 <strong>SSL/TLS</strong> 的 <strong>源服务器</strong> 面板，点击<strong>创建证书</strong>按钮。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/wQIIGc.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>使用默认配置点击<strong>创建</strong>按钮即可。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/NutABj.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/uzEZNP.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>保存完成后，点击<strong>确定</strong>按钮结束操作。</li>
+</ul>
+
+<h4 id="部署证书">部署证书</h4>
+
+<p>  可以使用以下命令远程拷贝源证书和私钥到目标服务器，或者刚才直接保存在目标服务器上。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp url.com.<span class="k">*</span> nginx:/home/ubuntu/ssl/
+</code></pre></div></div>
+
+<h3 id="nginx-配置">Nginx 配置</h3>
+
+<h4 id="添加配置">添加配置</h4>
+
+<p>  在 Nginx 配置目录 /etc/nginx/sites-available 下新增 yourls 配置文件（需使用 sudo 权限方可新增），配置文件内容如下所示：</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># /etc/nginx/sites-available/yourls</span>
+
+<span class="k">server</span> <span class="p">{</span>
+
+	<span class="kn">listen</span>   <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+
+	<span class="kn">ssl_certificate</span>    <span class="n">/home/linux1/ssl/url.com.pem</span><span class="p">;</span>
+	<span class="kn">ssl_certificate_key</span>    <span class="n">/home/linux1/ssl/url.com.key</span><span class="p">;</span>
+
+	<span class="kn">server_name</span> <span class="s">url.com</span><span class="p">;</span>
+	<span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+
+	<span class="kn">access_log</span> <span class="n">/var/log/nginx/yourls.access.log</span><span class="p">;</span>
+	<span class="kn">error_log</span> <span class="n">/var/log/nginx/yourls.error.log</span><span class="p">;</span>
+
+	<span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+		<span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8080</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$proxy_host</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="可选只允许-cloudflare-访问">（可选）只允许 Cloudflare 访问</h4>
+
+<p>  为了进一步确保真实服务器只响应来自 Cloudflare 转发的请求，我们可以在 Nginx 的配置文件中增加对于允许访问 IP 地址的限制。如下配置文件中的 IPv4/IPv6 的 IP 地址段均来自 Cloudflare 官方声明。此 cf.conf 文件放置在 /etc/nginx 目录下。</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cf.conf</span>
+<span class="c1"># https://www.cloudflare.com/ips</span>
+<span class="c1"># IPv4</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.21.244.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.22.200.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.31.4.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">104</span><span class="s">.16.0.0/12</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">108</span><span class="s">.162.192.0/18</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">131</span><span class="s">.0.72.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">141</span><span class="s">.101.64.0/18</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">162</span><span class="s">.158.0.0/15</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">172</span><span class="s">.64.0.0/13</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">173</span><span class="s">.245.48.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">188</span><span class="s">.114.96.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">190</span><span class="s">.93.240.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">197</span><span class="s">.234.240.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">198</span><span class="s">.41.128.0/17</span><span class="p">;</span>
+
+<span class="c1"># IPv6</span>
+<span class="k">allow</span> <span class="mi">2400</span><span class="p">:</span><span class="s">cb00::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2606</span><span class="p">:</span><span class="mi">4700</span><span class="p">::</span><span class="n">/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">2803</span><span class="p">:</span><span class="s">f800::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">2405</span><span class="p">:</span><span class="s">b500::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2405</span><span class="p">:</span><span class="mi">8100</span><span class="p">::</span><span class="n">/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2a06</span><span class="p">:</span><span class="mi">98</span><span class="s">c0::/29</span><span class="p">;</span>
+<span class="k">allow</span> <span class="s">2c0f:f248::/32</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>  另外，如要启用该配置文件，需在刚才写好的站点配置文件 yourls 中再增加两行来使其生效，内容如下所示:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">...</span>
+    
+    <span class="s">include</span> <span class="s">cf.conf</span><span class="p">;</span>
+	<span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="生效配置">生效配置</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/nginx/sites-available/yourls /etc/nginx/sites-enabled/yourls
+<span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
+</code></pre></div></div>
+
+<h2 id="验证">验证</h2>
+
+<p>  访问 <a href="https://url.com/install.php">https://url.com/install.php</a> 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 <strong>Install YOURLS</strong> 按钮即可完成安装。</p>
+
+<p><img src="https://i.vgy.me/IsDZVr.png" alt="vgy.me" /></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://www.gingerdoc.com/tutorials/how-to-host-a-website-using-cloudflare-and-nginx-on-ubuntu-20-04">如何在 Ubuntu 20.04 上使用 Cloudflare 和 Nginx 托管网站</a></li>
+  <li><a href="https://nova.moe/nginx-block-non-cloudflare-ips/">让 Nginx 只允许 Cloudflare 反向代理流量以隐藏源站</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#yourls">Yourls</a><ul><li><a href="#简介">简介</a></li><li><a href="#部署">部署</a></li></ul></li><li><a href="#cloudflare-配置">Cloudflare 配置</a><ul><li><a href="#添加域名记录">添加域名记录</a></li><li><a href="#生成证书">生成证书</a></li><li><a href="#部署证书">部署证书</a></li></ul></li><li><a href="#nginx-配置">Nginx 配置</a><ul><li><a href="#添加配置">添加配置</a></li><li><a href="#可选只允许-cloudflare-访问">（可选）只允许 Cloudflare 访问</a></li><li><a href="#生效配置">生效配置</a></li></ul></li></ul></li><li><a href="#验证">验证</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/ac/ml/utility-vs-understanding.html" class="read-next-link"></a>
+          <section>
+            <span>[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</span>
+            <p>原文标题：Utility vs Understanding: the State of Machine Learn...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1647715360138-33fb6fe68539?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164207041-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-164207041-1');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164207041-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-164207041-1');
+</script>
+
+</body>
+
+</html>

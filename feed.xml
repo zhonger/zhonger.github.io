@@ -1,4 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-03-23T13:34:10+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</title><link href="https://lisz.me/ac/ml/utility-vs-understanding.html" rel="alternate" type="text/html" title="[译文]实用性 vs 理解力：进入 2022 年的机器学习领域" /><published>2022-03-21T14:30:00+09:00</published><updated>2022-03-21T14:30:00+09:00</updated><id>https://lisz.me/ac/ml/utility-vs-understanding</id><content type="html" xml:base="https://lisz.me/ac/ml/utility-vs-understanding.html"><![CDATA[<p><strong>原文标题</strong>：<a href="https://www.aidancooper.co.uk/utility-vs-understanding/">Utility vs Understanding: the State of Machine Learning Entering 2022</a><br />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-04-06T14:07:50+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">给 Nginx 站点套上一层 Cloudflare</title><link href="https://lisz.me/tech/webmaster/nginx-cloudflare.html" rel="alternate" type="text/html" title="给 Nginx 站点套上一层 Cloudflare" /><published>2022-04-05T15:44:00+09:00</published><updated>2022-04-05T15:44:00+09:00</updated><id>https://lisz.me/tech/webmaster/nginx-cloudflare</id><content type="html" xml:base="https://lisz.me/tech/webmaster/nginx-cloudflare.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  站点访问速度及安全一直以来都是站长们建站所关注的重要内容。为了满足站点能够被全球用户的访问需求，通常我们会采用云服务商提供的 CDN 来加速访问速度。比如国外比较知名的 AWS 提供的 <a href="https://aws.amazon.com/cn/cloudfront/">Cloudfront</a>、GCP 提供的 <a href="https://cloud.google.com/cdn">Cloud CDN</a> 以及 Cloudflare 公司提供的 <a href="https://www.cloudflare.com/">Cloudflare</a> 等，国内比较知名的腾讯云提供的 <a href="https://cloud.tencent.com/product/cdn">CDN</a>、阿里云提供的 <a href="https://cn.aliyun.com/product/cdn">CDN</a>、又拍云提供的 <a href="https://www.upyun.com/products/cdn">CDN</a> 以及七牛云提供的 <a href="https://www.qiniu.com/products/qcdn">CDN</a> 等。(PS：其实国内的其他云服务商比如华为云、百度云、滴滴云、京东云等等都提供了 CDN 解决方案。)</p>
+
+<p>  CDN 除了常规的多地、多节点缓存加速之外，还可以清洗流量，从而预防和对抗 DDoS 攻击。如果我们购买的服务器不是固定带宽、流量无限，而是大带宽、流量按量付费的话，遇到 DDoS 就会受到很大损失。DDoS 攻击不仅会让服务器上的服务无法正常响应请求，从而造成 Nginx 或 Apache 服务过饱和，甚至服务器宕机，还会产生很大的无效入站流量消耗。一般来说，流量按量计费是对入站流量进行计费。这样一来，光流量这一项的经济损失就可能会是非常庞大的数字。</p>
+
+<p>  当我们给 Nginx 站点套上一层 Cloudflare 或者其他 CDN 服务之后，用户访问服务时会先经过 Cloudflare。Cloudflare 免费版就具有清洗流量的功能：当 Cloudflare 发现流量来自僵尸网络或者异常流量请求时，就会拒绝响应或者只响应某些请求，而这些请求也会转给真实的服务器进行响应。从这里也可以看出来，用上 Cloudflare 之后，用户根本不知道真实服务器的 IP 地址或其他信息，能进一步保障服务器的安全。</p>
+
+<p>  这里，为了在实际的应用场景中来实践，特地选取了适合个人搭建的个人短地址服务 <a href="https://yourls.org">Yourls</a>。</p>
+
+<h2 id="实践">实践</h2>
+
+<h3 id="yourls">Yourls</h3>
+
+<h4 id="简介">简介</h4>
+
+<p>  Yourls （<strong>Y</strong>our <strong>O</strong>wn <strong>URL</strong> <strong>S</strong>hortener） 是一款基于 PHP 的允许你运行自己的短地址服务的免费和开源的软件。你可以完全控制你的数据、详细的统计和分析、插件以及更多。以下是源代码和官方推荐插件的仓库：</p>
+
+<ul>
+  <li><a href="https://github.com/YOURLS/YOURLS">YOURLS/YOURLS</a></li>
+  <li><a href="https://github.com/YOURLS/awesome-yourls">YOURLS/awesome-yourls</a></li>
+</ul>
+
+<h4 id="部署">部署</h4>
+
+<p>  为了更加快速地部署 Yourls 服务，这里选用 docker-compose 的方式进行部署。以下是配置文件内容：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.1'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+
+  <span class="na">yourls</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">yourls</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">8080:80</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">YOURLS_DB_PASS</span><span class="pi">:</span> <span class="s">abcdefgh</span>
+      <span class="na">YOURLS_SITE</span><span class="pi">:</span> <span class="s">https://url.com</span>
+      <span class="na">YOURLS_USER</span><span class="pi">:</span> <span class="s">admin</span>
+      <span class="na">YOURLS_PASS</span><span class="pi">:</span> <span class="s">admin@2022</span>
+
+  <span class="na">mysql</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:5.7</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./db:/var/lib/mysql</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">MYSQL_ROOT_PASSWORD</span><span class="pi">:</span> <span class="s">abcdefgh</span>
+      <span class="na">MYSQL_DATABASE</span><span class="pi">:</span> <span class="s">yourls</span>
+</code></pre></div></div>
+
+<p>  Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 <a href="https://hub.docker.com/ibmcom/mysql-s390x">ibmcom/mysql-s390x:5.7.34</a>。</p>
+
+<p><img src="https://i.vgy.me/iY2gFc.png" alt="vgy.me" /></p>
+
+<p>  编辑完配置文件后执行以下命令启动 Yourls 服务：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h3 id="cloudflare-配置">Cloudflare 配置</h3>
+
+<ul>
+  <li>访问 <a href="https://dashcloudflare.com">Cloudflare 控制台</a>，选择进入已添加的域名操作面板。</li>
+</ul>
+
+<h4 id="添加域名记录">添加域名记录</h4>
+
+<ul>
+  <li>进入 <strong>DNS</strong> 面板，点击<strong>添加记录</strong>按钮。</li>
+  <li>采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/PeqQd6.png" alt="vgy.me" /></p>
+
+<h4 id="生成证书">生成证书</h4>
+
+<ul>
+  <li>进入 <strong>SSL/TLS</strong> 的 <strong>源服务器</strong> 面板，点击<strong>创建证书</strong>按钮。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/wQIIGc.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>使用默认配置点击<strong>创建</strong>按钮即可。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/NutABj.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。</li>
+</ul>
+
+<p><img src="https://i.vgy.me/uzEZNP.png" alt="vgy.me" /></p>
+
+<ul>
+  <li>保存完成后，点击<strong>确定</strong>按钮结束操作。</li>
+</ul>
+
+<h4 id="部署证书">部署证书</h4>
+
+<p>  可以使用以下命令远程拷贝源证书和私钥到目标服务器，或者刚才直接保存在目标服务器上。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scp url.com.<span class="k">*</span> nginx:/home/ubuntu/ssl/
+</code></pre></div></div>
+
+<h3 id="nginx-配置">Nginx 配置</h3>
+
+<h4 id="添加配置">添加配置</h4>
+
+<p>  在 Nginx 配置目录 /etc/nginx/sites-available 下新增 yourls 配置文件（需使用 sudo 权限方可新增），配置文件内容如下所示：</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># /etc/nginx/sites-available/yourls</span>
+
+<span class="k">server</span> <span class="p">{</span>
+
+	<span class="kn">listen</span>   <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+
+	<span class="kn">ssl_certificate</span>    <span class="n">/home/linux1/ssl/url.com.pem</span><span class="p">;</span>
+	<span class="kn">ssl_certificate_key</span>    <span class="n">/home/linux1/ssl/url.com.key</span><span class="p">;</span>
+
+	<span class="kn">server_name</span> <span class="s">url.com</span><span class="p">;</span>
+	<span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+
+	<span class="kn">access_log</span> <span class="n">/var/log/nginx/yourls.access.log</span><span class="p">;</span>
+	<span class="kn">error_log</span> <span class="n">/var/log/nginx/yourls.error.log</span><span class="p">;</span>
+
+	<span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+		<span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:8080</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$proxy_host</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+		<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="可选只允许-cloudflare-访问">（可选）只允许 Cloudflare 访问</h4>
+
+<p>  为了进一步确保真实服务器只响应来自 Cloudflare 转发的请求，我们可以在 Nginx 的配置文件中增加对于允许访问 IP 地址的限制。如下配置文件中的 IPv4/IPv6 的 IP 地址段均来自 Cloudflare 官方声明。此 cf.conf 文件放置在 /etc/nginx 目录下。</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cf.conf</span>
+<span class="c1"># https://www.cloudflare.com/ips</span>
+<span class="c1"># IPv4</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.21.244.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.22.200.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">103</span><span class="s">.31.4.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">104</span><span class="s">.16.0.0/12</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">108</span><span class="s">.162.192.0/18</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">131</span><span class="s">.0.72.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">141</span><span class="s">.101.64.0/18</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">162</span><span class="s">.158.0.0/15</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">172</span><span class="s">.64.0.0/13</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">173</span><span class="s">.245.48.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">188</span><span class="s">.114.96.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">190</span><span class="s">.93.240.0/20</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">197</span><span class="s">.234.240.0/22</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">198</span><span class="s">.41.128.0/17</span><span class="p">;</span>
+
+<span class="c1"># IPv6</span>
+<span class="k">allow</span> <span class="mi">2400</span><span class="p">:</span><span class="s">cb00::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2606</span><span class="p">:</span><span class="mi">4700</span><span class="p">::</span><span class="n">/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">2803</span><span class="p">:</span><span class="s">f800::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="mi">2405</span><span class="p">:</span><span class="s">b500::/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2405</span><span class="p">:</span><span class="mi">8100</span><span class="p">::</span><span class="n">/32</span><span class="p">;</span>
+<span class="k">allow</span> <span class="nf">2a06</span><span class="p">:</span><span class="mi">98</span><span class="s">c0::/29</span><span class="p">;</span>
+<span class="k">allow</span> <span class="s">2c0f:f248::/32</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>  另外，如要启用该配置文件，需在刚才写好的站点配置文件 yourls 中再增加两行来使其生效，内容如下所示:</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">...</span>
+    
+    <span class="s">include</span> <span class="s">cf.conf</span><span class="p">;</span>
+	<span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="生效配置">生效配置</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/nginx/sites-available/yourls /etc/nginx/sites-enabled/yourls
+<span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
+</code></pre></div></div>
+
+<h2 id="验证">验证</h2>
+
+<p>  访问 <a href="https://url.com/install.php">https://url.com/install.php</a> 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 <strong>Install YOURLS</strong> 按钮即可完成安装。</p>
+
+<p><img src="https://i.vgy.me/IsDZVr.png" alt="vgy.me" /></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://www.gingerdoc.com/tutorials/how-to-host-a-website-using-cloudflare-and-nginx-on-ubuntu-20-04">如何在 Ubuntu 20.04 上使用 Cloudflare 和 Nginx 托管网站</a></li>
+  <li><a href="https://nova.moe/nginx-block-non-cloudflare-ips/">让 Nginx 只允许 Cloudflare 反向代理流量以隐藏源站</a></li>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Nginx" /><category term="Cloudflare" /><category term="加速" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</title><link href="https://lisz.me/ac/ml/utility-vs-understanding.html" rel="alternate" type="text/html" title="[译文]实用性 vs 理解力：进入 2022 年的机器学习领域" /><published>2022-03-21T14:30:00+09:00</published><updated>2022-03-21T14:30:00+09:00</updated><id>https://lisz.me/ac/ml/utility-vs-understanding</id><content type="html" xml:base="https://lisz.me/ac/ml/utility-vs-understanding.html"><![CDATA[<p><strong>原文标题</strong>：<a href="https://www.aidancooper.co.uk/utility-vs-understanding/">Utility vs Understanding: the State of Machine Learning Entering 2022</a><br />
 <strong>原文作者</strong>：Aidan Cooper</p>
 
 <p>  机器学习在某些领域中的经验实用性已经远远超出了我们对基础理论的理解：这些模型不合理地非常有效，但我们并不完全确定原因。相反，在其他相对容易理解的研究领域中难以实现或者在实践中的适用性有限。本文试图就机器学习的实用性和理解力绘制不同角度的图，并探讨科学和技术进步如何在这一框架内体现。</p>
@@ -1538,347 +1735,4 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
 <ul>
   <li><a href="https://git-scm.com/book/zh/v2/">《Pro Git》</a></li>
   <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="docker" /><category term="Git" /><category term="Gitlab" /><category term="docker" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">JupyterLab 的搭建与运维</title><link href="https://lisz.me/tech/docker/jupyterlab.html" rel="alternate" type="text/html" title="JupyterLab 的搭建与运维" /><published>2021-07-25T08:20:00+09:00</published><updated>2021-07-25T08:20:00+09:00</updated><id>https://lisz.me/tech/docker/jupyterlab</id><content type="html" xml:base="https://lisz.me/tech/docker/jupyterlab.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<p>  <a href="https://jupyter.org/">Jupyter</a>， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>。不过笔者还是比较喜欢 <a href="https://code.visualstudio.com/">VS Code</a>，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。</p>
-
-<p>  在 Jupyter 出现之前，也有可以替代 Python 自带的 Python Shell 的 <a href="https://ipython.org/">IPython</a>。笔者在早期也曾使用过，体验还不错。其实，Jupyter 就是2014 年从 IPython 中衍生出来的，所以从 IPython 过渡到 Jupyter 毫无困难。如果说 IPython 是为了 Python 而量身定制的话，那么 Jupyter 则是为包括 Julia、Python、R 在内的几十种编程语言（<a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels">详情连接</a>）的交互式数据科学和科学计算而生的。</p>
-
-<p>  早期的 Jupyter 只包含 Jupyter Kernels 和 Jupyter Notebook，其中 Jupyter Kernels 是用于支持编程语言的内核，Jupyter Notebook 是基于 Web 的交互式计算环境，前身是 IPython Notebook。现在的 Jupyter 除了这两者以外还有 JupyterHub、JupyterHub API 和 JupyterLab。JupyterHub 是一个用于 Jupyter Notebook 的多用户服务器。它通过生成、管理和代理许多单一的 Jupyter Notebook 服务器来支持多用户。JupyterHub API 是以 REST 风格向开发者们提供的 API 接口，可以完成一系列对 Jupyter 的操作，比如生成用户环境、配置环境等。JupyterLab 号称是 Jupyter 项目的下一代用户界面，它以一个灵活且强大的用户界面向用户提供经典的 Jupyter Notebook、终端、编辑器、文件浏览器、丰富输出等模块，俨然像是朝着现代化的理想编辑器的目标进发的。</p>
-
-<p>  无论之前的 Jupyter 是什么样子，现在的 JupyterLab 已经是和曾经的 Cloud9 （一款先进的在线代码编辑器，现已被 AWS 收购）一样的支持多用户多实例的代码运行平台。对于从事科学研究的团队来说，使用 JupyterLab 搭建一个内部科学计算平台成为了可能。当然，个人用户还是可以选择使用 Anaconda 或者 PIP 来安装单用户版本。</p>
-
-<h2 id="搭建">搭建</h2>
-
-<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的<a href="https://jupyter-docker-stacks.readthedocs.io/">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks">Dockerfile 集合</a> 吧。</p>
-
-<p>  JupyterLab 提供两种方式启动多用户多实例：</p>
-<ul>
-  <li><strong>DockerSpawner 方式</strong>：每个用户独享一个 Docker 实例，能有效隔离用户。</li>
-  <li><strong>SystemSpawner 方式</strong>：共享同一个 Docker 实例，以系统用户身份运行。</li>
-</ul>
-
-<p>  事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。</p>
-
-<p><img src="https://jupyterhub.readthedocs.io/en/stable/_images/jhub-fluxogram.jpeg" alt="JupyterHub 架构图" /></p>
-
-<p>  以下为搭建所需的文件的列表：</p>
-
-<p><img src="https://i.vgy.me/4pnx0D.png" alt="vgy.me" /></p>
-
-<h3 id="构建-jupyter-notebook-实例镜像">构建 Jupyter Notebook 实例镜像</h3>
-
-<h4 id="基础镜像-base-notebook">基础镜像 base-notebook</h4>
-
-<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">base-notebook 目录</a>一致。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
-<span class="s">ARG ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04</span>
-
-<span class="s">ARG BASE_CONTAINER=$ROOT_CONTAINER</span>
-<span class="s">FROM $BASE_CONTAINER</span>
-
-<span class="s">ARG NB_USER="ubuntu"</span>
-<span class="s">ARG NB_UID="1000"</span>
-<span class="s">ARG NB_GID="100"</span>
-
-<span class="c1"># Fix DL4006</span>
-<span class="s">SHELL ["/bin/bash", "-o", "pipefail", "-c"]</span>
-
-<span class="s">USER root</span>
-
-<span class="c1"># Install all OS dependencies for notebook server that starts but lacks all</span>
-<span class="c1"># features (e.g., download as all possible file formats)</span>
-<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
-<span class="s">RUN apt-get update \</span>
-    <span class="s">&amp;&amp; apt-get install -yq --no-install-recommends wget htop vim bzip2 ca-certificates sudo locales fonts-liberation run-one \</span>
-    <span class="s">&amp;&amp; apt-get clean \</span>
-    <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
-
-<span class="s">RUN echo "en_US.UTF-8 UTF-8" &gt; /etc/locale.gen &amp;&amp; \</span>
-    <span class="s">locale-gen</span>
-
-<span class="c1"># Configure environment</span>
-<span class="s">ENV CONDA_DIR=/opt/conda \</span>
-    <span class="s">SHELL=/bin/bash \</span>
-    <span class="s">NB_USER=$NB_USER \</span>
-    <span class="s">NB_UID=$NB_UID \</span>
-    <span class="s">NB_GID=$NB_GID \</span>
-    <span class="s">LC_ALL=en_US.UTF-8 \</span>
-    <span class="s">LANG=en_US.UTF-8 \</span>
-    <span class="s">LANGUAGE=en_US.UTF-8</span>
-<span class="s">ENV PATH=$CONDA_DIR/bin:$PATH \</span>
-    <span class="s">HOME=/home/$NB_USER</span>
-
-<span class="c1"># Copy a script that we will use to correct permissions after running certain commands</span>
-<span class="s">COPY fix-permissions /usr/local/bin/fix-permissions</span>
-<span class="s">RUN chmod a+rx /usr/local/bin/fix-permissions</span>
-
-<span class="c1"># Enable prompt color in the skeleton .bashrc before creating the default NB_USER</span>
-<span class="s">RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashrc</span>
-
-<span class="c1"># Create NB_USER wtih name ubuntu user with UID=1000 and in the 'users' group</span>
-<span class="c1"># and make sure these dirs are writable by the `users` group.</span>
-<span class="s">RUN echo "auth requisite pam_deny.so" &gt;&gt; /etc/pam.d/su \</span>
-    <span class="s">&amp;&amp; sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers \</span>
-    <span class="s">&amp;&amp; sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers \</span>
-    <span class="s">&amp;&amp; useradd -m -s /bin/bash -N -u $NB_UID $NB_USER -g $NB_GID \</span>
-    <span class="s">&amp;&amp; mkdir -p $CONDA_DIR \</span>
-    <span class="s"># &amp;&amp; chown $NB_USER:$NB_GID  \</span>
-    <span class="s">&amp;&amp; chmod g+w /etc/passwd \</span>
-    <span class="s">&amp;&amp; fix-permissions $HOME \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; adduser ubuntu sudo \</span>
-    <span class="s">&amp;&amp; echo "ubuntu ALL=(ALL) NOPASSWD</span> <span class="err">:</span> <span class="s">ALL" | tee /etc/sudoers.d/nopasswd4sudo</span>
-
-<span class="s">USER $NB_UID</span>
-<span class="s">WORKDIR $HOME</span>
-<span class="s">ARG PYTHON_VERSION=default</span>
-
-<span class="c1"># Setup work directory for backward-compatibility</span>
-<span class="s">RUN mkdir /home/$NB_USER/work &amp;&amp; \</span>
-    <span class="s">fix-permissions /home/$NB_USER</span>
-
-<span class="c1"># Install conda as ubuntu and check the md5 sum provided on the download site</span>
-<span class="s">ENV MINICONDA_VERSION=4.9.2 \</span>
-    <span class="s">MINICONDA_MD5=122c8c9beb51e124ab32a0fa6426c656 \</span>
-    <span class="s">CONDA_VERSION=4.9.2</span>
-
-<span class="s">WORKDIR /tmp</span>
-<span class="s">RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh  \</span>
-    <span class="s">&amp;&amp; echo "${MINICONDA_MD5} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c -  \</span>
-    <span class="s">&amp;&amp; /bin/bash Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; rm Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh \</span>
-    <span class="s">&amp;&amp; echo "conda ${CONDA_VERSION}" &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda config --system --prepend channels conda-forge \</span>
-    <span class="s">&amp;&amp; conda config --system --set auto_update_conda </span><span class="no">false</span><span class="s"> \</span>
-    <span class="s">&amp;&amp; conda config --system --set show_channel_urls </span><span class="no">true</span><span class="s"> \</span>
-    <span class="s">&amp;&amp; conda config --system --set channel_priority strict \</span>
-    <span class="s">&amp;&amp; if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi \</span>
-    <span class="s">&amp;&amp; conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda install --quiet --yes conda \</span>
-    <span class="s">&amp;&amp; conda install --quiet --yes pip \</span>
-    <span class="s">&amp;&amp; conda update --all --quiet --yes \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
-
-<span class="c1"># Install Tini</span>
-<span class="s">RUN conda install --quiet --yes 'tini=0.18.0' \</span>
-    <span class="s">&amp;&amp; conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
-
-<span class="c1"># Install Jupyter Notebook, Lab, and Hub</span>
-<span class="c1"># Generate a notebook server config</span>
-<span class="c1"># Cleanup temporary files</span>
-<span class="c1"># Correct permissions</span>
-<span class="c1"># Do all this in a single RUN command to avoid duplicating all of the</span>
-<span class="c1"># files across image layers when the permissions change</span>
-<span class="s">RUN conda install --quiet --yes \</span>
-    <span class="s">'notebook=6.4.0' \</span>
-    <span class="s">'jupyterhub=1.4.2' \</span>
-    <span class="s">'jupyterlab=3.0.16' \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; npm install -g npm@7.20.0 \</span>
-    <span class="s">&amp;&amp; npm cache clean --force \</span>
-    <span class="s">&amp;&amp; jupyter notebook --generate-config \</span>
-    <span class="s">&amp;&amp; rm -rf $CONDA_DIR/share/jupyter/lab/staging \</span>
-    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
-
-<span class="s">EXPOSE </span><span class="m">8888</span>
-
-<span class="c1"># Configure container startup</span>
-<span class="s">ENTRYPOINT ["tini", "-g", "--"]</span>
-<span class="s">CMD ["start-notebook.sh"]</span>
-
-<span class="c1"># Copy local files as late as possible to avoid cache busting</span>
-<span class="s">COPY start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/</span>
-<span class="s">COPY jupyter_notebook_config.py /etc/jupyter/</span>
-
-<span class="c1"># Fix permissions on /etc/jupyter as root</span>
-<span class="s">USER root</span>
-<span class="s">RUN fix-permissions /etc/jupyter/</span>
-<span class="s">RUN chmod +x /usr/local/bin/start-notebook.sh /usr/local/bin/start-singleuser.sh /usr/local/bin/start.sh</span>
-
-<span class="c1"># Switch back to ubuntu to avoid accidental container runs as root</span>
-<span class="s">USER $NB_UID</span>
-
-<span class="s">WORKDIR $HOME</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> base-notebook:latest <span class="nb">.</span>
-</code></pre></div></div>
-
-<h4 id="单用户镜像-singleuser">单用户镜像 singleuser</h4>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
-<span class="s">ARG BASE_IMAGE=base-notebook:latest</span>
-<span class="s">FROM $BASE_IMAGE</span>
-
-<span class="s">ADD install_jupyterhub /tmp/install_jupyterhub</span>
-<span class="s">ARG JUPYTERHUB_VERSION=master</span>
-<span class="c1"># install pinned jupyterhub and ensure notebook is installed</span>
-<span class="s">RUN </span><span class="no">true</span><span class="s"> &amp;&amp; \</span>
-    <span class="s">python3 -m pip install notebook jupyterhub</span>
-</code></pre></div></div>
-<p>install_jupyterhub 脚本文件</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
-</span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-
-<span class="n">V</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'JUPYTERHUB_VERSION'</span><span class="p">]</span>
-
-<span class="n">pip_install</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">sys</span><span class="p">.</span><span class="n">executable</span><span class="p">,</span> <span class="s">'-m'</span><span class="p">,</span> <span class="s">'pip'</span><span class="p">,</span> <span class="s">'install'</span><span class="p">,</span> <span class="s">'--no-cache'</span><span class="p">,</span> <span class="s">'--upgrade'</span><span class="p">,</span>
-    <span class="s">'--upgrade-strategy'</span><span class="p">,</span> <span class="s">'only-if-needed'</span><span class="p">,</span>
-<span class="p">]</span>
-<span class="k">if</span> <span class="n">V</span> <span class="o">==</span> <span class="s">'master'</span><span class="p">:</span>
-    <span class="n">req</span> <span class="o">=</span> <span class="s">'https://github.com/jupyterhub/jupyterhub/archive/master.tar.gz'</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">version_info</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">V</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="p">]</span>
-    <span class="n">version_info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">upper_bound</span> <span class="o">=</span> <span class="s">'.'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">version_info</span><span class="p">))</span>
-    <span class="n">vs</span> <span class="o">=</span> <span class="s">'&gt;=%s,&lt;%s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span>
-    <span class="n">req</span> <span class="o">=</span> <span class="s">'jupyterhub%s'</span> <span class="o">%</span> <span class="n">vs</span>
-
-<span class="n">check_call</span><span class="p">(</span><span class="n">pip_install</span> <span class="o">+</span> <span class="p">[</span><span class="n">req</span><span class="p">])</span>
-
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> singleuser:latest <span class="nb">.</span>
-</code></pre></div></div>
-
-<h4 id="jupyterlab-单用户镜像-jupyter_lab_singleuser">JupyterLab 单用户镜像 jupyter_lab_singleuser</h4>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ARG BASE_IMAGE=singleuser:latest</span>
-<span class="s">FROM ${BASE_IMAGE}</span>
-
-<span class="c1"># Install jupyterlab</span>
-<span class="s">RUN conda update -n base conda \</span>
-    <span class="s">&amp;&amp; conda install -c conda-forge jupyterlab</span>
-<span class="s">RUN jupyter serverextension enable --py jupyterlab --sys-prefix</span>
-<span class="s">USER root</span>
-<span class="s">RUN chpasswd &lt;&lt;&lt; "ubuntu:ubuntu" \</span>
-    <span class="s">&amp;&amp; sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list \</span>
-    <span class="s">&amp;&amp; apt update \</span>
-    <span class="s">&amp;&amp; apt install -y git zsh vim \</span>
-    <span class="s">&amp;&amp; usermod -s /bin/zsh ubuntu \</span>
-    <span class="s">&amp;&amp; echo 'chown -R ubuntu:users /home/ubuntu/work' &gt;&gt; /usr/local/bin/start-notebook.sh</span>
-
-<span class="c1"># Add supports for zsh and zh-CN language</span>
-<span class="s">USER ubuntu</span>
-<span class="s">RUN git clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh \</span>
-    <span class="s">&amp;&amp; cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \</span>
-    <span class="s">&amp;&amp; sed -i "s/robbyrussell/bira/" ~/.zshrc \</span>
-    <span class="s">&amp;&amp; wget -c https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/jupyterhub/jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
-    <span class="s">&amp;&amp; pip install jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
-    <span class="s">&amp;&amp; rm jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> jupyter_lab_single:latest <span class="nb">.</span>
-</code></pre></div></div>
-
-<h3 id="构建-jupyterhub-镜像">构建 JupyterHub 镜像</h3>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
-
-<span class="s">ARG BASE_IMAGE=jupyterhub/jupyterhub:latest</span>
-<span class="s">FROM ${BASE_IMAGE}</span>
-
-<span class="s">RUN pip install --no-cache --upgrade jupyter \</span>
-    <span class="s">&amp;&amp; pip install --no-cache dockerspawner \</span>
-    <span class="s">&amp;&amp; pip install --no-cache oauthenticator</span>
-<span class="s">EXPOSE </span><span class="m">8000</span>
-</code></pre></div></div>
-
-<p>  这里配置挂载的本地目录为根据用户名而区分的目录，当 Gitlab 用户名中包含 <code class="language-plaintext highlighter-rouge">-</code> 时，<code class="language-plaintext highlighter-rouge">-</code> 会被转义为 <code class="language-plaintext highlighter-rouge">2d</code>。另外，这里的本地目录需要预先建立好，否则由于 Docker 自身的安全性而新建立的目录的所有者会是 root 用户，这样就不能够正常使用该目录。以下配置文件需放置在 docker-compose.yml 的同层目录 data 里面。</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># jupyterhub_config.py
-</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">oauthenticator.gitlab</span> <span class="kn">import</span> <span class="n">GitLabOAuthenticator</span>
-<span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">authenticator_class</span> <span class="o">=</span> <span class="n">GitLabOAuthenticator</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">oauth_callback_url</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_OAUTH_CALLBACK"</span><span class="p">)</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_CLIENT"</span><span class="p">)</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_KEY"</span><span class="p">)</span>
-
-<span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">spawner_class</span> <span class="o">=</span> <span class="s">'dockerspawner.DockerSpawner'</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="s">'jupyter_lab_singleuser:latest'</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">environment</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="s">'GRANT_SUDO'</span><span class="p">:</span> <span class="s">'1'</span><span class="p">,</span>
-  <span class="s">'UID'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="s">'ubuntu'</span><span class="p">}</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span><span class="p">.</span><span class="n">update</span><span class="p">({</span> <span class="s">'command'</span><span class="p">:</span> <span class="s">"start-singleuser.sh --SingleUserNotebookApp.default_url=/lab"</span> <span class="p">})</span>
-<span class="c1"># Mount the real user's Docker volume on the host to the notebook user's
-# notebook directory in the container
-</span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="s">'/home/ubuntu/work'</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="n">notebook_dir</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">volumes</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'/home/data/jupyterhub/user-data-{username}'</span><span class="p">:</span> <span class="n">notebook_dir</span> <span class="p">}</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">'--allow-root'</span><span class="p">]</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">remove_containers</span> <span class="o">=</span> <span class="bp">True</span>
-
-<span class="c1">#network
-</span><span class="n">network_name</span> <span class="o">=</span> <span class="s">'jupyterhub_network'</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">use_internal_ip</span> <span class="o">=</span> <span class="bp">True</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">network_name</span> <span class="o">=</span> <span class="n">network_name</span>
-<span class="c1"># Pass the network name as argument to spawned containers
-</span><span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_host_config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">'network_mode'</span><span class="p">:</span> <span class="n">network_name</span> <span class="p">}</span>
-
-<span class="c1"># IP Configurations
-</span><span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">hub_ip</span>  <span class="o">=</span> <span class="s">'172.18.0.2'</span>
-<span class="c1">#c.JupyterHub.port = 8000
-</span></code></pre></div></div>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
-<span class="na">services</span><span class="pi">:</span>
-    <span class="na">jupyterhub</span><span class="pi">:</span>
-        <span class="na">container_name</span><span class="pi">:</span> <span class="s">jupyterlab</span>
-        <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
-        <span class="na">build</span><span class="pi">:</span> <span class="s">./</span>
-        <span class="na">image</span><span class="pi">:</span> <span class="s">jupyterhub:latest</span>
-        <span class="na">ports</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s2">"</span><span class="s">8000:8000"</span>
-        <span class="na">volumes</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s">/var/run/docker.sock:/var/run/docker.sock</span>
-            <span class="pi">-</span> <span class="s">./data/jupyterhub_config.py:/srv/jupyterhub/jupyterhub_config.py</span>
-        <span class="na">networks</span><span class="pi">:</span>
-            <span class="na">network</span><span class="pi">:</span>
-                <span class="na">ipv4_address</span><span class="pi">:</span> <span class="s">172.18.0.2</span>
-        <span class="na">environment</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s">GITLAB_HOST=https://{Gitlab Domain}</span>
-            <span class="pi">-</span> <span class="s">GITLAB_API_CLIENT=xxxxxx</span>
-            <span class="pi">-</span> <span class="s">GITLAB_API_KEY=xxxxxx</span>
-            <span class="pi">-</span> <span class="s">GITLAB_OAUTH_CALLBACK=https://{JupyterHub Domain}/hub/oauth_callback</span>
-<span class="na">networks</span><span class="pi">:</span>
-    <span class="na">network</span><span class="pi">:</span>
-        <span class="na">driver</span><span class="pi">:</span> <span class="s">bridge</span>
-        <span class="na">ipam</span><span class="pi">:</span>
-            <span class="na">driver</span><span class="pi">:</span> <span class="s">default</span>
-            <span class="na">config</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="na">subnet</span><span class="pi">:</span> <span class="s">172.18.0.0/24</span>
-                  <span class="na">gateway</span><span class="pi">:</span> <span class="s">172.18.0.1</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
-</code></pre></div></div>
-
-<h2 id="测试">测试</h2>
-
-<p>  访问 <a href="https://{JupyterHub Domain}/">https://{JupyterHub Domain}/</a> 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://zh.wikipedia.org/wiki/Jupyter">Jupyter - 维基百科</a></li>
-  <li><a href="http://zsduo.com/archives/244.html">JupyterLab 3.0 正式发布，同时解决中文语言包下载不成功，汉化不成功的问题，jupyterlab-language-pack-zh-CN 安装失败解决方案</a></li>
-  <li><a href="https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/">Jupyterlab 安装中文语言包失败</a></li>
-  <li><a href="https://zhuanlan.zhihu.com/p/258724435">使用JupyterHub向多用户提供jupyter服务的思路</a></li>
-  <li><a href="https://www.kaifa99.com/GitHub/article_117797">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="docker" /><category term="JupyterLab" /><category term="Docker" /><category term="Gitlab" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="docker" /><category term="Git" /><category term="Gitlab" /><category term="docker" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>

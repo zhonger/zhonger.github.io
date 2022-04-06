@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "给 Nginx 站点套上一层 Cloudflare ",
+      "tags"     : "Nginx Cloudflare 加速",
+      "url"      : "/tech/webmaster/nginx-cloudflare.html"
+    } ,
+  
+    {
       "title"    : "[译文]实用性 vs 理解力：进入 2022 年的机器学习领域",
       "tags"     : "机器学习 实用性 理解力 machine learning utility",
       "url"      : "/ac/ml/utility-vs-understanding.html"
