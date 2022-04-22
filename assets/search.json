@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "利用 Github Action 一键编译多平台 Docker 镜像",
+      "tags"     : "github action workflow docker 多平台",
+      "url"      : "/tech/docker/github-action.html"
+    } ,
+  
+    {
       "title"    : "给 Nginx 站点套上一层 Cloudflare ",
       "tags"     : "Nginx Cloudflare 加速",
       "url"      : "/tech/webmaster/nginx-cloudflare.html"

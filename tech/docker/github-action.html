@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>利用 Github Action 一键编译多平台 Docker 镜像 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="利用 Github Action 一键编译多平台 Docker 镜像">
+    <meta name="keywords"  content="github action, workflow, docker, 多平台">
+    <!-- Open Graph -->
+    <meta property="og:title" content="利用 Github Action 一键编译多平台 Docker 镜像 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/docker/github-action.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#github%20action" class="post-tag">github action</a>
+          
+            <a href="/tags.html#workflow" class="post-tag">workflow</a>
+          
+            <a href="/tags.html#docker" class="post-tag">docker</a>
+          
+            <a href="/tags.html#%E5%A4%9A%E5%B9%B3%E5%8F%B0" class="post-tag">多平台</a>
+          
+        
+      </div>
+      <h1>利用 Github Action 一键编译多平台 Docker 镜像</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-04-22"><i class="iconfont icon-date"></i>Fri, 22 Apr 2022 13:54:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 3793 字 <b>·</b> 阅读全文大约需要 11 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1648191887037-133cc13d2d20?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">你是否还在困扰如何为 Docker 镜像提供多平台支持？</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
+
+<h3 id="容器化的缘起">容器化的缘起</h3>
+
+<p>  在技术发展的早期，Java 语言以其“一次编译，随处运行”的特点在众多编程语言中独领风骚。而 Java 语言编译出的 jar 包始终是应用层面上的，如果我们想要运行一个 Web 应用的 jar 包，仍然需要搭建 Tomcat 服务器才能真正运行这个 Java 应用。于是当虚拟化技术出现之后，开始有了同时包含 Tomcat 服务器和 jar 包等其他必要的配置和环境的完整虚拟化镜像。只要在大家的电脑或者服务器上安装了对应的虚拟化软件，运行这个虚拟化镜像就可以看到最终的 Web 界面并正常使用。</p>
+
+<p>  不过，这也有一个明显的缺点：虚拟化镜像文件通常很大，下载速度慢、时间长；运行时虚拟化软件和虚拟机占用的资源较大。容器化技术也正是为了解决这些缺点而生。Docker 是最早向大众开放的容器化技术，以“占用资源少、镜像文件小、部署配置简单”等特点受到开发者的一致好评。之后，Google、阿里等团队也纷纷将自家内部自研的容器化相关技术开放，比如阿里的 <a href="https://pouchcontainer.io/">PouchContainer</a>、谷歌的 <a href="https://kubernetes.io/">Kubernetes</a>、SUSE 的 <a href="https://rancher.com/">Rancher</a> 等等。这些技术以及 AWS、Azure、GCP、Aliyun 等云服务器产商提供的容器化平台，大大加速了容器化技术的普及和应用，已经有越来越多的平台、应用迁移到容器化部署、管理。</p>
+
+<h3 id="平台架构的差异">平台架构的差异</h3>
+
+<p>  近年来，随着像 AWS、Apple 等大公司投入到自研芯片的队列中，能耗更低、算力更强的 ARM 芯片开始出现在真实的虚拟化集群、容器化集群、高性能计算集群中。和我们日常使用电脑或服务器上的 Intel 或 AMD x64 芯片不同，ARM 芯片在现实中还比较少，软件包的兼容性可能也不是很好。另外，我们通常编译 Docker 镜像都是在自己的电脑或者服务器上，所以最终提交的镜像也只能是电脑或服务器的平台架构。也就是说，我们似乎无法在 Intel 芯片的设备上编译出想要的支持在 ARM 芯片上运行的 Docker 镜像。</p>
+
+<p>  这里，我们可以看一下 Docker 官方列出支持的所有平台架构：</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">// https://github.com/docker-library/bashbrew/blob/master/architecture/oci-platform.go</span>
+
+<span class="o">...</span>
+<span class="k">var</span> <span class="n">SupportedArches</span> <span class="o">=</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="n">OCIPlatform</span><span class="p">{</span>
+	<span class="s">"amd64"</span><span class="o">:</span>    <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"amd64"</span><span class="p">},</span>
+	<span class="s">"arm32v5"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"arm"</span><span class="p">,</span> <span class="n">Variant</span><span class="o">:</span> <span class="s">"v5"</span><span class="p">},</span>
+	<span class="s">"arm32v6"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"arm"</span><span class="p">,</span> <span class="n">Variant</span><span class="o">:</span> <span class="s">"v6"</span><span class="p">},</span>
+	<span class="s">"arm32v7"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"arm"</span><span class="p">,</span> <span class="n">Variant</span><span class="o">:</span> <span class="s">"v7"</span><span class="p">},</span>
+	<span class="s">"arm64v8"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"arm64"</span><span class="p">,</span> <span class="n">Variant</span><span class="o">:</span> <span class="s">"v8"</span><span class="p">},</span>
+	<span class="s">"i386"</span><span class="o">:</span>     <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"386"</span><span class="p">},</span>
+	<span class="s">"mips64le"</span><span class="o">:</span> <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"mips64le"</span><span class="p">},</span>
+	<span class="s">"ppc64le"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"ppc64le"</span><span class="p">},</span>
+	<span class="s">"riscv64"</span><span class="o">:</span>  <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"riscv64"</span><span class="p">},</span>
+	<span class="s">"s390x"</span><span class="o">:</span>    <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"linux"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"s390x"</span><span class="p">},</span>
+
+	<span class="s">"windows-amd64"</span><span class="o">:</span> <span class="p">{</span><span class="n">OS</span><span class="o">:</span> <span class="s">"windows"</span><span class="p">,</span> <span class="n">Architecture</span><span class="o">:</span> <span class="s">"amd64"</span><span class="p">},</span>
+<span class="p">}</span>
+<span class="o">...</span>
+</code></pre></div></div>
+
+<p>  事实上，除了 ARM 芯片架构之外，还有一些特有的架构，比如 IBM 的 s390x 架构、RISC-V 的 riscv64 架构等等。一般的 Docker 镜像可能都只考虑常见的 amd64、386 架构，对于其他架构可能就没有所谓的官方支持了。笔者也是在使用 Docker 方式部署 <a href="https://github.com/YOURLS/YOURLS">YOURLS</a> 时发现官方竟然支持了上面列出的几乎所有的平台架构，简直不要太方便。于是就想这是怎么做到的？难道他们用了不同平台的设备分别编译了一遍再推送上来的？在一番调查之后发现，他们可能用了 Github 提供的 Action 来自动编译不同平台的镜像。但事实上在 <code class="language-plaintext highlighter-rouge">.github/workflows</code> 目录下面的所有配置文件均与 Docker 镜像编译无关。不过，Github Action 帮助我们自动编译出不同平台架构的 Docker 镜像这件事确是可行的。</p>
+
+<h2 id="自动化构建">自动化构建</h2>
+
+<p>  这里，笔者仅对如何利用 Github Action 自动编译出不同平台架构的 Docker 镜像进行叙述。如想要了解更多关于 Github Action 的知识，可以查看参考资料中给出的阮一峰的《Github Action 入门教程》。</p>
+
+<h3 id="action-配置">Action 配置</h3>
+
+<p>  在 Github 代码库的 <code class="language-plaintext highlighter-rouge">.github/workflows/</code> 目录下新建 docker-image.yml 配置文件（文件名可自定义）。文件内容如下：（其中花括号前面的斜杆是为了不被 Jekyll 解析而用，使用时请删除）</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">ci</span>
+
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">tags</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">v*</span>
+
+<span class="na">env</span><span class="pi">:</span>
+  <span class="na">APP_NAME</span><span class="pi">:</span> <span class="s">squid</span>
+  <span class="na">DOCKERHUB_REPO</span><span class="pi">:</span> <span class="s">zhonger/squid</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">docker</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Checkout</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v2</span>
+      <span class="pi">-</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Set up QEMU</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-qemu-action@v1</span>
+      <span class="pi">-</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Set up Docker Buildx</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/setup-buildx-action@v1</span>
+      <span class="pi">-</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Login to DockerHub</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/login-action@v1</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">username</span><span class="pi">:</span> <span class="s">${\{ secrets.DOCKERHUB_USERNAME }}</span>
+          <span class="na">password</span><span class="pi">:</span> <span class="s">${\{ secrets.DOCKERHUB_TOKEN }}</span>
+      <span class="pi">-</span> 
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Generate App Version</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">echo APP_VERSION=`git describe --tags --always` &gt;&gt; $GITHUB_ENV</span>
+      <span class="pi">-</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">Build and push</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">docker/build-push-action@v2</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">context</span><span class="pi">:</span> <span class="s">.</span>
+          <span class="na">platforms</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">linux/386</span>
+            <span class="s">linux/amd64</span>
+            <span class="s">linux/arm/v5</span>
+            <span class="s">linux/arm/v7</span>
+            <span class="s">linux/arm64</span>
+            <span class="s">linux/mips64le</span>
+            <span class="s">linux/ppc64le</span>
+            <span class="s">linux/s390x</span>
+          <span class="na">push</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">build-args</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">APP_NAME=${\{ env.APP_NAME }}</span>
+            <span class="s">APP_VERSION=${\{ env.APP_VERSION }}</span>
+          <span class="na">tags</span><span class="pi">:</span> <span class="pi">|</span>
+            <span class="s">${\{ env.DOCKERHUB_REPO }}:latest</span>
+            <span class="s">${\{ env.DOCKERHUB_REPO }}:${\{ env.APP_VERSION }}</span>
+</code></pre></div></div>
+
+<p>  以下对该文件内容分别进行解释：</p>
+
+<h4 id="流程名">流程名</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">name</code> 字段定义了这个流程的名称，可以与配置文件名不同。只要与其他流程配置文件中的流程名不同即可。</p>
+
+<h4 id="触发条件">触发条件</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">on</code> 字段定义了在何种条件下触发该流程。这里定义的是在以 <code class="language-plaintext highlighter-rouge">v</code> 开头的新 tag 提交时触发该流程。</p>
+
+<h4 id="环境变量">环境变量</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">env</code> 字段定义了静态可公开环境变量，一般来说可以将应用的名称、镜像的名称写在这个部分。</p>
+
+<h4 id="任务">任务</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">jobs</code> 字段定义了流程所需要执行的各项任务，可以是一个或多个。这里定义了 6 个任务，从前到后分别是：检查代码是否在工作目录、安装 qemu 支持更多架构、安装 docker 镜像编译环境、登录 DockerHub、生成应用版本、构建和推送。这里比较灵活的一点是，通过提交的 tag 名来确定 Docker 镜像的 tag，从而实现同时推送新 tag 和 latest。在构建和推送任务中，<code class="language-plaintext highlighter-rouge">platforms</code> 字段定义了我们想要支持的平台架构，<code class="language-plaintext highlighter-rouge">push</code> 字段定义了是否推送，<code class="language-plaintext highlighter-rouge">build-args</code> 定义了加入到 Docker 镜像的变量， <code class="language-plaintext highlighter-rouge">tags</code> 定义了构建完成后所使用的 tag 值。</p>
+
+<h3 id="secret-配置">Secret 配置</h3>
+
+<p>  由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。</p>
+
+<p><img src="https://i.vgy.me/dkk9YD.png" alt="vgy.me" /></p>
+
+<h3 id="发布新-tag">发布新 tag</h3>
+
+<p>  访问 <a href="https://github.com/用户名/项目名/releases/new">https://github.com/用户名/项目名/releases/new</a> 即可到达发布页面，如下所示。定义一个以 <code class="language-plaintext highlighter-rouge">v</code> 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 <code class="language-plaintext highlighter-rouge">Public release</code> 按钮完成发布。</p>
+
+<p><img src="https://i.vgy.me/ey8PCa.png" alt="vgy.me" /></p>
+
+<p>  发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://developer.aliyun.com/article/761278">Linux 容器化技术前世今生（虚拟化、容器化、Docker）</a></li>
+  <li><a href="https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html">GitHub Actions 入门教程</a></li>
+  <li><a href="https://blog.isayme.org/posts/issues-55/">Github Actions 自动构建 Docker 镜像</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a><ul><li><a href="#容器化的缘起">容器化的缘起</a></li><li><a href="#平台架构的差异">平台架构的差异</a></li></ul></li><li><a href="#自动化构建">自动化构建</a><ul><li><a href="#action-配置">Action 配置</a><ul><li><a href="#流程名">流程名</a></li><li><a href="#触发条件">触发条件</a></li><li><a href="#环境变量">环境变量</a></li><li><a href="#任务">任务</a></li></ul></li><li><a href="#secret-配置">Secret 配置</a></li><li><a href="#发布新-tag">发布新 tag</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/webmaster/nginx-cloudflare.html" class="read-next-link"></a>
+          <section>
+            <span>给 Nginx 站点套上一层 Cloudflare </span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1649017049683-94ddea424f46?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164207041-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-164207041-1');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-164207041-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-164207041-1');
+</script>
+
+</body>
+
+</html>
