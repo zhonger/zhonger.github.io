@@ -153,7 +153,7 @@ services:
 
 &emsp;&emsp;为了让系统的所有用户都开启 OTP，可以如下所示在**必要操作**选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）
 
-![vgy.me](https://i.vgy.me/rCUpj0.png)
+![vgy.me](https://i.vgy.me/Gi3FQB.png)
 
 &emsp;&emsp;为了验证 OTP 是否可用，移步至用户页点击**设置验证应用**按钮。
 
