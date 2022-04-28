@@ -191,14 +191,14 @@ cn/uid: 一条记录的名字/ID <span class="o">(</span>即哪一个苹果名�
 LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准 DN"</span>
 </code></pre></div></div>
 
-<h4 id="为什么要用-ldap-目录树来存储数据用-mysql-不行吗">为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？</h4>
+<h3 id="为什么要用-ldap-目录树来存储数据用-mysql-不行吗">为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？</h3>
 
 <ul>
   <li>用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。</li>
   <li>把 LDAP 与传统的数据库相比，LDAP 除了快速查找的特点，它还有很多的运用场景，比如域验证等。</li>
 </ul>
 
-<h4 id="如何操作-ldap-服务器">如何操作 LDAP 服务器？</h4>
+<h3 id="如何操作-ldap-服务器">如何操作 LDAP 服务器？</h3>
 
 <p>  LDAP 服务器的客户端操作方式有很多种，常见的有 JDBC 、 JNDI 、 phpLDAPadmin 等。由于本人不怎么用 Java，所以首选 phpLDAPadmin 来进行实战操作。</p>
 
@@ -233,7 +233,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
         <span class="pi">-</span> <span class="s">689:689</span>
 </code></pre></div></div>
 
-<h4 id="访问">访问</h4>
+<h2 id="访问">访问</h2>
 
 <p>  安装完成之后使用<code class="language-plaintext highlighter-rouge">https://localhost:6443</code>即可访问 phpLDAPadmin ，Login DN 为 <code class="language-plaintext highlighter-rouge">cn=admin,dc=example,dc=org</code>，Password 为<code class="language-plaintext highlighter-rouge">admin</code>。</p>
 
@@ -248,7 +248,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
       </div>   
       <div class="table-of-contents">
         <h2>Contents</h2>
-        <ul><li><a href="#ldap-协议入门">LDAP 协议入门</a><ul><li><a href="#为什么要用-ldap-目录树来存储数据用-mysql-不行吗">为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？</a></li><li><a href="#如何操作-ldap-服务器">如何操作 LDAP 服务器？</a></li></ul></li></ul></li><li><a href="#采用-docker-快速部署">采用 Docker 快速部署</a><ul><li><a href="#访问">访问</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        <ul><li><a href="#ldap-协议入门">LDAP 协议入门</a><ul><li><a href="#为什么要用-ldap-目录树来存储数据用-mysql-不行吗">为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？</a></li><li><a href="#如何操作-ldap-服务器">如何操作 LDAP 服务器？</a></li></ul></li><li><a href="#采用-docker-快速部署">采用 Docker 快速部署</a></li><li><a href="#访问">访问</a></li><li><a href="#参考资料">参考资料</a></li></ul>
       </div>
     </div>
     

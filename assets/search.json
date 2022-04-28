@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "基于 LDAP 的统一认证服务 Keycloak",
+      "tags"     : "LDAP 集成 统一认证 单点登录 Keycloak",
+      "url"      : "/tech/webmaster/ldap-integration.html"
+    } ,
+  
+    {
       "title"    : "利用 Github Action 一键编译多平台 Docker 镜像",
       "tags"     : "github action workflow docker 多平台",
       "url"      : "/tech/docker/github-action.html"

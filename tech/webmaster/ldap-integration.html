@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于 LDAP 的统一认证服务 Keycloak - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="基于 LDAP 的统一认证服务 Keycloak">
+    <meta name="keywords"  content="LDAP, 集成, 统一认证, 单点登录, Keycloak">
+    <!-- Open Graph -->
+    <meta property="og:title" content="基于 LDAP 的统一认证服务 Keycloak - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/ldap-integration.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+	
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+    <!--
+Author: Ray-Eldath
+-->
+<style>
+    .markdown-body .anchor{
+        float: left;
+        margin-top: -8px;
+        margin-left: -20px;
+        padding-right: 4px;
+        line-height: 1;
+        opacity: 0;
+    }
+    
+    .markdown-body .anchor .anchor-icon{
+        font-size: 15px
+    }
+</style>
+<script>
+    $(document).ready(function() {
+        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
+        for(let node of nodes) {
+            var anchor = document.createElement("a")
+            var anchorIcon = document.createElement("i")
+            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
+            anchorIcon.setAttribute("aria-hidden", true)
+            anchor.setAttribute("class", "anchor")
+            anchor.setAttribute("href", "#" + node.getAttribute("id"))
+            
+            anchor.onmouseover = function() {
+                this.style.opacity = "0.4"
+            }
+            
+            anchor.onmouseout = function() {
+                this.style.opacity = "0"
+            }
+            
+            anchor.appendChild(anchorIcon)
+            node.appendChild(anchor)
+        }
+    })
+</script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/blog/index.html">blog</a></li>
+            
+            <li><a href="/archives.html">archives</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+            <li><a href="/feed.xml">RSS</a></li>
+            
+            <li><a href="/logs.html">logs</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header
+    class="g-banner post-header post-pattern-food bgcolor-default "
+    data-theme="default"
+  >
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="/tags.html#LDAP" class="post-tag">LDAP</a>
+          
+            <a href="/tags.html#%E9%9B%86%E6%88%90" class="post-tag">集成</a>
+          
+            <a href="/tags.html#%E7%BB%9F%E4%B8%80%E8%AE%A4%E8%AF%81" class="post-tag">统一认证</a>
+          
+            <a href="/tags.html#%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95" class="post-tag">单点登录</a>
+          
+            <a href="/tags.html#Keycloak" class="post-tag">Keycloak</a>
+          
+        
+      </div>
+      <h1>基于 LDAP 的统一认证服务 Keycloak</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
+        <time class="post-meta-item" datetime="22-04-27"><i class="iconfont icon-date"></i>Wed, 27 Apr 2022 15:44:00 +0900</time>
+      </div>
+      <div class="post-meta">
+        
+        <span>本文总共 4617 字 <b>·</b> 阅读全文大约需要 14 分钟</span>
+        
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1510423579098-f47bf52b6764?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+    
+  </header>
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">用 LDAP 来为各式各样的应用提供统一认证服务</h2>
+    
+
+    
+    <div class="container">  
+      <div class="contents">
+        <article class="markdown-body">
+          <h2 id="前言">前言</h2>
+
+<p>  此前，笔者曾写过一篇<a href="/tech/docker/openldap.html">《OpenLDAP 安装初体验》</a>尝试使用 Docker 一键式部署 OpenLDAP。其中，对 LDAP 协议也作了一定的基础入门，但对如何利用 LDAP 来为各式各样的应用提供统一认证服务还未有深入的实践。本文就打算以 LDAP 为中心集成到团队内部的各类第三方系统或服务中。例如，团队内部常用的私有化代码托管服务 Gitlab、网盘服务 Nextcloud、缓存加速服务 Squid、访问内部集群的专用 OpenVPN 服务、内部团队知识库服务 Dokuwiki、内部代码库及容器镜像服务 Nexus3 等等。</p>
+
+<h2 id="统一认证服务">统一认证服务</h2>
+
+<p>  随着应用系统的爆发式增长，统一认证服务（UIA）显得越来越重要。通俗来说，统一认证服务就是可以使用一套账号和密码访问一系列的网站应用、APP 应用，为用户免去了维护大量账号和密码的烦恼，同时也为用户的账号安全提供了一定的保障。比如说，统一认证服务可以要求用户在登录时输入短信验证码、邮件验证码或者动态二次验证码等多因素认证，全方位保证用户登录安全。像大学里我们之所以可以使用学号和密码访问或者验证学校的所有网站应用及其他权限，就是因为采用了统一认证服务。</p>
+
+<p>  统一认证服务一般与授权控制相关联，可以确认用户对哪种资源有权限访问、可以进行哪种方式的操作等。当然，各个应用系统也可以有自己的授权控制体系，直接采用或者补充已有的统一认证服务提供的授权控制都是可以的。常见的统一认证解决方案有 OpenID Connect、OAuth 2.0、SAML2（Shibboleth）、CAS 等等。实际上，这些解决方案都需要有一个实现存储用户信息的方式，当然我们可以用关系型数据库来实现，也可以用轻量级目录协议（LDAP）来实现。在之前的文中就谈到过，LDAP 相比较关系型数据库而言，查询和浏览速度更快，但 LDAP 属性值的修改和属性有一定的限制。因此，实际的统一认证服务搭建会结合两者及其优势进行互补，从而提供更加全面的、可靠的认证服务。</p>
+
+<p>  除了统一认证服务之外，还有单点登录服务（SSO）。与统一认证相比，单点登录一次登录成功后，访问其他支持同一单点登录的网站应用时即可自动无感知认证，直接免去了用户再次登录的烦恼。当然，现在的统一认证服务也大多集成了单点登录服务。所以我们可以认为现在完整的统一认证服务应该具备以下几点：</p>
+
+<ul>
+  <li>支持一套账户和密码访问多个应用系统；</li>
+  <li>具备多因素认证安全性校验；</li>
+  <li>支持基本的用户权限控制；</li>
+  <li>支持单点登录，切换站点时自动无感知认证。</li>
+</ul>
+
+<h2 id="统一认证服务实践">统一认证服务实践</h2>
+
+<p>  在给的参考资料中已经详细介绍了不同种统一认证服务解决方案（协议），其中当属 OpenID Connect 方案对以上几点功能性要求满足的比较好。在我们日常生活中使用的微信、QQ、百度、淘宝等等均是采用这一解决方案，我们也通常将这一类的第三方登录方式称为“社交化登录”。当然，这些产商之所以选择 OpenID Connect 而不选择 CAS，可能主要还是因为 OpenID Connect 是基于 OAuth 2.0 的统一认证服务解决方案。虽然 CAS 也已经开始内置了 OAuth 2.0 认证，甚至兼容 SAML2 等等，但是终究还是会受限于 B/S 场景。OpenID Connect 面向的场景则不仅限于 B/S，还有 C/S。要知道，随着智能手机的发展，移动客户端已经成为了一个非常大的市场，甚至每日访问量要远高于桌面浏览器端。</p>
+
+<p>  为了验证一下是否可以采用 LDAP 作为基础存储来构建统一认证服务，这里选择了比较知名的由 RedHat 赞助开发的基于 OpenID Connect 协议的开源软件 <a href="https://www.keycloak.org/">Keycloak</a>。其实，基于 CAS 协议也有比较知名的 <a href="https:/aperoeo.github.io/cas/">aperoeo/cas</a>。但是怎么说呢，不选它有两个原因：一是它是基于 CAS 协议的；二是它的功能和我想要的有点不大一样。虽然也可以把 LDAP 作为基础存储，但是所有数据只读。个人觉得一个可以把 LDAP 作为基础存储的统一认证服务解决方案至少应该给用户一个可选项，选择只读还是可写都应该由用户自行决定。在这一点上，Keycloak 要做得更好。</p>
+
+<h3 id="keycloak-的部署">Keycloak 的部署</h3>
+
+<p>  Keycloak 官方提供编译好的 Docker 镜像，我们可以使用 docker-compose 进行一键式部署。配置文件内容如下所示：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">postgres</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">postgres</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">./data:/var/lib/postgresql/data</span>
+      <span class="na">environment</span><span class="pi">:</span>
+        <span class="na">POSTGRES_DB</span><span class="pi">:</span> <span class="s">keycloak</span>
+        <span class="na">POSTGRES_USER</span><span class="pi">:</span> <span class="s">keycloak</span>
+        <span class="na">POSTGRES_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+  <span class="na">keycloak</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">quay.io/keycloak/keycloak:legacy</span>
+      <span class="na">environment</span><span class="pi">:</span>
+        <span class="na">DB_VENDOR</span><span class="pi">:</span> <span class="s">POSTGRES</span>
+        <span class="na">DB_ADDR</span><span class="pi">:</span> <span class="s">postgres</span>
+        <span class="na">DB_DATABASE</span><span class="pi">:</span> <span class="s">keycloak</span>
+        <span class="na">DB_USER</span><span class="pi">:</span> <span class="s">keycloak</span>
+        <span class="na">DB_SCHEMA</span><span class="pi">:</span> <span class="s">public</span>
+        <span class="na">DB_PASSWORD</span><span class="pi">:</span> <span class="s">password</span>
+        <span class="na">KEYCLOAK_USER</span><span class="pi">:</span> <span class="s">admin</span>
+        <span class="na">KEYCLOAK_PASSWORD</span><span class="pi">:</span> <span class="s">Pa55w0rd</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">8080:8080</span>
+      <span class="na">depends_on</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">postgres</span>
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令启动服务。此处之所以使用的 legacy 标签而非 latest 标签，主要是因为 Keycloak 团队正在启动的方式和相关参数进行调整。latest 标签可以使用 <code class="language-plaintext highlighter-rouge">docker run</code> 命令正常启动，但是 docker-compose 有点不大好使。两个标签的代码版本实际上是完全一样的，只是启动服务有些差别。</p>
+
+<h3 id="keycloak-的使用">Keycloak 的使用</h3>
+
+<p>  访问 <a href="http://127.0.0.1:8080/auth/realms/master/account/#/">http://127.0.0.1:8080/auth/realms/master/account/#/</a> 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。</p>
+
+<p><img src="https://i.vgy.me/ly4tKf.png" alt="vgy.me" /></p>
+
+<p><img src="https://i.vgy.me/aUGnww.png" alt="vgy.me" /></p>
+
+<p>  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。</p>
+
+<p><img src="https://i.vgy.me/r19LoW.png" alt="vgy.me" /></p>
+
+<h4 id="国际化设置">国际化设置</h4>
+
+<p>  访问 <a href="http://127.0.0.1:8080/auth/admin/master/console">http://127.0.0.1:8080/auth/admin/master/console</a> 即可进入管理员页面并自动登录。</p>
+
+<p><img src="https://i.vgy.me/Zc3XO1.png" alt="vgy.me" /></p>
+
+<p>  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。</p>
+
+<p><img src="https://i.vgy.me/un2kGb.png" alt="vgy.me" /></p>
+
+<p>  刷新页面就能看见设置好的中文界面。</p>
+
+<p><img src="https://i.vgy.me/mxrpMe.png" alt="vgy.me" /></p>
+
+<h4 id="连接-ldap">连接 LDAP</h4>
+
+<p>  左边导航栏切换到<strong>用户联合</strong>选项卡，选择添加 ldap。</p>
+
+<p><img src="https://i.vgy.me/VUTllR.png" alt="vgy.me" /></p>
+
+<p>  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择<strong>其他</strong>。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择<strong>可写</strong>。另外在填写完配置后可以用右侧的<strong>测试连接</strong>和<strong>测试验证</strong>按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。</p>
+
+<p><img src="https://i.vgy.me/GyOK27.png" alt="vgy.me" /></p>
+
+<p>  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击<strong>同步所有用户</strong>即可将用户同步到 Keycloak。</p>
+
+<p><img src="https://i.vgy.me/Qt76Uc.png" alt="vgy.me" /></p>
+
+<p>  切换左边导航栏到<strong>用户</strong>选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。</p>
+
+<p><img src="https://i.vgy.me/MVgEWe.png" alt="vgy.me" /></p>
+
+<p>  如下图所示，证明 Keycloak 成功连接 LDAP。</p>
+
+<p><img src="https://i.vgy.me/6iSaAf.png" alt="vgy.me" /></p>
+
+<h4 id="用户密码策略">用户密码策略</h4>
+
+<p>  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到<strong>验证</strong>选项卡，再选择<strong>密码策略</strong>选项卡，使用右上角的<strong>添加策略</strong>添加不同的策略要求，完成后点击保存按钮。</p>
+
+<p><img src="https://i.vgy.me/OzRYBk.png" alt="vgy.me" /></p>
+
+<p>  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开<strong>验证密码策略</strong>。下图中的 <strong>LDAPv3 密码</strong> 可以选择打开或不打开，影响不大。</p>
+
+<p><img src="https://i.vgy.me/L14NPG.png" alt="vgy.me" /></p>
+
+<p>  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 <strong>Update</strong> 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。</p>
+
+<p><img src="https://i.vgy.me/tkOthq.png" alt="vgy.me" /></p>
+
+<p>  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：</p>
+
+<ul>
+  <li>密码长度不得小于 8 位，不得大于 32 位</li>
+  <li>密码中必须同时包含大小写字母</li>
+  <li>密码中必须包含数字</li>
+  <li>密码中必须包含至少一个特殊字符</li>
+</ul>
+
+<p><img src="https://i.vgy.me/rFN9HY.png" alt="vgy.me" /></p>
+
+<h4 id="otp-验证">OTP 验证</h4>
+
+<p>  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。</p>
+
+<p><img src="https://i.vgy.me/D2ipD0.png" alt="vgy.me" /></p>
+
+<p>  为了让系统的所有用户都开启 OTP，可以如下所示在<strong>必要操作</strong>选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）</p>
+
+<p><img src="https://i.vgy.me/rCUpj0.png" alt="vgy.me" /></p>
+
+<p>  为了验证 OTP 是否可用，移步至用户页点击<strong>设置验证应用</strong>按钮。</p>
+
+<p><img src="https://i.vgy.me/sgq7hF.png" alt="vgy.me" /></p>
+
+<p>  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。</p>
+
+<p><img src="https://i.vgy.me/mFizpx.png" alt="vgy.me" /></p>
+
+<h2 id="ldap-直接集成应用">LDAP 直接集成应用</h2>
+
+<p>  除了上面介绍了搭建基于 LDAP 的统一认证服务（例如 Keycloak）可以为其他应用提供登录验证服务，还可以直接将应用与 LDAP 服务集成。这里可能会有一个疑问：既然 LDAP 自身就可以与应用集成，为什么还要费这么大劲去搭建基于 LDAP 的统一认证服务呢？其实这里需要考虑“ LDAP 暴露在公网好还是统一认证服务暴露在公网好？”这个问题。LDAP 作为目录服务，最根本的目的是服务于内部网络中的应用，而非广域网中的应用。有了统一认证服务就可以很好的将 LDAP 安安全全地保护在内网中，而统一认证服务则作为一个网页应用与其他网页应用或客户端应用进行交互。这样的方式或许显得更加优雅、放心。</p>
+
+<p>  这里，打算之后就《LDAP 集成》为主题写一个系列（挖一个坑）。（PS：先预给出对应链接，如果能够访问那就是写好了。）</p>
+
+<ul>
+  <li><a href="/tech/webmaster/ldap-gitlab.html">《LDAP 集成之 Gitlab 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-squid.html">《LDAP 集成之 Squid 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-nextcloud.html">《LDAP 集成之 Nextcloud 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-dokuwiki.html">《LDAP 集成之 Dokuwiki 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-squid.html">《LDAP 集成之 Squid 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-openvpn.html">《LDAP 集成之 OpenVPN 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-nexus3.html">《LDAP 集成之 Nexus3 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-apache.html">《LDAP 集成之 Apache 篇》</a></li>
+  <li><a href="/tech/webmaster/ldap-nginx.html">《LDAP 集成之 Nginx 篇》</a></li>
+</ul>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://www.infvie.com/ops-notes/openldap-2.html">OpenLDAP 落地实战</a></li>
+  <li><a href="https://rxrw.me/tech/user-system-compare/">选择合适的用户系统 - cas、keyclock、authz、authing 等的对比</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/275994810">统一身份认证和单点登录的区别</a></li>
+  <li><a href="https://www.cxyzjd.com/article/wxb880114/101370975">单点登录 SSO、OAuth、LDAP、CAS 的流程与应用</a></li>
+  <li><a href="https://www.soumu.go.jp/main_content/000256289.pdf">Privacy Enhancement for Open Federated Identity/Access Management Platforms</a></li>
+  <li><a href="http://www.mastertheboss.com/keycloak/keycloak-with-docker/">How to run Keycloak with Docker</a></li>
+</ul>
+
+        </article>
+      </div>   
+      <div class="table-of-contents">
+        <h2>Contents</h2>
+        <ul><li><a href="#前言">前言</a></li><li><a href="#统一认证服务">统一认证服务</a></li><li><a href="#统一认证服务实践">统一认证服务实践</a><ul><li><a href="#keycloak-的部署">Keycloak 的部署</a></li><li><a href="#keycloak-的使用">Keycloak 的使用</a><ul><li><a href="#国际化设置">国际化设置</a></li><li><a href="#连接-ldap">连接 LDAP</a></li><li><a href="#用户密码策略">用户密码策略</a></li><li><a href="#otp-验证">OTP 验证</a></li></ul></li></ul></li><li><a href="#ldap-直接集成应用">LDAP 直接集成应用</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+      </div>
+    </div>
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="/assets/img/profile.webp" alt="">
+      </div>
+      <div class="author-name" rel="author">zhonger</div>
+      <div class="bio">
+        <p>Developer & Maintainer</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-google-scholar"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-researchgate"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-ORCID"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://github.com/zhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-github"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-linkedin"></use>
+            </svg>
+          </a>
+        </li>
+        
+        <li>
+          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-segmentfault"></use>
+            </svg>
+          </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+
+      
+      <div class="read-next-item">
+        <a href="/tech/docker/github-action.html" class="read-next-link"></a>
+          <section>
+            <span>利用 Github Action 一键编译多平台 Docker 镜像</span>
+            <p>前言</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://images.unsplash.com/photo-1648191887037-133cc13d2d20?w=1600&q=900" alt="">
+          
+      </div>
+      
+    </section>
+    
+    <section class="post-footer-item comment">
+        <div id="disqus_thread"></div>
+    </section>
+    
+  </section>
+
+  <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
+  
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  
+  
+  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+  
+  </section>
+</footer>
+<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+  
+  <script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://zhonger.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  
+
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          $("p img").each(function() {
+              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          $('[data-fancybox="gallery"]').fancybox();
+      });
+  </script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+</body>
+
+</html>
