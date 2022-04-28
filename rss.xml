@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 28 Apr 2022 18:03:14 +0900</pubDate>
-    <lastBuildDate>Thu, 28 Apr 2022 18:03:14 +0900</lastBuildDate>
+    <pubDate>Thu, 28 Apr 2022 19:00:09 +0900</pubDate>
+    <lastBuildDate>Thu, 28 Apr 2022 19:00:09 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -153,7 +153,7 @@
 
 &lt;p&gt;  为了让系统的所有用户都开启 OTP，可以如下所示在&lt;strong&gt;必要操作&lt;/strong&gt;选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/rCUpj0.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/Gi3FQB.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了验证 OTP 是否可用，移步至用户页点击&lt;strong&gt;设置验证应用&lt;/strong&gt;按钮。&lt;/p&gt;
 

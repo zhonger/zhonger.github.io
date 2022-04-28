@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-04-28T18:03:14+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">基于 LDAP 的统一认证服务 Keycloak</title><link href="https://lisz.me/tech/webmaster/ldap-integration.html" rel="alternate" type="text/html" title="基于 LDAP 的统一认证服务 Keycloak" /><published>2022-04-27T15:44:00+09:00</published><updated>2022-04-27T15:44:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-integration</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-integration.html"><![CDATA[<h2 id="前言">前言</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-04-28T19:00:09+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">基于 LDAP 的统一认证服务 Keycloak</title><link href="https://lisz.me/tech/webmaster/ldap-integration.html" rel="alternate" type="text/html" title="基于 LDAP 的统一认证服务 Keycloak" /><published>2022-04-27T15:44:00+09:00</published><updated>2022-04-27T15:44:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-integration</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-integration.html"><![CDATA[<h2 id="前言">前言</h2>
 
 <p>  此前，笔者曾写过一篇<a href="/tech/docker/openldap.html">《OpenLDAP 安装初体验》</a>尝试使用 Docker 一键式部署 OpenLDAP。其中，对 LDAP 协议也作了一定的基础入门，但对如何利用 LDAP 来为各式各样的应用提供统一认证服务还未有深入的实践。本文就打算以 LDAP 为中心集成到团队内部的各类第三方系统或服务中。例如，团队内部常用的私有化代码托管服务 Gitlab、网盘服务 Nextcloud、缓存加速服务 Squid、访问内部集群的专用 OpenVPN 服务、内部团队知识库服务 Dokuwiki、内部代码库及容器镜像服务 Nexus3 等等。</p>
 
@@ -140,7 +140,7 @@
 
 <p>  为了让系统的所有用户都开启 OTP，可以如下所示在<strong>必要操作</strong>选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）</p>
 
-<p><img src="https://i.vgy.me/rCUpj0.png" alt="vgy.me" /></p>
+<p><img src="https://i.vgy.me/Gi3FQB.png" alt="vgy.me" /></p>
 
 <p>  为了验证 OTP 是否可用，移步至用户页点击<strong>设置验证应用</strong>按钮。</p>
 
