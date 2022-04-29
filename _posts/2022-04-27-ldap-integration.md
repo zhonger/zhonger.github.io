@@ -170,7 +170,6 @@ services:
 &emsp;&emsp;这里，打算之后就《LDAP 集成》为主题写一个系列（挖一个坑）。（PS：先预给出对应链接，如果能够访问那就是写好了。）
 
 - [《LDAP 集成之 Gitlab 篇》](/tech/webmaster/ldap-gitlab.html)
-- [《LDAP 集成之 Squid 篇》](/tech/webmaster/ldap-squid.html)
 - [《LDAP 集成之 Nextcloud 篇》](/tech/webmaster/ldap-nextcloud.html)
 - [《LDAP 集成之 Dokuwiki 篇》](/tech/webmaster/ldap-dokuwiki.html)
 - [《LDAP 集成之 Squid 篇》](/tech/webmaster/ldap-squid.html)
