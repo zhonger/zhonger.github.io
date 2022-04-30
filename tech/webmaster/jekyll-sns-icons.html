@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,61 +132,76 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#Jekyll" class="post-tag">Jekyll</a>
+            
+              <a href="/tags.html#Jekyll" class="post-tag">Jekyll</a>
+            
+              <a href="/tags.html#%E4%B8%BB%E9%A2%98" class="post-tag">主题</a>
+            
+              <a href="/tags.html#theme" class="post-tag">theme</a>
+            
+              <a href="/tags.html#%E7%A4%BE%E4%BA%A4%E5%9B%BE%E6%A0%87" class="post-tag">社交图标</a>
+            
+              <a href="/tags.html#sns" class="post-tag">sns</a>
+            
+              <a href="/tags.html#icons" class="post-tag">icons</a>
+            
+              <a href="/tags.html#Iconfont" class="post-tag">Iconfont</a>
+            
           
-            <a href="/tags.html#%E4%B8%BB%E9%A2%98" class="post-tag">主题</a>
+        </div>
+        <h1>Jekyll 社交图标集合创建</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="21-12-22">
+            <i class="iconfont icon-date"></i>
+            
+              2021-12-22 11:30:00 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#theme" class="post-tag">theme</a>
+          <span>本文总共 4417 字 <b>·</b> 阅读全文大约需要 13 分钟</span>
           
-            <a href="/tags.html#%E7%A4%BE%E4%BA%A4%E5%9B%BE%E6%A0%87" class="post-tag">社交图标</a>
-          
-            <a href="/tags.html#sns" class="post-tag">sns</a>
-          
-            <a href="/tags.html#icons" class="post-tag">icons</a>
-          
-            <a href="/tags.html#Iconfont" class="post-tag">Iconfont</a>
-          
-        
+        </div>
       </div>
-      <h1>Jekyll 社交图标集合创建</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="21-12-22"><i class="iconfont icon-date"></i>Wed, 22 Dec 2021 11:30:00 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 4417 字 <b>·</b> 阅读全文大约需要 13 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">如何用 Iconfont 创建自己想要的社交图标集合？</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">如何用 Iconfont 创建自己想要的社交图标集合？</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="前言">前言</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
 
 <p>  一般来说，我们的个人博客都会放上一些社交图标以及社交链接。这样一来，想要关注我们更多的最新研究或工作的读者就可以很快找到路径。于是，在 Jekyll 博客主题设计的时候，通常会在个人简介的地方放置几个社交小图标，点击社交小图标即可把读者带到你的社交个人主页上。对于不同类型的作者，常用的或者关注的社交平台基本上不大一样，社交小图标也会有不一样的需求。比如说，对于从事科研工作的人来说，像谷歌学术、ResearchGate、ORCID 等等能够列举发表论文或者相关研究的平台就比较重要；对于一般程序员来说，像 Github、Gitlab、Segmentfault、CSDN、简书等等能够展示自己所参与的项目和技术心得体会的平台就比较重要；对于前端设计师来说，像 Instgram、UI 中国、Dribble等等能够展示 UI 设计作品的平台就比较重要。因此，对于一款 Jekyll 博客主题的设计者来说，同时要兼顾到这么多不同的需求可能会有点为难，毕竟领域不同、了解的程度也很有限。</p>
 
@@ -353,122 +380,122 @@ Author: Ray-Eldath
   <li><a href="https://juejin.cn/post/6844904162442870792">还在用字体图标吗，试试svg图标吧(内附vuecli-svg-sprite-loader插件)</a></li>
 </ul>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#前言">前言</a></li><li><a href="#技术发展回顾">技术发展回顾</a><ul><li><a href="#图片索引">图片索引</a></li><li><a href="#字体图标">字体图标</a></li><li><a href="#symbol-图标">Symbol 图标</a></li></ul></li><li><a href="#创建自定义社交图标集合">创建自定义社交图标集合</a><ul><li><a href="#小提示">小提示</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#技术发展回顾">技术发展回顾</a><ul><li><a href="#图片索引">图片索引</a></li><li><a href="#字体图标">字体图标</a></li><li><a href="#symbol-图标">Symbol 图标</a></li></ul></li><li><a href="#创建自定义社交图标集合">创建自定义社交图标集合</a><ul><li><a href="#小提示">小提示</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/webmaster/new-theme-h2o-ac.html" class="read-next-link"></a>
-        <section>
-          <span>H2O-ac theme for Jekyll</span>
-          <p>前言</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/webmaster/new-theme-h2o-ac.html" class="read-next-link"></a>
           <section>
-            <span>科学文献的那些事儿</span>
+            <span>H2O-ac theme for Jekyll</span>
             <p>前言</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
+          <img src="https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
+            <section>
+              <span>科学文献的那些事儿</span>
+              <p>前言</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -489,7 +516,7 @@ Author: Ray-Eldath
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -501,6 +528,7 @@ Author: Ray-Eldath
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -550,16 +578,27 @@ Author: Ray-Eldath
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

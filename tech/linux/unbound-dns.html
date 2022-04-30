@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,53 +132,68 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#DNS" class="post-tag">DNS</a>
+            
+              <a href="/tags.html#DNS" class="post-tag">DNS</a>
+            
+              <a href="/tags.html#unbound" class="post-tag">unbound</a>
+            
+              <a href="/tags.html#dnscrypt" class="post-tag">dnscrypt</a>
+            
           
-            <a href="/tags.html#unbound" class="post-tag">unbound</a>
+        </div>
+        <h1>Unbound + Dnscrypt 搭建无污染 DNS 服务</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="17-12-03">
+            <i class="iconfont icon-date"></i>
+            
+              2017-12-03 19:23:41 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#dnscrypt" class="post-tag">dnscrypt</a>
+          <span>本文总共 4189 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
           
-        
+        </div>
       </div>
-      <h1>Unbound + Dnscrypt 搭建无污染 DNS 服务</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="17-12-03"><i class="iconfont icon-date"></i>Sun, 03 Dec 2017 19:23:41 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 4189 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">从零开始搭建一个无污染的 DNS 服务</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">从零开始搭建一个无污染的 DNS 服务</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h1 id="引言">引言</h1>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h1 id="引言">引言</h1>
 
 <p>  鉴于某些原因，我们日常生活中使用的公共 DNS 总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析 DNS ，因此搭建无污染 DNS 服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了 unbound 和 dnscrypt。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如 knot DNS、dnspord-sr、powerdns 等，它们也在很多大型的 ISP 提供商的 DNS 产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么 unbound 是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。</p>
 
@@ -341,122 +368,122 @@ dig facebook.com  @127.0.0.1
   <li>https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/</li>
 </ul>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#引言">引言</a><ul><li><a href="#实验环境">实验环境</a></li><li><a href="#实验过程">实验过程</a></li><li><a href="#实验验证">实验验证</a></li><li><a href="#参考资料">参考资料</a></li></ul></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#引言">引言</a><ul><li><a href="#实验环境">实验环境</a></li><li><a href="#实验过程">实验过程</a></li><li><a href="#实验验证">实验验证</a></li><li><a href="#参考资料">参考资料</a></li></ul></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
-        <section>
-          <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
-          <p>HTTPS 和 Let’s encrypt 简介</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/linux/arch-tutorial.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
           <section>
-            <span>Archlinux 入门初步</span>
-            <p>制作 archlinux 启动盘</p>
+            <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
+            <p>HTTPS 和 Let’s encrypt 简介</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900" alt="">
+          <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/linux/arch-tutorial.html" class="read-next-link"></a>
+            <section>
+              <span>Archlinux 入门初步</span>
+              <p>制作 archlinux 启动盘</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=1600&h=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -477,7 +504,7 @@ dig facebook.com  @127.0.0.1
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -489,6 +516,7 @@ dig facebook.com  @127.0.0.1
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -538,16 +566,27 @@ dig facebook.com  @127.0.0.1
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

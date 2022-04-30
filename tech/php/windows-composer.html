@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,53 +132,68 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#windows" class="post-tag">windows</a>
+            
+              <a href="/tags.html#windows" class="post-tag">windows</a>
+            
+              <a href="/tags.html#composer" class="post-tag">composer</a>
+            
+              <a href="/tags.html#laravel" class="post-tag">laravel</a>
+            
           
-            <a href="/tags.html#composer" class="post-tag">composer</a>
+        </div>
+        <h1>Windows 配置 Composer 和 Laravel 笔记</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="15-11-11">
+            <i class="iconfont icon-date"></i>
+            
+              2015-11-11 13:12:12 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#laravel" class="post-tag">laravel</a>
+          <span>本文总共 732 字 <b>·</b> 阅读全文大约需要 3 分钟</span>
           
-        
+        </div>
       </div>
-      <h1>Windows 配置 Composer 和 Laravel 笔记</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="15-11-11"><i class="iconfont icon-date"></i>Wed, 11 Nov 2015 13:12:12 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 732 字 <b>·</b> 阅读全文大约需要 3 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1557600280-9ceddf1a3cc3?w=1600&h=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">在 Windows 系统上配置 Composer，并应用于 Laravel 框架开发过程中。</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1557600280-9ceddf1a3cc3?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">在 Windows 系统上配置 Composer，并应用于 Laravel 框架开发过程中。</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="安装及配置-composer">安装及配置 composer</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="安装及配置-composer">安装及配置 composer</h2>
 
 <p>  由于 getcomposer.org 的服务器在国外，国内访问网速有点慢，所以采用了<a href="http://packagist.cn/">国内镜像</a>获得 composer.phar 包，将 composer.phar 所在文件夹位置添加至环境变量 Path 中。下载 php 至电脑上，并将 php.exe 所在文件夹位置添加至环境变量 Path 中。在 composer.phar 所在文件夹按住 Shift 键点击鼠标右键选择“在此处打开 cmd 命令”，输入</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> @php <span class="s2">"%~dp0composer.phar"</span> %<span class="k">*</span><span class="o">&gt;</span>composer.bat
@@ -184,122 +211,122 @@ Author: Ray-Eldath
 <h2 id="解释">解释</h2>
 <p>  <code class="language-plaintext highlighter-rouge">composer create-project</code> 就是使用 composer 工具创建项目的意思，laravel/laravel 就是指明模板是什么， blog 是你要创建的应用的名称，后面那个就是命令的参数。</p>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#安装及配置-composer">安装及配置 composer</a></li><li><a href="#安装-laravel-应用">安装 laravel 应用</a></li><li><a href="#解释">解释</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#安装及配置-composer">安装及配置 composer</a></li><li><a href="#安装-laravel-应用">安装 laravel 应用</a></li><li><a href="#解释">解释</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/nodejs/ubuntu-nodejs.html" class="read-next-link"></a>
-        <section>
-          <span>ubuntu-14.04-lts 安装配置 nodejs+bower</span>
-          <p>  强烈推荐方案二</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1565984556409-b0d4946ce2d4?w=1600&h=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/others/my-daughter.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/nodejs/ubuntu-nodejs.html" class="read-next-link"></a>
           <section>
-            <span>我的女儿</span>
-            <p>我的女儿</p>
+            <span>ubuntu-14.04-lts 安装配置 nodejs+bower</span>
+            <p>  强烈推荐方案二</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1563858272990-ee61741967f6?w=1600&q=900" alt="">
+          <img src="https://images.unsplash.com/photo-1565984556409-b0d4946ce2d4?w=1600&h=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/others/my-daughter.html" class="read-next-link"></a>
+            <section>
+              <span>我的女儿</span>
+              <p>我的女儿</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1563858272990-ee61741967f6?w=1600&q=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -320,7 +347,7 @@ Author: Ray-Eldath
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -332,6 +359,7 @@ Author: Ray-Eldath
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -381,16 +409,27 @@ Author: Ray-Eldath
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

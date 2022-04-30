@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,55 +132,70 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#zerotier" class="post-tag">zerotier</a>
+            
+              <a href="/tags.html#zerotier" class="post-tag">zerotier</a>
+            
+              <a href="/tags.html#IPv6" class="post-tag">IPv6</a>
+            
+              <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+            
+              <a href="/tags.html#Mac" class="post-tag">Mac</a>
+            
           
-            <a href="/tags.html#IPv6" class="post-tag">IPv6</a>
+        </div>
+        <h1>使用 zerotier 搭建自己的 IPv6 网络</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="19-04-03">
+            <i class="iconfont icon-date"></i>
+            
+              2019-04-03 16:50:53 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#Ubuntu" class="post-tag">Ubuntu</a>
+          <span>本文总共 5244 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
           
-            <a href="/tags.html#Mac" class="post-tag">Mac</a>
-          
-        
+        </div>
       </div>
-      <h1>使用 zerotier 搭建自己的 IPv6 网络</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="19-04-03"><i class="iconfont icon-date"></i>Wed, 03 Apr 2019 16:50:53 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 5244 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">自用 IPv6 网络走起</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">自用 IPv6 网络走起</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="前言">前言</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
 
 <p>  2019年11月27日，通过欧洲网络协调中心（RIPE NCC）的邮件确认，全球所有43亿个 IPv4 地址已全部分配完毕。事实上，IPv4 地址的数量是非常有限的，算起来全球60多亿人每个人平均不到1个。由于 IP 地址是由国际上的几大网络协调中心统一进行分配，必须由单位向所在区域的网络协调中心提出申请，并每年缴纳一定的费用。这笔费用对于单位来说算不了什么，对于个人来说就比较高。因此，在每个国家基本上是由国家网络中心进行国内的 IP 地址分配，分配的单位一般是政府、国家机构、高校、基础通信服务商、数据中心或企业等。我们通常家用的宽带主要是由中国移动、中国联通、中国电信三大基础通信服务商提供的。近年来也有由广播电视提供的家用宽带。在学校、国家科技机构单位，一般使用的是教育网、教育科技网，也有很多学校采用的基础通信服务商提供的商用网络。不管是学校，还是家里，基础通信服务商为了节约 IP 地址的使用，在进行基础通信网络搭建的时候，大部分采用了内部局域网共享一个公网 IP 地址代理上网的方式。现有家用使用的宽带网络基本上无法获取到公网 IPv4 地址，只能获得一个以<code class="language-plaintext highlighter-rouge">100</code>开头的通信专用的局域网地址。</p>
 
@@ -371,122 +398,122 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
 <p>  欢迎走进 IPv6 的世界！</p>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#环境">环境</a></li><li><a href="#申请-ipv6-网段">申请 IPv6 网段</a></li><li><a href="#配置-ecs-服务器的-ipv6">配置 ECS 服务器的 IPv6</a></li><li><a href="#配置-zerotier">配置 zerotier</a><ul><li><a href="#安装-zerotier">安装 zerotier</a></li><li><a href="#配置-zerotier-网络">配置 zerotier 网络</a></li></ul></li><li><a href="#配置-ipv6-广播">配置 IPv6 广播</a><ul><li><a href="#配置-ndppd-广播">配置 NDPPD 广播</a></li></ul></li><li><a href="#配置其他客户端">配置其他客户端</a><ul><li><a href="#linux-客户端">Linux 客户端</a></li><li><a href="#mac-客户端">Mac 客户端</a></li></ul></li><li><a href="#测试及问题解决">测试及问题解决</a></li></ul></li><li><a href="#结语">结语</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#环境">环境</a></li><li><a href="#申请-ipv6-网段">申请 IPv6 网段</a></li><li><a href="#配置-ecs-服务器的-ipv6">配置 ECS 服务器的 IPv6</a></li><li><a href="#配置-zerotier">配置 zerotier</a><ul><li><a href="#安装-zerotier">安装 zerotier</a></li><li><a href="#配置-zerotier-网络">配置 zerotier 网络</a></li></ul></li><li><a href="#配置-ipv6-广播">配置 IPv6 广播</a><ul><li><a href="#配置-ndppd-广播">配置 NDPPD 广播</a></li></ul></li><li><a href="#配置其他客户端">配置其他客户端</a><ul><li><a href="#linux-客户端">Linux 客户端</a></li><li><a href="#mac-客户端">Mac 客户端</a></li></ul></li><li><a href="#测试及问题解决">测试及问题解决</a></li></ul></li><li><a href="#结语">结语</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/linux/dmoj.html" class="read-next-link"></a>
-        <section>
-          <span>用 DMOJ 搭建属于自己的 OJ</span>
-          <p>什么是 OJ</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1547605892-0da4c95beaf6?w=1600&q=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/docker/openldap.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/linux/dmoj.html" class="read-next-link"></a>
           <section>
-            <span>OpenLDAP 安装初体验</span>
-            <p>LDAP 协议入门</p>
+            <span>用 DMOJ 搭建属于自己的 OJ</span>
+            <p>什么是 OJ</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
+          <img src="https://images.unsplash.com/photo-1547605892-0da4c95beaf6?w=1600&q=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/docker/openldap.html" class="read-next-link"></a>
+            <section>
+              <span>OpenLDAP 安装初体验</span>
+              <p>LDAP 协议入门</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -507,7 +534,7 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -519,6 +546,7 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -568,16 +596,27 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

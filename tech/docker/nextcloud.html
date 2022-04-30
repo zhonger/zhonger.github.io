@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,55 +132,70 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+            
+              <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+            
+              <a href="/tags.html#docker" class="post-tag">docker</a>
+            
+              <a href="/tags.html#lnmpa" class="post-tag">lnmpa</a>
+            
+              <a href="/tags.html#%E4%BA%91%E7%9B%98" class="post-tag">云盘</a>
+            
           
-            <a href="/tags.html#docker" class="post-tag">docker</a>
+        </div>
+        <h1>Nextcloud 搭建自己的云盘</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="18-03-24">
+            <i class="iconfont icon-date"></i>
+            
+              2018-03-24 17:49:44 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#lnmpa" class="post-tag">lnmpa</a>
+          <span>本文总共 4987 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
           
-            <a href="/tags.html#%E4%BA%91%E7%9B%98" class="post-tag">云盘</a>
-          
-        
+        </div>
       </div>
-      <h1>Nextcloud 搭建自己的云盘</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="18-03-24"><i class="iconfont icon-date"></i>Sat, 24 Mar 2018 17:49:44 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 4987 字 <b>·</b> 阅读全文大约需要 15 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="nextcloud-简介">Nextcloud 简介</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="nextcloud-简介">Nextcloud 简介</h2>
 
 <p>  今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 <a href="https://mgea.nz">Mega</a> （由于核心人员出走最近好像也不行了）、微软的 <a href="https://onedrive.live.com">OneDrive</a>、老牌网盘 <a href="https://www.dropbox.com">Dropbox</a>、<a href="https://box.com">Box</a>、谷家的 <a href="https://drive.google.com">Google drive</a>（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。</p>
 
@@ -413,122 +440,122 @@ unzip latest.zip
 <span class="nb">sudo</span> <span class="nt">-u</span> www /usr/local/php/bin/php occ maintenance:mode <span class="nt">--off</span>
 </code></pre></div></div>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#nextcloud-简介">Nextcloud 简介</a></li><li><a href="#docker-搭建-nextcloud">Docker 搭建 Nextcloud</a><ul><li><a href="#安装-docker-环境">安装 Docker 环境</a></li><li><a href="#安装-docker-compose-工具">安装 docker-compose 工具</a></li><li><a href="#编写-docker-composeyml">编写 docker-compose.yml</a></li><li><a href="#启动容器">启动容器</a></li><li><a href="#应用初始化配置">应用初始化配置</a></li></ul></li><li><a href="#lnmpa-搭建-nextcloud">LNMPA 搭建 Nextcloud</a><ul><li><a href="#安装-lnmpa-环境">安装 LNMPA 环境</a><ul><li><a href="#为什么选用-lnmpa-而非-lnmp-或者-lmpa架构">为什么选用 LNMPA 而非 LNMP 或者 LMPA架构</a></li><li><a href="#安装">安装</a></li></ul></li><li><a href="#准备工作">准备工作</a><ul><li><a href="#新建数据库">新建数据库</a></li><li><a href="#安装-php-扩展">安装 PHP 扩展</a></li><li><a href="#修改-nginx-和-php-配置">修改 Nginx 和 PHP 配置</a></li></ul></li><li><a href="#安装-nextcloud">安装 Nextcloud</a><ul><li><a href="#下载-nextcloud-代码">下载 Nextcloud 代码</a></li><li><a href="#添加虚拟主机">添加虚拟主机</a></li></ul></li><li><a href="#配置-nextcloud">配置 Nextcloud</a></li><li><a href="#更新-nextcloud">更新 Nextcloud</a></li></ul></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#nextcloud-简介">Nextcloud 简介</a></li><li><a href="#docker-搭建-nextcloud">Docker 搭建 Nextcloud</a><ul><li><a href="#安装-docker-环境">安装 Docker 环境</a></li><li><a href="#安装-docker-compose-工具">安装 docker-compose 工具</a></li><li><a href="#编写-docker-composeyml">编写 docker-compose.yml</a></li><li><a href="#启动容器">启动容器</a></li><li><a href="#应用初始化配置">应用初始化配置</a></li></ul></li><li><a href="#lnmpa-搭建-nextcloud">LNMPA 搭建 Nextcloud</a><ul><li><a href="#安装-lnmpa-环境">安装 LNMPA 环境</a><ul><li><a href="#为什么选用-lnmpa-而非-lnmp-或者-lmpa架构">为什么选用 LNMPA 而非 LNMP 或者 LMPA架构</a></li><li><a href="#安装">安装</a></li></ul></li><li><a href="#准备工作">准备工作</a><ul><li><a href="#新建数据库">新建数据库</a></li><li><a href="#安装-php-扩展">安装 PHP 扩展</a></li><li><a href="#修改-nginx-和-php-配置">修改 Nginx 和 PHP 配置</a></li></ul></li><li><a href="#安装-nextcloud">安装 Nextcloud</a><ul><li><a href="#下载-nextcloud-代码">下载 Nextcloud 代码</a></li><li><a href="#添加虚拟主机">添加虚拟主机</a></li></ul></li><li><a href="#配置-nextcloud">配置 Nextcloud</a></li><li><a href="#更新-nextcloud">更新 Nextcloud</a></li></ul></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/docker/onlyoffice.html" class="read-next-link"></a>
-        <section>
-          <span>Onlyoffice 搭建</span>
-          <p>Onlyoffice 搭建</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/docker/onlyoffice.html" class="read-next-link"></a>
           <section>
-            <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
-            <p>HTTPS 和 Let’s encrypt 简介</p>
+            <span>Onlyoffice 搭建</span>
+            <p>Onlyoffice 搭建</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
+          <img src="https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/webmaster/get-free-ssl.html" class="read-next-link"></a>
+            <section>
+              <span>Letsencrypt 泛域名 SSL 证书免费申请</span>
+              <p>HTTPS 和 Let’s encrypt 简介</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -549,7 +576,7 @@ unzip latest.zip
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -561,6 +588,7 @@ unzip latest.zip
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -610,16 +638,27 @@ unzip latest.zip
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

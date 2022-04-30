@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,53 +132,68 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#%E9%BB%91%E8%8B%B9%E6%9E%9C" class="post-tag">黑苹果</a>
+            
+              <a href="/tags.html#%E9%BB%91%E8%8B%B9%E6%9E%9C" class="post-tag">黑苹果</a>
+            
+              <a href="/tags.html#%E7%BB%84%E8%A3%85%E6%9C%BA" class="post-tag">组装机</a>
+            
+              <a href="/tags.html#Nvidia" class="post-tag">Nvidia</a>
+            
           
-            <a href="/tags.html#%E7%BB%84%E8%A3%85%E6%9C%BA" class="post-tag">组装机</a>
+        </div>
+        <h1>黑苹果安装、使用初体验</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="18-11-09">
+            <i class="iconfont icon-date"></i>
+            
+              2018-11-09 10:48:00 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#Nvidia" class="post-tag">Nvidia</a>
+          <span>本文总共 2849 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
           
-        
+        </div>
       </div>
-      <h1>黑苹果安装、使用初体验</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="18-11-09"><i class="iconfont icon-date"></i>Fri, 09 Nov 2018 10:48:00 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 2849 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">基于兼容的组装机体验 MAC 操作系统</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">基于兼容的组装机体验 MAC 操作系统</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
 
 <p><strong>特别声明：本站不提供任何下载，只是收集和整理了有关信息</strong></p>
 
@@ -324,122 +351,122 @@ brew cask <span class="nb">install </span>google-chrome
 </ol>
 
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#实验组装机配置">实验组装机配置</a></li><li><a href="#安装系统">安装系统</a><ul><li><a href="#下载镜像">下载镜像</a></li><li><a href="#刻录启动盘">刻录启动盘</a></li><li><a href="#安装系统到硬盘">安装系统到硬盘</a></li><li><a href="#安装引导项到硬盘">安装引导项到硬盘</a></li><li><a href="#优化显卡驱动">优化显卡驱动</a></li><li><a href="#系统升级">系统升级</a></li></ul></li><li><a href="#使用体验">使用体验</a><ul><li><a href="#允许全部应用来源被打开">允许全部应用来源被打开</a></li><li><a href="#office-for-mac-2019">Office for Mac 2019</a></li><li><a href="#ntfs硬盘读写支持">NTFS硬盘读写支持</a></li><li><a href="#视频播放类软件">视频播放类软件</a></li><li><a href="#markdown-编辑软件">Markdown 编辑软件</a></li><li><a href="#软件安装管理">软件安装、管理</a><ul><li><a href="#brew">Brew</a></li><li><a href="#macport">Macport</a></li></ul></li><li><a href="#百度云盘无限制多线程下载">百度云盘无限制多线程下载</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#实验组装机配置">实验组装机配置</a></li><li><a href="#安装系统">安装系统</a><ul><li><a href="#下载镜像">下载镜像</a></li><li><a href="#刻录启动盘">刻录启动盘</a></li><li><a href="#安装系统到硬盘">安装系统到硬盘</a></li><li><a href="#安装引导项到硬盘">安装引导项到硬盘</a></li><li><a href="#优化显卡驱动">优化显卡驱动</a></li><li><a href="#系统升级">系统升级</a></li></ul></li><li><a href="#使用体验">使用体验</a><ul><li><a href="#允许全部应用来源被打开">允许全部应用来源被打开</a></li><li><a href="#office-for-mac-2019">Office for Mac 2019</a></li><li><a href="#ntfs硬盘读写支持">NTFS硬盘读写支持</a></li><li><a href="#视频播放类软件">视频播放类软件</a></li><li><a href="#markdown-编辑软件">Markdown 编辑软件</a></li><li><a href="#软件安装管理">软件安装、管理</a><ul><li><a href="#brew">Brew</a></li><li><a href="#macport">Macport</a></li></ul></li><li><a href="#百度云盘无限制多线程下载">百度云盘无限制多线程下载</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/docker/openldap.html" class="read-next-link"></a>
-        <section>
-          <span>OpenLDAP 安装初体验</span>
-          <p>LDAP 协议入门</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/linux/ubuntu-bionic.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/docker/openldap.html" class="read-next-link"></a>
           <section>
-            <span>Ubuntu 18.04 主题美化指“北”</span>
-            <p>  Ubuntu 操作系统一直深受广大开发者喜爱，一个原因在于它的软件支持比较新，另一个原因在于它的交互更为友好、...</p>
+            <span>OpenLDAP 安装初体验</span>
+            <p>LDAP 协议入门</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900" alt="">
+          <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/linux/ubuntu-bionic.html" class="read-next-link"></a>
+            <section>
+              <span>Ubuntu 18.04 主题美化指“北”</span>
+              <p>  Ubuntu 操作系统一直深受广大开发者喜爱，一个原因在于它的软件支持比较新，另一个原因在于它的交互更为友好、...</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1560568082-c15188aa6510?w=1600&h=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -460,7 +487,7 @@ brew cask <span class="nb">install </span>google-chrome
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -472,6 +499,7 @@ brew cask <span class="nb">install </span>google-chrome
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -521,16 +549,27 @@ brew cask <span class="nb">install </span>google-chrome
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

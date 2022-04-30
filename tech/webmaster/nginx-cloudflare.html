@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,53 +132,68 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#Nginx" class="post-tag">Nginx</a>
+            
+              <a href="/tags.html#Nginx" class="post-tag">Nginx</a>
+            
+              <a href="/tags.html#Cloudflare" class="post-tag">Cloudflare</a>
+            
+              <a href="/tags.html#%E5%8A%A0%E9%80%9F" class="post-tag">加速</a>
+            
           
-            <a href="/tags.html#Cloudflare" class="post-tag">Cloudflare</a>
+        </div>
+        <h1>给 Nginx 站点套上一层 Cloudflare </h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="22-04-05">
+            <i class="iconfont icon-date"></i>
+            
+              2022-04-05 15:44:00 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#%E5%8A%A0%E9%80%9F" class="post-tag">加速</a>
+          <span>本文总共 3310 字 <b>·</b> 阅读全文大约需要 10 分钟</span>
           
-        
+        </div>
       </div>
-      <h1>给 Nginx 站点套上一层 Cloudflare </h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="22-04-05"><i class="iconfont icon-date"></i>Tue, 05 Apr 2022 15:44:00 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 3310 字 <b>·</b> 阅读全文大约需要 10 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1649017049683-94ddea424f46?w=1600&q=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">如何通过 Cloudflare 来提升 Nginx 站点访问速度</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1649017049683-94ddea424f46?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">如何通过 Cloudflare 来提升 Nginx 站点访问速度</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="前言">前言</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
 
 <p>  站点访问速度及安全一直以来都是站长们建站所关注的重要内容。为了满足站点能够被全球用户的访问需求，通常我们会采用云服务商提供的 CDN 来加速访问速度。比如国外比较知名的 AWS 提供的 <a href="https://aws.amazon.com/cn/cloudfront/">Cloudfront</a>、GCP 提供的 <a href="https://cloud.google.com/cdn">Cloud CDN</a> 以及 Cloudflare 公司提供的 <a href="https://www.cloudflare.com/">Cloudflare</a> 等，国内比较知名的腾讯云提供的 <a href="https://cloud.tencent.com/product/cdn">CDN</a>、阿里云提供的 <a href="https://cn.aliyun.com/product/cdn">CDN</a>、又拍云提供的 <a href="https://www.upyun.com/products/cdn">CDN</a> 以及七牛云提供的 <a href="https://www.qiniu.com/products/qcdn">CDN</a> 等。(PS：其实国内的其他云服务商比如华为云、百度云、滴滴云、京东云等等都提供了 CDN 解决方案。)</p>
 
@@ -365,122 +392,122 @@ Author: Ray-Eldath
   <li><a href="https://nova.moe/nginx-block-non-cloudflare-ips/">让 Nginx 只允许 Cloudflare 反向代理流量以隐藏源站</a></li>
 </ul>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#yourls">Yourls</a><ul><li><a href="#简介">简介</a></li><li><a href="#部署">部署</a></li></ul></li><li><a href="#cloudflare-配置">Cloudflare 配置</a><ul><li><a href="#添加域名记录">添加域名记录</a></li><li><a href="#生成证书">生成证书</a></li><li><a href="#部署证书">部署证书</a></li></ul></li><li><a href="#nginx-配置">Nginx 配置</a><ul><li><a href="#添加配置">添加配置</a></li><li><a href="#可选只允许-cloudflare-访问">（可选）只允许 Cloudflare 访问</a></li><li><a href="#生效配置">生效配置</a></li></ul></li></ul></li><li><a href="#验证">验证</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#yourls">Yourls</a><ul><li><a href="#简介">简介</a></li><li><a href="#部署">部署</a></li></ul></li><li><a href="#cloudflare-配置">Cloudflare 配置</a><ul><li><a href="#添加域名记录">添加域名记录</a></li><li><a href="#生成证书">生成证书</a></li><li><a href="#部署证书">部署证书</a></li></ul></li><li><a href="#nginx-配置">Nginx 配置</a><ul><li><a href="#添加配置">添加配置</a></li><li><a href="#可选只允许-cloudflare-访问">（可选）只允许 Cloudflare 访问</a></li><li><a href="#生效配置">生效配置</a></li></ul></li></ul></li><li><a href="#验证">验证</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/docker/github-action.html" class="read-next-link"></a>
-        <section>
-          <span>利用 Github Action 一键编译多平台 Docker 镜像</span>
-          <p>前言</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1648191887037-133cc13d2d20?w=1600&q=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/ac/ml/utility-vs-understanding.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/docker/github-action.html" class="read-next-link"></a>
           <section>
-            <span>[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</span>
-            <p>原文标题：Utility vs Understanding: the State of Machine Learn...</p>
+            <span>利用 Github Action 一键编译多平台 Docker 镜像</span>
+            <p>前言</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1647715360138-33fb6fe68539?w=1600&q=900" alt="">
+          <img src="https://images.unsplash.com/photo-1648191887037-133cc13d2d20?w=1600&q=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/ac/ml/utility-vs-understanding.html" class="read-next-link"></a>
+            <section>
+              <span>[译文]实用性 vs 理解力：进入 2022 年的机器学习领域</span>
+              <p>原文标题：Utility vs Understanding: the State of Machine Learn...</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1647715360138-33fb6fe68539?w=1600&q=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -501,7 +528,7 @@ Author: Ray-Eldath
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -513,6 +540,7 @@ Author: Ray-Eldath
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -562,16 +590,27 @@ Author: Ray-Eldath
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

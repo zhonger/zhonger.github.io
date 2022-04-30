@@ -14,11 +14,12 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
-    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
-    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="favicon.ico">
+    <link rel="bookmark" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
     <link rel="stylesheet" href="/assets/css/plugins.min.css">
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
@@ -28,15 +29,26 @@
 
 <body>
     <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-    <input id="nm-switch" type="hidden" value="false">
-    <div class="visible">
-      <header class="g-header">
+    <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+    <![endif]-->
+    
+    <div id="all">
+    
+      <input id="nm-switch" type="hidden" value="false">
+      <div class="visible">
+        <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -55,6 +67,14 @@
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
@@ -81,7 +101,20 @@
       <h3>2022</h3>
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 27, 2022 </span><a href="/tech/webmaster/ldap-integration.html"> 基于 LDAP 的统一认证服务 Keycloak </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-04-27 
+          
+        </span>
+        <a href="/tech/webmaster/ldap-integration.html"> 基于 LDAP 的统一认证服务 Keycloak </a>
+      </p>
+    </li>
+      
 
   
 
@@ -91,7 +124,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 22, 2022 </span><a href="/tech/docker/github-action.html"> 利用 Github Action 一键编译多平台 Docker 镜像 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-04-22 
+          
+        </span>
+        <a href="/tech/docker/github-action.html"> 利用 Github Action 一键编译多平台 Docker 镜像 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -101,7 +147,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 5, 2022 </span><a href="/tech/webmaster/nginx-cloudflare.html"> 给 Nginx 站点套上一层 Cloudflare  </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-04-05 
+          
+        </span>
+        <a href="/tech/webmaster/nginx-cloudflare.html"> 给 Nginx 站点套上一层 Cloudflare  </a>
+      </p>
+    </li>
+      
 
   
 
@@ -111,7 +170,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 21, 2022 </span><a href="/ac/ml/utility-vs-understanding.html"> [译文]实用性 vs 理解力：进入 2022 年的机器学习领域 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-03-21 
+          
+        </span>
+        <a href="/ac/ml/utility-vs-understanding.html"> [译文]实用性 vs 理解力：进入 2022 年的机器学习领域 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -121,7 +193,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jan 14, 2022 </span><a href="/tech/webmaster/gitlab-upgrade.html"> Gitlab 升级那些事儿 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-01-14 
+          
+        </span>
+        <a href="/tech/webmaster/gitlab-upgrade.html"> Gitlab 升级那些事儿 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -131,7 +216,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jan 13, 2022 </span><a href="/tech/webmaster/nextcloud-upgrade.html"> Nextcloud 升级那些事儿 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-01-13 
+          
+        </span>
+        <a href="/tech/webmaster/nextcloud-upgrade.html"> Nextcloud 升级那些事儿 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -141,7 +239,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jan 9, 2022 </span><a href="/tech/webmaster/jekyll-toc.html"> Jekyll 文章侧边索引导航 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-01-09 
+          
+        </span>
+        <a href="/tech/webmaster/jekyll-toc.html"> Jekyll 文章侧边索引导航 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -151,7 +262,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jan 5, 2022 </span><a href="/ac/ml/iterative-learning.html"> [译文]迭代机器学习：迈向模型准确性的一步 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2022-01-05 
+          
+        </span>
+        <a href="/ac/ml/iterative-learning.html"> [译文]迭代机器学习：迈向模型准确性的一步 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -163,7 +287,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Dec 22, 2021 </span><a href="/tech/webmaster/new-theme-h2o-ac.html"> H2O-ac theme for Jekyll </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-12-22 
+          
+        </span>
+        <a href="/tech/webmaster/new-theme-h2o-ac.html"> H2O-ac theme for Jekyll </a>
+      </p>
+    </li>
+      
 
   
 
@@ -173,7 +310,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Dec 22, 2021 </span><a href="/tech/webmaster/jekyll-sns-icons.html"> Jekyll 社交图标集合创建 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-12-22 
+          
+        </span>
+        <a href="/tech/webmaster/jekyll-sns-icons.html"> Jekyll 社交图标集合创建 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -183,7 +333,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Dec 10, 2021 </span><a href="/ac/experience/search-papers.html"> 科学文献的那些事儿 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-12-10 
+          
+        </span>
+        <a href="/ac/experience/search-papers.html"> 科学文献的那些事儿 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -193,7 +356,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 2, 2021 </span><a href="/tech/docker/gitlab.html"> 私有代码托管平台的搭建与运维 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-08-02 
+          
+        </span>
+        <a href="/tech/docker/gitlab.html"> 私有代码托管平台的搭建与运维 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -203,7 +379,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jul 25, 2021 </span><a href="/tech/docker/jupyterlab.html"> JupyterLab 的搭建与运维 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-07-25 
+          
+        </span>
+        <a href="/tech/docker/jupyterlab.html"> JupyterLab 的搭建与运维 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -213,7 +402,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jun 15, 2021 </span><a href="/tech/webmaster/remote-ssh.html"> [原创]远程服务环境与本地环境互联 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-06-15 
+          
+        </span>
+        <a href="/tech/webmaster/remote-ssh.html"> [原创]远程服务环境与本地环境互联 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -223,7 +425,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 27, 2021 </span><a href="/tech/aiida/aiida-qe.html"> AiiDA 与 Quantum Espresso </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-05-27 
+          
+        </span>
+        <a href="/tech/aiida/aiida-qe.html"> AiiDA 与 Quantum Espresso </a>
+      </p>
+    </li>
+      
 
   
 
@@ -233,7 +448,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 12, 2021 </span><a href="/tech/aiida/aiida-install.html"> AiiDA 开源数据管理软件 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-05-12 
+          
+        </span>
+        <a href="/tech/aiida/aiida-install.html"> AiiDA 开源数据管理软件 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -243,7 +471,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 11, 2021 </span><a href="/tech/webmaster/start-blog-online-editor.html"> 个人免费博客花式搭建指南 Online Editor 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-11 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-online-editor.html"> 个人免费博客花式搭建指南 Online Editor 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -253,7 +494,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 10, 2021 </span><a href="/tech/webmaster/start-blog-vps.html"> 个人免费博客花式搭建指南 VPS 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-10 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-vps.html"> 个人免费博客花式搭建指南 VPS 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -263,7 +517,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 9, 2021 </span><a href="/tech/webmaster/start-blog-ftp.html"> 个人免费博客花式搭建指南 FTP 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-09 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-ftp.html"> 个人免费博客花式搭建指南 FTP 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -273,7 +540,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 8, 2021 </span><a href="/tech/webmaster/start-blog-cloudflare.html"> 个人免费博客花式搭建指南 Cloudflare 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-08 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-cloudflare.html"> 个人免费博客花式搭建指南 Cloudflare 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -283,7 +563,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 7, 2021 </span><a href="/tech/webmaster/start-blog-netlify.html"> 个人免费博客花式搭建指南 Netlify 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-07 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-netlify.html"> 个人免费博客花式搭建指南 Netlify 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -293,7 +586,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 6, 2021 </span><a href="/tech/webmaster/start-blog-github.html"> 个人免费博客花式搭建指南 Github 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-06 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog-github.html"> 个人免费博客花式搭建指南 Github 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -303,7 +609,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 5, 2021 </span><a href="/tech/webmaster/start-blog.html"> 个人免费博客花式搭建指南 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-04-05 
+          
+        </span>
+        <a href="/tech/webmaster/start-blog.html"> 个人免费博客花式搭建指南 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -313,7 +632,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 24, 2021 </span><a href="/tech/webmaster/jekyll-optimization.html"> Jekyll 优化合集 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-03-24 
+          
+        </span>
+        <a href="/tech/webmaster/jekyll-optimization.html"> Jekyll 优化合集 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -323,7 +655,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 26, 2021 </span><a href="/tech/devops/intern-develope.html"> 内网环境下的远程登录和开发实践 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-26 
+          
+        </span>
+        <a href="/tech/devops/intern-develope.html"> 内网环境下的远程登录和开发实践 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -333,7 +678,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 18, 2021 </span><a href="/tech/docker/docker-slurm-cluster.html"> Docker 快速部署 Slurm 集群 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-18 
+          
+        </span>
+        <a href="/tech/docker/docker-slurm-cluster.html"> Docker 快速部署 Slurm 集群 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -343,7 +701,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 8, 2021 </span><a href="/tech/docker/docker-openssh.html"> Docker 镜像支持 SSH 远程登录 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-08 
+          
+        </span>
+        <a href="/tech/docker/docker-openssh.html"> Docker 镜像支持 SSH 远程登录 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -353,7 +724,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 8, 2021 </span><a href="/tech/docker/docker-zsh.html"> Docker 镜像安装配置 zsh </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-08 
+          
+        </span>
+        <a href="/tech/docker/docker-zsh.html"> Docker 镜像安装配置 zsh </a>
+      </p>
+    </li>
+      
 
   
 
@@ -363,7 +747,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 7, 2021 </span><a href="/tech/conquest/docker/conquest-slurm.html"> CONQUEST 编译安装指南 Slurm 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-07 
+          
+        </span>
+        <a href="/tech/conquest/docker/conquest-slurm.html"> CONQUEST 编译安装指南 Slurm 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -373,7 +770,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 7, 2021 </span><a href="/tech/conquest/conquest-intel.html"> CONQUEST 编译安装指南 Intel 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-07 
+          
+        </span>
+        <a href="/tech/conquest/conquest-intel.html"> CONQUEST 编译安装指南 Intel 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -383,7 +793,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 7, 2021 </span><a href="/tech/conquest/conquest-arm.html"> CONQUEST 编译安装指南 ARM 篇 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-07 
+          
+        </span>
+        <a href="/tech/conquest/conquest-arm.html"> CONQUEST 编译安装指南 ARM 篇 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -393,7 +816,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 7, 2021 </span><a href="/tech/conquest/conquest-introduction.html"> CONQUEST 第一性原理计算框架 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2021-02-07 
+          
+        </span>
+        <a href="/tech/conquest/conquest-introduction.html"> CONQUEST 第一性原理计算框架 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -405,7 +841,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 12, 2020 </span><a href="/tech/php/laravel-dev.html"> Laravel 开发和部署环境搭建 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2020-08-12 
+          
+        </span>
+        <a href="/tech/php/laravel-dev.html"> Laravel 开发和部署环境搭建 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -415,7 +864,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 12, 2020 </span><a href="/tech/docker/sharelatex.html"> ShareLaTeX 搭建 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2020-08-12 
+          
+        </span>
+        <a href="/tech/docker/sharelatex.html"> ShareLaTeX 搭建 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -425,7 +887,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 4, 2020 </span><a href="/tech/linux/dmoj-runtime.html"> DMOJ 判题环境配置集锦 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2020-08-04 
+          
+        </span>
+        <a href="/tech/linux/dmoj-runtime.html"> DMOJ 判题环境配置集锦 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -435,7 +910,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 4, 2020 </span><a href="/tech/linux/dmoj.html"> 用 DMOJ 搭建属于自己的 OJ </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2020-08-04 
+          
+        </span>
+        <a href="/tech/linux/dmoj.html"> 用 DMOJ 搭建属于自己的 OJ </a>
+      </p>
+    </li>
+      
 
   
 
@@ -447,7 +935,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 3, 2019 </span><a href="/tech/linux/zerotier.html"> 使用 zerotier 搭建自己的 IPv6 网络 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2019-04-03 
+          
+        </span>
+        <a href="/tech/linux/zerotier.html"> 使用 zerotier 搭建自己的 IPv6 网络 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -459,7 +960,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Nov 28, 2018 </span><a href="/tech/docker/openldap.html"> OpenLDAP 安装初体验 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-11-28 
+          
+        </span>
+        <a href="/tech/docker/openldap.html"> OpenLDAP 安装初体验 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -469,7 +983,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Nov 9, 2018 </span><a href="/tech/mac/black-mac.html"> 黑苹果安装、使用初体验 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-11-09 
+          
+        </span>
+        <a href="/tech/mac/black-mac.html"> 黑苹果安装、使用初体验 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -479,7 +1006,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 28, 2018 </span><a href="/tech/linux/ubuntu-bionic.html"> Ubuntu 18.04 主题美化指“北” </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-08-28 
+          
+        </span>
+        <a href="/tech/linux/ubuntu-bionic.html"> Ubuntu 18.04 主题美化指“北” </a>
+      </p>
+    </li>
+      
 
   
 
@@ -489,7 +1029,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 6, 2018 </span><a href="/tech/linux/ubuntu-hp.html"> Ubuntu 安装 HP 打印机、扫描仪驱动 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-08-06 
+          
+        </span>
+        <a href="/tech/linux/ubuntu-hp.html"> Ubuntu 安装 HP 打印机、扫描仪驱动 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -499,7 +1052,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jun 25, 2018 </span><a href="/tech/linux/postfix.html"> Ubuntu 搭建 Postfix 邮件SMTP发送服务器 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-06-25 
+          
+        </span>
+        <a href="/tech/linux/postfix.html"> Ubuntu 搭建 Postfix 邮件SMTP发送服务器 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -509,7 +1075,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jun 11, 2018 </span><a href="/tech/docker/nextcloud-docker.html"> Nextcloud 源码部署迁移到容器部署 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-06-11 
+          
+        </span>
+        <a href="/tech/docker/nextcloud-docker.html"> Nextcloud 源码部署迁移到容器部署 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -519,7 +1098,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 1, 2018 </span><a href="/tech/kvm/kvm.html"> KVM 虚拟化 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-05-01 
+          
+        </span>
+        <a href="/tech/kvm/kvm.html"> KVM 虚拟化 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -529,7 +1121,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 12, 2018 </span><a href="/tech/webmaster/ngx-fancyindex.html"> Nginx 目录列表美化 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-04-12 
+          
+        </span>
+        <a href="/tech/webmaster/ngx-fancyindex.html"> Nginx 目录列表美化 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -539,7 +1144,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Apr 1, 2018 </span><a href="/tech/docker/onlyoffice.html"> Onlyoffice 搭建 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-04-01 
+          
+        </span>
+        <a href="/tech/docker/onlyoffice.html"> Onlyoffice 搭建 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -549,7 +1167,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 24, 2018 </span><a href="/tech/docker/nextcloud.html"> Nextcloud 搭建自己的云盘 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-03-24 
+          
+        </span>
+        <a href="/tech/docker/nextcloud.html"> Nextcloud 搭建自己的云盘 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -559,7 +1190,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 14, 2018 </span><a href="/tech/webmaster/get-free-ssl.html"> Letsencrypt 泛域名 SSL 证书免费申请 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2018-03-14 
+          
+        </span>
+        <a href="/tech/webmaster/get-free-ssl.html"> Letsencrypt 泛域名 SSL 证书免费申请 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -571,7 +1215,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Dec 3, 2017 </span><a href="/tech/linux/unbound-dns.html"> Unbound + Dnscrypt 搭建无污染 DNS 服务 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-12-03 
+          
+        </span>
+        <a href="/tech/linux/unbound-dns.html"> Unbound + Dnscrypt 搭建无污染 DNS 服务 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -581,7 +1238,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jul 19, 2017 </span><a href="/tech/linux/arch-tutorial.html"> Archlinux 入门初步 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-07-19 
+          
+        </span>
+        <a href="/tech/linux/arch-tutorial.html"> Archlinux 入门初步 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -591,7 +1261,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jul 1, 2017 </span><a href="/tech/linux/linux-lvm.html"> 在 Linux 系统上没有磁盘阵列实现合并磁盘 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-07-01 
+          
+        </span>
+        <a href="/tech/linux/linux-lvm.html"> 在 Linux 系统上没有磁盘阵列实现合并磁盘 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -601,7 +1284,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jun 21, 2017 </span><a href="/tech/php/caddy-apache.html"> 使用 Caddy 和 Apache 搭建 PHP 环境 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-06-21 
+          
+        </span>
+        <a href="/tech/php/caddy-apache.html"> 使用 Caddy 和 Apache 搭建 PHP 环境 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -611,7 +1307,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 10, 2017 </span><a href="/tech/linux/mirrors-build.html"> 镜像站构建 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-05-10 
+          
+        </span>
+        <a href="/tech/linux/mirrors-build.html"> 镜像站构建 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -621,7 +1330,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 9, 2017 </span><a href="/tech/docker/docker-init.html"> Docker 入门 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-05-09 
+          
+        </span>
+        <a href="/tech/docker/docker-init.html"> Docker 入门 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -631,7 +1353,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">May 9, 2017 </span><a href="/tech/linux/ubuntu-nvidia.html"> Ubuntu 16.04 下安装 NVIDIA GTX 970 显卡驱动 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2017-05-09 
+          
+        </span>
+        <a href="/tech/linux/ubuntu-nvidia.html"> Ubuntu 16.04 下安装 NVIDIA GTX 970 显卡驱动 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -643,7 +1378,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 14, 2016 </span><a href="/tech/php/laravel-lnmpa.html"> Laravel 5.2 在 LNMPA 一键安装包环境下的部署 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2016-03-14 
+          
+        </span>
+        <a href="/tech/php/laravel-lnmpa.html"> Laravel 5.2 在 LNMPA 一键安装包环境下的部署 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -653,7 +1401,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 3, 2016 </span><a href="/tech/sql/tencent-mysql.html"> MySQL 遇到远程无法连接的解决办法 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2016-03-03 
+          
+        </span>
+        <a href="/tech/sql/tencent-mysql.html"> MySQL 遇到远程无法连接的解决办法 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -663,7 +1424,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Mar 2, 2016 </span><a href="/tech/linux/tencent-down.html"> 腾讯云服务器重装系统后…… </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2016-03-02 
+          
+        </span>
+        <a href="/tech/linux/tencent-down.html"> 腾讯云服务器重装系统后…… </a>
+      </p>
+    </li>
+      
 
   
 
@@ -673,7 +1447,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Feb 5, 2016 </span><a href="/tech/php/ubuntu-composer.html"> Ubuntu 14.04 安装 Composer+Laravel 配置 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2016-02-05 
+          
+        </span>
+        <a href="/tech/php/ubuntu-composer.html"> Ubuntu 14.04 安装 Composer+Laravel 配置 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -683,7 +1470,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Jan 6, 2016 </span><a href="/tech/linux/ubuntu-beatiful.html"> Ubuntu 14.04 常用美化、配置、软件安装（持续更新中......） </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2016-01-06 
+          
+        </span>
+        <a href="/tech/linux/ubuntu-beatiful.html"> Ubuntu 14.04 常用美化、配置、软件安装（持续更新中......） </a>
+      </p>
+    </li>
+      
 
   
 
@@ -695,7 +1495,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Nov 11, 2015 </span><a href="/tech/nodejs/ubuntu-nodejs.html"> ubuntu-14.04-lts 安装配置 nodejs+bower </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-11-11 
+          
+        </span>
+        <a href="/tech/nodejs/ubuntu-nodejs.html"> ubuntu-14.04-lts 安装配置 nodejs+bower </a>
+      </p>
+    </li>
+      
 
   
 
@@ -705,7 +1518,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Nov 11, 2015 </span><a href="/tech/php/windows-composer.html"> Windows 配置 Composer 和 Laravel 笔记 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-11-11 
+          
+        </span>
+        <a href="/tech/php/windows-composer.html"> Windows 配置 Composer 和 Laravel 笔记 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -715,7 +1541,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Sep 19, 2015 </span><a href="/others/my-daughter.html"> 我的女儿 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-09-19 
+          
+        </span>
+        <a href="/others/my-daughter.html"> 我的女儿 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -725,7 +1564,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 12, 2015 </span><a href="/others/why-write.html"> 作为码农，我们为什么要写作 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-08-12 
+          
+        </span>
+        <a href="/others/why-write.html"> 作为码农，我们为什么要写作 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -735,7 +1587,20 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 9, 2015 </span><a href="/tech/linux/kill-other-sshuser.html"> Linux 踢出其他正在 SSH 登陆用户 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-08-09 
+          
+        </span>
+        <a href="/tech/linux/kill-other-sshuser.html"> Linux 踢出其他正在 SSH 登陆用户 </a>
+      </p>
+    </li>
+      
 
   
 
@@ -745,9 +1610,23 @@
       
     
 
-    <li><p class="archives-title"><span class="archives-date">Aug 8, 2015 </span><a href="/tech/webmaster/gravatar-error.html"> Gravatar Fixed 头像载入出错 </a></p></li>
+    <li>
+      <p class="archives-title">
+        <span class="archives-date">
+          
+          
+          
+          
+            2015-08-08 
+          
+        </span>
+        <a href="/tech/webmaster/gravatar-error.html"> Gravatar Fixed 头像载入出错 </a>
+      </p>
+    </li>
+      
 
   
+
             </article>
         </div>
     </div>
@@ -911,8 +1790,23 @@
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+      </div>
+      <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+      <script src="/assets/js/prism.js"></script>
+      <script src="/assets/js/index.min.js"></script>
+      
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
 <script>
@@ -924,19 +1818,5 @@
 </script>
 
     </div>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/js/prism.js"></script>
-    <script src="/assets/js/index.min.js"></script>
-    
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9E8SEJ5JNY');
-</script>
-
 </body>
 </html>

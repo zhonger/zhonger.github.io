@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,55 +132,70 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#%E8%BF%AD%E4%BB%A3%E5%AD%A6%E4%B9%A0" class="post-tag">迭代学习</a>
+            
+              <a href="/tags.html#%E8%BF%AD%E4%BB%A3%E5%AD%A6%E4%B9%A0" class="post-tag">迭代学习</a>
+            
+              <a href="/tags.html#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0" class="post-tag">机器学习</a>
+            
+              <a href="/tags.html#iterative%20learning" class="post-tag">iterative learning</a>
+            
+              <a href="/tags.html#machine%20learning" class="post-tag">machine learning</a>
+            
           
-            <a href="/tags.html#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0" class="post-tag">机器学习</a>
+        </div>
+        <h1>[译文]迭代机器学习：迈向模型准确性的一步</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="22-01-05">
+            <i class="iconfont icon-date"></i>
+            
+              2022-01-05 20:30:00 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#iterative%20learning" class="post-tag">iterative learning</a>
+          <span>本文总共 4013 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
           
-            <a href="/tags.html#machine%20learning" class="post-tag">machine learning</a>
-          
-        
+        </div>
       </div>
-      <h1>[译文]迭代机器学习：迈向模型准确性的一步</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="22-01-05"><i class="iconfont icon-date"></i>Wed, 05 Jan 2022 20:30:00 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 4013 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">Iterative Machine Learning: A step towards Model Accuracy</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">Iterative Machine Learning: A step towards Model Accuracy</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
 <strong>原文作者</strong>：Amarabha Benerjee</p>
 
 <p>  通过死记硬背来学习一些东西，比如重复多次，通过一遍又一遍地练习来完善一项技能，或者通过逐步对原型进行细微调整来构建某些东西，这些都是我们人类自然而然发生的事情。机器也可以学习这种方式，这被称为“迭代机器学习”。在大多数情况下，迭代是一种有效的学习方法，有助于更快、更准确地达到预期的最终结果，而不会成为资源紧缩的噩梦。</p>
@@ -265,122 +292,122 @@ Author: Ray-Eldath
 
 <p>  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.</p>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#迭代学习是如何工作的">迭代学习是如何工作的</a></li><li><a href="#提升算法有监督机器学习中的迭代">提升算法：有监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的">它们是如何工作的</a></li><li><a href="#优缺点">优缺点</a></li></ul></li><li><a href="#人工神经网络无监督机器学习中的迭代">人工神经网络：无监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的-1">它们是如何工作的</a></li><li><a href="#优缺点-1">优缺点</a></li></ul></li><li><a href="#强化学习">强化学习</a></li><li><a href="#迭代的一些实际实现">迭代的一些实际实现</a></li><li><a href="#将其整合在一起">将其整合在一起</a></li><li><a href="#版权声明">版权声明</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#迭代学习是如何工作的">迭代学习是如何工作的</a></li><li><a href="#提升算法有监督机器学习中的迭代">提升算法：有监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的">它们是如何工作的</a></li><li><a href="#优缺点">优缺点</a></li></ul></li><li><a href="#人工神经网络无监督机器学习中的迭代">人工神经网络：无监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的-1">它们是如何工作的</a></li><li><a href="#优缺点-1">优缺点</a></li></ul></li><li><a href="#强化学习">强化学习</a></li><li><a href="#迭代的一些实际实现">迭代的一些实际实现</a></li><li><a href="#将其整合在一起">将其整合在一起</a></li><li><a href="#版权声明">版权声明</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/tech/webmaster/jekyll-toc.html" class="read-next-link"></a>
-        <section>
-          <span>Jekyll 文章侧边索引导航</span>
-          <p></p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/webmaster/new-theme-h2o-ac.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/tech/webmaster/jekyll-toc.html" class="read-next-link"></a>
           <section>
-            <span>H2O-ac theme for Jekyll</span>
-            <p>前言</p>
+            <span>Jekyll 文章侧边索引导航</span>
+            <p></p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900" alt="">
+          <img src="https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/webmaster/new-theme-h2o-ac.html" class="read-next-link"></a>
+            <section>
+              <span>H2O-ac theme for Jekyll</span>
+              <p>前言</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1614659754166-a2fd14dbc4d3?w=1600&q=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -401,7 +428,7 @@ Author: Ray-Eldath
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -413,6 +440,7 @@ Author: Ray-Eldath
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -462,16 +490,27 @@ Author: Ray-Eldath
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   

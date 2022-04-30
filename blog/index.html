@@ -14,11 +14,12 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
-    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
-    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="favicon.ico">
+    <link rel="bookmark" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
     <link rel="stylesheet" href="/assets/css/plugins.min.css">
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
@@ -28,15 +29,26 @@
 
 <body>
     <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-    <input id="nm-switch" type="hidden" value="false">
-    <div class="visible">
-      <header class="g-header">
+    <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+    <![endif]-->
+    
+    <div id="all">
+    
+      <input id="nm-switch" type="hidden" value="false">
+      <div class="visible">
+        <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -55,6 +67,14 @@
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
@@ -103,7 +123,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-04-27">27 Apr 2022</time>
+                    <time class="post-date" datetime="22-04-27">
+                        <!-- 27 Apr 2022 -->
+                        
+                          2022-04-27 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -136,7 +161,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-04-22">22 Apr 2022</time>
+                    <time class="post-date" datetime="22-04-22">
+                        <!-- 22 Apr 2022 -->
+                        
+                          2022-04-22 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -167,7 +197,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-04-05">05 Apr 2022</time>
+                    <time class="post-date" datetime="22-04-05">
+                        <!-- 05 Apr 2022 -->
+                        
+                          2022-04-05 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -202,7 +237,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-03-21">21 Mar 2022</time>
+                    <time class="post-date" datetime="22-03-21">
+                        <!-- 21 Mar 2022 -->
+                        
+                          2022-03-21 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -237,7 +277,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-01-14">14 Jan 2022</time>
+                    <time class="post-date" datetime="22-01-14">
+                        <!-- 14 Jan 2022 -->
+                        
+                          2022-01-14 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -272,7 +317,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-01-13">13 Jan 2022</time>
+                    <time class="post-date" datetime="22-01-13">
+                        <!-- 13 Jan 2022 -->
+                        
+                          2022-01-13 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -307,7 +357,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-01-09">09 Jan 2022</time>
+                    <time class="post-date" datetime="22-01-09">
+                        <!-- 09 Jan 2022 -->
+                        
+                          2022-01-09 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -340,7 +395,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="22-01-05">05 Jan 2022</time>
+                    <time class="post-date" datetime="22-01-05">
+                        <!-- 05 Jan 2022 -->
+                        
+                          2022-01-05 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -383,7 +443,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="21-12-22">22 Dec 2021</time>
+                    <time class="post-date" datetime="21-12-22">
+                        <!-- 22 Dec 2021 -->
+                        
+                          2021-12-22 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -422,7 +487,12 @@
                             
                         
                     </div>
-                    <time class="post-date" datetime="21-12-22">22 Dec 2021</time>
+                    <time class="post-date" datetime="21-12-22">
+                        <!-- 22 Dec 2021 -->
+                        
+                          2021-12-22 
+                        
+                    </time>
                 </footer>
             </article>
         
@@ -604,7 +674,7 @@
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -616,21 +686,22 @@
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+
+      </div>
+      <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+      <script src="/assets/js/prism.js"></script>
+      <script src="/assets/js/index.min.js"></script>
+      
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
 
     </div>
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/js/prism.js"></script>
-    <script src="/assets/js/index.min.js"></script>
-    
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9E8SEJ5JNY');
-</script>
-
 </body>
 </html>

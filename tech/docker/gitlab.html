@@ -14,6 +14,7 @@
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -25,7 +26,7 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -95,13 +96,24 @@ Author: Ray-Eldath
 
 <body>
   <!--[if lt IE 10]>
-<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
-<![endif]-->
-  <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
       <a href="/"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
     <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
         <use xlink:href="#icon-menu"></use>
     </svg>
@@ -120,53 +132,68 @@ Author: Ray-Eldath
             
             <li><a href="/logs.html">logs</a></li>
             
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
         </ul>
     </nav>
 </header>
 
 
-  <header
-    class="g-banner post-header post-pattern-food bgcolor-default "
-    data-theme="default"
-  >
-    <div class="post-wrapper">
-      <div class="post-tags">
-        
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
           
-            <a href="/tags.html#Git" class="post-tag">Git</a>
+            
+              <a href="/tags.html#Git" class="post-tag">Git</a>
+            
+              <a href="/tags.html#Gitlab" class="post-tag">Gitlab</a>
+            
+              <a href="/tags.html#docker" class="post-tag">docker</a>
+            
           
-            <a href="/tags.html#Gitlab" class="post-tag">Gitlab</a>
+        </div>
+        <h1>私有代码托管平台的搭建与运维</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <i class="iconfont icon-author"></i>zhonger
+          </span>
+          <time class="post-meta-item" datetime="21-08-02">
+            <i class="iconfont icon-date"></i>
+            
+              2021-08-02 08:10:00 +0900 
+            
+          </time>
+        </div>
+        <div class="post-meta">
           
-            <a href="/tags.html#docker" class="post-tag">docker</a>
+          <span>本文总共 9671 字 <b>·</b> 阅读全文大约需要 28 分钟</span>
           
-        
+        </div>
       </div>
-      <h1>私有代码托管平台的搭建与运维</h1>
-      <div class="post-meta">
-        <span class="post-meta-item"><i class="iconfont icon-author"></i>zhonger</span>
-        <time class="post-meta-item" datetime="21-08-02"><i class="iconfont icon-date"></i>Mon, 02 Aug 2021 08:10:00 +0900</time>
-      </div>
-      <div class="post-meta">
-        
-        <span>本文总共 9671 字 <b>·</b> 阅读全文大约需要 28 分钟</span>
-        
-      </div>
-    </div>
-    
-    <div class="filter"></div>
-      <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1627035983655-0ceec61bb733?w=1600&q=900') center no-repeat; background-size: cover;"></div>
-    
-  </header>
-  <div class="post-content visible">
-    
-    <h2 class="post-subtitle">如何使用 Gitlab 实现代码托管自由？</h2>
-    
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1627035983655-0ceec61bb733?w=1600&q=900') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">如何使用 Gitlab 实现代码托管自由？</h2>
+      
 
-    
-    <div class="container">  
-      <div class="contents">
-        <article class="markdown-body">
-          <h2 id="前言">前言</h2>
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
 
 <h3 id="版本控制">版本控制</h3>
 
@@ -461,122 +488,122 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
   <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
 </ul>
 
-        </article>
-      </div>   
-      <div class="table-of-contents">
-        <h2>Contents</h2>
-        <ul><li><a href="#前言">前言</a><ul><li><a href="#版本控制">版本控制</a><ul><li><a href="#本地版本控制系统">本地版本控制系统</a></li><li><a href="#集中化的版本控制系统">集中化的版本控制系统</a></li><li><a href="#分布式版本控制系统">分布式版本控制系统</a></li></ul></li><li><a href="#git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</a></li></ul></li><li><a href="#平台搭建">平台搭建</a><ul><li><a href="#准备">准备</a></li><li><a href="#修改配置">修改配置</a><ul><li><a href="#镜像版本的设置">镜像版本的设置</a></li><li><a href="#数据持久化">数据持久化</a></li><li><a href="#随机秘钥">随机秘钥</a></li><li><a href="#时区设置">时区设置</a></li><li><a href="#端口和-ssl-设置">端口和 SSL 设置</a></li><li><a href="#自动备份设置">自动备份设置</a></li><li><a href="#pages-设置">Pages 设置</a></li><li><a href="#相对路径配置">相对路径配置</a></li><li><a href="#初始-root-密码配置">初始 root 密码配置</a></li></ul></li><li><a href="#启动与测试">启动与测试</a></li><li><a href="#gitlab-runner">Gitlab Runner</a><ul><li><a href="#启动">启动</a></li><li><a href="#配置">配置</a></li></ul></li></ul></li><li><a href="#平台运维">平台运维</a><ul><li><a href="#升级">升级</a><ul><li><a href="#升级路线规划">升级路线规划</a></li><li><a href="#边备份边升级">边备份边升级</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a><ul><li><a href="#版本控制">版本控制</a><ul><li><a href="#本地版本控制系统">本地版本控制系统</a></li><li><a href="#集中化的版本控制系统">集中化的版本控制系统</a></li><li><a href="#分布式版本控制系统">分布式版本控制系统</a></li></ul></li><li><a href="#git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</a></li></ul></li><li><a href="#平台搭建">平台搭建</a><ul><li><a href="#准备">准备</a></li><li><a href="#修改配置">修改配置</a><ul><li><a href="#镜像版本的设置">镜像版本的设置</a></li><li><a href="#数据持久化">数据持久化</a></li><li><a href="#随机秘钥">随机秘钥</a></li><li><a href="#时区设置">时区设置</a></li><li><a href="#端口和-ssl-设置">端口和 SSL 设置</a></li><li><a href="#自动备份设置">自动备份设置</a></li><li><a href="#pages-设置">Pages 设置</a></li><li><a href="#相对路径配置">相对路径配置</a></li><li><a href="#初始-root-密码配置">初始 root 密码配置</a></li></ul></li><li><a href="#启动与测试">启动与测试</a></li><li><a href="#gitlab-runner">Gitlab Runner</a><ul><li><a href="#启动">启动</a></li><li><a href="#配置">配置</a></li></ul></li></ul></li><li><a href="#平台运维">平台运维</a><ul><li><a href="#升级">升级</a><ul><li><a href="#升级路线规划">升级路线规划</a></li><li><a href="#边备份边升级">边备份边升级</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
       </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
     </div>
-    
 
-    
-    <div class="social-share-wrapper">
-      <div class="social-share"></div>
-    </div>
-    
-  </div>
-
-  <section class="author-detail">
-    <section class="post-footer-item author-card">
-      <div class="avatar">
-        <img src="/assets/img/profile.webp" alt="">
-      </div>
-      <div class="author-name" rel="author">zhonger</div>
-      <div class="bio">
-        <p>Developer & Maintainer</p>
-      </div>
-      
-      <ul class="sns-links">
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
         
-        <li>
-          <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-google-scholar"></use>
-            </svg>
-          </a>
-        </li>
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
         
-        <li>
-          <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-researchgate"></use>
-            </svg>
-          </a>
-        </li>
+      </section>
+      <section class="post-footer-item read-next">
         
-        <li>
-          <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-ORCID"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://github.com/zhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-github"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-linkedin"></use>
-            </svg>
-          </a>
-        </li>
-        
-        <li>
-          <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-segmentfault"></use>
-            </svg>
-          </a>
-        </li>
-        
-      </ul>
-      
-    </section>
-    <section class="post-footer-item read-next">
-      
-      <div class="read-next-item">
-        <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
-        <section>
-          <span>科学文献的那些事儿</span>
-          <p>前言</p>
-        </section>
-        
-        <div class="filter"></div>
-        <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
-        
-     </div>
-      
-
-      
-      <div class="read-next-item">
-        <a href="/tech/docker/jupyterlab.html" class="read-next-link"></a>
+        <div class="read-next-item">
+          <a href="/ac/experience/search-papers.html" class="read-next-link"></a>
           <section>
-            <span>JupyterLab 的搭建与运维</span>
+            <span>科学文献的那些事儿</span>
             <p>前言</p>
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900" alt="">
+          <img src="https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900" alt="">
           
       </div>
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/docker/jupyterlab.html" class="read-next-link"></a>
+            <section>
+              <span>JupyterLab 的搭建与运维</span>
+              <p>前言</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900" alt="">
+            
+        </div>
+        
+      </section>
+      
+      <section class="post-footer-item comment">
+          <div id="disqus_thread"></div>
+      </section>
       
     </section>
-    
-    <section class="post-footer-item comment">
-        <div id="disqus_thread"></div>
-    </section>
-    
-  </section>
 
-  <footer class="g-footer">
+    <footer class="g-footer">
   <section>Mr Li ©
   
   
@@ -597,7 +624,7 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_4quk6r21fv8.js"></script>
+<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -609,6 +636,7 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  </div>
 
   <script src="/assets/js/social-share.min.js"></script>
   <script>
@@ -658,16 +686,27 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery1' href='" + this.src + "'></a>";
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
               $(this).wrapAll(strA);
           });
 
-          $('[data-fancybox="gallery"]').fancybox();
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });
+          
       });
   </script>
   
