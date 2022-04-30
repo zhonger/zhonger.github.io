@@ -29,19 +29,19 @@ tags: jekyll theme blog ac develop 主题 前端开发 学术 运维
 
 &emsp;&emsp;学术首页如下图所示，并将原来 H2O 中的卡片首页移动到 blog 子目录下了。如果读者想要看到文章卡片展示页，还是可以点击顶部的导航栏中的 BLOG 直接访问。
 
-![vgy.me](https://i.vgy.me/pICzcE.png)
+![首页 Home](https://i.vgy.me/pICzcE.png)
 
 #### 归档页
 
 &emsp;&emsp;归档页设置为由 Jekyll 按照模板自动生成，以年份、日期、文章标题分级列表展示，简洁清晰。
 
-![vgy.me](https://i.vgy.me/25IZzc.png)
+![归档页 Archives](https://i.vgy.me/25IZzc.png)
 
 #### 系统日志页
 
 &emsp;&emsp;系统日志页其实也不是经常更新的，只有在博客整体作出设置或改进的才加以说明。另外，也可以将一些固定的站点信息放置在系统日志页，比如站点的多点部署信息，读者可以根据此信息访问最快、最合适的节点。
 
-![vgy.me](https://i.vgy.me/tUCNEb.png)
+![系统日志 Log](https://i.vgy.me/tUCNEb.png)
 
 ### 使用体验提升
 
@@ -51,13 +51,48 @@ tags: jekyll theme blog ac develop 主题 前端开发 学术 运维
 
 &emsp;&emsp;H2O 原有的社交图标其实已经比较广泛，只是还有些领域局限性，比如学术研究人员可能更希望展示谷歌学术、ResearchGate、ORCID 等社交图标及链接，而运维开发人员可能更希望展示 SegmentFault、CSDN、博客园等社交图标及链接。这里在 H2O 提供的社交图标类型基础上做了这些平台图标的扩充，同时尝试了 Symbol 引用的方式来实现社交图标鼠标悬停的效果，从而简化代码（H2O 采用的是字体图标的方式，需要为每一个社交图标定义不同的主题色）。
 
-![vgy.me](https://i.vgy.me/ebCeqM.png)
+![社交图标 SNS](https://i.vgy.me/ebCeqM.png)
 
 #### 查看大图
 
 &emsp;&emsp;查看大图功能的确对于读者的阅读体验来说有很大的提升。就像我们阅读文献一样，可能首先会只看文章附图来大致掌握文章的核心点。博文的查看大图功能也可能有这样的异曲同工之妙。这里是采用的 [Fancybox](https://fancyapps.com/docs/ui/fancybox) 插件实现的。H2O-ac 主题中只使用了最简单的配置，用户可以根据需求查看文档做出更多的修改。
 
-![vgy.me](https://i.vgy.me/FNRDTv.png)
+![查看大图 Fancybox](https://i.vgy.me/FNRDTv.png)
+
+(2022年4月30日更新)
+
+&emsp;&emsp;，由于 fancybox 库作者对原使用的 v3.5.7 版本不再进行维护和更新，现将版本更新至新的 v4.0 版本，即 [fancyapps/ui](https://github.com/fancyapps/ui)。另，新增将 alt 内容作为图片的描述显示在 fancybox 中。
+
+#### 深色模式切换按钮
+
+(2022年4月30日更新)
+
+&emsp;&emsp;原来 H2O 主题的深色模式切换需要在 _config.yml 文件中配置开启，并且只能在固定时间段使用。此次更新在页面右上角提供了深色/浅色模式一键切换按钮，如下图所示。由于更新了深色模式采用 cookie 的方式来确定，此深色模式切换按钮可以与原来的深色模式配置共存。
+
+![浅色模式 Day mode](https://i.vgy.me/x1CWVs.png)
+
+![深色模式 Night mode](https://i.vgy.me/8DGFx2.png)
+
+#### 提示框
+
+(2022年4月30日更新)
+
+&emsp;&emsp;通过引入 [lazee/premonition](https://github.com/lazee/premonition) 库新增五种提示框：笔记、提示、警告、错误、引用，完全兼容原生 Markdown 语法，并对样式进行了主题适应。以下为五种提示框的实际效果。
+
+> note ""
+> The body of the note goes here. Premonition allows you to write any `Markdown` inside the block.
+
+> info "小提示"
+> The body of the info goes here. Premonition allows you to write any `Markdown` inside the block.
+
+> warning ""
+> The body of the warning goes here. Premonition allows you to write any `Markdown` inside the block.
+
+> error ""
+> The body of the error goes here. Premonition allows you to write any `Markdown` inside the block.
+
+> citation "莎士比亚"
+> To be or not to be is a question.
 
 #### 代码高亮优化
 
@@ -73,9 +108,17 @@ tags: jekyll theme blog ac develop 主题 前端开发 学术 运维
 
 &emsp;&emsp;在一些基于 Bootstrap 前端框架的 Jekyll 主题中，这个功能比较常见。由于本主题未使用 Bootstrap 前端框架，所以添加起来稍微有些麻烦，现已增加此功能。在浏览器窗口超过 1050 px 的情况下，在文章页面可以正常看到右侧的文章侧边索引导航。当窗口滑动时，侧边索引导航也会跟着滑动。在浏览器窗口不足 1050 px 的情况下，侧边索引导航自动隐藏。在 _config.yml 配置文件中，可以通过设置 `toc: false` 来全局禁用此功能。
 
+(2022年4月30日更新)
+
+&emsp;&emsp;在原来的基础上增加了跟随左侧内容滑动高亮。当左侧内容向上或向下滑动时，右侧索引导航将会使对应的对应一级标题高亮。
+
 #### 配置项
 
 &emsp;&emsp;配置项中新增了**友情链接**、**备案号**、**Google Analytics** 和 **CNZZ** 统计功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。
+
+(2022年4月30日更新)
+
+&emsp;&emsp;新增全站一键灰度化功能、时间格式配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。
 
 ```yaml
 # Links 友情链接
@@ -84,6 +127,14 @@ links:
 
 # Beian 备案号
 beian: '沪ICP备xxxxxxxx号'
+
+# Gray 灰度化
+gray: true
+
+# Time format 时间格式 
+# 0 -- 2022-04-29    1 -- 29 Apr 2022   2 -- 2022年4月29日
+formats:
+  time: 0 
 
 # CNZZ 统计代码
 cnzz:
@@ -115,7 +166,7 @@ google_analytics:
 
 &emsp;&emsp;为了方便用户使用 H2O-ac 主题，特别提供了 Github 的模板功能。如下图所示，访问 [H2O-ac](https://github.com/zhonger/jekyll-theme-H2O-ac) 可以看到如下的 Use this template 按钮，点击该按钮即可用 H2O-ac 主题创建自己的博客代码仓库。想要了解更多步骤，可以访问 Github 官方文档之 [从模板创建仓库](https://docs.github.com/cn/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template)。
 
-![vgy.me](https://i.vgy.me/y7lv2Q.png)
+![从模板新建 Start the blog from the template](https://i.vgy.me/y7lv2Q.png)
 
 #### 方式二：已有博客迁移
 
