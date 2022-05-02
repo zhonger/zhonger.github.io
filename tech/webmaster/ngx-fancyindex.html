@@ -21,12 +21,11 @@
     <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
     <link rel="stylesheet" href="/assets/css/plugins.min.css">
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
     <link rel="stylesheet" href="/assets/css/app.min.css">
-    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css">
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 	
 	<!--
@@ -162,18 +161,25 @@ Author: Ray-Eldath
         <h1>Nginx 目录列表美化</h1>
         <div class="post-meta">
           <span class="post-meta-item">
-            <i class="iconfont icon-author"></i>zhonger
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-user"></use>
+            </svg>
+            zhonger
           </span>
           <time class="post-meta-item" datetime="18-04-12">
-            <i class="iconfont icon-date"></i>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-time"></use>
+            </svg>
             
               2018-04-12 16:26:35 +0900 
             
           </time>
-        </div>
-        <div class="post-meta">
           
-          <span>本文总共 2866 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
+          <span class="post-meta-item">
+            <svg class="icon info2" aria-hidden="true">
+              <use xlink:href="#icon-info2"></use>
+            </svg>
+          本文总共 2866 字 <b>·</b> 阅读全文大约需要 9 分钟</span>
           
         </div>
       </div>
@@ -404,6 +410,10 @@ server <span class="o">{</span>
           <div id="disqus_thread"></div>
       </section>
       
+
+      
+      <section class="post-footer-item comment" id="waline"></section>
+      
     </section>
 
     <footer class="g-footer">
@@ -427,17 +437,15 @@ server <span class="o">{</span>
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
+  </svg>
+</button>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9E8SEJ5JNY');
-</script>
 
   </div>
 
@@ -490,6 +498,14 @@ server <span class="o">{</span>
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.cjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js.map"></script> -->
+  <!-- <!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
+  <!-- <script src="https://unpkg.com/tippy.js@6"></script> --> 
+
   <script>
       // 给图片添加链接
       $(document).ready(function() {
@@ -508,10 +524,19 @@ server <span class="o">{</span>
                 }
               }
             }
-          });
+          });   
+          
+          
+            Waline.init({
+              el: '#waline',
+              serverURL: 'https://h2o-ac-waline.vercel.app',
+              comment: true,
+              pageview: true,
+            });
           
       });
   </script>
+  <script src="//at.alicdn.com/t/font_3046306_rpxw9us9jmc.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>

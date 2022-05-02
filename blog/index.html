@@ -18,8 +18,8 @@
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
-    <link rel="Shortcut Icon" href="favicon.ico">
-    <link rel="bookmark" href="favicon.ico" type="image/x-icon" />
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
     <link rel="stylesheet" href="/assets/css/plugins.min.css">
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
@@ -27,7 +27,7 @@
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
 
-<body>
+<body ontouchstart="">
     <!--[if lt IE 10]>
     <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
     <![endif]-->
@@ -124,7 +124,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-04-27">
-                        <!-- 27 Apr 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-04-27 
                         
@@ -162,7 +164,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-04-22">
-                        <!-- 22 Apr 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-04-22 
                         
@@ -198,7 +202,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-04-05">
-                        <!-- 05 Apr 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-04-05 
                         
@@ -238,7 +244,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-03-21">
-                        <!-- 21 Mar 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-03-21 
                         
@@ -278,7 +286,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-01-14">
-                        <!-- 14 Jan 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-01-14 
                         
@@ -318,7 +328,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-01-13">
-                        <!-- 13 Jan 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-01-13 
                         
@@ -358,7 +370,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-01-09">
-                        <!-- 09 Jan 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-01-09 
                         
@@ -396,7 +410,9 @@
                         
                     </div>
                     <time class="post-date" datetime="22-01-05">
-                        <!-- 05 Jan 2022 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2022-01-05 
                         
@@ -444,7 +460,9 @@
                         
                     </div>
                     <time class="post-date" datetime="21-12-22">
-                        <!-- 22 Dec 2021 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2021-12-22 
                         
@@ -488,7 +506,9 @@
                         
                     </div>
                     <time class="post-date" datetime="21-12-22">
-                        <!-- 22 Dec 2021 -->
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-time2"></use>
+                        </svg>
                         
                           2021-12-22 
                         
@@ -674,24 +694,26 @@
   
   </section>
 </footer>
-<script src="//at.alicdn.com/t/font_3046306_01vmvxg1mj23.js"></script>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
+  </svg>
+</button>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9E8SEJ5JNY');
-</script>
 
 
       </div>
-      <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-      <script src="/assets/js/prism.js"></script>
-      <script src="/assets/js/index.min.js"></script>
-      
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+    <script src="/assets/js/prism.js"></script>
+    <script src="/assets/js/index.min.js"></script>
+    <script src="//at.alicdn.com/t/font_3046306_rpxw9us9jmc.js"></script>
+    
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
 <script>
@@ -702,6 +724,5 @@
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
-    </div>
 </body>
 </html>
