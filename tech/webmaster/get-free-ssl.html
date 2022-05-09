@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="zh-cn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +20,11 @@
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
+    <meta name="theme-color" content="#81BBFF" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png"/>
     <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
     <link rel="stylesheet" href="/assets/css/plugins.min.css">
@@ -27,69 +33,6 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css">
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-	
-	<!--
-Author: Ray-Eldath
-refer to:
- - http://docs.mathjax.org/en/latest/options/index.html
--->
-
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-		jax: ["input/TeX", "output/HTML-CSS"],
-		tex2jax: {
-			inlineMath: [ ["$", "$"] ],
-			displayMath: [ ["$$", "$$"] ],
-			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-		},
-		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-      });
-    </script>
-
-	
-    <!--
-Author: Ray-Eldath
--->
-<style>
-    .markdown-body .anchor{
-        float: left;
-        margin-top: -8px;
-        margin-left: -20px;
-        padding-right: 4px;
-        line-height: 1;
-        opacity: 0;
-    }
-    
-    .markdown-body .anchor .anchor-icon{
-        font-size: 15px
-    }
-</style>
-<script>
-    $(document).ready(function() {
-        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
-        for(let node of nodes) {
-            var anchor = document.createElement("a")
-            var anchorIcon = document.createElement("i")
-            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
-            anchorIcon.setAttribute("aria-hidden", true)
-            anchor.setAttribute("class", "anchor")
-            anchor.setAttribute("href", "#" + node.getAttribute("id"))
-            
-            anchor.onmouseover = function() {
-                this.style.opacity = "0.4"
-            }
-            
-            anchor.onmouseout = function() {
-                this.style.opacity = "0"
-            }
-            
-            anchor.appendChild(anchorIcon)
-            node.appendChild(anchor)
-        }
-    })
-</script>
 </head>
 
 
@@ -102,7 +45,7 @@ Author: Ray-Eldath
   
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
-      <a href="/"></a>
+      <a href="/" aria-label="logo"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
     <div id="mode-toggle">
@@ -119,17 +62,41 @@ Author: Ray-Eldath
     <nav class="g-nav">
         <ul>
             
-            <li><a href="/">home</a></li>
+            <li>
+                <a href="/" aria-label="home">
+                    home
+                </a>
+            </li>
             
-            <li><a href="/blog/index.html">blog</a></li>
+            <li>
+                <a href="/blog/index.html" aria-label="blog">
+                    blog
+                </a>
+            </li>
             
-            <li><a href="/archives.html">archives</a></li>
+            <li>
+                <a href="/archives.html" aria-label="archives">
+                    archives
+                </a>
+            </li>
             
-            <li><a href="/tags.html">tags</a></li>
+            <li>
+                <a href="/tags.html" aria-label="tags">
+                    tags
+                </a>
+            </li>
             
-            <li><a href="/feed.xml">RSS</a></li>
+            <li>
+                <a href="/feed.xml" aria-label="RSS">
+                    RSS
+                </a>
+            </li>
             
-            <li><a href="/logs.html">logs</a></li>
+            <li>
+                <a href="/logs.html" aria-label="logs">
+                    logs
+                </a>
+            </li>
             
             <li class="mode">
                 <svg class="icon day" aria-hidden="true">
@@ -334,7 +301,7 @@ server
         <ul class="sns-links">
           
           <li>
-            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-google-scholar"></use>
               </svg>
@@ -342,7 +309,7 @@ server
           </li>
           
           <li>
-            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-researchgate"></use>
               </svg>
@@ -350,7 +317,7 @@ server
           </li>
           
           <li>
-            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-ORCID"></use>
               </svg>
@@ -358,7 +325,7 @@ server
           </li>
           
           <li>
-            <a href="https://github.com/zhonger" target="_blank">
+            <a href="https://github.com/zhonger" target="_blank" aria-label="github">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-github"></use>
               </svg>
@@ -366,7 +333,7 @@ server
           </li>
           
           <li>
-            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-linkedin"></use>
               </svg>
@@ -374,7 +341,7 @@ server
           </li>
           
           <li>
-            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-segmentfault"></use>
               </svg>
@@ -387,7 +354,7 @@ server
       <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-          <a href="/tech/docker/nextcloud.html" class="read-next-link"></a>
+          <a href="/tech/docker/nextcloud.html" class="read-next-link" aria-label="Nextcloud 搭建自己的云盘"></a>
           <section>
             <span>Nextcloud 搭建自己的云盘</span>
             <p>Nextcloud 简介</p>
@@ -401,7 +368,7 @@ server
 
         
         <div class="read-next-item">
-          <a href="/tech/linux/unbound-dns.html" class="read-next-link"></a>
+          <a href="/tech/linux/unbound-dns.html" class="read-next-link" aria-label="Unbound + Dnscrypt 搭建无污染 DNS 服务"></a>
             <section>
               <span>Unbound + Dnscrypt 搭建无污染 DNS 服务</span>
               <p>引言</p>
@@ -420,8 +387,6 @@ server
       
 
       
-      <section class="post-footer-item comment" id="waline"></section>
-      
     </section>
 
     <footer class="g-footer">
@@ -438,10 +403,8 @@ server
   </section>
   <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
   
-  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" class="license" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
   
-  
-  <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1280712061'%3E%3C/span%3E%3Cscript src='https://v1.cnzz.com/z_stat.php%3Fid%3D1280712061%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
   
   </section>
 </footer>
@@ -481,6 +444,9 @@ server
       wechatQrcodeTitle: "分享到微信朋友圈",
       wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
     });
+    $("a.social-share-icon").each(function() {
+      $(this).attr("aria-label", $(this).attr("class").split(' ')[1])
+    });
   </script>
 
   
@@ -505,9 +471,10 @@ server
 
   <script src="/assets/js/prism.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.cjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js.map"></script> -->
@@ -518,7 +485,8 @@ server
       // 给图片添加链接
       $(document).ready(function() {
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
+              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload");
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
               $(this).wrapAll(strA);
           });
 
@@ -535,16 +503,10 @@ server
           });   
           
           
-            Waline.init({
-              el: '#waline',
-              serverURL: 'https://h2o-ac-waline.vercel.app',
-              comment: true,
-              pageview: true,
-            });
-          
+
       });
   </script>
-  <script src="//at.alicdn.com/t/font_3046306_rpxw9us9jmc.js"></script>
+  <script src="https://at.alicdn.com/t/font_3046306_rpxw9us9jmc.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -556,6 +518,54 @@ server
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  <script>
+    if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log("An active service worker found, no need to register");
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/"
+            })
+            .then(function (reg) {
+                console.log("Service worker has been registered for scope: " + reg.scope);
+            });
+        }
+    }
+
+// 检测浏览器是否支持SW
+// if(navigator.serviceWorker != null){
+//     navigator.serviceWorker.register("/sw.js")
+//         .then(function(registartion){
+//             console.log('支持sw:',registartion.scope)
+//         })
+// } else {
+//     console.log('不支持sw')
+// }
+</script>
+  
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
 </body>
 
 </html>
