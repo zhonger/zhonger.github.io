@@ -78,7 +78,7 @@ beian: '沪ICP备15014851号'
 cclicense: true
 
 # CNZZ Analytics
-cnzz: 1280712061
+cnzz: 
 
 # Google Analytics
 # google_analytics: UA-164207041-1
@@ -108,6 +108,6 @@ kramdown:
 RSS: true
 
 # Plugins
-plugins: [jekyll-paginate, jekyll-feed, jekyll-sitemap, premonition]
+# plugins: [jekyll-paginate, jekyll-feed, jekyll-sitemap, premonition]
 
 include: [_redirects]
