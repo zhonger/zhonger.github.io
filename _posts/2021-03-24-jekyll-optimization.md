@@ -12,6 +12,7 @@ tags:
 - LaTex
 categories: [tech, webmaster]
 cover: 'https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900'
+render_with_liquid: false
 ---
 
 ## 前言
@@ -72,7 +73,7 @@ highlighter: rouge
 - 支持的高亮编程语言丰富，虽然在某些地方还是有所瑕疵，但是总体上还是很实用；
 - 高亮主题基本上现有的都能用，本站所用的就是 Github 官方同款主题。
 
-&emsp;&emsp;Prism 工具的安装使用相较其他两种稍微复杂一点，需要下载插件 prism.rb 手动安装到 _plugins 文件夹中，然后在文章模板页添加 prism.css 和 prism.js 的引入（下面花括号中间的反斜杆是为了是花括号不被解析而直接显示出来，使用时请删除反斜杠）。
+&emsp;&emsp;Prism 工具的安装使用相较其他两种稍微复杂一点，需要下载插件 prism.rb 手动安装到 _plugins 文件夹中，然后在文章模板页添加 prism.css 和 prism.js 的引入。
 
 ```ruby
 # prism.rb
@@ -130,13 +131,13 @@ module Jekyll
 <!-- _includes/post-head.html -->
 <head>
     ......
-    <link href="{\{ site.baseurl }}/assets/css/prism.css" rel="stylesheets" />
+    <link href="{{ site.baseurl }}/assets/css/prism.css" rel="stylesheets" />
 </head>
 
 <!-- _layouts/post.html -->
 <body>
     ......
-    <script src="{\{ site.baseurl }}/assets/js/prism.js"></script>
+    <script src="{{ site.baseurl }}/assets/js/prism.js"></script>
 </body>
 
 <!-- 或者使用 CDN 加载 -->
@@ -152,7 +153,6 @@ module Jekyll
     ......
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
 </body>
-
 ```
 
 ### 图片放大和图集
@@ -205,8 +205,94 @@ cp search.json blog/search.json
 
 &emsp;&emsp;因为页面模板内容在页面上会被翻译导致无法正常显示，这里就使用了 Github 提供的 gist 代码片段服务。如下所示，添加一个页面模板到 _layouts 目录。
 
-<script src="https://gist.github.com/zhonger/7b60d2fcc3b6649131fe389ca1148440.js?filename=page.html"></script>
+```html
+<!-- page.html -->
 
+<!DOCTYPE html>
+<html lang="zh-cn">
+{% include head.html %}
+<body>
+
+{% include header.html %}
+
+<div class="g-banner home-banner {{ site.theme-color | prepend: 'banner-theme-' }}" data-theme="{{ site.theme-color }}">
+    <h2>{{ page.home-title }}</h2>
+    <h3>{{ page.description }}</h3>
+    {% if page.header-img %}
+    <img class="header-img" src="{{ page.header-img | prepend: site.baseurl }}" alt="">
+    {% endif %}
+</div>
+
+<main class="g-container home-content">
+    <div class="article-list">
+        <div class="post-content" style="padding-left: 30px;padding-right: 30px;width: auto;">
+            <article class="markdown-body" style="width: auto;">
+                {{ content }}
+            </article>
+        </div>
+    </div>
+
+    <aside class="g-sidebar-wrapper">
+        <div class="g-sidebar">
+            <section class="author-card">
+                <div class="avatar">
+                    <img src="{{ site.avatar | prepend: site.baseurl }}" alt="">
+                </div>
+                <div class="author-name" rel="author">{{ site.author }}</div>
+                <div class="bio">
+                    <p>{{ site.bio }}</p>
+                </div>
+                {% if site.sns.size > 0 %}
+                <ul id="sns-links" class="sns-links">
+                    {% for s in site.sns %}
+                    <li>
+                        <a href="{{ s[1] }}" target="_blank" rel="noreferrer">
+                            <i class="iconfont icon-{{ s[0] }}"></i>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </section>
+
+            {% if site.recommend-tags and site.tags.size>0 %}
+            <section class="tags-card">
+                {% for tag in site.tags %}
+                    {% if forloop.index > site.recommend-condition-size %}
+                        {% break %}
+                    {% endif %}
+                    <a href="{{ "tags.html#" | append: tag[0] | relative_url }}" class="tag">{{ tag[0]}}</a>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            <section class="tags-card">
+                <div class="links" rel="links">Links</div>
+                <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer">Kala Search</a>
+            </section>
+        </div>
+
+        {% if site.search %}
+        <div class="search-card">
+            <input id="search_input" type="text" placeholder="Search...">
+            <i class="iconfont icon-search"></i>
+            <div class="search_result"></div>
+        </div>
+        {% endif %}
+
+    </aside>
+
+</main>
+
+{% include footer.html %}
+
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="{{ site.baseurl }}/assets/js/prism.js"></script>
+<script src="{{ site.baseurl }}/assets/js/index.min.js"></script>
+
+</body>
+</html>
+```
 
 #### 编写学术首页
 
@@ -238,7 +324,7 @@ description: Writing, writing, writing ...
 
 # Interests
 
-<img src="{\{ site.baseurl }}/assets/icons/kvm.webp" alt="KVM" class="interest">
+<img src="{{ site.baseurl }}/assets/icons/kvm.webp" alt="KVM" class="interest">
 
 # Educations
 
@@ -275,13 +361,13 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)
 
 #### 修复链接
 
-&emsp;&emsp;由于博客原来首页移动到子目录 blog 下，相应的博客分页展示页中的卡片链接、分页链接、标签链接等等都需要做出修改。下面举个例子（反斜杠请删除）：
+&emsp;&emsp;由于博客原来首页移动到子目录 blog 下，相应的博客分页展示页中的卡片链接、分页链接、标签链接等等都需要做出修改。下面举个例子：
 
 ```html
 <!-- 原来是 -->
-<a class="post-link" href="{\{ post.url }}" title="{\{ post.title }}"></a>
+<a class="post-link" href="{{ post.url }}" title="{{ post.title }}"></a>
 <!-- 现在修改为 -->
-<a class="post-link" href="{\{ post.url | prepend: site.baseurl }}" title="{\{ post.title }}"></a>
+<a class="post-link" href="{{ post.url | prepend: site.baseurl }}" title="{{ post.title }}"></a>
 ```
 
 ```yaml
@@ -296,7 +382,35 @@ paginate_path: 'blog/page:num'
 
 &emsp;&emsp;归档页其实是在上一个功能的基础上实现的，使用的也是同一个页面模板，只是内容稍有不同。如下所示，创建新文件 archives.html 和修改 dev/sass/common.scss 文件：
 
-<script src="https://gist.github.com/zhonger/72dd3ddde762f8b040f25c53c12c70c7.js?filename=archives.html"></script>
+```liquid
+<!-- archives.html -->
+
+---
+layout: page
+home-title: Welcome to zhonger's blog!
+description: Writing, writing, writing ...
+permalink: /archives.html
+cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900
+---
+
+<h2>Archives</h2>
+
+  {% for post in site.posts %}
+
+    {% unless post.next %}
+      <h3>{{ post.date | date: '%Y' }}</h3>
+    {% else %}
+      {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% capture nyear %}{{ post.next.date | date: '%Y' }}{% endcapture %}
+      {% if year != nyear %}
+        <h3>{{ post.date | date: '%Y' }}</h3>
+      {% endif %}
+    {% endunless %}
+
+    <li><p class="archives-title"><span class="archives-date">{{ post.date | date: "%b %-d, %Y" }} </span><a href="{{ post.url | prepend: site.baseurl }}"> {{ post.title }} </a></p></li>
+
+  {% endfor %}
+```
 
 ```css
 /* common.scss */
@@ -345,7 +459,7 @@ nav:
 
 &emsp;&emsp;作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用**双$符号**来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。
 
-```js
+```html
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script> 
@@ -374,7 +488,11 @@ $$
 
 &emsp;&emsp;由于博客上的文章或短或长，对于读者来说不可能马上辨别是否需要多长时间才能阅读完全文，因此最好在文章开头的地方就有一个简单的信息告诉读者。其实在 Jekyll 中要做到这个也不是很难，只需要对整个文章的内容进行字符计数即可。通常来说，英文单词的阅读速度在 350 词/分钟 左右，而中文的阅读速度也差不多，所以可以将字数除以 350 即可得到大概所需的阅读时长。最后将以下代码添加到 _layouts/post.html 相应的位置即可，一般来说在写作时间下面较佳。
 
-<script src="https://gist.github.com/zhonger/9a26aed1141880ce03c1d27c61be5cdd.js"></script>
+```html
+<div class="post-meta">
+    <span>本文总共 {{ page.content | strip_html | strip_newlines | remove: " " | size }} 字 <b>·</b> 阅读全文大约需要 {{ page.content | strip_html | strip_newlines | remove: " " | size | divided_by: 350 | plus: 1 }} 分钟</span>
+</div>
+```
 
 &emsp;&emsp;当然可能有的人要问了，这样计算出来的字数是否正确呢？毕竟中英文字符还是有差别的嘛。这个问题在参考资料的博文中做了一些比较深刻的讨论，最后给出来的方案就是这里采用的方案。也可能会有人问如果存在公式、代码、图片等非可计数的内容，那么阅读时长岂不是准确性很差？这个问题其实主要还是在统计上，由于这些非可计数内容不在正常字数统计内，也无法根据它们的数量来评估对应所需的时间，自然也不能加入到阅读时长里。回过头来看，这里的字数统计及阅读时长估算功能本来就是给读者一个信息好做出预判，至于读者阅读是否需要那么长时间或者甚至更长时间，那都没有太大关系。
 
