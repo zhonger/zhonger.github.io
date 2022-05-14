@@ -26,22 +26,32 @@
     <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
     <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
-    <link rel="stylesheet" href="/assets/css/plugins.min.css">
-    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/fonts/Merriweather-Regular.ttf" media="print" onload="this.media='all'" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
     <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
 
 
-<body>
+
+<body class="line-numbers" ontouchstart="">
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all">
+  <div id="all" class="post">
   
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -143,7 +153,7 @@
           </span>
           <time class="post-meta-item" datetime="21-03-24">
             <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-time"></use>
+              <use xlink:href="#icon-calendar"></use>
             </svg>
             
               2021-03-24 11:10:00 +0900 
@@ -151,10 +161,25 @@
           </time>
           
           <span class="post-meta-item">
-            <svg class="icon info2" aria-hidden="true">
-              <use xlink:href="#icon-info2"></use>
+            <svg class="icon words" aria-hidden="true">
+              <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 7691 字 <b>·</b> 阅读全文大约需要 22 分钟</span>
+          本文总共 10980 字
+          </span>
+          <span class="post-meta-item">
+            <svg class="icon time" aria-hidden="true">
+              <use xlink:href="#icon-time"></use>
+            </svg>
+             阅读全文大约需要 32 分钟
+          </span>
+          
+          <span class="post-meta-item">
+            <svg class="icon pv" aria-hidden="true">
+              <use xlink:href="#icon-pv"></use>
+            </svg>
+            本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
+          </span>
+          
           
         </div>
       </div>
@@ -229,7 +254,7 @@
   <li>高亮主题基本上现有的都能用，本站所用的就是 Github 官方同款主题。</li>
 </ul>
 
-<p>  Prism 工具的安装使用相较其他两种稍微复杂一点，需要下载插件 prism.rb 手动安装到 _plugins 文件夹中，然后在文章模板页添加 prism.css 和 prism.js 的引入（下面花括号中间的反斜杆是为了是花括号不被解析而直接显示出来，使用时请删除反斜杠）。</p>
+<p>  Prism 工具的安装使用相较其他两种稍微复杂一点，需要下载插件 prism.rb 手动安装到 _plugins 文件夹中，然后在文章模板页添加 prism.css 和 prism.js 的引入。</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># prism.rb</span>
 
@@ -285,13 +310,13 @@
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- _includes/post-head.html --&gt;</span>
 <span class="nt">&lt;head&gt;</span>
     ......
-    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"{\{ site.baseurl }}/assets/css/prism.css"</span> <span class="na">rel=</span><span class="s">"stylesheets"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"{{ site.baseurl }}/assets/css/prism.css"</span> <span class="na">rel=</span><span class="s">"stylesheets"</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 
 <span class="c">&lt;!-- _layouts/post.html --&gt;</span>
 <span class="nt">&lt;body&gt;</span>
     ......
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{\{ site.baseurl }}/assets/js/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{{ site.baseurl }}/assets/js/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 
 <span class="c">&lt;!-- 或者使用 CDN 加载 --&gt;</span>
@@ -307,7 +332,6 @@
     ......
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/prismjs/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
-
 </code></pre></div></div>
 
 <h3 id="图片放大和图集">图片放大和图集</h3>
@@ -358,7 +382,93 @@
 
 <p>  因为页面模板内容在页面上会被翻译导致无法正常显示，这里就使用了 Github 提供的 gist 代码片段服务。如下所示，添加一个页面模板到 _layouts 目录。</p>
 
-<script src="https://gist.github.com/zhonger/7b60d2fcc3b6649131fe389ca1148440.js?filename=page.html"></script>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- page.html --&gt;</span>
+
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"zh-cn"</span><span class="nt">&gt;</span>
+{% include head.html %}
+<span class="nt">&lt;body&gt;</span>
+
+{% include header.html %}
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"g-banner home-banner {{ site.theme-color | prepend: 'banner-theme-' }}"</span> <span class="na">data-theme=</span><span class="s">"{{ site.theme-color }}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>{{ page.home-title }}<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>{{ page.description }}<span class="nt">&lt;/h3&gt;</span>
+    {% if page.header-img %}
+    <span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">"header-img"</span> <span class="na">src=</span><span class="s">"{{ page.header-img | prepend: site.baseurl }}"</span> <span class="na">alt=</span><span class="s">""</span><span class="nt">&gt;</span>
+    {% endif %}
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;main</span> <span class="na">class=</span><span class="s">"g-container home-content"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"article-list"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"post-content"</span> <span class="na">style=</span><span class="s">"padding-left: 30px;padding-right: 30px;width: auto;"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;article</span> <span class="na">class=</span><span class="s">"markdown-body"</span> <span class="na">style=</span><span class="s">"width: auto;"</span><span class="nt">&gt;</span>
+                {{ content }}
+            <span class="nt">&lt;/article&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+
+    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">"g-sidebar-wrapper"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"g-sidebar"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"author-card"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"avatar"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{{ site.avatar | prepend: site.baseurl }}"</span> <span class="na">alt=</span><span class="s">""</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"author-name"</span> <span class="na">rel=</span><span class="s">"author"</span><span class="nt">&gt;</span>{{ site.author }}<span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"bio"</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;p&gt;</span>{{ site.bio }}<span class="nt">&lt;/p&gt;</span>
+                <span class="nt">&lt;/div&gt;</span>
+                {% if site.sns.size &gt; 0 %}
+                <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"sns-links"</span> <span class="na">class=</span><span class="s">"sns-links"</span><span class="nt">&gt;</span>
+                    {% for s in site.sns %}
+                    <span class="nt">&lt;li&gt;</span>
+                        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{ s[1] }}"</span> <span class="na">target=</span><span class="s">"_blank"</span> <span class="na">rel=</span><span class="s">"noreferrer"</span><span class="nt">&gt;</span>
+                            <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"iconfont icon-{{ s[0] }}"</span><span class="nt">&gt;&lt;/i&gt;</span>
+                        <span class="nt">&lt;/a&gt;</span>
+                    <span class="nt">&lt;/li&gt;</span>
+                    {% endfor %}
+                <span class="nt">&lt;/ul&gt;</span>
+                {% endif %}
+            <span class="nt">&lt;/section&gt;</span>
+
+            {% if site.recommend-tags and site.tags.size&gt;0 %}
+            <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"tags-card"</span><span class="nt">&gt;</span>
+                {% for tag in site.tags %}
+                    {% if forloop.index &gt; site.recommend-condition-size %}
+                        {% break %}
+                    {% endif %}
+                    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{ "</span><span class="na">tags.html#</span><span class="err">"</span> <span class="err">|</span> <span class="na">append:</span> <span class="na">tag</span><span class="err">[0]</span> <span class="err">|</span> <span class="na">relative_url</span> <span class="err">}}"</span> <span class="na">class=</span><span class="s">"tag"</span><span class="nt">&gt;</span>{{ tag[0]}}<span class="nt">&lt;/a&gt;</span>
+                {% endfor %}
+            <span class="nt">&lt;/section&gt;</span>
+            {% endif %}
+
+            <span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">"tags-card"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"links"</span> <span class="na">rel=</span><span class="s">"links"</span><span class="nt">&gt;</span>Links<span class="nt">&lt;/div&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"https://kalasearch.cn"</span> <span class="na">target=</span><span class="s">"_blank"</span> <span class="na">class=</span><span class="s">"tag"</span> <span class="na">rel=</span><span class="s">"noreferrer"</span><span class="nt">&gt;</span>Kala Search<span class="nt">&lt;/a&gt;</span>
+            <span class="nt">&lt;/section&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+
+        {% if site.search %}
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"search-card"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;input</span> <span class="na">id=</span><span class="s">"search_input"</span> <span class="na">type=</span><span class="s">"text"</span> <span class="na">placeholder=</span><span class="s">"Search..."</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"iconfont icon-search"</span><span class="nt">&gt;&lt;/i&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"search_result"</span><span class="nt">&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+        {% endif %}
+
+    <span class="nt">&lt;/aside&gt;</span>
+
+<span class="nt">&lt;/main&gt;</span>
+
+{% include footer.html %}
+
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{{ site.baseurl }}/assets/js/prism.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"{{ site.baseurl }}/assets/js/index.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
 
 <h4 id="编写学术首页">编写学术首页</h4>
 
@@ -388,7 +498,7 @@ home-title: Welcome to zhonger's blog!
 
 <span class="gh"># Interests</span>
 
-<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{\{ site.baseurl }}/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{{ site.baseurl }}/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
 
 <span class="gh"># Educations</span>
 <span class="p">
@@ -409,7 +519,7 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)<span class="sb">
 
 <span class="gh"># 研究兴趣</span>
 
-<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"{{ site.baseurl }}/assets/icons/kvm.webp"</span> <span class="na">alt=</span><span class="s">"KVM"</span> <span class="na">class=</span><span class="s">"interest"</span><span class="nt">&gt;</span>
 
 <span class="gh"># 教育经历</span>
 <span class="p">
@@ -425,12 +535,12 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)<span class="sb">
 
 <h4 id="修复链接">修复链接</h4>
 
-<p>  由于博客原来首页移动到子目录 blog 下，相应的博客分页展示页中的卡片链接、分页链接、标签链接等等都需要做出修改。下面举个例子（反斜杠请删除）：</p>
+<p>  由于博客原来首页移动到子目录 blog 下，相应的博客分页展示页中的卡片链接、分页链接、标签链接等等都需要做出修改。下面举个例子：</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 原来是 --&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{\{ post.url }}"</span> <span class="na">title=</span><span class="s">"{\{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{{ post.url }}"</span> <span class="na">title=</span><span class="s">"{{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
 <span class="c">&lt;!-- 现在修改为 --&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{\{ post.url | prepend: site.baseurl }}"</span> <span class="na">title=</span><span class="s">"{\{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"post-link"</span> <span class="na">href=</span><span class="s">"{{ post.url | prepend: site.baseurl }}"</span> <span class="na">title=</span><span class="s">"{{ post.title }}"</span><span class="nt">&gt;&lt;/a&gt;</span>
 </code></pre></div></div>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _config.yml</span>
@@ -444,7 +554,34 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)<span class="sb">
 
 <p>  归档页其实是在上一个功能的基础上实现的，使用的也是同一个页面模板，只是内容稍有不同。如下所示，创建新文件 archives.html 和修改 dev/sass/common.scss 文件：</p>
 
-<script src="https://gist.github.com/zhonger/72dd3ddde762f8b040f25c53c12c70c7.js?filename=archives.html"></script>
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;!-- archives.html --&gt;
+
+---
+layout: page
+home-title: Welcome to zhonger's blog!
+description: Writing, writing, writing ...
+permalink: /archives.html
+cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&amp;q=900
+---
+
+&lt;h2&gt;Archives&lt;/h2&gt;
+
+  <span class="p">{%</span><span class="w"> </span><span class="nt">for</span><span class="w"> </span><span class="nv">post</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nv">site.posts</span><span class="w"> </span><span class="p">%}</span>
+
+    <span class="p">{%</span><span class="w"> </span><span class="kr">unless</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">next</span><span class="w"> </span><span class="p">%}</span>
+      &lt;h3&gt;<span class="p">{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">date</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">date</span><span class="p">:</span><span class="w"> </span><span class="s1">'%Y'</span><span class="w"> </span><span class="p">}}</span>&lt;/h3&gt;
+    <span class="p">{%</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">%}</span>
+      <span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="nv">year</span><span class="w"> </span><span class="p">%}{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">date</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">date</span><span class="p">:</span><span class="w"> </span><span class="s1">'%Y'</span><span class="w"> </span><span class="p">}}{%</span><span class="w"> </span><span class="nt">endcapture</span><span class="w"> </span><span class="p">%}</span>
+      <span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="nv">nyear</span><span class="w"> </span><span class="p">%}{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">next</span><span class="p">.</span><span class="nv">date</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">date</span><span class="p">:</span><span class="w"> </span><span class="s1">'%Y'</span><span class="w"> </span><span class="p">}}{%</span><span class="w"> </span><span class="nt">endcapture</span><span class="w"> </span><span class="p">%}</span>
+      <span class="p">{%</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="nv">year</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nv">nyear</span><span class="w"> </span><span class="p">%}</span>
+        &lt;h3&gt;<span class="p">{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">date</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">date</span><span class="p">:</span><span class="w"> </span><span class="s1">'%Y'</span><span class="w"> </span><span class="p">}}</span>&lt;/h3&gt;
+      <span class="p">{%</span><span class="w"> </span><span class="kr">endif</span><span class="w"> </span><span class="p">%}</span>
+    <span class="p">{%</span><span class="w"> </span><span class="kr">endunless</span><span class="w"> </span><span class="p">%}</span>
+
+    &lt;li&gt;&lt;p class="archives-title"&gt;&lt;span class="archives-date"&gt;<span class="p">{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">date</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">date</span><span class="p">:</span><span class="w"> </span><span class="s2">"%b %-d, %Y"</span><span class="w"> </span><span class="p">}}</span> &lt;/span&gt;&lt;a href="<span class="p">{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">url</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">prepend</span><span class="p">:</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">baseurl</span><span class="w"> </span><span class="p">}}</span>"&gt; <span class="p">{{</span><span class="w"> </span><span class="nv">post</span><span class="p">.</span><span class="nv">title</span><span class="w"> </span><span class="p">}}</span> &lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endfor</span><span class="w"> </span><span class="p">%}</span>
+</code></pre></div></div>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/* common.scss */</span>
 <span class="nc">.archives-date</span> <span class="p">{</span>
@@ -491,17 +628,17 @@ Email: zhonger[at]live.cn (Please replace [at] with @.)<span class="sb">
 
 <p>  作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用<strong>双$符号</strong>来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。</p>
 
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://polyfill.io/v3/polyfill.min.js?features=es6</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
-</span><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">id</span><span class="o">=</span><span class="dl">"</span><span class="s2">MathJax-script</span><span class="dl">"</span> <span class="k">async</span> <span class="nx">src</span><span class="o">=</span><span class="dl">"</span><span class="s2">https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js</span><span class="dl">"</span><span class="o">&gt;&lt;</span><span class="sr">/script</span><span class="err">&gt;
-</span><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span> 
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://polyfill.io/v3/polyfill.min.js?features=es6"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">id=</span><span class="s">"MathJax-script"</span> <span class="na">async</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span> 
     <span class="nx">MathJax</span> <span class="o">=</span> <span class="p">{</span>
       <span class="na">tex</span><span class="p">:</span> <span class="p">{</span>
         <span class="na">inlineMath</span><span class="p">:</span> <span class="p">[[</span><span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">]],</span>
         <span class="na">processEscapes</span><span class="p">:</span> <span class="kc">true</span>
       <span class="p">}</span>
     <span class="p">};</span>
-<span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
-</span></code></pre></div></div>
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
 
 <div class="language-latex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">$$</span><span class="nb">
 ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </span><span class="o">+</span><span class="nb"> bx </span><span class="o">+</span><span class="nb"> c </span><span class="o">=</span><span class="nb"> </span><span class="m">0</span><span class="nb">
@@ -516,7 +653,10 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
 
 <p>  由于博客上的文章或短或长，对于读者来说不可能马上辨别是否需要多长时间才能阅读完全文，因此最好在文章开头的地方就有一个简单的信息告诉读者。其实在 Jekyll 中要做到这个也不是很难，只需要对整个文章的内容进行字符计数即可。通常来说，英文单词的阅读速度在 350 词/分钟 左右，而中文的阅读速度也差不多，所以可以将字数除以 350 即可得到大概所需的阅读时长。最后将以下代码添加到 _layouts/post.html 相应的位置即可，一般来说在写作时间下面较佳。</p>
 
-<script src="https://gist.github.com/zhonger/9a26aed1141880ce03c1d27c61be5cdd.js"></script>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"post-meta"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;span&gt;</span>本文总共 {{ page.content | strip_html | strip_newlines | remove: " " | size }} 字 <span class="nt">&lt;b&gt;</span>·<span class="nt">&lt;/b&gt;</span> 阅读全文大约需要 {{ page.content | strip_html | strip_newlines | remove: " " | size | divided_by: 350 | plus: 1 }} 分钟<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
 
 <p>  当然可能有的人要问了，这样计算出来的字数是否正确呢？毕竟中英文字符还是有差别的嘛。这个问题在参考资料的博文中做了一些比较深刻的讨论，最后给出来的方案就是这里采用的方案。也可能会有人问如果存在公式、代码、图片等非可计数的内容，那么阅读时长岂不是准确性很差？这个问题其实主要还是在统计上，由于这些非可计数内容不在正常字数统计内，也无法根据它们的数量来评估对应所需的时间，自然也不能加入到阅读时长里。回过头来看，这里的字数统计及阅读时长估算功能本来就是给读者一个信息好做出预判，至于读者阅读是否需要那么长时间或者甚至更长时间，那都没有太大关系。</p>
 
@@ -663,7 +803,31 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
   
   
   </section>
+  
+  <section>
+    <span id="busuanzi_container_site_pv">
+      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+    </span>
+    <span id="busuanzi_container_site_uv">
+      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </section>
+  
 </footer>
+<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
+  <svg class="icon list day" aria-hidden="true">
+    <use xlink:href="#icon-list-day"></use>
+  </svg>
+  <svg class="icon list night" aria-hidden="true">
+    <use xlink:href="#icon-list-night"></use>
+  </svg>
+  <svg class="icon exit day" aria-hidden="true">
+    <use xlink:href="#icon-exit-day"></use>
+  </svg>
+  <svg class="icon exit night" aria-hidden="true">
+    <use xlink:href="#icon-exit-night"></use>
+  </svg>
+</button>
 <button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
   <svg class="icon up day" aria-hidden="true">
     <use xlink:href="#icon-up-day"></use>
@@ -725,23 +889,20 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
   </script>
   
 
-  <script src="/assets/js/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.cjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy-bundle.umd.min.js.map"></script> -->
-  <!-- <!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
-  <!-- <script src="https://unpkg.com/tippy.js@6"></script> --> 
-
   <script>
       // 给图片添加链接
       $(document).ready(function() {
+          var baseurl = $("meta[property='og:baseurl']").attr('content');
           $("p img").each(function() {
-              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload");
+              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload").attr('src', baseurl + '/assets/img/loading.gif');
               var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
               $(this).wrapAll(strA);
           });
@@ -762,7 +923,10 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
 
       });
   </script>
-  <script src="https://at.alicdn.com/t/font_3046306_rpxw9us9jmc.js"></script>
+  <script src="https://at.alicdn.com/t/font_3046306_5ex1jlxzv93.js"></script>
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
