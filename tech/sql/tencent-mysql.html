@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 362 字
+          本文总共 363 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -194,6 +194,7 @@
 <p>  首先需要确认安装的 MySQL 服务器的配置文件 /etc/mysql/my.cnf 是否将 <code class="language-plaintext highlighter-rouge">bindless 120.0.0.1:0</code> 注释掉，务必保证已注释。</p>
 
 <h2 id="配置腾讯云服务器">配置腾讯云服务器</h2>
+
 <h3 id="更新腾讯云服务器的安全组策略">更新腾讯云服务器的安全组策略</h3>
 
 <ol>
@@ -203,11 +204,12 @@
   <li>将云服务器主机添加入新建的安全组，并从其他安全组中退出。</li>
 </ol>
 
-<blockquote>
-  <p>入站规则是指外网可以访问服务器的端口，即服务器对外开放资源获取的端口；<br />
-出站规则是指服务器访问网络上的策略，一般是全部开放，（除非有特殊限制要求，本问题的解决不考虑，所以设为 ALL TRAFFIC ）</p>
-</blockquote>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 笔记 </div> </div> <div class="content"> <p><strong>入站规则</strong>是指外网可以访问服务器的端口，即服务器对外开放资源获取的端口；<br />
+<strong>出站规则</strong>是指服务器访问网络上的策略，一般是全部开放。除非有特殊限制要求，本问题的解决不考虑，所以设为 ALL TRAFFIC。</p>
 
+
+
+ </div> </div>
 <p>  在腾讯云服务操作面板中重启服务器使安全组生效。</p>
 
 <h2 id="验证测试">验证测试</h2>
@@ -313,7 +315,7 @@
           <a href="/tech/linux/tencent-down.html" class="read-next-link" aria-label="腾讯云服务器重装系统后……"></a>
             <section>
               <span>腾讯云服务器重装系统后……</span>
-              <p>添加用户并设为 sudo 权限</p>
+              <p>添加新用户及赋权</p>
             </section>
             
             <div class="filter"></div>

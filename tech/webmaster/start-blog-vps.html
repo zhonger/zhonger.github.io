@@ -164,7 +164,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 2545 字
+          本文总共 2550 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -201,7 +201,7 @@
 
 <p>  近年来，随着云计算技术的大力发展和 VPS 成本降低，越来越多的人开始用上了 VPS。与虚拟主机空间相比，VPS 具有更大的自由度。用户可以在 VPS 上安装各式各样的环境，也可以使用各种方式提供对外服务。对于 Jekyll 等静态网页来说，虚拟主机和 VPS 的使用体验差异可能在一般情况下感受不出来，如果网站流量变大、并发访问人数增多，VPS 就能展现出比虚拟主机的优越之处。其实，一般的虚拟主机也是在 VPS 上搭建的，只不过转换为一种服务提供给用户，用户能使用比较容易接受的网页进行环境的配置和其他操作。而在 VPS 上，往往需要自己从零开始动手，涉及到的专业知识要求也相对多一些。</p>
 
-<p>  笔者使用的第一款 VPS 是 <a href="https://cn.aliyun.com">阿里云</a> 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 <a href="https://cloud.tencent.com">腾讯云</a>、<a href="https://aws.amazon.com">AWS</a>、<a href="https://www.digitalocean.com/">Digital Ocean</a>、<a href="https://bandwagonhost.com/">Bandwagon Host</a>、<a href="https://www.vultr.com/">Vultr</a>、<a href="https://azure.microsoft.com/">Azure</a>、<a href="https://cloud.google.com/">GCP</a>、<a href="https://www.scaleway.com/">Scaleway</a>、<a href="https://cloudcone.com/">CLOUDCONE</a> 、<a href="https://www.hostinger.com/">Hostinger</a>等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。</p>
+<p>  笔者使用的第一款 VPS 是 <a href="https://cn.aliyun.com">阿里云</a> 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 <a href="https://cloud.tencent.com">腾讯云</a>、<a href="https://aws.amazon.com">AWS</a>、<a href="https://www.digitalocean.com/">Digital Ocean</a>、<a href="https://bandwagonhost.com/">Bandwagon Host</a>、<a href="https://www.vultr.com/">Vultr</a>、<a href="https://azure.microsoft.com/">Azure</a>、<a href="https://cloud.google.com/">GCP</a>、<a href="https://www.scaleway.com/">Scaleway</a>、<a href="https://cloudcone.com/">CLOUDCONE</a> 、<a href="https://www.hostinger.com/">Hostinger</a> 等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。</p>
 
 <p>  如果想要自己购买一台 VPS 的话，个人建议国内可以在阿里云和腾讯云中选择。腾讯云的价格相比阿里云便宜一点，不过据说阿里云比腾讯云稳定一点（可能没有什么根据，只要不是自己的 VPS 数据丢失了其实稳定性都很好）。如果想要购买国外的 VPS 的话，推荐 AWS、Azure、Digital Ocean。这三家都是可以随时删除、随时创建的，根据实际使用的时间计费，也可以随时更换 IP 地址，非常方便。当然前两者价格上的确有点高，Digital Ocean 相对来说更便宜一点，而且几乎没有流量上的限制。不过，AWS 提供的 <a href="lightsail.aws.amazon.com">Lightsail</a> 也是一款低配高流量的 VPS，适合博客建站。</p>
 
@@ -226,37 +226,39 @@
 
 <span class="c"># 创建配置文件</span>
 <span class="nb">sudo </span>vim /etc/nginx/sites-available/lisz.me
+</code></pre></div></div>
 
-<span class="c"># 配置文件内容</span>
-server
-<span class="o">{</span>
-    listen 80<span class="p">;</span>
-    server_name lisz.me
-    index index.html index.htm index.php default.html default.htm default.php<span class="p">;</span>
-    root  /var/www/lisz.me<span class="p">;</span>
-	<span class="k">return </span>301 https://<span class="nv">$host$request_uri</span><span class="p">;</span>
-<span class="o">}</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 配置文件内容</span>
+<span class="k">server</span>
+<span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">lisz.me</span>
+    <span class="s">index</span> <span class="s">index.html</span> <span class="s">index.htm</span> <span class="s">index.php</span> <span class="s">default.html</span> <span class="s">default.htm</span> <span class="s">default.php</span><span class="p">;</span>
+    <span class="kn">root</span>  <span class="n">/var/www/lisz.me</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-server
-<span class="o">{</span>
-    listen 443 http2 ssl<span class="p">;</span>
-    server_name lisz.me<span class="p">;</span>
-    add_header Strict-Transport-Security <span class="s2">"max-age=63072000; includeSubdomains; preload"</span><span class="p">;</span>
-    ssl_certificate /etc/letsencrypt/live/lisz.me/fullchain.pem<span class="p">;</span>
-    ssl_certificate_key /etc/letsencrypt/live/lisz.me/privkey.pem<span class="p">;</span>
-    index index.html index.htm index.php default.html default.htm default.php<span class="p">;</span>
-    root  /var/www/lisz.me<span class="p">;</span>
+<span class="k">server</span>
+<span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">http2</span> <span class="s">ssl</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">lisz.me</span><span class="p">;</span>
+    <span class="kn">add_header</span> <span class="s">Strict-Transport-Security</span> <span class="s">"max-age=63072000</span><span class="p">;</span> <span class="kn">includeSubdomains</span><span class="p">;</span> <span class="kn">preload"</span><span class="p">;</span>
+    <span class="kn">ssl_certificate</span> <span class="n">/etc/letsencrypt/live/lisz.me/fullchain.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="n">/etc/letsencrypt/live/lisz.me/privkey.pem</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.htm</span> <span class="s">index.php</span> <span class="s">default.html</span> <span class="s">default.htm</span> <span class="s">default.php</span><span class="p">;</span>
+    <span class="kn">root</span>  <span class="n">/var/www/lisz.me</span><span class="p">;</span>
 
-    include /etc/letsencrypt/options-ssl-nginx.conf<span class="p">;</span>
-    location /
-    <span class="o">{</span>
-        try_files <span class="nv">$uri</span> <span class="nv">$uri</span>/ <span class="o">=</span>404<span class="p">;</span>
-    <span class="o">}</span>
+    <span class="kn">include</span> <span class="n">/etc/letsencrypt/options-ssl-nginx.conf</span><span class="p">;</span>
+    <span class="kn">location</span> <span class="n">/</span>
+    <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    access_log  /var/log/nginx/lisz.me.log<span class="p">;</span>
-<span class="o">}</span>
+    <span class="kn">access_log</span>  <span class="n">/var/log/nginx/lisz.me.log</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-<span class="c"># 使用 `:wq` 保存配置</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使用 `:wq` 保存配置</span>
 
 <span class="c"># 激活虚拟主机配置</span>
 <span class="nb">cd</span> /etc/nginx/sites-enabled
@@ -293,23 +295,23 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 
 <p>  VPS 的自动部署与 FTP 的自动部署非常类似，只是使用的模板不一样。如下图所示使用 SSH 筛选出 SFTP 模板，并点击选中创建。</p>
 
-<p><img src="https://i.vgy.me/PuWyca.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/EBFlZd.webp" alt="新建 SFTP 部署 New SFTP deploy" /></p>
 
-<p>填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。</p>
+<p>  填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。</p>
 
-<p><img src="https://i.vgy.me/JukwSX.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/eeplHr.webp" alt="输入信息 Input vps information" /></p>
 
 <p>  复制命令将 Buddy key 添加到 VPS ，同时设置远程目录，其他配置默认即可，点击 Add this action 按钮完成创建。</p>
 
-<p><img src="https://i.vgy.me/9oviJc.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/MPvmSO.webp" alt="添加秘钥 Add Buddy key to vps" /></p>
 
-<p>执行流水线，如下图所示开始 Jekyll 编译动作。</p>
+<p>  执行流水线，如下图所示开始 Jekyll 编译动作。</p>
 
-<p><img src="https://i.vgy.me/7MSNqH.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/FAtP0C.webp" alt="运行流水线 Run pipeline" /></p>
 
-<p>如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。</p>
+<p>  如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。</p>
 
-<p><img src="https://i.vgy.me/9zaXO1.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/fB9tVg.webp" alt="查看部署 Check status" /></p>
 
 <h3 id="评价">评价</h3>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-05-14T22:45:49+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">基于 LDAP 的统一认证服务 Keycloak</title><link href="https://lisz.me/tech/webmaster/ldap-integration.html" rel="alternate" type="text/html" title="基于 LDAP 的统一认证服务 Keycloak" /><published>2022-04-27T15:44:00+09:00</published><updated>2022-04-27T15:44:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-integration</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-integration.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2022-05-15T23:29:15+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">Mr Li</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">基于 LDAP 的统一认证服务 Keycloak</title><link href="https://lisz.me/tech/webmaster/ldap-integration.html" rel="alternate" type="text/html" title="基于 LDAP 的统一认证服务 Keycloak" /><published>2022-04-27T15:44:00+09:00</published><updated>2022-04-27T15:44:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-integration</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-integration.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;  此前，笔者曾写过一篇&lt;a href=&quot;/tech/docker/openldap.html&quot;&gt;《OpenLDAP 安装初体验》&lt;/a&gt;尝试使用 Docker 一键式部署 OpenLDAP。其中，对 LDAP 协议也作了一定的基础入门，但对如何利用 LDAP 来为各式各样的应用提供统一认证服务还未有深入的实践。本文就打算以 LDAP 为中心集成到团队内部的各类第三方系统或服务中。例如，团队内部常用的私有化代码托管服务 Gitlab、网盘服务 Nextcloud、缓存加速服务 Squid、访问内部集群的专用 OpenVPN 服务、内部团队知识库服务 Dokuwiki、内部代码库及容器镜像服务 Nexus3 等等。&lt;/p&gt;
 
@@ -63,63 +63,63 @@
 
 &lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/realms/master/account/#/&quot;&gt;http://127.0.0.1:8080/auth/realms/master/account/#/&lt;/a&gt; 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/ly4tKf.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/I7z7ma.webp&quot; alt=&quot;用户页 User Page&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/aUGnww.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/8CLUoY.webp&quot; alt=&quot;登录页 Login Page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/r19LoW.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/VQHrFJ.webp&quot; alt=&quot;登录成功 Login successfully&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;国际化设置&quot;&gt;国际化设置&lt;/h4&gt;
 
 &lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/admin/master/console&quot;&gt;http://127.0.0.1:8080/auth/admin/master/console&lt;/a&gt; 即可进入管理员页面并自动登录。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/Zc3XO1.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/kNYBCF.webp&quot; alt=&quot;基本设置 Basic settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/un2kGb.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lZ0I0c.webp&quot; alt=&quot;国际化设置 International settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  刷新页面就能看见设置好的中文界面。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/mxrpMe.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/63o8ga.webp&quot; alt=&quot;完成国际化设置 Finish international settings&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;连接-ldap&quot;&gt;连接 LDAP&lt;/h4&gt;
 
 &lt;p&gt;  左边导航栏切换到&lt;strong&gt;用户联合&lt;/strong&gt;选项卡，选择添加 ldap。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/VUTllR.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/p2pMlW.webp&quot; alt=&quot;添加 LDAP 连接 Add LDAP connection&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择&lt;strong&gt;其他&lt;/strong&gt;。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择&lt;strong&gt;可写&lt;/strong&gt;。另外在填写完配置后可以用右侧的&lt;strong&gt;测试连接&lt;/strong&gt;和&lt;strong&gt;测试验证&lt;/strong&gt;按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/GyOK27.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/umTHlh.webp&quot; alt=&quot;测试 LDAP 连接 Test LDAP connection&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击&lt;strong&gt;同步所有用户&lt;/strong&gt;即可将用户同步到 Keycloak。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/Qt76Uc.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/UJ78t0.webp&quot; alt=&quot;同步所有用户 Sync all users&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  切换左边导航栏到&lt;strong&gt;用户&lt;/strong&gt;选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/MVgEWe.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/qJBLB3.webp&quot; alt=&quot;默认用户列表 Default user list&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如下图所示，证明 Keycloak 成功连接 LDAP。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/6iSaAf.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/P5w5eb.webp&quot; alt=&quot;所有用户列表 All user list including LDAP&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;用户密码策略&quot;&gt;用户密码策略&lt;/h4&gt;
 
 &lt;p&gt;  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到&lt;strong&gt;验证&lt;/strong&gt;选项卡，再选择&lt;strong&gt;密码策略&lt;/strong&gt;选项卡，使用右上角的&lt;strong&gt;添加策略&lt;/strong&gt;添加不同的策略要求，完成后点击保存按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/OzRYBk.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/oDQGDG.webp&quot; alt=&quot;设置密码策略 Password strategy settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开&lt;strong&gt;验证密码策略&lt;/strong&gt;。下图中的 &lt;strong&gt;LDAPv3 密码&lt;/strong&gt; 可以选择打开或不打开，影响不大。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/L14NPG.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/SK5EQp.webp&quot; alt=&quot;开启密码策略 Enable password strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 &lt;strong&gt;Update&lt;/strong&gt; 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/tkOthq.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/1pkx9L.webp&quot; alt=&quot;尝试更新密码验证密码策略 Update password to verify password strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：&lt;/p&gt;
 
@@ -130,25 +130,25 @@
   &lt;li&gt;密码中必须包含至少一个特殊字符&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/rFN9HY.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/GPSGJr.webp&quot; alt=&quot;密码策略验证结果 Results by password strategies&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;otp-验证&quot;&gt;OTP 验证&lt;/h4&gt;
 
 &lt;p&gt;  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/D2ipD0.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Ak4ck9.webp&quot; alt=&quot;设置 OTP 策略 OTP strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了让系统的所有用户都开启 OTP，可以如下所示在&lt;strong&gt;必要操作&lt;/strong&gt;选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/Gi3FQB.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Lqi4RG.webp&quot; alt=&quot;强制所有用户启用 OTP 策略 Enable OTP for all users&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了验证 OTP 是否可用，移步至用户页点击&lt;strong&gt;设置验证应用&lt;/strong&gt;按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/sgq7hF.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WaedQr.webp&quot; alt=&quot;验证 OTP Verify OTP&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/mFizpx.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/TkcriA.webp&quot; alt=&quot;OTP 设置页面 OTP set page&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;ldap-直接集成应用&quot;&gt;LDAP 直接集成应用&lt;/h2&gt;
 
@@ -157,14 +157,14 @@
 &lt;p&gt;  这里，打算之后就《LDAP 集成》为主题写一个系列（挖一个坑）。（PS：先预给出对应链接，如果能够访问那就是写好了。）&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-gitlab.html&quot;&gt;《LDAP 集成之 Gitlab 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-nextcloud.html&quot;&gt;《LDAP 集成之 Nextcloud 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-dokuwiki.html&quot;&gt;《LDAP 集成之 Dokuwiki 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-squid.html&quot;&gt;《LDAP 集成之 Squid 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-openvpn.html&quot;&gt;《LDAP 集成之 OpenVPN 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-nexus3.html&quot;&gt;《LDAP 集成之 Nexus3 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-apache.html&quot;&gt;《LDAP 集成之 Apache 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/tech/webmaster/ldap-nginx.html&quot;&gt;《LDAP 集成之 Nginx 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-gitlab.html&quot;&gt;《LDAP 集成之 Gitlab 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-nextcloud.html&quot;&gt;《LDAP 集成之 Nextcloud 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-dokuwiki.html&quot;&gt;《LDAP 集成之 Dokuwiki 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-squid.html&quot;&gt;《LDAP 集成之 Squid 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-openvpn.html&quot;&gt;《LDAP 集成之 OpenVPN 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-nexus3.html&quot;&gt;《LDAP 集成之 Nexus3 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-apache.html&quot;&gt;《LDAP 集成之 Apache 篇》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;./ldap-nginx.html&quot;&gt;《LDAP 集成之 Nginx 篇》&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
@@ -194,18 +194,18 @@
 
 &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SupportedArches&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OCIPlatform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;arm32v5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;arm32v6&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v6&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;arm32v7&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;arm64v8&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;i386&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;386&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-	&lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;arm32v5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;arm32v6&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v6&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;arm32v7&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;arm64v8&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;i386&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;386&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
 
-	&lt;span class=&quot;s&quot;&gt;&quot;windows-amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;windows&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;&quot;windows-amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;windows&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -298,13 +298,13 @@
 
 &lt;p&gt;  由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/dkk9YD.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/T8UIVu.webp&quot; alt=&quot;变量配置 ENV Setting&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;发布新-tag&quot;&gt;发布新 tag&lt;/h3&gt;
 
 &lt;p&gt;  访问 &lt;a href=&quot;https://github.com/用户名/项目名/releases/new&quot;&gt;https://github.com/用户名/项目名/releases/new&lt;/a&gt; 即可到达发布页面，如下所示。定义一个以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt; 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Public release&lt;/code&gt; 按钮完成发布。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/ey8PCa.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/y7i8fo.webp&quot; alt=&quot;新标签 New Tag&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。&lt;/p&gt;
 
@@ -369,7 +369,7 @@
 
 &lt;p&gt;  Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 &lt;a href=&quot;https://hub.docker.com/ibmcom/mysql-s390x&quot;&gt;ibmcom/mysql-s390x:5.7.34&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/iY2gFc.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/q0AAZg.webp&quot; alt=&quot;Yourls Dockerhub&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  编辑完配置文件后执行以下命令启动 Yourls 服务：&lt;/p&gt;
 
@@ -389,7 +389,7 @@
   &lt;li&gt;采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/PeqQd6.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/tQK16A.webp&quot; alt=&quot;添加域名 Add DNS record&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;生成证书&quot;&gt;生成证书&lt;/h4&gt;
 
@@ -397,19 +397,19 @@
   &lt;li&gt;进入 &lt;strong&gt;SSL/TLS&lt;/strong&gt; 的 &lt;strong&gt;源服务器&lt;/strong&gt; 面板，点击&lt;strong&gt;创建证书&lt;/strong&gt;按钮。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/wQIIGc.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/gIMUvW.webp&quot; alt=&quot;创建证书 Create certs&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;使用默认配置点击&lt;strong&gt;创建&lt;/strong&gt;按钮即可。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/NutABj.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/pituGT.webp&quot; alt=&quot;添加主机名 Add hosts&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/uzEZNP.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/2CAEBX.webp&quot; alt=&quot;保存证书 Save certs&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;保存完成后，点击&lt;strong&gt;确定&lt;/strong&gt;按钮结束操作。&lt;/li&gt;
@@ -432,23 +432,23 @@
 
 &lt;span class=&quot;k&quot;&gt;server&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
 
-	&lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ssl&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;listen&lt;/span&gt;   &lt;span class=&quot;mi&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ssl&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-	&lt;span class=&quot;kn&quot;&gt;ssl_certificate&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.pem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;kn&quot;&gt;ssl_certificate_key&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;ssl_certificate&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.pem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;ssl_certificate_key&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;/home/linux1/ssl/url.com.key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-	&lt;span class=&quot;kn&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;url.com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;kn&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.php&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.html&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.htm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;url.com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;index&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.php&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.html&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;index.htm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-	&lt;span class=&quot;kn&quot;&gt;access_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.access.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;kn&quot;&gt;error_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.error.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;access_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.access.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;error_log&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/var/log/nginx/yourls.error.log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
-	&lt;span class=&quot;kn&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-		&lt;span class=&quot;kn&quot;&gt;proxy_pass&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://127.0.0.1:8080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Real-IP&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-		&lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Forwarded-For&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;location&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;proxy_pass&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;http://127.0.0.1:8080&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Host&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_host&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Real-IP&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kn&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;X-Forwarded-For&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -490,7 +490,7 @@
     &lt;span class=&quot;kn&quot;&gt;...&lt;/span&gt;
     
     &lt;span class=&quot;s&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cf.conf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-	&lt;span class=&quot;kn&quot;&gt;deny&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;kn&quot;&gt;deny&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -504,7 +504,7 @@
 
 &lt;p&gt;  访问 &lt;a href=&quot;https://url.com/install.php&quot;&gt;https://url.com/install.php&lt;/a&gt; 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 &lt;strong&gt;Install YOURLS&lt;/strong&gt; 按钮即可完成安装。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/IsDZVr.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/bQwdsu.webp&quot; alt=&quot;Yourls&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
@@ -516,14 +516,12 @@
 
 &lt;p&gt;  机器学习在某些领域中的经验实用性已经远远超出了我们对基础理论的理解：这些模型不合理地非常有效，但我们并不完全确定原因。相反，在其他相对容易理解的研究领域中难以实现或者在实践中的适用性有限。本文试图就机器学习的实用性和理解力绘制不同角度的图，并探讨科学和技术进步如何在这一框架内体现。&lt;/p&gt;
 
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;声明：&lt;/strong&gt;&lt;br /&gt;
-  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。&lt;br /&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。&lt;br /&gt;
   本文主要旨在讨论经验效用和理论理解之间的对比，以及它们与科学或者技术进步的关系。在矩阵中精确定位研究领域并不是目标。&lt;/p&gt;
 
-&lt;hr /&gt;
 
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;  我所说的&lt;strong&gt;经验效用&lt;/strong&gt;是指一种综合衡量方法，它考虑了一种方法的适用性广度、实施的难易程度，最重要的是：它在现实世界中的有用程度。一些具有高实用性的方法具有更广泛的适用性，而另一些则更强大，但仅限于狭窄的领域。可靠、可预测且没有重大缺陷的方法也被认为具有更高的效用。&lt;/p&gt;
 
 &lt;p&gt;  我所说的&lt;strong&gt;理论理解&lt;/strong&gt;是指一种综合衡量方法（比如，输入和输出之间的关系如何？如何可以获得预期的结果？这种技术的内部机制是什么？），它考虑了直观可解释性（interpretability）和理论可解释性（explainability），以及其文献的深度和完整性。&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;理解程度低的方法通常在实施时采用启发式方法或大量试错。理解程度高的方法往往具有公式化的实现，具有强大的理论基础和可预测的结果。更简单的方法（例如线性回归）具有较低的理论上限，而更复杂的方法（例如深度学习）具有更高的理论上限。当谈到一个领域的文献的深度和完整性时，我已经更具其假设的理论上限来评估该领域——一个来自直觉的想象值。&lt;/p&gt;
@@ -532,7 +530,7 @@
 
 &lt;p&gt;  一般来说，我们期待效用和理解是松散相关的，因为被很好理解的东西比那些不被理解的东西可能更有用。这意味着大多数领域应位于左下象限或右上象限。远离对角线的领域代表着有趣的例外。通常，实用性落后于理论，因为将新兴的研究转化为实际应用需要时间。因此，对角线应该位于原点上方，而不是直接穿过它。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/7fSxDh.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/PJcfa1.webp&quot; alt=&quot;机器学习领域分布图 The distribution of Machine Learning fields&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2022-年的机器学习领域&quot;&gt;2022 年的机器学习领域&lt;/h2&gt;
 
@@ -552,7 +550,7 @@
 
 &lt;p&gt;  假设，&lt;strong&gt;通用人工智能&lt;/strong&gt;将占据右下角，因为根据定义，超级智能超出了人类的理解范围，可以用于解决任何问题。目前，它仅作为思想实验包含在内。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/s0acLk.png&quot; alt=&quot;vgy.me&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/aSdim3.webp&quot; alt=&quot;理论理解力 vs 经验实用性 understanding vs utility&quot; /&gt;
 &lt;strong&gt;&lt;center&gt;图1. 每个象限的定性描述。领域可以通过其对应区域的部分或全部描述来描述。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;左上象限高理解低效用&quot;&gt;左上象限：高理解，低效用&lt;/h3&gt;
@@ -577,7 +575,7 @@
 
 &lt;p&gt;  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的&lt;strong&gt;有监督机器学习&lt;/strong&gt;就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/CQcYHg.png&quot; alt=&quot;vgy.me&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lR1g7Q.webp&quot; alt=&quot;领域发展机制 The steps of development&quot; /&gt;
 &lt;strong&gt;&lt;center&gt;图2. 领域可以遍历矩阵的方式的说明性示例。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;  由于技术的飞跃，一些领域看到了科学进步的阶梯式变化。&lt;strong&gt;深度学习&lt;/strong&gt;领域并没有因其理论基础而解锁，这些理论基础是在 2010 年代深度学习热潮之前 20 多年发现的——它是由消费级 GPU 支持的并行处理推动了它的复兴。技术飞跃通常表现为沿经验效用轴向右跳跃。然而，并非所有以技术为主导的进步都是飞跃。今天的深度学习的特点是通过使用更多的计算能力和越来越专业的硬件训练越来越大的模型来实现跃进式进步。&lt;/p&gt;
@@ -592,7 +590,7 @@
 
 &lt;p&gt;&lt;strong&gt;&lt;center&gt;表1. 机器学习的特定领域未来可能会或可能不会取得进展的预测。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/XPymki.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/w4ELGn.webp&quot; alt=&quot;未来可能的发展方向 Possible development in future&quot; /&gt;&lt;/p&gt;
 
 &lt;!-- | 研究领域 | 2022 年以后的预测 |
 | -- | -- |
@@ -611,7 +609,7 @@
 
 &lt;p&gt;  这导致了机器学习研究中系统的广泛博弈，通过简单地修改现有方法并依靠随机性来超越基线，而不是有意义地推进该领域的理论，从而获得最新成果。但也许这就是我们为新一波机器学习的繁荣所付出的代价。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/FHXFkf.png&quot; alt=&quot;vgy.me&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/FHXFkf.png&quot; alt=&quot;深度学习的潜在进展 Possible development of Deep Learning&quot; /&gt;
 &lt;strong&gt;&lt;center&gt;图3. 2022 年深度学习三种潜在的进展。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;  2022 年可能被证明是“深度学习是否不可逆转地采用这种以结果为导向的新过程并将理论理解降级为可选”的转折点。这些是我们应该思考的问题（图 3）：&lt;/p&gt;
@@ -641,12 +639,12 @@
 
 &lt;p&gt;  举个例子，有一个二次函数 \(y=ax^2+bx+c\)。如果给出这个二次函数对应的图，我们就能很容易地看出这个二次函数是否有最大值或者最小值，且具体的最大值或最小值为多少。这种可解释性就是 interpretability。当我们只知道二次函数的数学表达形式时，如果我们知道二次函数的对称轴和最值的固定公式，我们能够通过代入 \(a、b、c\) 的值计算出来结果。这种可解释性就是 explainability。&lt;/p&gt;
 
-&lt;h2 id=&quot;版权声明&quot;&gt;版权声明&lt;/h2&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 版权声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;br /&gt;
+  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;
 
-&lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;/p&gt;
 
-&lt;p&gt;  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;
 
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h2 id=&quot;脚注来自原文&quot;&gt;脚注（来自原文）&lt;/h2&gt;
 
 &lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
@@ -730,6 +728,7 @@ I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762011 &lt;
 I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762112 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Total: 5 row(s) affected&lt;/span&gt;
 I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762150 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Done!&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h4 id=&quot;连接数据库&quot;&gt;连接数据库&lt;/h4&gt;
 
 &lt;p&gt;  以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。&lt;/p&gt;
@@ -891,6 +890,7 @@ docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;  修复的主要步骤分为以下两步：&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;将 version.php 文件修改为以下内容，然后重新使用 nextcloud:22.0 容器启动。&lt;/li&gt;
   &lt;li&gt;启动后会发现一切恢复正常，然后根据 22.0 -&amp;gt; 22.2 -&amp;gt; 23.0 的规划路线进行正常升级即可。一般来说，升级镜像后镜像内部会自动运行更新命令，并在更新完成后自动关闭维护模式。如果镜像内部为自动运行，可以参考下面命令手动完成相关插件更新。&lt;/li&gt;
@@ -1044,6 +1044,7 @@ storages.numeric_id
 &lt;h4 id=&quot;第三种方案&quot;&gt;第三种方案&lt;/h4&gt;
 
 &lt;p&gt;  采用新增 jekyll 模板的方式来支持自动生成目录。这种方式也可以直接运行在 Github Pages 下。主要的步骤是：&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;将 &lt;a href=&quot;https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html&quot;&gt;toc.html&lt;/a&gt; 文件下载到 _includes 目录下；&lt;/li&gt;
   &lt;li&gt;在 _layouts 需要使用 toc 功能的页面模板的 content 前面加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;% include toc.html html=content %&lt;/code&gt;。&lt;/li&gt;
@@ -1052,6 +1053,7 @@ storages.numeric_id
 &lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
 
 &lt;p&gt;  从上述三种方案综合来看，第三种方案能够同时支持自动生成目录和 Github Pages，比较适合预期的需求。另外，采用模板的方式还有一个好处，可以在全局配置文件 _config.yml 中一键设置“开启”或“关闭”，配置上比较简单。但如果仅仅照搬上述的第三种方案，还是不能完全满足实际的需求。因为第三种方案的结果是自动生成目录的内容，并不涉及到具体的布局，也就是说只能放在某一个固定的位置。总结的来说，实际的目标起码需要满足以下两点：&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;&lt;strong&gt;目标一&lt;/strong&gt;：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;目标二&lt;/strong&gt;：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。&lt;/li&gt;
@@ -1182,7 +1184,7 @@ storages.numeric_id
   &lt;li&gt;模型训练迭代——外部引入&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/mYccJd.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/19OqPp.webp&quot; alt=&quot;迭代机器学习 Iterative Machine Learning&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？&lt;/p&gt;
 
@@ -1193,6 +1195,7 @@ storages.numeric_id
 &lt;h2 id=&quot;提升算法有监督机器学习中的迭代&quot;&gt;提升算法：有监督机器学习中的迭代&lt;/h2&gt;
 
 &lt;p&gt;  提升算法本质上是迭代的，是通过最小化错误来改善结果的最佳方式。它们主要旨在减少结果中的偏差，并将一组特定的弱学习分类器算法转换为强学习器，从而使它们能够减少错误。以下是一些示例：&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;AdaBoost（Adaptive Boosting）&lt;/li&gt;
   &lt;li&gt;梯度提升树（Gradient Tree Boosting）&lt;/li&gt;
@@ -1210,6 +1213,7 @@ storages.numeric_id
 &lt;h2 id=&quot;人工神经网络无监督机器学习中的迭代&quot;&gt;人工神经网络：无监督机器学习中的迭代&lt;/h2&gt;
 
 &lt;p&gt;  神经网络已经成为无监督机器学习的典型代表，因为它们在预测数据模型方面的准确性。一些众所周知的神经网络有：&lt;/p&gt;
+
 &lt;ul&gt;
   &lt;li&gt;卷积神经网络（Convolutional Neural Networks，CNNs）&lt;/li&gt;
   &lt;li&gt;玻尔兹曼机（Boltzman Machines，BMs）&lt;/li&gt;
@@ -1242,7 +1246,7 @@ storages.numeric_id
 
 &lt;p&gt;  为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/4XY4X4.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WMRZBJ.webp&quot; alt=&quot;迭代的不同阶段 Different stages&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;&lt;strong&gt;参数迭代&lt;/strong&gt;：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。&lt;/li&gt;
@@ -1255,11 +1259,12 @@ storages.numeric_id
 
 &lt;p&gt;  我们相信，迭代机器学习技术将在不久的将来继续引领人工智能领域的转型。&lt;/p&gt;
 
-&lt;h2 id=&quot;版权声明&quot;&gt;版权声明&lt;/h2&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 版权声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;br /&gt;
+  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;
 
-&lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;/p&gt;
 
-&lt;p&gt;  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;</content><author><name>zhonger</name></author><category term="ac" /><category term="ml" /><category term="迭代学习" /><category term="机器学习" /><category term="iterative learning" /><category term="machine learning" /><summary type="html">原文标题：Iterative Machine Learning: A step towards Model Accuracy 原文作者：Amarabha Benerjee</summary></entry><entry><title type="html">H2O-ac theme for Jekyll</title><link href="https://lisz.me/tech/webmaster/new-theme-h2o-ac.html" rel="alternate" type="text/html" title="H2O-ac theme for Jekyll" /><published>2021-12-22T20:50:00+09:00</published><updated>2021-12-22T20:50:00+09:00</updated><id>https://lisz.me/tech/webmaster/new-theme-h2o-ac</id><content type="html" xml:base="https://lisz.me/tech/webmaster/new-theme-h2o-ac.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+ &lt;/div&gt; &lt;/div&gt;</content><author><name>zhonger</name></author><category term="ac" /><category term="ml" /><category term="迭代学习" /><category term="机器学习" /><category term="iterative learning" /><category term="machine learning" /><summary type="html">原文标题：Iterative Machine Learning: A step towards Model Accuracy 原文作者：Amarabha Benerjee</summary></entry><entry><title type="html">H2O-ac theme for Jekyll</title><link href="https://lisz.me/tech/new-theme-h2o-ac.html" rel="alternate" type="text/html" title="H2O-ac theme for Jekyll" /><published>2021-12-22T20:50:00+09:00</published><updated>2021-12-22T20:50:00+09:00</updated><id>https://lisz.me/tech/new-theme-h2o-ac</id><content type="html" xml:base="https://lisz.me/tech/new-theme-h2o-ac.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;  正如大家所知，Jekyll 是一款高可定制的、非常流行的静态博客生成工具。围绕着 Jekyll 也衍生出了很多优秀的 Jekyll 主题， 由 &lt;a href=&quot;https://github.com/kaeyleo&quot;&gt;廖柯宇&lt;/a&gt; 开发的 &lt;a href=&quot;https://github.com/kaeyleo/jekyll-theme-H2O&quot;&gt;H2O&lt;/a&gt; 主题就是其中之一。极简主义、风格扁平化、卡片式布局、Medium 及知乎专栏的视觉风格等等特点，为我们带来了或许是迄今为止最漂亮的 Jekyll 主题。&lt;/p&gt;
 
@@ -1279,19 +1284,19 @@ storages.numeric_id
 
 &lt;p&gt;  学术首页如下图所示，并将原来 H2O 中的卡片首页移动到 blog 子目录下了。如果读者想要看到文章卡片展示页，还是可以点击顶部的导航栏中的 BLOG 直接访问。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/pICzcE.png&quot; alt=&quot;首页 Home&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/XyT038.webp&quot; alt=&quot;首页 Home&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;归档页&quot;&gt;归档页&lt;/h4&gt;
 
 &lt;p&gt;  归档页设置为由 Jekyll 按照模板自动生成，以年份、日期、文章标题分级列表展示，简洁清晰。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/25IZzc.png&quot; alt=&quot;归档页 Archives&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lj4vUP.webp&quot; alt=&quot;归档页 Archives&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;系统日志页&quot;&gt;系统日志页&lt;/h4&gt;
 
 &lt;p&gt;  系统日志页其实也不是经常更新的，只有在博客整体作出设置或改进的才加以说明。另外，也可以将一些固定的站点信息放置在系统日志页，比如站点的多点部署信息，读者可以根据此信息访问最快、最合适的节点。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/tUCNEb.png&quot; alt=&quot;系统日志 Log&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/7QLEc6.webp&quot; alt=&quot;系统日志 Log&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;使用体验提升&quot;&gt;使用体验提升&lt;/h3&gt;
 
@@ -1301,13 +1306,13 @@ storages.numeric_id
 
 &lt;p&gt;  H2O 原有的社交图标其实已经比较广泛，只是还有些领域局限性，比如学术研究人员可能更希望展示谷歌学术、ResearchGate、ORCID 等社交图标及链接，而运维开发人员可能更希望展示 SegmentFault、CSDN、博客园等社交图标及链接。这里在 H2O 提供的社交图标类型基础上做了这些平台图标的扩充，同时尝试了 Symbol 引用的方式来实现社交图标鼠标悬停的效果，从而简化代码（H2O 采用的是字体图标的方式，需要为每一个社交图标定义不同的主题色）。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/ebCeqM.png&quot; alt=&quot;社交图标 SNS&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/UpnQdk.webp&quot; alt=&quot;社交图标 SNS&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;查看大图&quot;&gt;查看大图&lt;/h4&gt;
 
 &lt;p&gt;  查看大图功能的确对于读者的阅读体验来说有很大的提升。就像我们阅读文献一样，可能首先会只看文章附图来大致掌握文章的核心点。博文的查看大图功能也可能有这样的异曲同工之妙。这里是采用的 &lt;a href=&quot;https://fancyapps.com/docs/ui/fancybox&quot;&gt;Fancybox&lt;/a&gt; 插件实现的。H2O-ac 主题中只使用了最简单的配置，用户可以根据需求查看文档做出更多的修改。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/FNRDTv.png&quot; alt=&quot;查看大图 Fancybox&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BzfBoz.webp&quot; alt=&quot;查看大图 Fancybox&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
 
@@ -1319,9 +1324,9 @@ storages.numeric_id
 
 &lt;p&gt;  原来 H2O 主题的深色模式切换需要在 _config.yml 文件中配置开启，并且只能在固定时间段使用。此次更新在页面右上角提供了深色/浅色模式一键切换按钮，如下图所示。由于更新了深色模式采用 cookie 的方式来确定，此深色模式切换按钮可以与原来的深色模式配置共存。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/x1CWVs.png&quot; alt=&quot;浅色模式 Day mode&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/EPhFN9.webp&quot; alt=&quot;浅色模式 Day mode&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/8DGFx2.png&quot; alt=&quot;深色模式 Night mode&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BD7BqC.webp&quot; alt=&quot;深色模式 Night mode&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;提示框&quot;&gt;提示框&lt;/h4&gt;
 
@@ -1358,6 +1363,41 @@ storages.numeric_id
 
 &lt;p&gt;  本人使用 H2O 主题的时候代码高亮功能还是沿用的 Jekyll 自带的，后来 H2O 主题也开始采用了 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism.js&lt;/a&gt;。不过由于使用的是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OKAIDIA&lt;/code&gt; 高亮主题，所以有些段落中的格式化字段显示上有些问题。这里，仍然采用默认主题，并且扩增到 Prism.js 支持的所有编程语言类型。效果可以从前一句的 OKAIDIA 字段和下面即将出现的代码片段看出。&lt;/p&gt;
 
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;@font-face&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;font-family&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&apos;Merriweather&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&apos;Merriweather&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(https://fonts.gstatic.com/...)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&apos;woff2&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
+
+&lt;p&gt;  更换 Prism 库加载方式，采用按需自动加载代码类型，尽可能减少因 Prism 造成的阻塞。修复了某些样式问题。增加显示行数支持、官方主题选择支持。如下所示可以进行设置，具体主题风格样式可以访问 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism 官网&lt;/a&gt; 了解更多。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Prism&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;prism&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;tomorrow&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;line_numbers&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;代码复制&quot;&gt;代码复制&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月1日更新)&lt;/p&gt;
+
+&lt;p&gt;  由于主题设置有复制自动添加版权保护文字，导致复制代码或无法直接使用。但是如果直接去掉版权保护又不大合适，于是新增代码复制功能。当使用如下所示代码片段右上角的复制按钮时，代码会被复制到粘贴板，且不包含版权保护文字，可以放心直接使用。&lt;/p&gt;
+
+&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
+
+&lt;p&gt;  调整复制按钮位置，自动识别代码块的代码类型并显示。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Target --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;foo&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://github.com/zenorocha/clipboard.js.git&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Trigger --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-clipboard-target=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#foo&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;assets/clippy.svg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Copy to clipboard&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h4 id=&quot;字数统计及阅读时间估计&quot;&gt;字数统计及阅读时间估计&lt;/h4&gt;
 
 &lt;p&gt;  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。&lt;/p&gt;
@@ -1372,13 +1412,46 @@ storages.numeric_id
 
 &lt;p&gt;  在原来的基础上增加了跟随左侧内容滑动高亮。当左侧内容向上或向下滑动时，右侧索引导航将会使对应的对应一级标题高亮。&lt;/p&gt;
 
+&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
+
+&lt;p&gt;  为文章的移动端页面添加了索引导航按钮。鉴于单页面的内容有限及侧边位置空间有限，暂未对单页面进行支持。&lt;/p&gt;
+
+&lt;h4 id=&quot;支持-waline-评论系统&quot;&gt;支持 Waline 评论系统&lt;/h4&gt;
+
+&lt;p&gt;  目前已支持基于 Valine 衍生的简洁、安全的评论系统。可以根据官方提供的 &lt;a href=&quot;https://waline.js.org/guide/get-started.html&quot;&gt;快速上手&lt;/a&gt; 进行配置，以下为 _config.yml 中需要配置的内容：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;waline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;waline_url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://xxxxxx.vercel.app&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。&lt;/p&gt;
+
+&lt;h4 id=&quot;支持-pwa&quot;&gt;支持 PWA&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月11日更新)&lt;/p&gt;
+
+&lt;p&gt;  全面支持 PWA，访问速度得到较大提升。移动端访问可以像原生 APP 那样使用。如果访问过全站一遍之后，则可以完全离线使用。如下所示，可以配置 PWA 的主题色和短名称。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# PWA&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;pwa&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#81BBFF&apos;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lisz&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h4 id=&quot;配置项&quot;&gt;配置项&lt;/h4&gt;
 
-&lt;p&gt;  配置项中新增了&lt;strong&gt;友情链接&lt;/strong&gt;、&lt;strong&gt;备案号&lt;/strong&gt;、&lt;strong&gt;Google Analytics&lt;/strong&gt; 和 &lt;strong&gt;CNZZ&lt;/strong&gt; 统计功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。&lt;/p&gt;
+&lt;p&gt;  配置项中新增了&lt;strong&gt;友情链接&lt;/strong&gt;和&lt;strong&gt;备案号&lt;/strong&gt;功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。&lt;/p&gt;
 
 &lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
 
 &lt;p&gt;  新增全站一键灰度化功能、时间格式配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。&lt;/p&gt;
+
+&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
+
+&lt;p&gt;  新增 &lt;a href=&quot;https://busuanzi.ibruce.info/&quot;&gt;不蒜子&lt;/a&gt; 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Links 友情链接&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
@@ -1395,11 +1468,8 @@ storages.numeric_id
 &lt;span class=&quot;na&quot;&gt;formats&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt; 
 
-&lt;span class=&quot;c1&quot;&gt;# CNZZ 统计代码&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;cnzz&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Google Analytics&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;google_analytics&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# Busuanzi Analytics&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;busuanzi&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;前端自动构建工作流优化&quot;&gt;前端自动构建工作流优化&lt;/h4&gt;
@@ -1457,7 +1527,7 @@ storages.numeric_id
 
 &lt;p&gt;  为了方便用户使用 H2O-ac 主题，特别提供了 Github 的模板功能。如下图所示，访问 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;H2O-ac&lt;/a&gt; 可以看到如下的 Use this template 按钮，点击该按钮即可用 H2O-ac 主题创建自己的博客代码仓库。想要了解更多步骤，可以访问 Github 官方文档之 &lt;a href=&quot;https://docs.github.com/cn/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template&quot;&gt;从模板创建仓库&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/y7lv2Q.png&quot; alt=&quot;从模板新建 Start the blog from the template&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/oHHZZh.webp&quot; alt=&quot;从模板新建 Start the blog from the template&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;方式二已有博客迁移&quot;&gt;方式二：已有博客迁移&lt;/h4&gt;
 
@@ -1469,7 +1539,7 @@ storages.numeric_id
 
 &lt;h3 id=&quot;本地测试&quot;&gt;本地测试&lt;/h3&gt;
 
-&lt;p&gt;  在进行本地测试时，如果需要修改一些样式，则需要先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install&lt;/code&gt; 来完成前端自动构建工作流依赖库的安装。注意，这里设定的可用 NodeJS 版本为 v17.0.0，使用老版本会报错。其次，务必使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle install&lt;/code&gt; 安装主题所需的所有 Ruby 依赖库。最后执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle exec jekyll serve --livereload&lt;/code&gt; 命令即可在本地实时同步预览。只要不修改 _config.yml 文件，不必中断后再启动。然后就是在 _posts 目录下写 markdown 文章即可。&lt;/p&gt;
+&lt;p&gt;  在进行本地测试时，如果需要修改一些样式，则需要先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install&lt;/code&gt; 来完成前端自动构建工作流依赖库的安装。注意，这里设定的可用 NodeJS 版本为 v17.0.0，使用老版本会报错。其次，务必使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle install&lt;/code&gt; 安装主题所需的所有 Ruby 依赖库。最后执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle exec jekyll serve --livereload&lt;/code&gt; 命令即可在本地实时同步预览。只要不修改 _config.yml 文件，不必中断后再启动。然后就是在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; 目录下写 markdown 文章即可。&lt;/p&gt;
 
 &lt;h3 id=&quot;发布部署&quot;&gt;发布部署&lt;/h3&gt;
 
@@ -1479,7 +1549,8 @@ storages.numeric_id
 
 &lt;p&gt;  再次感谢廖柯宇及其他小伙伴们对 H2O 主题的付出，没有 H2O 主题就没有 H2O-ac 主题！H2O-ac 主题后续也将继续更新，欢迎小伙伴们使用和 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;Star&lt;/a&gt;，也欢迎大家一起来贡献代码。&lt;/p&gt;
 
-&lt;p&gt;（Ps: &lt;del&gt;由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。&lt;/del&gt; 已采用新 Logo。）（2022年1月10日更新）&lt;/p&gt;</content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="jekyll" /><category term="theme" /><category term="blog" /><category term="ac" /><category term="develop" /><category term="主题" /><category term="前端开发" /><category term="学术" /><category term="运维" /><summary type="html">前言</summary></entry><entry><title type="html">Jekyll 社交图标集合创建</title><link href="https://lisz.me/tech/webmaster/jekyll-sns-icons.html" rel="alternate" type="text/html" title="Jekyll 社交图标集合创建" /><published>2021-12-22T11:30:00+09:00</published><updated>2021-12-22T11:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/jekyll-sns-icons</id><content type="html" xml:base="https://lisz.me/tech/webmaster/jekyll-sns-icons.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+&lt;p&gt;（Ps: &lt;del&gt;由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。&lt;/del&gt; 已采用新 Logo。）
+（2022年1月10日更新）&lt;/p&gt;</content><author><name>zhonger</name></author><category term="tech" /><category term="jekyll" /><category term="theme" /><category term="blog" /><category term="ac" /><category term="develop" /><category term="主题" /><category term="前端开发" /><category term="学术" /><category term="运维" /><summary type="html">前言</summary></entry><entry><title type="html">Jekyll 社交图标集合创建</title><link href="https://lisz.me/tech/webmaster/jekyll-sns-icons.html" rel="alternate" type="text/html" title="Jekyll 社交图标集合创建" /><published>2021-12-22T11:30:00+09:00</published><updated>2021-12-22T11:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/jekyll-sns-icons</id><content type="html" xml:base="https://lisz.me/tech/webmaster/jekyll-sns-icons.html">&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;  一般来说，我们的个人博客都会放上一些社交图标以及社交链接。这样一来，想要关注我们更多的最新研究或工作的读者就可以很快找到路径。于是，在 Jekyll 博客主题设计的时候，通常会在个人简介的地方放置几个社交小图标，点击社交小图标即可把读者带到你的社交个人主页上。对于不同类型的作者，常用的或者关注的社交平台基本上不大一样，社交小图标也会有不一样的需求。比如说，对于从事科研工作的人来说，像谷歌学术、ResearchGate、ORCID 等等能够列举发表论文或者相关研究的平台就比较重要；对于一般程序员来说，像 Github、Gitlab、Segmentfault、CSDN、简书等等能够展示自己所参与的项目和技术心得体会的平台就比较重要；对于前端设计师来说，像 Instgram、UI 中国、Dribble等等能够展示 UI 设计作品的平台就比较重要。因此，对于一款 Jekyll 博客主题的设计者来说，同时要兼顾到这么多不同的需求可能会有点为难，毕竟领域不同、了解的程度也很有限。&lt;/p&gt;
 
@@ -1593,35 +1664,36 @@ storages.numeric_id
      x=&quot;0&quot; y=&quot;100&quot; width=&quot;50&quot; height=&quot;25&quot;/&amp;gt;
 &amp;lt;/svg&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
+
 &lt;p&gt;效果如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/eTsY1a.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/rZFS4U.webp&quot; alt=&quot;svg 效果图&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;创建自定义社交图标集合&quot;&gt;创建自定义社交图标集合&lt;/h2&gt;
 
 &lt;p&gt;  现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 &lt;a href=&quot;https://www.iconfont.cn&quot;&gt;Iconfont 首页&lt;/a&gt; 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/RkgKa1.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/FgfB74.webp&quot; alt=&quot;搜索图标 Search icons&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  接着点击右上角的购物车按钮如下所示可以查看已加入到购物车的所有图标，并点击&lt;strong&gt;添加到项目&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/QHdhi5.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/1EhfE8.webp&quot; alt=&quot;添加到项目 Add icons to project&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  然后给项目取名（这里的名字随便起），点击&lt;strong&gt;确认&lt;/strong&gt;按钮完成项目添加，自动跳转到项目页。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/dymDV8.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/TCoJ2r.webp&quot; alt=&quot;新建项目 New project&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击生成代码即可生成专属链接，并出现&lt;strong&gt;点击复制代码&lt;/strong&gt;按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/NNSsLJ.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/e2na7v.webp&quot; alt=&quot;生成链接 Generate unique link&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击&lt;strong&gt;收起在线链接&lt;/strong&gt;旁边的下箭头可以看到&lt;strong&gt;预览字体&lt;/strong&gt;，点击&lt;strong&gt;预览字体&lt;/strong&gt;即跳转到在线预览页面，如下所示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/tKwaPx.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/dHfIAq.webp&quot; alt=&quot;预览图标 Preview&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  这里提供了三种方式来使用创建好的社交图标集合，目前平台推荐的是&lt;strong&gt;Symbol 引用&lt;/strong&gt;方式。接着即可按照以下三个步骤在你的网页上轻松使用自定义好的社交图标集合了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.vgy.me/7C7G0A.png&quot; alt=&quot;vgy.me&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/QsBEoq.webp&quot; alt=&quot;Symbol 引用&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;小提示&quot;&gt;小提示&lt;/h3&gt;
 

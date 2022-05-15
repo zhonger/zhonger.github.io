@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1667 字
+          本文总共 1682 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -191,80 +191,86 @@
           <article class="markdown-body">
             <h2 id="caddy-篇">caddy 篇</h2>
 
-<ol>
-  <li>安装 caddy
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://getcaddy.com | bash
-</code></pre></div>    </div>
-  </li>
-  <li>配置 Caddyfile
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yun.lisz.me <span class="o">{</span>
- <span class="nb">gzip
- </span>proxy / http://127.0.0.1:10080
+<h3 id="安装-caddy">安装 caddy</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://getcaddy.com | bash
+</code></pre></div></div>
+
+<h3 id="配置-caddyfile">配置 Caddyfile</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yun.lisz.me <span class="o">{</span>
+    <span class="nb">gzip
+    </span>proxy / http://127.0.0.1:10080
 <span class="o">}</span>
-</code></pre></div>    </div>
-  </li>
-  <li>安装并配置 supervisor
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>pip <span class="nb">install </span>supervisor
-<span class="c"># /etc/supervisord.conf`</span>
-<span class="o">[</span>program:caddy]
-<span class="nb">command</span><span class="o">=</span>caddy <span class="nt">-conf</span> /root/Caddyfile
-<span class="nv">user</span><span class="o">=</span>root
-<span class="nv">autostart</span><span class="o">=</span><span class="nb">true
-</span><span class="nv">autorestart</span><span class="o">=</span><span class="nb">true
-</span><span class="nv">startsecs</span><span class="o">=</span>3
-<span class="nv">stderr_logfile</span><span class="o">=</span>/tmp/caddy_err.log
-<span class="nv">stdout_logfile</span><span class="o">=</span>/tmp/caddy.log
-<span class="o">[</span>supervisord]
-</code></pre></div>    </div>
-  </li>
-  <li>安装 apache
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> apache2 
+</code></pre></div></div>
+
+<h3 id="安装并配置-supervisor">安装并配置 supervisor</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 superviosr</span>
+<span class="nb">sudo </span>pip <span class="nb">install </span>supervisor
+</code></pre></div></div>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /etc/supervisord.conf`
+</span>[<span class="n">program</span>:<span class="n">caddy</span>]
+<span class="n">command</span>=<span class="n">caddy</span> -<span class="n">conf</span> /<span class="n">root</span>/<span class="n">Caddyfile</span>
+<span class="n">user</span>=<span class="n">root</span>
+<span class="n">autostart</span>=<span class="n">true</span>
+<span class="n">autorestart</span>=<span class="n">true</span>
+<span class="n">startsecs</span>=<span class="m">3</span>
+<span class="n">stderr_logfile</span>=/<span class="n">tmp</span>/<span class="n">caddy_err</span>.<span class="n">log</span>
+<span class="n">stdout_logfile</span>=/<span class="n">tmp</span>/<span class="n">caddy</span>.<span class="n">log</span>
+[<span class="n">supervisord</span>]
+</code></pre></div></div>
+
+<h3 id="安装-apache">安装 apache</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> apache2 
 <span class="nb">sudo </span>a2enmod rewrite <span class="nb">env </span>headers mime <span class="nb">dir </span>setenvif
-</code></pre></div>    </div>
-  </li>
-</ol>
+</code></pre></div></div>
 
 <h2 id="php-篇">php 篇</h2>
 
-<ol>
-  <li>安装 php7.0
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>python-software-properties
+<h3 id="安装-php70">安装 php7.0</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get <span class="nb">install </span>python-software-properties
 <span class="nb">sudo </span>add-apt-repository ppa:ondrej/php
 <span class="nb">sudo </span>apt-get update
 <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> php7.0
 <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-json 
 <span class="nb">sudo </span>apt-get <span class="nb">install</span> <span class="nt">-y</span> php7.0-common php7.0-gd php7.0-zip php7.0-xml php7.0-mbstring
 <span class="nb">sudo </span>systemctl restart apache2.service
-</code></pre></div>    </div>
-  </li>
-  <li>配置虚拟主机</li>
-</ol>
+</code></pre></div></div>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /etc/apache2/sites-available/yun.conf</span>
-&lt;VirtualHost <span class="k">*</span>:10080&gt;
-    DocumentRoot <span class="s2">"/var/www/yun"</span>
+<h3 id="配置虚拟主机">配置虚拟主机</h3>
+
+<pre><code class="language-apacheconf"># /etc/apache2/sites-available/yun.conf
+&lt;VirtualHost *:10080&gt;
+    DocumentRoot "/var/www/yun"
     ServerName yun.lisz.me
-    &lt;Directory <span class="s2">"/var/www/yun"</span><span class="o">&gt;</span>
+    &lt;Directory "/var/www/yun"&gt;
         Options Indexes FollowSymLinks Includes ExecCGI
         AllowOverride All
         Order allow,deny
         Allow from all
     &lt;/Directory&gt;
 &lt;/VirtualHost&gt;
+</code></pre>
 
-<span class="c"># 使配置生效</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 使配置生效</span>
 <span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/apache2/sites-available/yun.conf /etc/apache2/sites-enabled/yun.conf
 <span class="nb">sudo </span>systemctl restart apache2.service
 </code></pre></div></div>
 
 <h2 id="mysql-篇">Mysql 篇</h2>
-<ol>
-  <li>安装 mysql
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>mariadb-server mariadb-client <span class="nt">-y</span>
-</code></pre></div>    </div>
-  </li>
-  <li>配置 mysql
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 设置开机启动</span>
+
+<h3 id="安装-mysql">安装 mysql</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>mariadb-server mariadb-client <span class="nt">-y</span>
+</code></pre></div></div>
+
+<h3 id="配置-mysql">配置 mysql</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 设置开机启动</span>
 <span class="nb">sudo </span>systemctl <span class="nb">enable </span>mariadb.service
 <span class="c"># 设置一些安全问题</span>
 <span class="nb">sudo </span>mysql_secure_installation
@@ -284,16 +290,15 @@ Disallow root login remotely? <span class="o">[</span>Y/n]
 Remove <span class="nb">test </span>database and access to it? <span class="o">[</span>Y/n]
 <span class="c"># 输入回车进行重载：</span>
 Reload privilege tables now? <span class="o">[</span>Y/n]
-</code></pre></div>    </div>
-    <p>以上就完成了数据库的安全设置。</p>
-  </li>
-</ol>
+</code></pre></div></div>
+
+<p>  以上就完成了数据库的安全设置。</p>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#caddy-篇">caddy 篇</a></li><li><a href="#php-篇">php 篇</a></li><li><a href="#mysql-篇">Mysql 篇</a></li></ul>
+          <ul><li><a href="#caddy-篇">caddy 篇</a><ul><li><a href="#安装-caddy">安装 caddy</a></li><li><a href="#配置-caddyfile">配置 Caddyfile</a></li><li><a href="#安装并配置-supervisor">安装并配置 supervisor</a></li><li><a href="#安装-apache">安装 apache</a></li></ul></li><li><a href="#php-篇">php 篇</a><ul><li><a href="#安装-php70">安装 php7.0</a></li><li><a href="#配置虚拟主机">配置虚拟主机</a></li></ul></li><li><a href="#mysql-篇">Mysql 篇</a><ul><li><a href="#安装-mysql">安装 mysql</a></li><li><a href="#配置-mysql">配置 mysql</a></li></ul></li></ul>
         </div>
       </div>
       
@@ -388,7 +393,7 @@ Reload privilege tables now? <span class="o">[</span>Y/n]
           <a href="/tech/linux/mirrors-build.html" class="read-next-link" aria-label="镜像站构建"></a>
             <section>
               <span>镜像站构建</span>
-              <p>引言  构建镜像站主要是对于 linux 开源平台的软件源、 pypi 源、 cran 源、 mysql 等开源软...</p>
+              <p>前言</p>
             </section>
             
             <div class="filter"></div>

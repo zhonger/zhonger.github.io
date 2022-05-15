@@ -166,13 +166,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 996 字
+          本文总共 1052 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 3 分钟
+             阅读全文大约需要 4 分钟
           </span>
           
           <span class="post-meta-item">
@@ -201,42 +201,57 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<blockquote>
-  <p>Netlify 是一家位于旧金山的云计算公司，为 Web 应用程序和静态网站提供托管和无服务后端服务。其功能包括通过 Netlify Edge、该公司的全球应用程序交付网络基础架构、无服务表单处理、对 AWS Lambda 功能的支持以及与 Let’s Encrypt 的完全集成从 Git 开始进行持续部署。</p>
-</blockquote>
+<div class="premonition citation"> <div class="header"> <svg class="icon citation" aria-hidden="true"> <use xlink:href="#icon-citation"></use> </svg> </div> <div class="content"> <p>  Netlify 是一家位于旧金山的云计算公司，为 Web 应用程序和静态网站提供托管和无服务后端服务。其功能包括通过 Netlify Edge、该公司的全球应用程序交付网络基础架构、无服务表单处理、对 AWS Lambda 功能的支持以及与 Let’s Encrypt 的完全集成从 Git 开始进行持续部署。</p>
 
+
+
+ </div> <div class="ref"> ------ Wikipedia </div> </div>
 <p>  <a href="https://www.netlify.com/">Netlify</a> 是什么？从维基百科上可以很容易找到以上答案。Netlify 所提供的服务既有免费的，也有收费的，一般来说免费服务对于部署 Jekyll 博客就已经绰绰有余了。Netlify 与 Github 的联系非常紧密，拥有 Github 账户就可以直接登录 Netlify，Netlify 需要从 Github 拉取代码来编译、生成、部署静态站点。Netlify的每月免费套餐包含了 100GB 的免费流量、300 分钟的编译时长，1 个同时编译队列。通常一个静态网站生成器所需的编译时长可能不超过一分钟，因此只要不是一个月提交的变更次数超过 300 次编译时长完全足够。而全球访问流量因为 Netlify 本身就带流量清洗的能力，即使有人对站点发起攻击也不会有什么疯狂增加的可能，所以正常一个站点一个月可能最多只能用到 1GB 不到的流量。如果文章遵循了图片使用图库托管的策略，那么所耗流量会大大降低、访问速度也会大大提升。</p>
 
 <h2 id="部署">部署</h2>
 
-<p>1.正常使用 Github 账号一键登录之后，在 Teams 主页面点击 New site from Git 按钮。</p>
+<h3 id="登录-netlify">登录 Netlify</h3>
 
-<p><img src="https://i.vgy.me/Ls5FYK.png" alt="vgy.me" /></p>
+<p>  正常使用 Github 账号一键登录之后，在 Teams 主页面点击 New site from Git 按钮。</p>
 
-<p>2.点击 Github 按钮登录并授予 Netlify 访问项目权限。</p>
+<p><img src="https://i.lisz.top/blog/4dTnLf.webp" alt="登录 Login" /></p>
 
-<p><img src="https://i.vgy.me/QB1mup.png" alt="vgy.me" /></p>
+<h3 id="新建项目">新建项目</h3>
 
-<p>3.在搜索框中搜索想要部署的项目，比如 zhonger/zhonger.github.io，并点击右侧箭头选中完成创建。</p>
+<p>  点击 Github 按钮登录并授予 Netlify 访问项目权限。</p>
 
-<p><img src="https://i.vgy.me/1tdTzS.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/p4vWTR.webp" alt="新建项目 Create project from Github" /></p>
 
-<p>4.在创建好的项目的 Site settings 的 Domain management 中可以对已有的 *.netlify.app 域名进行修改，或添加自定义域名。</p>
+<h3 id="选择项目">选择项目</h3>
 
-<p><img src="https://i.vgy.me/DsV3WZ.png" alt="vgy.me" /></p>
+<p>  在搜索框中搜索想要部署的项目，比如 zhonger/zhonger.github.io，并点击右侧箭头选中完成创建。</p>
 
-<p>5.拉到页面下方 HTTPS 对已有域名生成 SSL 免费证书，只要第一次设置后，以后会自动更新。</p>
+<p><img src="https://i.lisz.top/blog/RClRWo.webp" alt="选择项目 Select project" /></p>
 
-<p><img src="https://i.vgy.me/sNfFSP.png" alt="vgy.me" /></p>
+<h3 id="自定义域名">自定义域名</h3>
 
-<p>6.(可选) 另外，对于编译命令和变量的设置一般在项目创建之初完成，也可以在 Site settings 的 Build &amp; deploy 中进行修改。默认的 Jekyll 设置如下所示：</p>
+<p>  在创建好的项目的 Site settings 的 Domain management 中可以对已有的 *.netlify.app 域名进行修改，或添加自定义域名。</p>
 
-<p><img src="https://i.vgy.me/9Zpej4.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/wpkz2p.webp" alt="自定义域名 Custom domain" /></p>
 
-<p>7.(可选) 关于编译过程可以在 Deploys 里面查看所有的日志，并且可以预览每一次编译的结果。</p>
+<h3 id="启用-https">启用 HTTPS</h3>
 
-<p><img src="https://i.vgy.me/Vu5JVK.png" alt="vgy.me" />
-<img src="https://i.vgy.me/L97F3B.png" alt="vgy.me" /></p>
+<p>  拉到页面下方 HTTPS 对已有域名生成 SSL 免费证书，只要第一次设置后，以后会自动更新。</p>
+
+<p><img src="https://i.lisz.top/blog/74HffD.webp" alt="启用 HTTPS Enable HTTPS" /></p>
+
+<h3 id="配置变量可选">配置变量（可选）</h3>
+
+<p>  另外，对于编译命令和变量的设置一般在项目创建之初完成，也可以在 Site settings 的 Build &amp; deploy 中进行修改。默认的 Jekyll 设置如下所示：</p>
+
+<p><img src="https://i.lisz.top/blog/gDt22R.webp" alt="vgy.me" /></p>
+
+<h3 id="查看编译日志可选">查看编译日志（可选）</h3>
+
+<p>  关于编译过程可以在 Deploys 里面查看所有的日志，并且可以预览每一次编译的结果。</p>
+
+<p><img src="https://i.lisz.top/blog/UMVUaz.webp" alt="vgy.me" />
+<img src="https://i.lisz.top/blog/cfMYpw.webp" alt="vgy.me" /></p>
 
 <h2 id="验证">验证</h2>
 
@@ -246,7 +261,7 @@
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#部署">部署</a></li><li><a href="#验证">验证</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#部署">部署</a><ul><li><a href="#登录-netlify">登录 Netlify</a></li><li><a href="#新建项目">新建项目</a></li><li><a href="#选择项目">选择项目</a></li><li><a href="#自定义域名">自定义域名</a></li><li><a href="#启用-https">启用 HTTPS</a></li><li><a href="#配置变量可选">配置变量（可选）</a></li><li><a href="#查看编译日志可选">查看编译日志（可选）</a></li></ul></li><li><a href="#验证">验证</a></li></ul>
         </div>
       </div>
       

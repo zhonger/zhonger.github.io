@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 2849 字
+          本文总共 2852 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -193,8 +193,11 @@
           <article class="markdown-body">
             <p>  MacOS 一直以来都是一款非常美观、高效的操作系统，尤其对于开发者来说。然而正常情况下只有在购买一款Mac电脑的情况下，才可以有机会体验这一优秀的操作系统。事实上，如果只是体验而非真实开发、工作使用，我们可以尝试购买兼容的硬件进行组装一台电脑，并自行安装 MacOS。以下仅为笔者在动手实践过程的一个记录，大家可以尝试但最好还是买一台 Macbook Pro ，毕竟硬件 Retina 屏、超大触摸板、TouchBar 这些也是增强 MacOS 使用体验的必备条件。</p>
 
-<p><strong>特别声明：本站不提供任何下载，只是收集和整理了有关信息</strong></p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 特别声明 </div> </div> <div class="content"> <p><strong>本站不提供任何下载，只是收集和整理了有关信息。</strong></p>
 
+
+
+ </div> </div>
 <h2 id="实验组装机配置">实验组装机配置</h2>
 
 <table>
@@ -232,7 +235,7 @@
 
 <h3 id="下载镜像">下载镜像</h3>
 
-<p>  下载 <a href="https://mirrors.dtops.cc/iso/MacOS/daliansky_macos/">含Clover启动工具的Mojave镜像</a> ，感谢由 mirrors.dtops.cc 提供的这一下载地址。</p>
+<p>  下载 <a href="https://mirrors.dtops.cc/iso/MacOS/daliansky_macos/">含 Clover 启动工具的 Mojave 镜像</a> ，感谢由 mirrors.dtops.cc 提供的这一下载地址。</p>
 
 <h3 id="刻录启动盘">刻录启动盘</h3>
 
@@ -249,7 +252,7 @@
 
 <ol>
   <li>重启选择从刚才制作的启动盘的 UEFI 模式启动。</li>
-  <li>先使用<code class="language-plaintext highlighter-rouge">磁盘工具</code>将即将安装用到的硬盘格式化成 Mac OS 扩展 (日志式)和 GUID 分区图，名称可以随意自定义。</li>
+  <li>先使用<strong>磁盘工具</strong>将即将安装用到的硬盘格式化成 Mac OS 扩展 (日志式)和 GUID 分区图，名称可以随意自定义。</li>
   <li>根据提示选择安装介质为格式化好的硬盘，然后一直往下安装即可，因为某些不可抗因素，可能安装会卡住，但是请不要担心，Mac 的安装是可以在你重启电脑之后继续的，多次重启即可完成安装（重启启动需要从启动 U盘 启动，硬盘还没有引导项）。</li>
   <li>根据提示创建用户等其他操作，最后进入系统，不过由于硬盘上还没有引导项，目前还必须从 U盘 加载硬盘上的Mac 系统。</li>
 </ol>
@@ -266,21 +269,21 @@
 
 <ol>
   <li>下载 <a href="https://get.lui8.cn/Webdriver%20All%20Versions.app.zip">Webdriver All Versions.app.zip</a> 并安装。</li>
-  <li>执行以下命令安装驱动。
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /Library/Extensions/NVDAStartupWeb.kext
-<span class="nb">sudo chown</span> <span class="nt">-R</span> root:wheel /Library/Extensions/NVDAStartupWeb.kext
-<span class="nb">sudo touch</span> /System/Library/Extensions/ <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
-<span class="nb">sudo touch</span> /Library/Extensions <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
-</code></pre></div>    </div>
-  </li>
+  <li>执行以下命令安装驱动。</li>
   <li>重启之后，检测显卡是否工作正常。</li>
 </ol>
 
-<p><img src="https://vgy.me/AIFxRH.jpg" alt="" /></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo chmod</span> <span class="nt">-R</span> 755 /Library/Extensions/NVDAStartupWeb.kext
+<span class="nb">sudo chown</span> <span class="nt">-R</span> root:wheel /Library/Extensions/NVDAStartupWeb.kext
+<span class="nb">sudo touch</span> /System/Library/Extensions/ <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
+<span class="nb">sudo touch</span> /Library/Extensions <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>kextcache <span class="nt">-u</span> /
+</code></pre></div></div>
+
+<p><img src="https://i.lisz.top/blog/ZpphYo.webp" alt="检测显卡 Verify GPU" /></p>
 
 <h3 id="系统升级">系统升级</h3>
 
-<p>  由于黑苹果采用 Clover 引导系统完成启动，所以对于正常操作系统的更新有可能会出现问题，不过不用担心：一种方法是反复重启，有一定几率会正常更新；另一种方法是使用启动U盘引导硬盘中的操作系统正常开机，进入操作系统之后需要将更新前有效的 EFI 目录文件覆盖一下新的就行，更新前的文件可以在 EFI_BACKUP 目录下找到，再次重启即可恢复。</p>
+<p>  由于黑苹果采用 Clover 引导系统完成启动，所以对于正常操作系统的更新有可能会出现问题，不过不用担心：一种方法是反复重启，有一定几率会正常更新；另一种方法是使用启动 U 盘引导硬盘中的操作系统正常开机，进入操作系统之后需要将更新前有效的 EFI 目录文件覆盖一下新的就行，更新前的文件可以在 EFI_BACKUP 目录下找到，再次重启即可恢复。</p>
 
 <h2 id="使用体验">使用体验</h2>
 
@@ -291,13 +294,13 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>spctl <span class="nt">--master-disable</span>
 </code></pre></div></div>
 
-<p>​<img src="https://vgy.me/ZpkhIr.jpg" alt="" /></p>
+<p>​<img src="https://i.lisz.top/blog/cx1FcR.webp" alt="允许所有来源 Allow all origins" /></p>
 
 <h3 id="office-for-mac-2019">Office for Mac 2019</h3>
 
 <ul>
   <li>Office 2019 最新安装包：<a href="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.18.18101400_Installer.pkg">右键我复制链接至下载工具</a></li>
-  <li>Office 2016最后一个版本16.16.3安装包：<a href="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.16.18101500_Installer.pkg">右键我复制链接至下载工具</a></li>
+  <li>Office 2016 最后一个版本 16.16.3 安装包：<a href="https://officecdn-microsoft-com.akamaized.net/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/Microsoft_Office_16.16.18101500_Installer.pkg">右键我复制链接至下载工具</a></li>
 </ul>
 
 <h3 id="ntfs硬盘读写支持">NTFS硬盘读写支持</h3>
@@ -334,20 +337,22 @@ brew cask <span class="nb">install </span>google-chrome
 
 <p>  <a href="https://www.macports.org/">Macport</a> 也是 macOS 上一款极具兼容性的软件包管理器，它的工作方式是下载源代码然后在本地编译，其理念是尽量减少对系统现有库的以来，比较搞的就是可能编译的时间会很长（看情况吧）。官网提供 pkg 的安装包，可以直接下载安装。</p>
 
-<p><strong>加速使用推荐</strong> <a href="https://mirrors.ustc.edu.cn">中科大开源镜像站</a></p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p><strong>加速使用推荐</strong> <a href="https://mirrors.ustc.edu.cn">中科大开源镜像站</a></p>
 
+
+
+ </div> </div>
 <h3 id="百度云盘无限制多线程下载">百度云盘无限制多线程下载</h3>
 
 <p>  推荐使用 <a href="https://github.com/proxyee-down-org/proxyee-down">Proxyee Down For Mac</a> （一款 macOS 平台的百度云盘无限制多线程下载工具，能够使用本地 http 代理服务器方式嗅探下载请求，支持所有操作系统和大部分主流浏览器，支持分段下载和断点下载）。<a href="https://github.com/proxyee-down-org/proxyee-down/releases">点击跳转到下载页</a></p>
 
 <h2 id="参考资料">参考资料</h2>
 
-<ol>
+<ul>
   <li><a href="https://www.travelertechie.com/2018/09/nvidia-web-drivers-mojave-workaround.html">NVIDIA Web Drivers Mojave Workaround</a></li>
   <li><a href="https://www.tonymacx86.com/threads/success-gigabyte-z370-aorus-gaming-5-gtx-1050.261070/">Success! Gigabyte z370 Aorus Gaming 5, gtx 1050</a></li>
   <li><a href="https://blog.csdn.net/mier9042/article/details/80541368">PC傻瓜式安装黑苹果并打造成全能逆向工作站</a></li>
-</ol>
-
+</ul>
 
           </article>
         </div>   

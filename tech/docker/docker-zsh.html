@@ -160,7 +160,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1731 字
+          本文总共 1739 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -203,7 +203,7 @@
 
 <h2 id="安装配置">安装配置</h2>
 
-<p>笔者想要构建的开发环境基础 Docker 镜像主要的特点是以上两点，具体来说是：</p>
+<p>  笔者想要构建的开发环境基础 Docker 镜像主要的特点是以上两点，具体来说是：</p>
 
 <ul>
   <li>具有 sudo 权限的非 root 用户：ubuntu</li>
@@ -211,7 +211,7 @@
   <li>ubuntu 用户的默认 shell 是 zsh</li>
 </ul>
 
-<p>因此，所对应的 Docker 镜像生成配置文件（Dockerfile）如下所示。</p>
+<p>  因此，所对应的 Docker 镜像生成配置文件（Dockerfile）如下所示。</p>
 
 <div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> ubuntu:latest</span>
 
@@ -247,12 +247,12 @@
 <span class="k">ENTRYPOINT</span><span class="s"> ["/bin/zsh"]</span>
 </code></pre></div></div>
 
-<p>使用以下命令编译生成 Docker 镜像：</p>
+<p>  使用以下命令编译生成 Docker 镜像：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nb">.</span> <span class="nt">-t</span> zhonger/ubuntu:latest
 </code></pre></div></div>
 
-<p>使用以下命令运行一个 Docker 实例验证：</p>
+<p>  使用以下命令运行一个 Docker 实例验证：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">--name</span> dev zhonger/ubuntu:latest
 docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh

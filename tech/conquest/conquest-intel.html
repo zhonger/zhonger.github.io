@@ -158,13 +158,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 6219 字
+          本文总共 6331 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 18 分钟
+             阅读全文大约需要 19 分钟
           </span>
           
           <span class="post-meta-item">
@@ -234,7 +234,7 @@
 
 <h3 id="安装-mkl">安装 MKL</h3>
 
-<p>注意此处使用的 bash 配置 PATH，如果是 zsh 请对应修改 为 .zshrc。</p>
+<p>  注意此处使用的 bash 配置 PATH，如果是 zsh 请对应修改 为 .zshrc。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">echo</span> <span class="s2">"export PATH=/opt/openmpi/bin:/opt/fftw3/bin:</span><span class="nv">$PATH</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
 <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export MKLROOT=/opt/intel/compilers_and_libraries_2020.4.304/linux/mkl"</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="se">\</span>
@@ -250,8 +250,16 @@ wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-20
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> intel-mkl-2020.4-912
 </code></pre></div></div>
 
-<h4 id="如果遇到-e-sub-process-usrbindpkg-returned-an-error-code-1怎么办">如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？</h4>
+<div class="premonition error"> <div class="header"> <svg class="icon error" aria-hidden="true"> <use xlink:href="#icon-error"></use> </svg> <div class="title"> 问题 </div> </div> <div class="content"> <p>如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？</p>
 
+
+
+ </div> </div>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 解决办法 </div> </div> <div class="content"> <p>  这个问题一般是由于某个软件安装过程失败造成的，只需要如下所示将安装到一半的软件删除重来一遍即可。</p>
+
+
+
+ </div> </div>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/lib/dpkg/
 <span class="nb">sudo mv </span>info/ info_bak          <span class="c"># 现将info文件夹更名</span>
 <span class="nb">sudo mkdir </span>info                 <span class="c"># 再新建一个新的info文件夹</span>
@@ -264,7 +272,7 @@ wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-20
 
 <h3 id="编译安装-conquest">编译安装 CONQUEST</h3>
 
-<p>下载 CONQUEST 最新源代码：</p>
+<p>  下载 CONQUEST 最新源代码：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /opt/softwares/
 git clone https://github.com/OrderN/CONQUEST-release conquest
@@ -272,60 +280,66 @@ git clone https://github.com/OrderN/CONQUEST-release conquest
 
 <p>修改 conquest/src/system.make 文件如下所示：</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker (2021/01/27 zhonger)</span>
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker (2021/01/27 zhonger)
+</span>
+<span class="c"># Set compilers
+</span><span class="py">FC</span><span class="p">=</span><span class="s">mpif90</span>
+<span class="py">F77</span><span class="p">=</span><span class="s">mpif77</span>
 
-<span class="c"># Set compilers</span>
-<span class="nv">FC</span><span class="o">=</span>mpif90
-<span class="nv">F77</span><span class="o">=</span>mpif77
+<span class="c"># Linking flags
+</span><span class="py">LINKFLAGS</span> <span class="p">=</span> <span class="s">-L$(MKLROOT)/lib/intel64 $(MKLROOT)/lib/intel64/libmkl_blacs_openmpi_lp64.a $(MKLROOT)/lib/intel64/libmkl_lapack95_lp64.a -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64  -lpthread -lm</span>
+<span class="c">#LINKFLAGS= -L/usr/local/lib
+</span><span class="py">ARFLAGS</span><span class="p">=</span>
 
-<span class="c"># Linking flags</span>
-LINKFLAGS <span class="o">=</span> <span class="nt">-L</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64 <span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64/libmkl_blacs_openmpi_lp64.a <span class="si">$(</span>MKLROOT<span class="si">)</span>/lib/intel64/libmkl_lapack95_lp64.a <span class="nt">-lmkl_scalapack_lp64</span> <span class="nt">-lmkl_intel_lp64</span> <span class="nt">-lmkl_sequential</span> <span class="nt">-lmkl_core</span> <span class="nt">-lmkl_blacs_openmpi_lp64</span>  <span class="nt">-lpthread</span> <span class="nt">-lm</span>
-<span class="c">#LINKFLAGS= -L/usr/local/lib</span>
-<span class="nv">ARFLAGS</span><span class="o">=</span>
+<span class="c"># Compilation flags
+</span><span class="py">COMPFLAGS</span><span class="p">=</span> <span class="s">-I$(MKLROOT)/include/intel64/lp64 -I$(MKLROOT)/include</span>
+<span class="c">#COMPFLAGS= -O3 $(XC_COMPFLAGS)
+</span><span class="py">COMPFLAGS_F77</span><span class="p">=</span> <span class="s">$(COMPFLAGS)</span>
 
-<span class="c"># Compilation flags</span>
-<span class="nv">COMPFLAGS</span><span class="o">=</span> <span class="nt">-I</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/include/intel64/lp64 <span class="nt">-I</span><span class="si">$(</span>MKLROOT<span class="si">)</span>/include
-<span class="c">#COMPFLAGS= -O3 $(XC_COMPFLAGS)</span>
-<span class="nv">COMPFLAGS_F77</span><span class="o">=</span> <span class="si">$(</span>COMPFLAGS<span class="si">)</span>
+<span class="c"># Set BLAS and LAPACK libraries
+#BLAS= -lvecLibFort
+</span>
+<span class="c"># Full library call; remove scalapack if using dummy diag module
+</span><span class="py">LIBS</span><span class="p">=</span> <span class="s">$(FFT_LIB) $(XC_LIB) $(BLAS)</span>
+<span class="c">#LIBS= $(FFT_LIB) $(XC_LIB) -lscalapack $(BLAS)
+</span>
+<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library
+</span>
+<span class="c"># Conquest XC library
+</span><span class="py">XC_LIBRARY</span> <span class="p">=</span> <span class="s">CQ</span>
+<span class="py">XC_LIB</span> <span class="p">=</span>
+<span class="py">XC_COMPFLAGS</span> <span class="p">=</span>
 
-<span class="c"># Set BLAS and LAPACK libraries</span>
-<span class="c">#BLAS= -lvecLibFort</span>
+<span class="c"># LibXC compatibility
+# Choose old LibXC (v2.x) or modern versions
+#XC_LIBRARY = LibXC_v2
+#XC_LIBRARY = LibXC
+#XC_LIB = -lxcf90 -lxc
+#XC_COMPFLAGS = -I/usr/local/include
+</span>
+<span class="c"># Set FFT library
+</span><span class="py">FFT_LIB</span><span class="p">=</span> <span class="s">-L/opt/fftw3/lib/ -lfftw3</span>
+<span class="c">#FFT_LIB=-lfftw3
+</span><span class="py">FFT_OBJ</span><span class="p">=</span><span class="s">fft_fftw3.o</span>
 
-<span class="c"># Full library call; remove scalapack if using dummy diag module</span>
-<span class="nv">LIBS</span><span class="o">=</span> <span class="si">$(</span>FFT_LIB<span class="si">)</span> <span class="si">$(</span>XC_LIB<span class="si">)</span> <span class="si">$(</span>BLAS<span class="si">)</span>
-<span class="c">#LIBS= $(FFT_LIB) $(XC_LIB) -lscalapack $(BLAS)</span>
-
-<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library</span>
-
-<span class="c"># Conquest XC library</span>
-XC_LIBRARY <span class="o">=</span> CQ
-XC_LIB <span class="o">=</span>
-XC_COMPFLAGS <span class="o">=</span>
-
-<span class="c"># LibXC compatibility</span>
-<span class="c"># Choose old LibXC (v2.x) or modern versions</span>
-<span class="c">#XC_LIBRARY = LibXC_v2</span>
-<span class="c">#XC_LIBRARY = LibXC</span>
-<span class="c">#XC_LIB = -lxcf90 -lxc</span>
-<span class="c">#XC_COMPFLAGS = -I/usr/local/include</span>
-
-<span class="c"># Set FFT library</span>
-<span class="nv">FFT_LIB</span><span class="o">=</span> <span class="nt">-L</span>/opt/fftw3/lib/ <span class="nt">-lfftw3</span>
-<span class="c">#FFT_LIB=-lfftw3</span>
-<span class="nv">FFT_OBJ</span><span class="o">=</span>fft_fftw3.o
-
-<span class="c"># Matrix multiplication kernel type</span>
-MULT_KERN <span class="o">=</span> default
-<span class="c"># Use dummy DiagModule or not</span>
-DIAG_DUMMY <span class="o">=</span>
+<span class="c"># Matrix multiplication kernel type
+</span><span class="py">MULT_KERN</span> <span class="p">=</span> <span class="s">default</span>
+<span class="c"># Use dummy DiagModule or not
+</span><span class="py">DIAG_DUMMY</span> <span class="p">=</span>
 </code></pre></div></div>
 
 <h4 id="编译错误解决">编译错误解决</h4>
 
-<p><strong>编译错误：</strong>generic_blas.o: in function `__genblas_MOD_two_potri’:……</p>
+<div class="premonition error"> <div class="header"> <svg class="icon error" aria-hidden="true"> <use xlink:href="#icon-error"></use> </svg> <div class="title"> 问题 </div> </div> <div class="content"> <p><strong>编译错误：</strong>generic_blas.o: in function `__genblas_MOD_two_potri’:……</p>
 
-<p><strong>解决办法：</strong>修改 conquest/src/Makefile 文件，如下修改。这里发生编译错误的原因是编译程序如果按照原来的顺序无法寻找到 MKL 提供的依赖库文件，相反将链接依赖库文件的顺序放到后面编译程序就能成功找到依赖库文件。这么听起来有点玄学，但事实就是这样的。</p>
 
+
+ </div> </div>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 解决办法 </div> </div> <div class="content"> <p>  修改 conquest/src/Makefile 文件，如下修改。这里发生编译错误的原因是编译程序如果按照原来的顺序无法寻找到 MKL 提供的依赖库文件，相反将链接依赖库文件的顺序放到后面编译程序就能成功找到依赖库文件。这么听起来有点玄学，但事实就是这样的。</p>
+
+
+
+ </div> </div>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 第68行</span>
 <span class="si">$(</span>FC<span class="si">)</span> <span class="si">$(</span>LINKFLAGS<span class="si">)</span> <span class="nt">-o</span> <span class="si">$(</span>TARGET<span class="si">)</span> <span class="si">$(</span>NODE_OBJECTS<span class="si">)</span> <span class="si">$(</span>LIBS<span class="si">)</span>
 
@@ -335,68 +349,68 @@ DIAG_DUMMY <span class="o">=</span>
 
 <h2 id="docker-化">Docker 化</h2>
 
-<p>以下为 Docker 化所需的 Dockerfile 文件（基于笔者个性化后的 Intel 官方 Docker 镜像）：</p>
+<p>  以下为 Docker 化所需的 Dockerfile 文件（基于笔者个性化后的 Intel 官方 Docker 镜像）：</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM zhonger/oneapi-hpckit:latest
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> zhonger/oneapi-hpckit:latest</span>
 
-LABEL <span class="nv">maintainer</span><span class="o">=</span><span class="s2">"zhonger zhonger@live.cn"</span>
+<span class="k">LABEL</span><span class="s"> maintainer="zhonger zhonger@live.cn"</span>
 
 <span class="c"># Install open-mpi</span>
-RUN <span class="nb">sudo </span>apt update <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> wget <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/softwares /opt/openmpi /opt/fftw3 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/openmpi /opt/softwares /opt/fftw3 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.gz <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf openmpi-4.1.0.tar.gz <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>openmpi-4.1.0 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/openmpi <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+<span class="k">RUN </span><span class="nb">sudo </span>apt update <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> wget <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/softwares /opt/openmpi /opt/fftw3 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo chown</span> <span class="nt">-R</span> ubuntu:ubuntu /opt/openmpi /opt/softwares /opt/fftw3 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /opt/softwares <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.0.tar.gz <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf openmpi-4.1.0.tar.gz <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>openmpi-4.1.0 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/openmpi <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
 
 <span class="c"># Install fftw3</span>
-RUN <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> http://www.fftw.org/fftw-3.3.9.tar.gz <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf fftw-3.3.9.tar.gz <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>fftw-3.3.9 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/fftw3 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
+<span class="k">RUN </span><span class="nb">cd</span> /opt/softwares <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> http://www.fftw.org/fftw-3.3.9.tar.gz <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf fftw-3.3.9.tar.gz <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>fftw-3.3.9 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> ./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/fftw3 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make <span class="nt">-j</span> 128 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make <span class="nb">install</span>
 
 <span class="c"># Add PATH for open-mpi &amp; fftw3</span>
-RUN <span class="nb">echo</span> <span class="s2">"export PATH=/opt/openmpi/bin:/opt/fftw3/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export MKLROOT=/opt/intel/oneapi/mkl/latest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LD_LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LD_LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
+<span class="k">RUN </span><span class="nb">echo</span> <span class="s2">"export PATH=/opt/openmpi/bin:/opt/fftw3/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export MKLROOT=/opt/intel/oneapi/mkl/latest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LD_LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LD_LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"export LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:</span><span class="se">\$</span><span class="s2">LIBRARY_PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
 
 <span class="c"># Compile CONQUEST</span>
-COPY system.make /home/ubuntu/system.make
-ENV <span class="nv">PATH</span><span class="o">=</span>/opt/openmpi/bin:/opt/fftw3/bin:<span class="nv">$PATH</span>
-ENV <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span>/opt/openmpi/lib:/opt/fftw3/lib:<span class="nv">$LD_LIBRARY_PATH</span>
-ENV <span class="nv">LIBRARY_PATH</span><span class="o">=</span>/opt/openmpi/lib:/opt/fftw3/lib:<span class="nv">$LIBRARY_PATH</span>
-RUN <span class="nb">cd</span> /opt/softwares <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> git clone https://github.com/OrderN/CONQUEST-release conquest <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>conquest/src <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cp</span> ~/system.make ./system.make <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ../tools/BasisGeneration <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">mv</span> ~/system.make ./system.make <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> make 
+<span class="k">COPY</span><span class="s"> system.make /home/ubuntu/system.make</span>
+<span class="k">ENV</span><span class="s"> PATH=/opt/openmpi/bin:/opt/fftw3/bin:$PATH</span>
+<span class="k">ENV</span><span class="s"> LD_LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:$LD_LIBRARY_PATH</span>
+<span class="k">ENV</span><span class="s"> LIBRARY_PATH=/opt/openmpi/lib:/opt/fftw3/lib:$LIBRARY_PATH</span>
+<span class="k">RUN </span><span class="nb">cd</span> /opt/softwares <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> git clone https://github.com/OrderN/CONQUEST-release conquest <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cd </span>conquest/src <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cp</span> ~/system.make ./system.make <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ../tools/BasisGeneration <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">mv </span>system.make system.make.bak <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">mv</span> ~/system.make ./system.make <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> make 
 
 <span class="c"># Add PATH for CONQUEST</span>
-RUN <span class="nb">echo</span> <span class="s2">"export PATH=/opt/softwares/conquest/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cq=/opt/softwares/conquest/bin/Conquest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cqion=/opt/softwares/conquest/bin/MakeIonFiles"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
+<span class="k">RUN </span><span class="nb">echo</span> <span class="s2">"export PATH=/opt/softwares/conquest/bin:</span><span class="se">\$</span><span class="s2">PATH"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cq=/opt/softwares/conquest/bin/Conquest"</span> <span class="o">&gt;&gt;</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"alias cqion=/opt/softwares/conquest/bin/MakeIonFiles"</span> <span class="o">&gt;&gt;</span> ~/.zshrc
 
 <span class="c"># Clean apt-cache &amp; archive files</span>
-RUN <span class="nb">sudo </span>apt autoremove <span class="nt">-y</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt clean <span class="nt">-y</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span> <span class="se">\</span>
-    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> /opt/softwares/<span class="k">*</span>.tar.gz
+<span class="k">RUN </span><span class="nb">sudo </span>apt autoremove <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt clean <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> /opt/softwares/<span class="k">*</span>.tar.gz
 
-ENTRYPOINT <span class="o">[</span><span class="s2">"/bin/zsh"</span><span class="o">]</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["/bin/zsh"]</span>
 </code></pre></div></div>
 
 <p>  镜像构建过程中所需的 system.make 文件与上一节中的文件内容一致，使用以下命令编译生成 Docker 镜像。</p>
@@ -408,15 +422,18 @@ ENTRYPOINT <span class="o">[</span><span class="s2">"/bin/zsh"</span><span class
 
 <h4 id="方式一">方式一</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">--name</span> dev zhonger/conquest:latest
-</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动一个实例</span>
+docker run <span class="nt">-ti</span> <span class="nt">-d</span> <span class="nt">--name</span> dev zhonger/conquest:latest
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
+<span class="c"># 进入实例终端</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
 </code></pre></div></div>
 
 <h4 id="方式二">方式二</h4>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
 <span class="na">services</span><span class="pi">:</span>
 
   <span class="na">conquest</span><span class="pi">:</span>
@@ -429,7 +446,10 @@ ENTRYPOINT <span class="o">[</span><span class="s2">"/bin/zsh"</span><span class
     <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
 </code></pre></div></div>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动一个实例</span>
+docker-compose up <span class="nt">-d</span>
+
+<span class="c"># 进入实例终端</span>
 docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
 </code></pre></div></div>
 
@@ -437,7 +457,7 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> dev /bin/zsh
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#ubuntu">Ubuntu</a><ul><li><a href="#安装-openmpi">安装 OpenMPI</a></li><li><a href="#安装-fftw3">安装 FFTW3</a></li><li><a href="#安装-mkl">安装 MKL</a><ul><li><a href="#如果遇到-e-sub-process-usrbindpkg-returned-an-error-code-1怎么办">如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？</a></li></ul></li><li><a href="#编译安装-conquest">编译安装 CONQUEST</a><ul><li><a href="#编译错误解决">编译错误解决</a></li></ul></li></ul></li><li><a href="#docker-化">Docker 化</a><ul><li><a href="#运行">运行</a><ul><li><a href="#方式一">方式一</a></li><li><a href="#方式二">方式二</a></li></ul></li></ul></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#ubuntu">Ubuntu</a><ul><li><a href="#安装-openmpi">安装 OpenMPI</a></li><li><a href="#安装-fftw3">安装 FFTW3</a></li><li><a href="#安装-mkl">安装 MKL</a></li><li><a href="#编译安装-conquest">编译安装 CONQUEST</a><ul><li><a href="#编译错误解决">编译错误解决</a></li></ul></li></ul></li><li><a href="#docker-化">Docker 化</a><ul><li><a href="#运行">运行</a><ul><li><a href="#方式一">方式一</a></li><li><a href="#方式二">方式二</a></li></ul></li></ul></li></ul>
         </div>
       </div>
       

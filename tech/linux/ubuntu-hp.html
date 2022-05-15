@@ -160,7 +160,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 978 字
+          本文总共 994 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -193,7 +193,8 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <p>惠普打印机对于 Linux 平台的支持一向很好，官方给出来的支持列表如下（不要太全面）：</p>
+            <p>  惠普打印机对于 Linux 平台的支持一向很好，官方给出来的支持列表如下（不要太全面）：</p>
+
 <ul>
   <li>SUSE Linux (13.2, 42.1, 42.2, 42.3)</li>
   <li>Fedora (22, 23, 24, 25, 26,27)</li>
@@ -204,8 +205,6 @@
   <li>Debian (7.0, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8,9.1,9.2,9.3,9.4)</li>
   <li>Manjaro (17.1.4)</li>
 </ul>
-
-<p><a href="https://developers.hp.com/hp-linux-imaging-and-printing/downloads">惠普打印机 Linux 支持官方连接</a></p>
 
 <p>  个人习惯使用 Ubuntu 操作系统作为桌面开发系统，所以就以 Ubuntu 16.04 为例安装 HP 打印机驱动。</p>
 
@@ -219,23 +218,27 @@
 
 <h2 id="安装惠普打印机驱动">安装惠普打印机驱动</h2>
 
-<ol>
-  <li>在 Dash 中打 HP 找到 HPLIP TOOLBOX 并点击图标打开；</li>
-  <li>点击 Setup Device 或 加号按钮 打开添加设备窗口，选择第二项 Network/Ethernet/Wireless network (direct connection or JetDirect) 网络连接（若使用 USB 连接则选择第一项 Universal Serial Bus (USB)）；</li>
-  <li>点击 Show Advanced Options, 勾选 Manual Discovery （手动发现），在文本框内填写对应的打印机内网 IP，端口无须修改，点击 Next 进入下一步；</li>
-  <li>如果 IP 是正确的话，那就会出现发现的打印机设备，勾选设备并点击 Next 进入下一步安装驱动；</li>
-  <li>安装驱动时选择第一项：以插件的方式从惠普官方自动下载驱动安装，安装完成后自动关闭窗口并显示安装驱动成功。</li>
-</ol>
+<p>  在 Dash 中打 HP 找到 HPLIP TOOLBOX 并点击图标打开；<br />
+  点击 Setup Device 或 加号按钮 打开添加设备窗口，选择第二项 Network/Ethernet/Wireless network (direct connection or JetDirect) 网络连接（若使用 USB 连接则选择第一项 Universal Serial Bus (USB)）；<br />
+  点击 Show Advanced Options, 勾选 Manual Discovery （手动发现），在文本框内填写对应的打印机内网 IP，端口无须修改，点击 Next 进入下一步；<br />
+  如果 IP 是正确的话，那就会出现发现的打印机设备，勾选设备并点击 Next 进入下一步安装驱动；<br />
+  安装驱动时选择第一项：以插件的方式从惠普官方自动下载驱动安装，安装完成后自动关闭窗口并显示安装驱动成功。</p>
 
 <h2 id="验证驱动">验证驱动</h2>
 
 <p>  在<strong>系统设置</strong>中的<strong>打印机</strong>的列表中看见新添加的打印机设备，并右键选择属性可以看见打印测试页按钮，执行并观察打印结果即可验证驱动是否安装成功。</p>
 
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://developers.hp.com/hp-linux-imaging-and-printing/downloads">惠普打印机 Linux 支持官方连接</a></li>
+</ul>
+
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#安装惠普打印机管理界面">安装惠普打印机管理界面</a></li><li><a href="#安装惠普打印机驱动">安装惠普打印机驱动</a></li><li><a href="#验证驱动">验证驱动</a></li></ul>
+          <ul><li><a href="#安装惠普打印机管理界面">安装惠普打印机管理界面</a></li><li><a href="#安装惠普打印机驱动">安装惠普打印机驱动</a></li><li><a href="#验证驱动">验证驱动</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       

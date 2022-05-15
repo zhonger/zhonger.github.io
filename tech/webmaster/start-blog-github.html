@@ -164,13 +164,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 594 字
+          本文总共 720 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 2 分钟
+             阅读全文大约需要 3 分钟
           </span>
           
           <span class="post-meta-item">
@@ -205,25 +205,39 @@
 
 <p>  在已经完成 Jekyll 博客的内容编辑和更新提交的前提下，执行以下操作来完成在 Github 的在线部署。</p>
 
-<p>1.访问 Github 项目，点击 Settings。</p>
+<h3 id="开启-pages">开启 Pages</h3>
 
-<p><img src="https://i.vgy.me/u1sAjy.png" alt="vgy.me" /></p>
+<p>  访问 Github 项目，点击 Settings。</p>
 
-<p>2.下拉至 Github Pages，选择分支为 master 或者 main，目录为根目录，不要选择主题，建议 Enforce HTTPS。</p>
+<p><img src="https://i.lisz.top/blog/16b12O.webp" alt="开启 Pages Enable Pages" /></p>
 
-<p><img src="https://i.vgy.me/XivwNm.png" alt="vgy.me" /></p>
+<h3 id="选择分支">选择分支</h3>
 
-<p>3.(可选) 如果想用自己的域名，可以如上图所示添加一个 CNAME 解析记录到 username.github.io 上，并在自定义域名框中填写该域名。</p>
+<p>  下拉至 Github Pages，选择分支为 master 或者 main，目录为根目录，不要选择主题，建议 Enforce HTTPS。</p>
+
+<p><img src="https://i.lisz.top/blog/2bRpVi.webp" alt="选择分支 Select branch" /></p>
+
+<h3 id="自定义域名可选">自定义域名(可选)</h3>
+
+<p>  如果想用自己的域名，可以如上图所示添加一个 CNAME 解析记录到 username.github.io 上，并在自定义域名框中填写该域名。</p>
 
 <h2 id="验证">验证</h2>
 
-<p>  浏览器访问 https://username.github.io 或自定义域名即可验证是否成功部署。如果访问失败，可能是因为编译过程失败。一般来说，在本地预览成功，Github 编译也不会有什么大问题。</p>
+<p>  浏览器访问 <a href="https://username.github.io">https://username.github.io</a> 或自定义域名即可验证是否成功部署。如果访问失败，可能是因为编译过程失败。一般来说，在本地预览成功，Github 编译也不会有什么大问题。</p>
+
+<p>（2022年5月15日更新）</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  如果发现因为使用了 Github 默认不支持的插件而编译失败，可以使用 Github Action 来自定义编译过程。详情请移步 <a href="../docker/github-action.html">《利用 Github Action 一键编译多平台 Docker 镜像》</a>。</p>
+
+
+
+ </div> </div>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#部署">部署</a></li><li><a href="#验证">验证</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#部署">部署</a><ul><li><a href="#开启-pages">开启 Pages</a></li><li><a href="#选择分支">选择分支</a></li><li><a href="#自定义域名可选">自定义域名(可选)</a></li></ul></li><li><a href="#验证">验证</a></li></ul>
         </div>
       </div>
       

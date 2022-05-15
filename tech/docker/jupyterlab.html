@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 10688 字
+          本文总共 10690 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -203,9 +203,10 @@
 
 <h2 id="搭建">搭建</h2>
 
-<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的<a href="https://jupyter-docker-stacks.readthedocs.io/">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks">Dockerfile 集合</a> 吧。</p>
+<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的 <a href="https://jupyter-docker-stacks.readthedocs.io/">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks">Dockerfile 集合</a> 吧。</p>
 
 <p>  JupyterLab 提供两种方式启动多用户多实例：</p>
+
 <ul>
   <li><strong>DockerSpawner 方式</strong>：每个用户独享一个 Docker 实例，能有效隔离用户。</li>
   <li><strong>SystemSpawner 方式</strong>：共享同一个 Docker 实例，以系统用户身份运行。</li>
@@ -213,155 +214,155 @@
 
 <p>  事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。</p>
 
-<p><img src="https://jupyterhub.readthedocs.io/en/stable/_images/jhub-fluxogram.jpeg" alt="JupyterHub 架构图" /></p>
+<p><img src="https://i.lisz.top/blog/Uibi3q.webp" alt="架构图 JupyterHub Design" /></p>
 
 <p>  以下为搭建所需的文件的列表：</p>
 
-<p><img src="https://i.vgy.me/4pnx0D.png" alt="vgy.me" /></p>
+<p><img src="https://i.lisz.top/blog/tU3EqP.webp" alt="文件列表 Files" /></p>
 
 <h3 id="构建-jupyter-notebook-实例镜像">构建 Jupyter Notebook 实例镜像</h3>
 
 <h4 id="基础镜像-base-notebook">基础镜像 base-notebook</h4>
 
-<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">base-notebook 目录</a>一致。</p>
+<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">base-notebook 目录</a> 一致。</p>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
-<span class="s">ARG ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04</span>
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Dockerfile</span>
+<span class="k">ARG</span><span class="s"> ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04</span>
 
-<span class="s">ARG BASE_CONTAINER=$ROOT_CONTAINER</span>
-<span class="s">FROM $BASE_CONTAINER</span>
+<span class="k">ARG</span><span class="s"> BASE_CONTAINER=$ROOT_CONTAINER</span>
+<span class="k">FROM</span><span class="s"> $BASE_CONTAINER</span>
 
-<span class="s">ARG NB_USER="ubuntu"</span>
-<span class="s">ARG NB_UID="1000"</span>
-<span class="s">ARG NB_GID="100"</span>
+<span class="k">ARG</span><span class="s"> NB_USER="ubuntu"</span>
+<span class="k">ARG</span><span class="s"> NB_UID="1000"</span>
+<span class="k">ARG</span><span class="s"> NB_GID="100"</span>
 
-<span class="c1"># Fix DL4006</span>
-<span class="s">SHELL ["/bin/bash", "-o", "pipefail", "-c"]</span>
+<span class="c"># Fix DL4006</span>
+<span class="k">SHELL</span><span class="s"> ["/bin/bash", "-o", "pipefail", "-c"]</span>
 
-<span class="s">USER root</span>
+<span class="k">USER</span><span class="s"> root</span>
 
-<span class="c1"># Install all OS dependencies for notebook server that starts but lacks all</span>
-<span class="c1"># features (e.g., download as all possible file formats)</span>
-<span class="s">ENV DEBIAN_FRONTEND noninteractive</span>
-<span class="s">RUN apt-get update \</span>
-    <span class="s">&amp;&amp; apt-get install -yq --no-install-recommends wget htop vim bzip2 ca-certificates sudo locales fonts-liberation run-one \</span>
-    <span class="s">&amp;&amp; apt-get clean \</span>
-    <span class="s">&amp;&amp; rm -rf /var/lib/apt/lists/*</span>
+<span class="c"># Install all OS dependencies for notebook server that starts but lacks all</span>
+<span class="c"># features (e.g., download as all possible file formats)</span>
+<span class="k">ENV</span><span class="s"> DEBIAN_FRONTEND noninteractive</span>
+<span class="k">RUN </span>apt-get update <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt-get <span class="nb">install</span> <span class="nt">-yq</span> <span class="nt">--no-install-recommends</span> wget htop vim bzip2 ca-certificates <span class="nb">sudo </span>locales fonts-liberation run-one <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt-get clean <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
 
-<span class="s">RUN echo "en_US.UTF-8 UTF-8" &gt; /etc/locale.gen &amp;&amp; \</span>
-    <span class="s">locale-gen</span>
+<span class="k">RUN </span><span class="nb">echo</span> <span class="s2">"en_US.UTF-8 UTF-8"</span> <span class="o">&gt;</span> /etc/locale.gen <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    locale-gen
 
-<span class="c1"># Configure environment</span>
-<span class="s">ENV CONDA_DIR=/opt/conda \</span>
-    <span class="s">SHELL=/bin/bash \</span>
-    <span class="s">NB_USER=$NB_USER \</span>
-    <span class="s">NB_UID=$NB_UID \</span>
-    <span class="s">NB_GID=$NB_GID \</span>
-    <span class="s">LC_ALL=en_US.UTF-8 \</span>
-    <span class="s">LANG=en_US.UTF-8 \</span>
-    <span class="s">LANGUAGE=en_US.UTF-8</span>
-<span class="s">ENV PATH=$CONDA_DIR/bin:$PATH \</span>
-    <span class="s">HOME=/home/$NB_USER</span>
+<span class="c"># Configure environment</span>
+<span class="k">ENV</span><span class="s"> CONDA_DIR=/opt/conda \</span>
+    SHELL=/bin/bash \
+    NB_USER=$NB_USER \
+    NB_UID=$NB_UID \
+    NB_GID=$NB_GID \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+<span class="k">ENV</span><span class="s"> PATH=$CONDA_DIR/bin:$PATH \</span>
+    HOME=/home/$NB_USER
 
-<span class="c1"># Copy a script that we will use to correct permissions after running certain commands</span>
-<span class="s">COPY fix-permissions /usr/local/bin/fix-permissions</span>
-<span class="s">RUN chmod a+rx /usr/local/bin/fix-permissions</span>
+<span class="c"># Copy a script that we will use to correct permissions after running certain commands</span>
+<span class="k">COPY</span><span class="s"> fix-permissions /usr/local/bin/fix-permissions</span>
+<span class="k">RUN </span><span class="nb">chmod </span>a+rx /usr/local/bin/fix-permissions
 
-<span class="c1"># Enable prompt color in the skeleton .bashrc before creating the default NB_USER</span>
-<span class="s">RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashrc</span>
+<span class="c"># Enable prompt color in the skeleton .bashrc before creating the default NB_USER</span>
+<span class="k">RUN </span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/^#force_color_prompt=yes/force_color_prompt=yes/'</span> /etc/skel/.bashrc
 
-<span class="c1"># Create NB_USER wtih name ubuntu user with UID=1000 and in the 'users' group</span>
-<span class="c1"># and make sure these dirs are writable by the `users` group.</span>
-<span class="s">RUN echo "auth requisite pam_deny.so" &gt;&gt; /etc/pam.d/su \</span>
-    <span class="s">&amp;&amp; sed -i.bak -e 's/^%admin/#%admin/' /etc/sudoers \</span>
-    <span class="s">&amp;&amp; sed -i.bak -e 's/^%sudo/#%sudo/' /etc/sudoers \</span>
-    <span class="s">&amp;&amp; useradd -m -s /bin/bash -N -u $NB_UID $NB_USER -g $NB_GID \</span>
-    <span class="s">&amp;&amp; mkdir -p $CONDA_DIR \</span>
-    <span class="s"># &amp;&amp; chown $NB_USER:$NB_GID  \</span>
-    <span class="s">&amp;&amp; chmod g+w /etc/passwd \</span>
-    <span class="s">&amp;&amp; fix-permissions $HOME \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; adduser ubuntu sudo \</span>
-    <span class="s">&amp;&amp; echo "ubuntu ALL=(ALL) NOPASSWD</span> <span class="err">:</span> <span class="s">ALL" | tee /etc/sudoers.d/nopasswd4sudo</span>
+<span class="c"># Create NB_USER wtih name ubuntu user with UID=1000 and in the 'users' group</span>
+<span class="c"># and make sure these dirs are writable by the `users` group.</span>
+<span class="k">RUN </span><span class="nb">echo</span> <span class="s2">"auth requisite pam_deny.so"</span> <span class="o">&gt;&gt;</span> /etc/pam.d/su <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sed</span> <span class="nt">-i</span>.bak <span class="nt">-e</span> <span class="s1">'s/^%admin/#%admin/'</span> /etc/sudoers <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sed</span> <span class="nt">-i</span>.bak <span class="nt">-e</span> <span class="s1">'s/^%sudo/#%sudo/'</span> /etc/sudoers <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> useradd <span class="nt">-m</span> <span class="nt">-s</span> /bin/bash <span class="nt">-N</span> <span class="nt">-u</span> <span class="nv">$NB_UID</span> <span class="nv">$NB_USER</span> <span class="nt">-g</span> <span class="nv">$NB_GID</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="c"># &amp;&amp; chown $NB_USER:$NB_GID  </span><span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">chmod </span>g+w /etc/passwd <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions <span class="nv">$HOME</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> adduser ubuntu <span class="nb">sudo</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"ubuntu ALL=(ALL) NOPASSWD : ALL"</span> | <span class="nb">tee</span> /etc/sudoers.d/nopasswd4sudo
 
-<span class="s">USER $NB_UID</span>
-<span class="s">WORKDIR $HOME</span>
-<span class="s">ARG PYTHON_VERSION=default</span>
+<span class="k">USER</span><span class="s"> $NB_UID</span>
+<span class="k">WORKDIR</span><span class="s"> $HOME</span>
+<span class="k">ARG</span><span class="s"> PYTHON_VERSION=default</span>
 
-<span class="c1"># Setup work directory for backward-compatibility</span>
-<span class="s">RUN mkdir /home/$NB_USER/work &amp;&amp; \</span>
-    <span class="s">fix-permissions /home/$NB_USER</span>
+<span class="c"># Setup work directory for backward-compatibility</span>
+<span class="k">RUN </span><span class="nb">mkdir</span> /home/<span class="nv">$NB_USER</span>/work <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    fix-permissions /home/<span class="nv">$NB_USER</span>
 
-<span class="c1"># Install conda as ubuntu and check the md5 sum provided on the download site</span>
-<span class="s">ENV MINICONDA_VERSION=4.9.2 \</span>
-    <span class="s">MINICONDA_MD5=122c8c9beb51e124ab32a0fa6426c656 \</span>
-    <span class="s">CONDA_VERSION=4.9.2</span>
+<span class="c"># Install conda as ubuntu and check the md5 sum provided on the download site</span>
+<span class="k">ENV</span><span class="s"> MINICONDA_VERSION=4.9.2 \</span>
+    MINICONDA_MD5=122c8c9beb51e124ab32a0fa6426c656 \
+    CONDA_VERSION=4.9.2
 
-<span class="s">WORKDIR /tmp</span>
-<span class="s">RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh  \</span>
-    <span class="s">&amp;&amp; echo "${MINICONDA_MD5} *Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c -  \</span>
-    <span class="s">&amp;&amp; /bin/bash Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; rm Miniconda3-py38_${MINICONDA_VERSION}-Linux-x86_64.sh \</span>
-    <span class="s">&amp;&amp; echo "conda ${CONDA_VERSION}" &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda config --system --prepend channels conda-forge \</span>
-    <span class="s">&amp;&amp; conda config --system --set auto_update_conda </span><span class="no">false</span><span class="s"> \</span>
-    <span class="s">&amp;&amp; conda config --system --set show_channel_urls </span><span class="no">true</span><span class="s"> \</span>
-    <span class="s">&amp;&amp; conda config --system --set channel_priority strict \</span>
-    <span class="s">&amp;&amp; if [ ! $PYTHON_VERSION = 'default' ]; then conda install --yes python=$PYTHON_VERSION; fi \</span>
-    <span class="s">&amp;&amp; conda list python | grep '^python ' | tr -s ' ' | cut -d '.' -f 1,2 | sed 's/$/.*/' &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda install --quiet --yes conda \</span>
-    <span class="s">&amp;&amp; conda install --quiet --yes pip \</span>
-    <span class="s">&amp;&amp; conda update --all --quiet --yes \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+<span class="k">WORKDIR</span><span class="s"> /tmp</span>
+<span class="k">RUN </span>wget <span class="nt">--quiet</span> https://repo.continuum.io/miniconda/Miniconda3-py38_<span class="k">${</span><span class="nv">MINICONDA_VERSION</span><span class="k">}</span><span class="nt">-Linux-x86_64</span>.sh  <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"</span><span class="k">${</span><span class="nv">MINICONDA_MD5</span><span class="k">}</span><span class="s2"> *Miniconda3-py38_</span><span class="k">${</span><span class="nv">MINICONDA_VERSION</span><span class="k">}</span><span class="s2">-Linux-x86_64.sh"</span> | <span class="nb">md5sum</span> <span class="nt">-c</span> -  <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> /bin/bash Miniconda3-py38_<span class="k">${</span><span class="nv">MINICONDA_VERSION</span><span class="k">}</span><span class="nt">-Linux-x86_64</span>.sh <span class="nt">-f</span> <span class="nt">-b</span> <span class="nt">-p</span> <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm </span>Miniconda3-py38_<span class="k">${</span><span class="nv">MINICONDA_VERSION</span><span class="k">}</span><span class="nt">-Linux-x86_64</span>.sh <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"conda </span><span class="k">${</span><span class="nv">CONDA_VERSION</span><span class="k">}</span><span class="s2">"</span> <span class="o">&gt;&gt;</span> <span class="nv">$CONDA_DIR</span>/conda-meta/pinned <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda config <span class="nt">--system</span> <span class="nt">--prepend</span> channels conda-forge <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda config <span class="nt">--system</span> <span class="nt">--set</span> auto_update_conda <span class="nb">false</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda config <span class="nt">--system</span> <span class="nt">--set</span> show_channel_urls <span class="nb">true</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda config <span class="nt">--system</span> <span class="nt">--set</span> channel_priority strict <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nv">$PYTHON_VERSION</span> <span class="o">=</span> <span class="s1">'default'</span> <span class="o">]</span><span class="p">;</span> <span class="k">then </span>conda <span class="nb">install</span> <span class="nt">--yes</span> <span class="nv">python</span><span class="o">=</span><span class="nv">$PYTHON_VERSION</span><span class="p">;</span> <span class="k">fi</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda list python | <span class="nb">grep</span> <span class="s1">'^python '</span> | <span class="nb">tr</span> <span class="nt">-s</span> <span class="s1">' '</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">'.'</span> <span class="nt">-f</span> 1,2 | <span class="nb">sed</span> <span class="s1">'s/$/.*/'</span> <span class="o">&gt;&gt;</span> <span class="nv">$CONDA_DIR</span>/conda-meta/pinned <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda <span class="nb">install</span> <span class="nt">--quiet</span> <span class="nt">--yes</span> conda <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda <span class="nb">install</span> <span class="nt">--quiet</span> <span class="nt">--yes</span> pip <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda update <span class="nt">--all</span> <span class="nt">--quiet</span> <span class="nt">--yes</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda clean <span class="nt">--all</span> <span class="nt">-f</span> <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /home/<span class="nv">$NB_USER</span>/.cache/yarn <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions /home/<span class="nv">$NB_USER</span>
 
-<span class="c1"># Install Tini</span>
-<span class="s">RUN conda install --quiet --yes 'tini=0.18.0' \</span>
-    <span class="s">&amp;&amp; conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 &gt;&gt; $CONDA_DIR/conda-meta/pinned \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+<span class="c"># Install Tini</span>
+<span class="k">RUN </span>conda <span class="nb">install</span> <span class="nt">--quiet</span> <span class="nt">--yes</span> <span class="s1">'tini=0.18.0'</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda list tini | <span class="nb">grep </span>tini | <span class="nb">tr</span> <span class="nt">-s</span> <span class="s1">' '</span> | <span class="nb">cut</span> <span class="nt">-d</span> <span class="s1">' '</span> <span class="nt">-f</span> 1,2 <span class="o">&gt;&gt;</span> <span class="nv">$CONDA_DIR</span>/conda-meta/pinned <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda clean <span class="nt">--all</span> <span class="nt">-f</span> <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions /home/<span class="nv">$NB_USER</span>
 
-<span class="c1"># Install Jupyter Notebook, Lab, and Hub</span>
-<span class="c1"># Generate a notebook server config</span>
-<span class="c1"># Cleanup temporary files</span>
-<span class="c1"># Correct permissions</span>
-<span class="c1"># Do all this in a single RUN command to avoid duplicating all of the</span>
-<span class="c1"># files across image layers when the permissions change</span>
-<span class="s">RUN conda install --quiet --yes \</span>
-    <span class="s">'notebook=6.4.0' \</span>
-    <span class="s">'jupyterhub=1.4.2' \</span>
-    <span class="s">'jupyterlab=3.0.16' \</span>
-    <span class="s">&amp;&amp; conda clean --all -f -y \</span>
-    <span class="s">&amp;&amp; npm install -g npm@7.20.0 \</span>
-    <span class="s">&amp;&amp; npm cache clean --force \</span>
-    <span class="s">&amp;&amp; jupyter notebook --generate-config \</span>
-    <span class="s">&amp;&amp; rm -rf $CONDA_DIR/share/jupyter/lab/staging \</span>
-    <span class="s">&amp;&amp; rm -rf /home/$NB_USER/.cache/yarn \</span>
-    <span class="s">&amp;&amp; fix-permissions $CONDA_DIR \</span>
-    <span class="s">&amp;&amp; fix-permissions /home/$NB_USER</span>
+<span class="c"># Install Jupyter Notebook, Lab, and Hub</span>
+<span class="c"># Generate a notebook server config</span>
+<span class="c"># Cleanup temporary files</span>
+<span class="c"># Correct permissions</span>
+<span class="c"># Do all this in a single RUN command to avoid duplicating all of the</span>
+<span class="c"># files across image layers when the permissions change</span>
+<span class="k">RUN </span>conda <span class="nb">install</span> <span class="nt">--quiet</span> <span class="nt">--yes</span> <span class="se">\
+</span>    <span class="s1">'notebook=6.4.0'</span> <span class="se">\
+</span>    <span class="s1">'jupyterhub=1.4.2'</span> <span class="se">\
+</span>    <span class="s1">'jupyterlab=3.0.16'</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda clean <span class="nt">--all</span> <span class="nt">-f</span> <span class="nt">-y</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> npm <span class="nb">install</span> <span class="nt">-g</span> npm@7.20.0 <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> npm cache clean <span class="nt">--force</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> jupyter notebook <span class="nt">--generate-config</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$CONDA_DIR</span>/share/jupyter/lab/staging <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm</span> <span class="nt">-rf</span> /home/<span class="nv">$NB_USER</span>/.cache/yarn <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions <span class="nv">$CONDA_DIR</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> fix-permissions /home/<span class="nv">$NB_USER</span>
 
-<span class="s">EXPOSE </span><span class="m">8888</span>
+<span class="k">EXPOSE</span><span class="s"> 8888</span>
 
-<span class="c1"># Configure container startup</span>
-<span class="s">ENTRYPOINT ["tini", "-g", "--"]</span>
-<span class="s">CMD ["start-notebook.sh"]</span>
+<span class="c"># Configure container startup</span>
+<span class="k">ENTRYPOINT</span><span class="s"> ["tini", "-g", "--"]</span>
+<span class="k">CMD</span><span class="s"> ["start-notebook.sh"]</span>
 
-<span class="c1"># Copy local files as late as possible to avoid cache busting</span>
-<span class="s">COPY start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/</span>
-<span class="s">COPY jupyter_notebook_config.py /etc/jupyter/</span>
+<span class="c"># Copy local files as late as possible to avoid cache busting</span>
+<span class="k">COPY</span><span class="s"> start.sh start-notebook.sh start-singleuser.sh /usr/local/bin/</span>
+<span class="k">COPY</span><span class="s"> jupyter_notebook_config.py /etc/jupyter/</span>
 
-<span class="c1"># Fix permissions on /etc/jupyter as root</span>
-<span class="s">USER root</span>
-<span class="s">RUN fix-permissions /etc/jupyter/</span>
-<span class="s">RUN chmod +x /usr/local/bin/start-notebook.sh /usr/local/bin/start-singleuser.sh /usr/local/bin/start.sh</span>
+<span class="c"># Fix permissions on /etc/jupyter as root</span>
+<span class="k">USER</span><span class="s"> root</span>
+<span class="k">RUN </span>fix-permissions /etc/jupyter/
+<span class="k">RUN </span><span class="nb">chmod</span> +x /usr/local/bin/start-notebook.sh /usr/local/bin/start-singleuser.sh /usr/local/bin/start.sh
 
-<span class="c1"># Switch back to ubuntu to avoid accidental container runs as root</span>
-<span class="s">USER $NB_UID</span>
+<span class="c"># Switch back to ubuntu to avoid accidental container runs as root</span>
+<span class="k">USER</span><span class="s"> $NB_UID</span>
 
-<span class="s">WORKDIR $HOME</span>
+<span class="k">WORKDIR</span><span class="s"> $HOME</span>
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> base-notebook:latest <span class="nb">.</span>
@@ -379,7 +380,9 @@
 <span class="s">RUN </span><span class="no">true</span><span class="s"> &amp;&amp; \</span>
     <span class="s">python3 -m pip install notebook jupyterhub</span>
 </code></pre></div></div>
-<p>install_jupyterhub 脚本文件</p>
+
+<p>  install_jupyterhub 脚本文件</p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 </span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
@@ -401,7 +404,6 @@
     <span class="n">req</span> <span class="o">=</span> <span class="s">'jupyterhub%s'</span> <span class="o">%</span> <span class="n">vs</span>
 
 <span class="n">check_call</span><span class="p">(</span><span class="n">pip_install</span> <span class="o">+</span> <span class="p">[</span><span class="n">req</span><span class="p">])</span>
-
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> singleuser:latest <span class="nb">.</span>
@@ -409,29 +411,29 @@
 
 <h4 id="jupyterlab-单用户镜像-jupyter_lab_singleuser">JupyterLab 单用户镜像 jupyter_lab_singleuser</h4>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">ARG BASE_IMAGE=singleuser:latest</span>
-<span class="s">FROM ${BASE_IMAGE}</span>
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ARG</span><span class="s"> BASE_IMAGE=singleuser:latest</span>
+<span class="k">FROM</span><span class="s"> ${BASE_IMAGE}</span>
 
-<span class="c1"># Install jupyterlab</span>
-<span class="s">RUN conda update -n base conda \</span>
-    <span class="s">&amp;&amp; conda install -c conda-forge jupyterlab</span>
-<span class="s">RUN jupyter serverextension enable --py jupyterlab --sys-prefix</span>
-<span class="s">USER root</span>
-<span class="s">RUN chpasswd &lt;&lt;&lt; "ubuntu:ubuntu" \</span>
-    <span class="s">&amp;&amp; sed -i 's/http:\/\/archive.ubuntu.com/https:\/\/mirrors.sjtug.sjtu.edu.cn/g' /etc/apt/sources.list \</span>
-    <span class="s">&amp;&amp; apt update \</span>
-    <span class="s">&amp;&amp; apt install -y git zsh vim \</span>
-    <span class="s">&amp;&amp; usermod -s /bin/zsh ubuntu \</span>
-    <span class="s">&amp;&amp; echo 'chown -R ubuntu:users /home/ubuntu/work' &gt;&gt; /usr/local/bin/start-notebook.sh</span>
+<span class="c"># Install jupyterlab</span>
+<span class="k">RUN </span>conda update <span class="nt">-n</span> base conda <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge jupyterlab
+<span class="k">RUN </span>jupyter serverextension <span class="nb">enable</span> <span class="nt">--py</span> jupyterlab <span class="nt">--sys-prefix</span>
+<span class="k">USER</span><span class="s"> root</span>
+<span class="k">RUN </span>chpasswd <span class="o">&lt;&lt;&lt;</span> <span class="s2">"ubuntu:ubuntu"</span> <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/http:\/\/archive.ubuntu.com/https:\/\/mirrors.sjtug.sjtu.edu.cn/g'</span> /etc/apt/sources.list <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt update <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> apt <span class="nb">install</span> <span class="nt">-y</span> git zsh vim <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> usermod <span class="nt">-s</span> /bin/zsh ubuntu <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">'chown -R ubuntu:users /home/ubuntu/work'</span> <span class="o">&gt;&gt;</span> /usr/local/bin/start-notebook.sh
 
-<span class="c1"># Add supports for zsh and zh-CN language</span>
-<span class="s">USER ubuntu</span>
-<span class="s">RUN git clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh \</span>
-    <span class="s">&amp;&amp; cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc \</span>
-    <span class="s">&amp;&amp; sed -i "s/robbyrussell/bira/" ~/.zshrc \</span>
-    <span class="s">&amp;&amp; wget -c https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/jupyterhub/jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
-    <span class="s">&amp;&amp; pip install jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl \</span>
-    <span class="s">&amp;&amp; rm jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl</span>
+<span class="c"># Add supports for zsh and zh-CN language</span>
+<span class="k">USER</span><span class="s"> ubuntu</span>
+<span class="k">RUN </span>git clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">cp</span> ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/robbyrussell/bira/"</span> ~/.zshrc <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/jupyterhub/jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> pip <span class="nb">install </span>jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> <span class="nb">rm </span>jupyterlab_language_pack_zh_CN-0.0.1.dev0-py2.py3-none-any.whl
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> jupyter_lab_single:latest <span class="nb">.</span>
@@ -439,15 +441,15 @@
 
 <h3 id="构建-jupyterhub-镜像">构建 JupyterHub 镜像</h3>
 
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Dockerfile</span>
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Dockerfile</span>
 
-<span class="s">ARG BASE_IMAGE=jupyterhub/jupyterhub:latest</span>
-<span class="s">FROM ${BASE_IMAGE}</span>
+<span class="k">ARG</span><span class="s"> BASE_IMAGE=jupyterhub/jupyterhub:latest</span>
+<span class="k">FROM</span><span class="s"> ${BASE_IMAGE}</span>
 
-<span class="s">RUN pip install --no-cache --upgrade jupyter \</span>
-    <span class="s">&amp;&amp; pip install --no-cache dockerspawner \</span>
-    <span class="s">&amp;&amp; pip install --no-cache oauthenticator</span>
-<span class="s">EXPOSE </span><span class="m">8000</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">--no-cache</span> <span class="nt">--upgrade</span> jupyter <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> pip <span class="nb">install</span> <span class="nt">--no-cache</span> dockerspawner <span class="se">\
+</span>    <span class="o">&amp;&amp;</span> pip <span class="nb">install</span> <span class="nt">--no-cache</span> oauthenticator
+<span class="k">EXPOSE</span><span class="s"> 8000</span>
 </code></pre></div></div>
 
 <p>  这里配置挂载的本地目录为根据用户名而区分的目录，当 Gitlab 用户名中包含 <code class="language-plaintext highlighter-rouge">-</code> 时，<code class="language-plaintext highlighter-rouge">-</code> 会被转义为 <code class="language-plaintext highlighter-rouge">2d</code>。另外，这里的本地目录需要预先建立好，否则由于 Docker 自身的安全性而新建立的目录的所有者会是 root 用户，这样就不能够正常使用该目录。以下配置文件需放置在 docker-compose.yml 的同层目录 data 里面。</p>
@@ -524,7 +526,7 @@
 
 <h2 id="测试">测试</h2>
 
-<p>  访问 <a href="https://{JupyterHub Domain}/">https://{JupyterHub Domain}/</a> 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。</p>
+<p>  访问 <code class="language-plaintext highlighter-rouge">https://{JupyterHub Domain}/</code> 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。</p>
 
 <h2 id="参考资料">参考资料</h2>
 

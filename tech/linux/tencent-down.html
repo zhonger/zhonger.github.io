@@ -154,7 +154,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 229 字
+          本文总共 265 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -187,28 +187,41 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <h2 id="添加用户并设为-sudo-权限">添加用户并设为 sudo 权限</h2>
+            <h2 id="添加新用户及赋权">添加新用户及赋权</h2>
+
+<h3 id="新增用户及配置默认密码">新增用户及配置默认密码</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>useradd 用户名
 <span class="nb">sudo </span>passwd 用户名
-<span class="nb">sudo chmod</span> +w /etc/sudoers
-<span class="nb">sudo </span>vi  /etc/sudoers <span class="o">(</span>加入 用户名 <span class="nv">ALL</span><span class="o">=(</span>ALL:ALL<span class="o">)</span> ALL <span class="o">)</span>
 </code></pre></div></div>
 
-<h2 id="更改用户-linux-的-shell-的操作方法">更改用户 linux 的 shell 的操作方法</h2>
+<h3 id="添加用户到-sudo-组">添加用户到 sudo 组</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>查看当前用户的 shell 方式 <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$SHELL</span><span class="sb">`</span>    
-输出 <span class="sb">`</span>/bin/sh<span class="sb">`</span>
-更换 shell 操作方式为<span class="sb">`</span>/bin/bash<span class="sb">`</span>   
-<span class="sb">`</span><span class="nb">sudo </span>vi /etc/passwd<span class="sb">`</span>  在用户行尾加上<span class="sb">`</span>/bin/bash<span class="sb">`</span>
-退出系统再次登录
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo chmod</span> +w /etc/sudoers
+<span class="nb">sudo </span>vi  /etc/sudoers 
+<span class="c"># 加入 用户名 ALL=(ALL:ALL) ALL</span>
+</code></pre></div></div>
+
+<h2 id="配置默认-shell">配置默认 Shell</h2>
+
+<p>  更改Linux 用户的 Shell 的操作方法如下所示：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看当前用户的 shell 方式 </span>
+<span class="nb">echo</span> <span class="nv">$SHELL</span>    
+<span class="o">&gt;&gt;</span> /bin/sh
+
+<span class="c"># 更换 shell 操作方式为 `/bin/bash`   </span>
+<span class="nb">sudo </span>vim /etc/passwd  
+<span class="c"># 在用户行尾加上`/bin/bash`</span>
+
+<span class="c"># 退出系统再次登录</span>
 </code></pre></div></div>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#添加用户并设为-sudo-权限">添加用户并设为 sudo 权限</a></li><li><a href="#更改用户-linux-的-shell-的操作方法">更改用户 linux 的 shell 的操作方法</a></li></ul>
+          <ul><li><a href="#添加新用户及赋权">添加新用户及赋权</a><ul><li><a href="#新增用户及配置默认密码">新增用户及配置默认密码</a></li><li><a href="#添加用户到-sudo-组">添加用户到 sudo 组</a></li></ul></li><li><a href="#配置默认-shell">配置默认 Shell</a></li></ul>
         </div>
       </div>
       
@@ -303,7 +316,7 @@
           <a href="/tech/php/ubuntu-composer.html" class="read-next-link" aria-label="Ubuntu 14.04 安装 Composer+Laravel 配置"></a>
             <section>
               <span>Ubuntu 14.04 安装 Composer+Laravel 配置</span>
-              <p>安装前提：系统已安装好 php 环境，可在全局使用 php 命令。安装 compsoer 并设置为全局调用</p>
+              <p>安装前提</p>
             </section>
             
             <div class="filter"></div>

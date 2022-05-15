@@ -158,13 +158,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 333 字
+          本文总共 398 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 1 分钟
+             阅读全文大约需要 2 分钟
           </span>
           
           <span class="post-meta-item">
@@ -191,32 +191,48 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <p>安装前提：系统已安装好 php 环境，可在全局使用 php 命令。</p>
-<h2 id="安装-compsoer-并设置为全局调用">安装 compsoer 并设置为全局调用</h2>
+            <h2 id="安装前提">安装前提</h2>
+
+<p>  系统已安装好 php 环境，可在全局使用 php 命令。</p>
+
+<h2 id="安装步骤">安装步骤</h2>
+
+<h3 id="安装-compsoer">安装 Compsoer</h3>
+
+<p>  从 <a href="https://getcomposer.org/">Composer 官网</a> 下载已编译可执行文件并设置为全局调用。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-sS</span> https://getcomposer.org/installer | php
 <span class="nb">mv </span>composer.phar /usr/local/bin/composer
 </code></pre></div></div>
 
-<h2 id="使用-composer-建立-laravel-installer-安装工具">使用 composer 建立 laravel installer 安装工具</h2>
+<h3 id="安装-laravel-工具">安装 Laravel 工具</h3>
+
+<p>  使用 Composer 命令全局安装 Laravel Installer 工具库。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer global require <span class="s2">"laravel/installer"</span>
 </code></pre></div></div>
 
-<h2 id="将-laravel-命令添加进用户环境变量">将 laravel 命令添加进用户环境变量</h2>
+<h3 id="配置环境变量">配置环境变量</h3>
 
-<p>  打开<code class="language-plaintext highlighter-rouge">~/.bashrc</code>文件最末添加命令：<code class="language-plaintext highlighter-rouge">PATH=$PATH:~/.composer/vendor/bin</code>
-<code class="language-plaintext highlighter-rouge">source ~/.bashrc</code> 命令使环境变量变化生效。</p>
+<p>  将 <code class="language-plaintext highlighter-rouge">laravel</code> 命令添加进用户环境变量。</p>
 
-<h2 id="完成配置">完成配置</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在 .bashrc 文件的末尾加入</span>
 
-<p>  可以在全局使用<code class="language-plaintext highlighter-rouge">laravel new {应用名称}</code>了。</p>
+<span class="nb">tee</span> <span class="nt">-a</span> ~/.bashrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+PATH=</span><span class="nv">$PATH</span><span class="sh">:~/.composer/vendor/bin
+</span><span class="no">EOF
+</span><span class="nb">source</span> ~/.bashrc
+</code></pre></div></div>
+
+<h2 id="验证安装">验证安装</h2>
+
+<p>  可以在全局使用 <code class="language-plaintext highlighter-rouge">laravel new {应用名称}</code> 了。</p>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#安装-compsoer-并设置为全局调用">安装 compsoer 并设置为全局调用</a></li><li><a href="#使用-composer-建立-laravel-installer-安装工具">使用 composer 建立 laravel installer 安装工具</a></li><li><a href="#将-laravel-命令添加进用户环境变量">将 laravel 命令添加进用户环境变量</a></li><li><a href="#完成配置">完成配置</a></li></ul>
+          <ul><li><a href="#安装前提">安装前提</a></li><li><a href="#安装步骤">安装步骤</a><ul><li><a href="#安装-compsoer">安装 Compsoer</a></li><li><a href="#安装-laravel-工具">安装 Laravel 工具</a></li><li><a href="#配置环境变量">配置环境变量</a></li></ul></li><li><a href="#验证安装">验证安装</a></li></ul>
         </div>
       </div>
       
@@ -297,7 +313,7 @@
           <a href="/tech/linux/tencent-down.html" class="read-next-link" aria-label="腾讯云服务器重装系统后……"></a>
           <section>
             <span>腾讯云服务器重装系统后……</span>
-            <p>添加用户并设为 sudo 权限</p>
+            <p>添加新用户及赋权</p>
           </section>
           
           <div class="filter"></div>

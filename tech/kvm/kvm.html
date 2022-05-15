@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 3924 字
+          本文总共 3939 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -197,8 +197,10 @@
 
 <p>  KVM 将 Linux 转变为 1 类（裸机恢复）虚拟机监控程序。所有虚拟机监控程序都需要一些操作系统层面的组件才能运行虚拟机，如内存管理器、进程调度程序、输入/输出（I/O）堆栈、设备驱动程序、安全管理器以及网络堆栈等。由于 KVM 是 Linux 内核的一部分，因此所有这些组件它都有。每个虚拟机都像普通的 Linux 进程一样实施，由标准的 Linux 调度程序进行调度，并且使用专门的虚拟硬件，如网卡、图形适配器、CPU、内存和磁盘等。</p>
 
-<p><a href="https://www.redhat.com/zh/topics/virtualization/what-is-KVM">参考资料</a></p>
-<h2 id="准备环境">准备环境</h2>
+<h2 id="安装步骤">安装步骤</h2>
+
+<h3 id="准备环境">准备环境</h3>
+
 <ul>
   <li>宿主机为 Ubuntu 16.04 LTS 操作系统</li>
   <li>预安装 python3、python3-pip 软件</li>
@@ -208,11 +210,12 @@
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 预先建立的目录</span>
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/kvm-data/images  
-<span class="c"># 用于放置cloud-init镜像</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> ~/kvm  <span class="c"># 用于放置虚拟机qcow2磁盘文件</span>
+<span class="c"># 用于放置 cloud-init 镜像</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/kvm  <span class="c"># 用于放置虚拟机 qcow2 磁盘文件</span>
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/kvm-data/keys/ 
-<span class="c"># 用于放置cloud-init所需的公钥，server.pub为宿主机公钥，紧急状态启用</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> ~/bin  <span class="c"># 用于放置虚拟机启动脚本，并将该目录写入到.bashrc文件生效</span>
+<span class="c"># 用于放置 cloud-init 所需的公钥，server.pub 为宿主机公钥，紧急状态启用</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/bin  
+<span class="c"># 用于放置虚拟机启动脚本，并将该目录写入到 .bashrc 文件生效</span>
 
 <span class="nb">cd</span> ~/kvm-data/images <span class="o">&amp;&amp;</span> wget <span class="nt">-c</span> https://mirrors.shu.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-disk1.img
 <span class="c"># 下载 Ubuntu 镜像</span>
@@ -234,19 +237,20 @@ PATH=</span><span class="nv">$PATH</span><span class="sh">:~/bin
 <span class="c"># 配置命令为当前用户全局命令</span>
 </code></pre></div></div>
 
-<h2 id="安装-kvm-和-cloud-init">安装 KVM 和 Cloud-init</h2>
+<h3 id="安装-kvm-和-cloud-init">安装 KVM 和 Cloud-init</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 qemu虚拟机创建工具</span>
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>qemu-kvm libvirt-bin virt-manager bridge-utils genisoimage cloud-init
 <span class="c"># libvirt-bin 为第三方kvm接口，为 管理工具 virt-manager 提供接口</span>
 <span class="c"># bridge-utils 是用于网络 NAT 转发，虚拟机上网所用</span>
 <span class="c"># genisoimage 为镜像生成工具，用于生成 cloud-init 初始化内容并挂载</span>
-<span class="c"># 安装cloud-init后，由于开机过程或自动启动cloud-init服务，会增长开机时间</span>
+<span class="c"># 安装 cloud-init 后，由于开机过程或自动启动 cloud-init 服务，会增长开机时间</span>
 
-<span class="c"># 安装可用ssh密码输入交互工具，如已配置ssh免密码登录可不安装</span>
+<span class="c"># 安装可用 ssh 密码输入交互工具，如已配置 ssh 免密码登录可不安装</span>
 <span class="nb">sudo </span>apt <span class="nb">install </span>lxqt-openssh-askpass
 </code></pre></div></div>
-<h2 id="配置虚拟机网卡与ip对应可忽略">配置虚拟机网卡与ip对应（可忽略）</h2>
+
+<h3 id="配置虚拟机网卡与ip对应可忽略">配置虚拟机网卡与ip对应（可忽略）</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virsh net-edit default
 
@@ -265,29 +269,29 @@ PATH=</span><span class="nv">$PATH</span><span class="sh">:~/bin
     &lt;/dhcp&gt;
   &lt;/ip&gt;
 &lt;/network&gt;
-<span class="c"># 将mac地址、主机名、网卡ip进行绑定</span>
+<span class="c"># 将 mac 地址、主机名、网卡ip进行绑定</span>
 
 <span class="nb">sudo </span>ifdown virbr0 <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>ifup virbr0  <span class="o">(</span>或sudo reboot<span class="o">)</span>
 <span class="c"># 重启网络或重启机器使修改生效</span>
 </code></pre></div></div>
 
-<h2 id="创建-linux-虚拟机">创建 Linux 虚拟机</h2>
+<h3 id="创建-linux-虚拟机">创建 Linux 虚拟机</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 启动一台 Ubuntu 虚拟机</span>
 virt-install-ubuntu vm03 52:54:00:33:12:01 4096 4 lsz
-<span class="c"># 启动命令共有5个参数，除最后一个参数外都必须设置</span>
+<span class="c"># 启动命令共有 5 个参数，除最后一个参数外都必须设置</span>
 <span class="c"># 第一个参数是指虚拟机的别名</span>
-<span class="c"># 第二个参数是虚拟机的mac地址</span>
-<span class="c"># 第三个参数是虚拟机的内存大小，单位为MB</span>
+<span class="c"># 第二个参数是虚拟机的 mac 地址</span>
+<span class="c"># 第三个参数是虚拟机的内存大小，单位为 MB</span>
 <span class="c"># 第四个参数是虚拟机的核数</span>
-<span class="c"># 第五个参数是要在cloud-init初始化时添加的公钥</span>
-<span class="c"># 该参数省略时只添加宿主机公钥~/kvm-data/keys/server.pub</span>
+<span class="c"># 第五个参数是要在 cloud-init 初始化时添加的公钥</span>
+<span class="c"># 该参数省略时只添加宿主机公钥 ~/kvm-data/keys/server.pub</span>
 
 virt-install-centos vm03 52:54:00:33:12:02 4096 4 lsz
 <span class="c"># 参数配置同上</span>
 </code></pre></div></div>
 
-<h2 id="创建-windows-虚拟机">创建 Windows 虚拟机</h2>
+<h3 id="创建-windows-虚拟机">创建 Windows 虚拟机</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 Windows 10 操作系统 ISO 镜像 至 ~/kvm-data/images 目录</span>
 <span class="c"># 请自行百度下载或至 https://msdn.itellyou.cn 下载</span>
@@ -304,7 +308,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>win10 <span c
 <span class="nt">--graphics</span> vnc,listen<span class="o">=</span>0.0.0.0,password<span class="o">=</span>Passw0rd,port<span class="o">=</span>5910 <span class="se">\\</span>
 <span class="nt">--mac</span><span class="o">=</span>52:54:00:33:12:21 <span class="nt">--hvm</span> <span class="nt">--virt-type</span> kvm
 
-<span class="c"># 使用 vnc 客户端连接宿主机的5910端口，密码为 password 字段的值</span>
+<span class="c"># 使用 vnc 客户端连接宿主机的 5910 端口，密码为 password 字段的值</span>
 <span class="c"># 按照正常安装 Windows 的操作步骤继续即可</span>
 
 <span class="c"># 安装完成后，将原来的 virtio-win.iso 挂载方式修改为 cdrom 类型</span>
@@ -325,15 +329,22 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
 <span class="c"># 创建 win 虚拟机从模板拷贝文件再度创建即可完成</span>
 </code></pre></div></div>
 
-<blockquote>
-  <p>暂未探索使用 Cloud-init 方式来初始化 Windows，后续补充</p>
-</blockquote>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>暂未探索使用 Cloud-init 方式来初始化 Windows，后续补充。</p>
+
+
+
+ </div> </div>
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://www.redhat.com/zh/topics/virtualization/what-is-KVM">什么是 KVM？</a></li>
+</ul>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#kvm-简介">KVM 简介</a></li><li><a href="#准备环境">准备环境</a></li><li><a href="#安装-kvm-和-cloud-init">安装 KVM 和 Cloud-init</a></li><li><a href="#配置虚拟机网卡与ip对应可忽略">配置虚拟机网卡与ip对应（可忽略）</a></li><li><a href="#创建-linux-虚拟机">创建 Linux 虚拟机</a></li><li><a href="#创建-windows-虚拟机">创建 Windows 虚拟机</a></li></ul>
+          <ul><li><a href="#kvm-简介">KVM 简介</a></li><li><a href="#安装步骤">安装步骤</a><ul><li><a href="#准备环境">准备环境</a></li><li><a href="#安装-kvm-和-cloud-init">安装 KVM 和 Cloud-init</a></li><li><a href="#配置虚拟机网卡与ip对应可忽略">配置虚拟机网卡与ip对应（可忽略）</a></li><li><a href="#创建-linux-虚拟机">创建 Linux 虚拟机</a></li><li><a href="#创建-windows-虚拟机">创建 Windows 虚拟机</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       

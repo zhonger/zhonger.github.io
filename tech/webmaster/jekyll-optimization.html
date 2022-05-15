@@ -164,7 +164,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 10980 字
+          本文总共 10994 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -219,23 +219,23 @@
 
 <h4 id="pygments">Pygments</h4>
 
-<p>首先在 Gemfile 中配置下面行，以便安装好对应的插件模块。</p>
+<p>  首先在 Gemfile 中配置下面行，以便安装好对应的插件模块。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem <span class="nb">install </span>pygments.rb
 </code></pre></div></div>
 
-<p>然后是修改 _config.yml 配置文件，其中的 highlighter 修改如下：</p>
+<p>  然后是修改 _config.yml 配置文件，其中的 highlighter 修改如下：</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">markdown</span><span class="pi">:</span> <span class="s">kramdown</span>
 <span class="na">highlighter</span><span class="pi">:</span> <span class="s">pygments</span>
 </code></pre></div></div>
 
-<p>之后不要忘记要引入 Pygments 的 CSS 样式，可以直接访问以下地址下载：</p>
+<p>  之后不要忘记要引入 Pygments 的 CSS 样式，可以直接访问以下地址下载：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://pygments.org/_static/pygments.css
 </code></pre></div></div>
 
-<p>不过也是可以引入其他主题的 CSS 样式的。</p>
+<p>  不过也是可以引入其他主题的 CSS 样式的。</p>
 
 <h4 id="rouge">Rouge</h4>
 
@@ -247,9 +247,10 @@
 
 <h4 id="prism">Prism</h4>
 
-<p>本站所采用的代码高亮就是 Prism，选择 Prism 的原因主要有三点：</p>
+<p>  本站所采用的代码高亮就是 Prism，选择 Prism 的原因主要有三点：</p>
+
 <ul>
-  <li>Prism 生成代码比较简洁，没有多余代码，颜色在不同网站主题上都试用；</li>
+  <li>Prism 生成代码比较简洁，没有多余代码，颜色在不同网站主题上都适用；</li>
   <li>支持的高亮编程语言丰富，虽然在某些地方还是有所瑕疵，但是总体上还是很实用；</li>
   <li>高亮主题基本上现有的都能用，本站所用的就是 Github 官方同款主题。</li>
 </ul>
@@ -363,7 +364,7 @@
 <span class="nt">&lt;/body&gt;</span>
 </code></pre></div></div>
 
-<p>这里使用的是默认配置，想要更多定制可以移步 <a href="http://fancyapps.com/fancybox/3/docs/#options">fancybox 官网</a>。</p>
+<p>  这里使用的是默认配置，想要更多定制可以移步 <a href="http://fancyapps.com/fancybox/3/docs/#options">fancybox 官网</a>。</p>
 
 <h3 id="学术首页">学术首页</h3>
 
@@ -611,9 +612,9 @@ cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&amp;q
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>另外，也需要在 _config.yml 文件中在导航栏中添加链接，如下所示。</p>
+<p>  另外，也需要在 _config.yml 文件中在导航栏中添加链接，如下所示。</p>
 
-<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">_config.yml</span>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">_config.yml</span>
 <span class="na">nav</span><span class="pi">:</span>
   <span class="na">home</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/'</span>
   <span class="na">blog</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/blog/'</span>
@@ -626,7 +627,7 @@ cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&amp;q
 
 <p>(本小节更新于 2021年12月20日)</p>
 
-<p>  作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用<strong>双$符号</strong>来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。</p>
+<p>  作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用<strong>双$符号</strong>来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在_layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://polyfill.io/v3/polyfill.min.js?features=es6"</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;script </span><span class="na">id=</span><span class="s">"MathJax-script"</span> <span class="na">async</span> <span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
@@ -660,7 +661,7 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
 
 <p>  当然可能有的人要问了，这样计算出来的字数是否正确呢？毕竟中英文字符还是有差别的嘛。这个问题在参考资料的博文中做了一些比较深刻的讨论，最后给出来的方案就是这里采用的方案。也可能会有人问如果存在公式、代码、图片等非可计数的内容，那么阅读时长岂不是准确性很差？这个问题其实主要还是在统计上，由于这些非可计数内容不在正常字数统计内，也无法根据它们的数量来评估对应所需的时间，自然也不能加入到阅读时长里。回过头来看，这里的字数统计及阅读时长估算功能本来就是给读者一个信息好做出预判，至于读者阅读是否需要那么长时间或者甚至更长时间，那都没有太大关系。</p>
 
-<h3 id="参考资料">参考资料</h3>
+<h2 id="参考资料">参考资料</h2>
 
 <ul>
   <li><a href="https://hansenz42.github.io/posts/add-latex-support-to-jekyll/">让 Jekyll 支持 LaTex 数学公式（MathJax v3）</a></li>
@@ -672,7 +673,7 @@ ax</span><span class="p">^</span><span class="m">2</span><span class="nb"> </spa
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#功能需求">功能需求</a></li><li><a href="#实现">实现</a><ul><li><a href="#代码高亮">代码高亮</a><ul><li><a href="#pygments">Pygments</a></li><li><a href="#rouge">Rouge</a></li><li><a href="#prism">Prism</a></li></ul></li><li><a href="#图片放大和图集">图片放大和图集</a></li><li><a href="#学术首页">学术首页</a><ul><li><a href="#移动默认首页">移动默认首页</a></li><li><a href="#添加页面模板">添加页面模板</a></li><li><a href="#编写学术首页">编写学术首页</a></li><li><a href="#修复链接">修复链接</a></li></ul></li><li><a href="#归档页">归档页</a></li><li><a href="#支持-latex-数学公式">支持 LaTex 数学公式</a></li><li><a href="#字数统计及阅读时长估算">字数统计及阅读时长估算</a></li><li><a href="#参考资料">参考资料</a></li></ul></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#功能需求">功能需求</a></li><li><a href="#实现">实现</a><ul><li><a href="#代码高亮">代码高亮</a><ul><li><a href="#pygments">Pygments</a></li><li><a href="#rouge">Rouge</a></li><li><a href="#prism">Prism</a></li></ul></li><li><a href="#图片放大和图集">图片放大和图集</a></li><li><a href="#学术首页">学术首页</a><ul><li><a href="#移动默认首页">移动默认首页</a></li><li><a href="#添加页面模板">添加页面模板</a></li><li><a href="#编写学术首页">编写学术首页</a></li><li><a href="#修复链接">修复链接</a></li></ul></li><li><a href="#归档页">归档页</a></li><li><a href="#支持-latex-数学公式">支持 LaTex 数学公式</a></li><li><a href="#字数统计及阅读时长估算">字数统计及阅读时长估算</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       

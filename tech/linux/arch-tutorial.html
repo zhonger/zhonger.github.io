@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1850 字
+          本文总共 1852 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -191,14 +191,10 @@
           <article class="markdown-body">
             <h2 id="制作-archlinux-启动盘">制作 archlinux 启动盘</h2>
 
-<p>从 archlinux 官方或者是镜像源下载到 iso 文件
-使用以下命令制作启动U盘</p>
+<p>  从 archlinux 官方或者是镜像源下载到 iso 文件，并使用以下命令制作启动U盘。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">dd </span><span class="k">if</span><span class="o">=</span>image.iso <span class="nv">of</span><span class="o">=</span>/dev/sd[x]
 </code></pre></div></div>
-<blockquote>
-  <p>参考自 <a href="https://wiki.archlinux.org/index.php/USB_flash_installation_media">Install_from_a_USB_flash_drive</a></p>
-</blockquote>
 
 <h2 id="安装准备">安装准备</h2>
 
@@ -288,13 +284,15 @@ grub-mkconfig <span class="nt">-o</span> /boot/grub/grub.cfg
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置显卡: </span>
 pacman <span class="nt">-S</span> nvidia
+
 <span class="c"># 删除`/etc/pacman.conf`中的`multilib`部分注释，</span>
 pacman <span class="nt">-Syy</span>
-<span class="c"># 刷新软件缓存，</span>
+
+<span class="c"># 刷新软件缓存</span>
 pacman <span class="nt">-S</span> lib32-nvidia-utils
+
 <span class="c"># 安装对应的基本库。</span>
 </code></pre></div></div>
-<p>参考自 <a href="https://wiki.archlinux.org/index.php/NVIDIA">NVIDIA</a></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 xorg</span>
 pacman <span class="nt">-S</span> xorg
@@ -310,11 +308,18 @@ systemctl <span class="nb">enable </span>gdm
 
 <p>  重启之后从硬盘启动就会进入 gdm 登录界面，使用上面设置的 username 和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录，重新创建用户即可。</p>
 
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://wiki.archlinux.org/index.php/USB_flash_installation_media">Install_from_a_USB_flash_drive</a></li>
+  <li><a href="https://wiki.archlinux.org/index.php/NVIDIA">NVIDIA</a></li>
+</ul>
+
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#制作-archlinux-启动盘">制作 archlinux 启动盘</a></li><li><a href="#安装准备">安装准备</a></li><li><a href="#安装">安装</a></li><li><a href="#配置系统">配置系统</a></li><li><a href="#其他配置">其他配置</a></li><li><a href="#重启">重启</a></li></ul>
+          <ul><li><a href="#制作-archlinux-启动盘">制作 archlinux 启动盘</a></li><li><a href="#安装准备">安装准备</a></li><li><a href="#安装">安装</a></li><li><a href="#配置系统">配置系统</a></li><li><a href="#其他配置">其他配置</a></li><li><a href="#重启">重启</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -395,7 +400,7 @@ systemctl <span class="nb">enable </span>gdm
           <a href="/tech/linux/unbound-dns.html" class="read-next-link" aria-label="Unbound + Dnscrypt 搭建无污染 DNS 服务"></a>
           <section>
             <span>Unbound + Dnscrypt 搭建无污染 DNS 服务</span>
-            <p>引言</p>
+            <p>前言</p>
           </section>
           
           <div class="filter"></div>

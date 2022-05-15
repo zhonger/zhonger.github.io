@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 4189 字
+          本文总共 4104 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -191,7 +191,7 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <h1 id="引言">引言</h1>
+            <h2 id="前言">前言</h2>
 
 <p>  鉴于某些原因，我们日常生活中使用的公共 DNS 总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析 DNS ，因此搭建无污染 DNS 服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了 unbound 和 dnscrypt。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如 knot DNS、dnspord-sr、powerdns 等，它们也在很多大型的 ISP 提供商的 DNS 产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么 unbound 是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。</p>
 
@@ -207,12 +207,14 @@
 
 <h2 id="实验过程">实验过程</h2>
 
-<ol>
-  <li>安装 libsodium
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压 </span>
-<span class="nb">tar </span>zxf libsodium-1.0.15.tar.gz 
+<h3 id="安装-libsodium">安装 libsodium</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压 </span>
+<span class="nb">tar </span>zxf libsodium-1.0.15.tar.gz
+
 <span class="c"># 进入文件夹</span>
 <span class="nb">cd </span>libsodium-1.0.15
+
 <span class="c"># 编译</span>
 ./configure
 ./autogen.sh
@@ -221,14 +223,18 @@ make <span class="nt">-j12</span>
 <span class="c"># j 后面为 CPU 核数，加快编译</span>
 <span class="nb">sudo </span>make <span class="nb">install
 sudo </span>ldconfig
+
 <span class="c"># 安装完成</span>
-</code></pre></div>    </div>
-  </li>
-  <li>安装 libevent
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+</code></pre></div></div>
+
+<h3 id="安装-libevent">安装 libevent</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
 <span class="nb">tar </span>zxf libevent-2.1.8-stable.tar.gz
+
 <span class="c"># 进入文件夹</span>
 <span class="nb">cd </span>libevent-2.1.8-stable
+
 <span class="c"># 编译源代码并安装</span>
 ./configure <span class="nt">--prefix</span><span class="o">=</span>/usr
 ./autogen.sh
@@ -238,117 +244,135 @@ make <span class="nt">-j12</span>
 sudo</span> <span class="nt">-i</span>
 <span class="nb">echo</span> /usr/local/lib <span class="o">&gt;</span> /etc/ld.so.conf.d/usr_local_lib.conf
 <span class="nb">sudo </span>ldconfig
+
 <span class="c"># 安装完成</span>
-</code></pre></div>    </div>
-  </li>
-  <li>安装 dnscrypt-proxy
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+</code></pre></div></div>
+
+<h3 id="安装-dnscrypt-proxy">安装 dnscrypt-proxy</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
 <span class="nb">tar </span>zxf dnscrypt-proxy-1.9.5.tar.gz
+
 <span class="c"># 进入文件夹</span>
 <span class="nb">cd </span>dnscrypt-proxy-1.9.5
+
 <span class="c"># 编译源代码并安装</span>
 ./configure
 make <span class="nt">-j12</span>
 <span class="nb">sudo </span>make <span class="nb">install</span>
+
 <span class="c"># 如果提示报错与 libevent 有关</span>
 <span class="c"># 请再次运行 sudo ldconfig 并重新运行以上命令。</span>
-</code></pre></div>    </div>
-  </li>
-  <li>配置 dnscrypt-proxy
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置文件目录</span>
-<span class="c"># /usr/local/etc/dnscrypt-proxy.conf</span>
-ResolverName cisco
-ResolversList /usr/local/share/dnscrypt-proxy/dnscrypt-resolvers.csv
-Daemonize no
-PidFile /var/run/dnscrypt-proxy.pid
-User dnscrypt
-LocalAddress 127.0.0.1:5353
-<span class="c"># 可选</span>
-QueryLogFile /tmp/dns-queries.log
-<span class="c"># 添加用户 dnscrypt</span>
+</code></pre></div></div>
+
+<h3 id="配置-dnscrypt-proxy">配置 dnscrypt-proxy</h3>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 配置文件目录
+# /usr/local/etc/dnscrypt-proxy.conf
+</span><span class="n">ResolverName</span> <span class="n">cisco</span>
+<span class="n">ResolversList</span> /<span class="n">usr</span>/<span class="n">local</span>/<span class="n">share</span>/<span class="n">dnscrypt</span>-<span class="n">proxy</span>/<span class="n">dnscrypt</span>-<span class="n">resolvers</span>.<span class="n">csv</span>
+<span class="n">Daemonize</span> <span class="n">no</span>
+<span class="n">PidFile</span> /<span class="n">var</span>/<span class="n">run</span>/<span class="n">dnscrypt</span>-<span class="n">proxy</span>.<span class="n">pid</span>
+<span class="n">User</span> <span class="n">dnscrypt</span>
+<span class="n">LocalAddress</span> <span class="m">127</span>.<span class="m">0</span>.<span class="m">0</span>.<span class="m">1</span>:<span class="m">5353</span>
+<span class="c"># 可选
+</span><span class="n">QueryLogFile</span> /<span class="n">tmp</span>/<span class="n">dns</span>-<span class="n">queries</span>.<span class="n">log</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加用户 dnscrypt</span>
 <span class="nb">sudo </span>useadd <span class="nt">-d</span> /var/run/dnscrypt dnscrypt
+
 <span class="c"># 创建主目录并赋予权限：</span>
 <span class="nb">sudo mkdir</span> /var/run/dnscrypt <span class="o">&amp;&amp;</span> <span class="nb">sudo chown </span>dnscrypt /var/run/dnscrypt
+
 <span class="c"># 运行：</span>
 <span class="nb">sudo</span> /usr/local/sbin/dnscrypt-proxy /usr/local/etc/dnscrypt-proxy.conf
-<span class="c"># 如果是在 ubuntu 系统下或者能够使用 systemctl 的环境下，请在 /usr/lib/systemd/system/dnscrypt-proxy.socket 修改配置，参考资料3中所示。</span>
-</code></pre></div>    </div>
-  </li>
-  <li>安装 unbound
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
+
+<span class="c"># 如果是在 ubuntu 系统下或者能够使用 systemctl 的环境下，请在 /usr/lib/systemd/system/dnscrypt-proxy.socket 修改配置，参考资料 3 中所示。</span>
+</code></pre></div></div>
+
+<h3 id="安装-unbound">安装 unbound</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 解压</span>
 <span class="nb">tar </span>zxf unbound-1.6.7.tar.gz
+
 <span class="c"># 进入文件夹 </span>
 <span class="nb">cd </span>unbound-1.6.7
+
 <span class="c"># 编译源代码并安装</span>
 ./configure <span class="nt">--with-libevent</span>
 make <span class="nt">-j12</span>
 <span class="nb">sudo </span>make <span class="nb">install</span>
+
 <span class="c"># 安装完成</span>
-</code></pre></div>    </div>
-  </li>
-  <li>配置 unbound
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 dnsmasq-china-list</span>
+</code></pre></div></div>
+
+<h3 id="配置-unbound">配置 unbound</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载 dnsmasq-china-list</span>
 wget <span class="nt">-c</span> https://github.com/felixonmars/dnsmasq-china-list/archive/master.zip
+
 <span class="c"># 解压并进入文件夹：</span>
 unzip master.zip <span class="o">&amp;&amp;</span> <span class="nb">cd </span>dnsmasq-china-list-master
+
 <span class="c"># 生成 accelerated-domains.china.unbound.conf</span>
 make unbound
+
 <span class="c"># 移动加速配置到 unbound 配置目录：</span>
 <span class="nb">sudo mv </span>accelerated-domains.china.unbound.conf /usr/local/etc/unbound
+
 <span class="c"># 下载 named.cache 到 /usr/local/etc/unbound 目录：</span>
 wget <span class="nt">-c</span> ftp://FTP.INTERNIC.NET/domain/named.cache 
-</code></pre></div>    </div>
-  </li>
-</ol>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改配置文件 /usr/local/etc//unbound/unbound.conf</span>
-server:
-      num-threads: 2 <span class="c"># 线程数可以修改为物理核心数</span>
-      interface: 0.0.0.0 <span class="c"># 侦听所有 IPv4 地址</span>
-      interface: ::0 <span class="c"># 侦听所有 IPv6 地址</span>
-      <span class="c"># 如果只需要本机使用，则一个 interface: 127.0.0.1 即可</span>
-      so-rcvbuf: 4m
-      so-sndbuf: 4m <span class="c"># 本机使用的话，这俩 buf 可以取消注释</span>
-      so-reuseport: <span class="nb">yes</span> <span class="c"># 如果开了多线程，就写 yes</span>
-      msg-cache-size: 64m <span class="c"># 本机可以设置 4m 或者更小</span>
-      rrset-cache-size: 128m <span class="c"># 本机可以设置 4m 或者更小</span>
-      cache-max-ttl: 3600 <span class="c"># 建议设置一个不太大的值...专治各种运营商 DNS 缓存不服</span>
-      outgoing-num-tcp: 256 <span class="c"># 限制每个线程向上级查询的 TCP 并发数</span>
-      incoming-num-tcp: 1024 <span class="c"># 限制每个线程接受查询的 TCP 并发数</span>
-      <span class="c"># 下面这四个不需要解释了吧，不想用那个就写 no</span>
-      <span class="k">do</span><span class="nt">-ip4</span>: <span class="nb">yes
-      </span><span class="k">do</span><span class="nt">-ip6</span>: <span class="nb">yes
-      </span><span class="k">do</span><span class="nt">-udp</span>: <span class="nb">yes
-      </span><span class="k">do</span><span class="nt">-tcp</span>: <span class="nb">yes
-      </span>tcp-upstream: no <span class="c"># 默认是 no，隧道状态比较稳的话也不需要写 yes。一些情况下强制使用 tcp 连上游的话写 yes</span>
-      access-control: 0.0.0.0/0 allow <span class="c"># 本机用的话建议设置 127.0.0.0/8 allow，局域网用适当调整</span>
-      <span class="nb">chroot</span>: <span class="s2">"/usr/local/etc/unbound"</span>
-      username: <span class="s2">"unbound"</span>
-      root-hints: <span class="s2">"/usr/local/etc/unbound/named.cache"</span> <span class="c"># 没有的话在 ftp://FTP.INTERNIC.NET/domain/named.cache 下载一份</span>
-      hide-identity: <span class="nb">yes</span> <span class="c"># 不返回对 id.server 和 hostname.bind 的查询。</span>
-      hide-version: <span class="nb">yes</span> <span class="c"># 不返回对 version.server 和 version.bind 的查询。</span>
-      <span class="c"># 不过下面有 identity 和 version 的自定义选项，不隐藏这些的话，修改下选项还可以卖个萌(´・ω・｀)</span>
-      harden-glue: <span class="nb">yes</span> <span class="c"># 建议打开</span>
-      module-config: <span class="s2">"iterator"</span> <span class="c"># 禁用 DNSSEC 检查，如果上游不支持 DNSSEC 就关掉。注意这个选项有可能在其他 include 的文件里</span>
-      unwanted-reply-threshold: 10000000 <span class="c"># 针对各种网络不服，数值为建议值，具体可以自己修改看看效果</span>
-      <span class="k">do</span><span class="nt">-not-query-localhost</span>: no <span class="c"># 一般是为了防止扯皮丢包开着，不过等下要用 DNSCrypt 所以关掉</span>
-      directory: <span class="s2">"/usr/local/etc/unbound"</span>
-      pidfile: <span class="s2">"/usr/local/etc/unbound/unbound.pid"</span>
-      prefetch: <span class="nb">yes</span> <span class="c"># 蛮好用的，开着吧</span>
-      minimal-responses: <span class="nb">yes</span> <span class="c"># 省带宽，开着吧。本机用可以关掉</span>
-      <span class="c"># 关键部分来了，把默认查询全部丢给 DNSCrypt。使用 [地址]@[端口] 指定查询地址和端口，默认端口 53。</span>
-      <span class="c"># 然后把国内的地址丢给国内的缓存服务器。这两个选项的顺序不能错哟。</span>
-      <span class="c"># 如果使用隧道查询，把这个地址改为隧道对端的地址，或者一个国外的 DNS 服务器都可以，例如 8.8.8.8。</span>
-      <span class="c"># 具体看是在对端开 DNS 还是直接用国外的服务器。后者的话，前面 outgoing-interface 可以直接设置隧道本地端的地址，不过要配合 dnsmasq-china-list 的话，还是写路由表比较合适，否则不够灵活。</span>
-      include: <span class="s2">"/etc/unbound/accelerated-domains.china.unbound.conf"</span>
-
-forward-zone:
-    name: <span class="s2">"."</span>
-    forward-addr: 127.0.0.1@5353
 </code></pre></div></div>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 运行：</span>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改配置文件 /usr/local/etc//unbound/unbound.conf
+</span><span class="err">server:</span>
+      <span class="err">num-threads:</span> <span class="err">2</span> <span class="c"># 线程数可以修改为物理核心数
+</span>      <span class="err">interface:</span> <span class="err">0.0.0.0</span> <span class="c"># 侦听所有 IPv4 地址
+</span>      <span class="err">interface:</span> <span class="err">::0</span> <span class="c"># 侦听所有 IPv6 地址
+</span>      <span class="c"># 如果只需要本机使用，则一个 interface: 127.0.0.1 即可
+</span>      <span class="err">so-rcvbuf:</span> <span class="err">4m</span>
+      <span class="err">so-sndbuf:</span> <span class="err">4m</span> <span class="c"># 本机使用的话，这俩 buf 可以取消注释
+</span>      <span class="err">so-reuseport:</span> <span class="err">yes</span> <span class="c"># 如果开了多线程，就写 yes
+</span>      <span class="err">msg-cache-size:</span> <span class="err">64m</span> <span class="c"># 本机可以设置 4m 或者更小
+</span>      <span class="err">rrset-cache-size:</span> <span class="err">128m</span> <span class="c"># 本机可以设置 4m 或者更小
+</span>      <span class="err">cache-max-ttl:</span> <span class="err">3600</span> <span class="c"># 建议设置一个不太大的值...专治各种运营商 DNS 缓存不服
+</span>      <span class="err">outgoing-num-tcp:</span> <span class="err">256</span> <span class="c"># 限制每个线程向上级查询的 TCP 并发数
+</span>      <span class="err">incoming-num-tcp:</span> <span class="err">1024</span> <span class="c"># 限制每个线程接受查询的 TCP 并发数
+</span>      <span class="c"># 下面这四个不需要解释了吧，不想用那个就写 no
+</span>      <span class="err">do-ip4:</span> <span class="err">yes</span>
+      <span class="err">do-ip6:</span> <span class="err">yes</span>
+      <span class="err">do-udp:</span> <span class="err">yes</span>
+      <span class="err">do-tcp:</span> <span class="err">yes</span>
+      <span class="err">tcp-upstream:</span> <span class="err">no</span> <span class="c"># 默认是 no，隧道状态比较稳的话也不需要写 yes。一些情况下强制使用 tcp 连上游的话写 yes
+</span>      <span class="err">access-control:</span> <span class="err">0.0.0.0/0</span> <span class="err">allow</span> <span class="c"># 本机用的话建议设置 127.0.0.0/8 allow，局域网用适当调整
+</span>      <span class="err">chroot:</span> <span class="err">"/usr/local/etc/unbound"</span>
+      <span class="err">username:</span> <span class="err">"unbound"</span>
+      <span class="err">root-hints:</span> <span class="err">"/usr/local/etc/unbound/named.cache"</span> <span class="c"># 没有的话在 ftp://FTP.INTERNIC.NET/domain/named.cache 下载一份
+</span>      <span class="err">hide-identity:</span> <span class="err">yes</span> <span class="c"># 不返回对 id.server 和 hostname.bind 的查询。
+</span>      <span class="err">hide-version:</span> <span class="err">yes</span> <span class="c"># 不返回对 version.server 和 version.bind 的查询。
+</span>      <span class="c"># 不过下面有 identity 和 version 的自定义选项，不隐藏这些的话，修改下选项还可以卖个萌(´・ω・｀)
+</span>      <span class="err">harden-glue:</span> <span class="err">yes</span> <span class="c"># 建议打开
+</span>      <span class="err">module-config:</span> <span class="err">"iterator"</span> <span class="c"># 禁用 DNSSEC 检查，如果上游不支持 DNSSEC 就关掉。注意这个选项有可能在其他 include 的文件里
+</span>      <span class="err">unwanted-reply-threshold:</span> <span class="err">10000000</span> <span class="c"># 针对各种网络不服，数值为建议值，具体可以自己修改看看效果
+</span>      <span class="err">do-not-query-localhost:</span> <span class="err">no</span> <span class="c"># 一般是为了防止扯皮丢包开着，不过等下要用 DNSCrypt 所以关掉
+</span>      <span class="err">directory:</span> <span class="err">"/usr/local/etc/unbound"</span>
+      <span class="err">pidfile:</span> <span class="err">"/usr/local/etc/unbound/unbound.pid"</span>
+      <span class="err">prefetch:</span> <span class="err">yes</span> <span class="c"># 蛮好用的，开着吧
+</span>      <span class="err">minimal-responses:</span> <span class="err">yes</span> <span class="c"># 省带宽，开着吧。本机用可以关掉
+</span>      <span class="c"># 关键部分来了，把默认查询全部丢给 DNSCrypt。使用 [地址]@[端口] 指定查询地址和端口，默认端口 53。
+</span>      <span class="c"># 然后把国内的地址丢给国内的缓存服务器。这两个选项的顺序不能错哟。
+</span>      <span class="c"># 如果使用隧道查询，把这个地址改为隧道对端的地址，或者一个国外的 DNS 服务器都可以，例如 8.8.8.8。
+</span>      <span class="c"># 具体看是在对端开 DNS 还是直接用国外的服务器。后者的话，前面 outgoing-interface 可以直接设置隧道本地端的地址，不过要配合 dnsmasq-china-list 的话，还是写路由表比较合适，否则不够灵活。
+</span>      <span class="err">include:</span> <span class="err">"/etc/unbound/accelerated-domains.china.unbound.conf"</span>
+
+<span class="err">forward-zone:</span>
+    <span class="err">name:</span> <span class="err">"."</span>
+    <span class="err">forward-addr:</span> <span class="err">127.0.0.1@5353</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 运行并自动进入后台执行</span>
 <span class="nb">sudo</span> /usr/local/sbin/unbound <span class="nt">-c</span> /usr/local/etc/unbound/unbound.conf 
-（会自动进入后台执行）
 </code></pre></div></div>
 
 <h2 id="实验验证">实验验证</h2>
@@ -358,19 +382,20 @@ dig facebook.com  @127.0.0.1
 </code></pre></div></div>
 
 <p>  将两条命令查询出的 ip 放到 ipip.net 查询一下，看是否属于 facebook 机房的。可以看出，前者不是后者是，那么就无污染 DNS 就搭建完成了。虽然这样一来你就能够获得正确的 facebook.com 的 ip，但是这并不意味着你就能正常访问 facebook，因为 ip 是不通，这也正是为什么修改 hosts 而无法访问某搜索引擎的原因了。</p>
+
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li>https://03k.org/linux-dnscrypt-proxy.html</li>
-  <li>http://blog.csdn.net/guowenyan001/article/details/39048893</li>
-  <li>https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/</li>
+  <li><a href="https://03k.org/linux-dnscrypt-proxy.html">linux 下编译安装 dnscrypt-proxy(centos,ubuntu,debian)</a></li>
+  <li><a href="http://blog.csdn.net/guowenyan001/article/details/39048893">unbound：安装与配置</a></li>
+  <li><a href="https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/">使用 Unbound 搭建更好用的 DNS 服务器</a></li>
 </ul>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#引言">引言</a><ul><li><a href="#实验环境">实验环境</a></li><li><a href="#实验过程">实验过程</a></li><li><a href="#实验验证">实验验证</a></li><li><a href="#参考资料">参考资料</a></li></ul></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#实验环境">实验环境</a></li><li><a href="#实验过程">实验过程</a><ul><li><a href="#安装-libsodium">安装 libsodium</a></li><li><a href="#安装-libevent">安装 libevent</a></li><li><a href="#安装-dnscrypt-proxy">安装 dnscrypt-proxy</a></li><li><a href="#配置-dnscrypt-proxy">配置 dnscrypt-proxy</a></li><li><a href="#安装-unbound">安装 unbound</a></li><li><a href="#配置-unbound">配置 unbound</a></li></ul></li><li><a href="#实验验证">实验验证</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       

@@ -164,7 +164,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 949 字
+          本文总共 951 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -197,12 +197,13 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <h2 id="引言">引言</h2>
+            <h2 id="前言">前言</h2>
+
 <p>  构建镜像站主要是对于 linux 开源平台的软件源、 pypi 源、 cran 源、 mysql 等开源软件第三方源，大部分源支持使用 rsync 工具直接进行同步，少部分源比较特殊，比如 pypi 源必须采用官方提供的 bandsnatch 工具，mysql 源则只能采用 wget 的方式镜像整站。</p>
 
 <h2 id="linux-镜像">linux 镜像</h2>
 
-<p>采用 rsync 工具</p>
+<p>  采用 rsync 工具</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="nt">-avz</span> <span class="nt">--delete</span> <span class="nt">--safe-links</span> rsync.apache.org::apache-dist /path/to/mirror
 rsync <span class="nt">-avz</span> <span class="nt">--delete</span> <span class="nt">--safe-links</span> mirror.math.princeton.edu::pub/putty nfs/rsync/
@@ -211,36 +212,36 @@ rsync <span class="nt">-avz</span> <span class="nt">--delete</span> <span class=
 
 <h2 id="pypi-镜像">pypi 镜像</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#安装bandersnatch</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 bandersnatch</span>
 <span class="nb">sudo </span>pip <span class="nb">install </span>bandersnatch
 
-<span class="c">#尝试启动bandersnatch</span>
+<span class="c"># 尝试启动 bandersnatch</span>
 bandersnatch mirror  
-<span class="c">#返回没有/etc/bandersnatch.conf文件错误</span>
+<span class="c"># 返回没有 /etc/bandersnatch.conf 文件错误</span>
 
-<span class="c">#创建bandersnatch.conf文件（文件内容如下）</span>
+<span class="c"># 创建 bandersnatch.conf 文件（文件内容如下）</span>
 <span class="o">[</span>mirror]
 directory <span class="o">=</span> /srv/pypi
 master <span class="o">=</span> https://pypi.python.org
 
-<span class="c">#启动bandersnatch</span>
+<span class="c"># 启动 bandersnatch</span>
 tmux
 bandersnatch mirror
 ctrl+b+d
-<span class="c">#tmux为终端会话工具，`ctrl+b+d`让任务在后台执行</span>
+<span class="c"># tmux 为终端会话工具，`ctrl+b+d` 让任务在后台执行</span>
 
-<span class="c">#配置web 服务器到同步路径</span>
-<span class="c">#web服务的根目录为`/srv/pypi/web`</span>
-<span class="c">#在linux系统用户配置中修改pypi默认镜像</span>
+<span class="c"># 配置 web 服务器到同步路径</span>
+<span class="c"># web 服务的根目录为 `/srv/pypi/web`</span>
+<span class="c"># 在 linux 系统用户配置中修改 pypi 默认镜像</span>
 
-<span class="c">#文件 ~/.pip/pip.conf</span>
+<span class="c"># 文件 ~/.pip/pip.conf</span>
 <span class="o">[</span>global]
 index-url <span class="o">=</span> https://pypi.doubanio.com/simple/  （该地址修改为web服务器对应地址）
 </code></pre></div></div>
 
 <h2 id="其他镜像">其他镜像</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#采用wget镜像`nodejs.org`站点</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 采用 wget 镜像 `nodejs.org` 站点</span>
 wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <span class="nt">--adjust-extension</span> <span class="nt">--page-requisites</span> <span class="nt">--no-parent</span> http://nodejs.org/dist  <span class="nt">-e</span> <span class="nv">robots</span><span class="o">=</span>off
 </code></pre></div></div>
 
@@ -248,7 +249,7 @@ wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <s
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#引言">引言</a></li><li><a href="#linux-镜像">linux 镜像</a></li><li><a href="#pypi-镜像">pypi 镜像</a></li><li><a href="#其他镜像">其他镜像</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#linux-镜像">linux 镜像</a></li><li><a href="#pypi-镜像">pypi 镜像</a></li><li><a href="#其他镜像">其他镜像</a></li></ul>
         </div>
       </div>
       
@@ -343,7 +344,7 @@ wget <span class="nt">--mirror</span> <span class="nt">--convert-links</span> <s
           <a href="/tech/docker/docker-init.html" class="read-next-link" aria-label="Docker 入门"></a>
             <section>
               <span>Docker 入门</span>
-              <p>Docker入门</p>
+              <p>安装 Docker</p>
             </section>
             
             <div class="filter"></div>

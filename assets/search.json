@@ -51,7 +51,7 @@
     {
       "title"    : "H2O-ac theme for Jekyll",
       "tags"     : "jekyll theme blog ac develop 主题 前端开发 学术 运维",
-      "url"      : "/tech/webmaster/new-theme-h2o-ac.html"
+      "url"      : "/tech/new-theme-h2o-ac.html"
     } ,
   
     {
@@ -361,7 +361,7 @@
     } ,
   
     {
-      "title"    : "ubuntu-14.04-lts 安装配置 nodejs+bower",
+      "title"    : "Ubuntu-14.04-LTS 安装配置 NodeJS+Bower",
       "tags"     : "ubuntu nodejs bower",
       "url"      : "/tech/nodejs/ubuntu-nodejs.html"
     } ,

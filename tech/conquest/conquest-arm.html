@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 3506 字
+          本文总共 3557 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -199,7 +199,7 @@
 
 <h2 id="ubuntu-arm">Ubuntu ARM</h2>
 
-<p>以下为 CONQUEST 所需的软件或依赖库列表：</p>
+<p>  以下为 CONQUEST 所需的软件或依赖库列表：</p>
 
 <table>
   <thead>
@@ -248,7 +248,9 @@
   </tbody>
 </table>
 
-<p>使用以下命令安装上述软件或者依赖库。</p>
+<h3 id="安装依赖">安装依赖</h3>
+
+<p>  使用以下命令安装上述软件或者依赖库。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> git build-essential gcc gfortran openmpi-bin
@@ -258,142 +260,149 @@
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> fftw3 fftw3-dev pkg-config
 </code></pre></div></div>
 
-<p>下载 CONQUEST 最新源代码：</p>
+<h3 id="编译-conquest">编译 CONQUEST</h3>
+
+<p>  下载 CONQUEST 最新源代码：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/OrderN/CONQUEST-release conquest
 </code></pre></div></div>
 
-<p>修改 conquest/src/system.make 文件如下所示：</p>
+<p>  修改 conquest/src/system.make 文件如下所示：</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker</span>
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker
+</span>
+<span class="c"># Set compilers
+</span><span class="py">FC</span><span class="p">=</span><span class="s">mpif90</span>
+<span class="py">F77</span><span class="p">=</span><span class="s">mpif77</span>
 
-<span class="c"># Set compilers</span>
-<span class="nv">FC</span><span class="o">=</span>mpif90
-<span class="nv">F77</span><span class="o">=</span>mpif77
+<span class="c"># Linking flags
+</span><span class="py">LINKFLAGS</span><span class="p">=</span> <span class="s">-L/usr/local/lib</span>
+<span class="py">ARFLAGS</span><span class="p">=</span>
 
-<span class="c"># Linking flags</span>
-<span class="nv">LINKFLAGS</span><span class="o">=</span> <span class="nt">-L</span>/usr/local/lib
-<span class="nv">ARFLAGS</span><span class="o">=</span>
+<span class="c"># Compilation flags
+</span><span class="py">COMPFLAGS</span><span class="p">=</span> <span class="s">-O3 $(XC_COMPFLAGS)</span>
+<span class="py">COMPFLAGS_F77</span><span class="p">=</span> <span class="s">$(COMPFLAGS)</span>
 
-<span class="c"># Compilation flags</span>
-<span class="nv">COMPFLAGS</span><span class="o">=</span> <span class="nt">-O3</span> <span class="si">$(</span>XC_COMPFLAGS<span class="si">)</span>
-<span class="nv">COMPFLAGS_F77</span><span class="o">=</span> <span class="si">$(</span>COMPFLAGS<span class="si">)</span>
+<span class="c"># Set BLAS and LAPACK libraries
+# BLAS= -lvecLibFort
+</span><span class="py">BLAS</span><span class="p">=</span> <span class="s">-lblas -llapack</span>
 
-<span class="c"># Set BLAS and LAPACK libraries</span>
-<span class="c"># BLAS= -lvecLibFort</span>
-<span class="nv">BLAS</span><span class="o">=</span> <span class="nt">-lblas</span> <span class="nt">-llapack</span>
+<span class="c"># Full library call; remove scalapack if using dummy diag module
+</span><span class="py">LIBS</span><span class="p">=</span> <span class="s">$(FFT_LIB) $(XC_LIB) -lscalapack-openmpi $(BLAS)</span>
 
-<span class="c"># Full library call; remove scalapack if using dummy diag module</span>
-<span class="nv">LIBS</span><span class="o">=</span> <span class="si">$(</span>FFT_LIB<span class="si">)</span> <span class="si">$(</span>XC_LIB<span class="si">)</span> <span class="nt">-lscalapack-openmpi</span> <span class="si">$(</span>BLAS<span class="si">)</span>
+<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library
+</span>
+<span class="c"># Conquest XC library
+</span><span class="py">XC_LIBRARY</span> <span class="p">=</span> <span class="s">CQ</span>
+<span class="py">XC_LIB</span> <span class="p">=</span>
+<span class="py">XC_COMPFLAGS</span> <span class="p">=</span>
 
-<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library</span>
+<span class="c"># LibXC compatibility
+# Choose old LibXC (v2.x) or modern versions
+#XC_LIBRARY = LibXC_v2
+#XC_LIBRARY = LibXC
+#XC_LIB = -lxcf90 -lxc
+#XC_COMPFLAGS = -I/usr/include
+</span>
+<span class="c"># Set FFT library
+</span><span class="py">FFT_LIB</span><span class="p">=</span><span class="s">-lfftw3</span>
+<span class="py">FFT_OBJ</span><span class="p">=</span><span class="s">fft_fftw3.o</span>
 
-<span class="c"># Conquest XC library</span>
-XC_LIBRARY <span class="o">=</span> CQ
-XC_LIB <span class="o">=</span>
-XC_COMPFLAGS <span class="o">=</span>
-
-<span class="c"># LibXC compatibility</span>
-<span class="c"># Choose old LibXC (v2.x) or modern versions</span>
-<span class="c">#XC_LIBRARY = LibXC_v2</span>
-<span class="c">#XC_LIBRARY = LibXC</span>
-<span class="c">#XC_LIB = -lxcf90 -lxc</span>
-<span class="c">#XC_COMPFLAGS = -I/usr/include</span>
-
-<span class="c"># Set FFT library</span>
-<span class="nv">FFT_LIB</span><span class="o">=</span><span class="nt">-lfftw3</span>
-<span class="nv">FFT_OBJ</span><span class="o">=</span>fft_fftw3.o
-
-<span class="c"># Matrix multiplication kernel type</span>
-MULT_KERN <span class="o">=</span> default
-<span class="c"># Use dummy DiagModule or not</span>
-DIAG_DUMMY <span class="o">=</span>
+<span class="c"># Matrix multiplication kernel type
+</span><span class="py">MULT_KERN</span> <span class="p">=</span> <span class="s">default</span>
+<span class="c"># Use dummy DiagModule or not
+</span><span class="py">DIAG_DUMMY</span> <span class="p">=</span>
 </code></pre></div></div>
 
-<p>执行编译安装命令：</p>
+<p>  执行编译安装命令：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>conquest/src/
 make clean <span class="o">&amp;&amp;</span> make
 </code></pre></div></div>
 
-<p>执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见<a href="/tech/conquest-introduction">使用指南</a>。</p>
+<p>  执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见 <a href="/tech/conquest-introduction">使用指南</a>。</p>
 
-<blockquote>
-  <p>有一点有意思的事是，在 Ubuntu 平台下可能会出现无法寻找对应的依赖库的问题。解决这一问题比较好的办法是在所使用的 .bashrc 或者 .zshrc 文件里添加完整的 LIBRARY_PATH 和 LD_LIBRARY_PATH 配置。</p>
-</blockquote>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>有一点有意思的事是，在 Ubuntu 平台下可能会出现无法寻找对应的依赖库的问题。解决这一问题比较好的办法是在所使用的 .bashrc 或者 .zshrc 文件里添加完整的 LIBRARY_PATH 和 LD_LIBRARY_PATH 配置。</p>
 
+
+
+ </div> </div>
 <h2 id="m1">M1</h2>
+
+<h3 id="安装依赖-1">安装依赖</h3>
 
 <p>  M1 平台下的依赖库安装相对比较简单一点，直接使用 Homebrew 和以下命令即可一键式安装所需的所有依赖库和软件。M1 平台下的 Homebrew 的安装请移步 <a href="https://brew.sh/">brew.sh</a>。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>gcc scalapack openblas liblas lapack open-mpi libxc fftw vecLibFort
 </code></pre></div></div>
 
-<p>下载 CONQUEST 最新源代码：</p>
+<h3 id="编译-conquest-1">编译 CONQUEST</h3>
+
+<p>  下载 CONQUEST 最新源代码：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/OrderN/CONQUEST-release conquest
 </code></pre></div></div>
 
-<p>以下为 M1 平台下对应的 system.make 文件：</p>
+<p>  以下为 M1 平台下对应的 system.make 文件：</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Mac M1 aarch64</span>
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Mac M1 aarch64
+</span>
+<span class="c"># Set compilers
+</span><span class="py">FC</span><span class="p">=</span><span class="s">mpif90 -std=legacy</span>
+<span class="py">F77</span><span class="p">=</span><span class="s">mpif77</span>
 
-<span class="c"># Set compilers</span>
-<span class="nv">FC</span><span class="o">=</span>mpif90 <span class="nt">-std</span><span class="o">=</span>legacy
-<span class="nv">F77</span><span class="o">=</span>mpif77
+<span class="c"># Linking flags
+</span><span class="py">LINKFLAGS</span><span class="p">=</span> <span class="s">-L/usr/local/lib -L/opt/homebrew/lib</span>
+<span class="py">ARFLAGS</span><span class="p">=</span>
 
-<span class="c"># Linking flags</span>
-<span class="nv">LINKFLAGS</span><span class="o">=</span> <span class="nt">-L</span>/usr/local/lib <span class="nt">-L</span>/opt/homebrew/lib
-<span class="nv">ARFLAGS</span><span class="o">=</span>
+<span class="c"># Compilation flags
+</span><span class="py">COMPFLAGS</span><span class="p">=</span> <span class="s">-O3 $(XC_COMPFLAGS)</span>
+<span class="py">COMPFLAGS_F77</span><span class="p">=</span> <span class="s">$(COMPFLAGS)</span>
 
-<span class="c"># Compilation flags</span>
-<span class="nv">COMPFLAGS</span><span class="o">=</span> <span class="nt">-O3</span> <span class="si">$(</span>XC_COMPFLAGS<span class="si">)</span>
-<span class="nv">COMPFLAGS_F77</span><span class="o">=</span> <span class="si">$(</span>COMPFLAGS<span class="si">)</span>
+<span class="c"># Set BLAS and LAPACK libraries
+</span><span class="py">BLAS</span><span class="p">=</span> <span class="s">-lvecLibFort</span>
 
-<span class="c"># Set BLAS and LAPACK libraries</span>
-<span class="nv">BLAS</span><span class="o">=</span> <span class="nt">-lvecLibFort</span>
+<span class="c"># Full library call; remove scalapack if using dummy diag module
+</span><span class="py">LIBS</span><span class="p">=</span> <span class="s">$(FFT_LIB) $(XC_LIB) -lscalapack $(BLAS)</span>
 
-<span class="c"># Full library call; remove scalapack if using dummy diag module</span>
-<span class="nv">LIBS</span><span class="o">=</span> <span class="si">$(</span>FFT_LIB<span class="si">)</span> <span class="si">$(</span>XC_LIB<span class="si">)</span> <span class="nt">-lscalapack</span> <span class="si">$(</span>BLAS<span class="si">)</span>
+<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library
+</span>
+<span class="c"># Conquest XC library
+#XC_LIBRARY = CQ
+#XC_LIB =
+#XC_COMPFLAGS =
+</span>
+<span class="c"># LibXC compatibility
+# Choose old LibXC (v2.x) or modern versions
+#XC_LIBRARY = LibXC_v2
+</span><span class="py">XC_LIBRARY</span> <span class="p">=</span> <span class="s">LibXC</span>
+<span class="py">XC_LIB</span> <span class="p">=</span> <span class="s">-lxcf90 -lxc</span>
+<span class="c">#XC_COMPFLAGS = -I/usr/local/include
+</span><span class="py">XC_COMPFLAGS</span> <span class="p">=</span> <span class="s">-I/opt/homebrew/include</span>
 
-<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library</span>
+<span class="c"># Set FFT library
+</span><span class="py">FFT_LIB</span><span class="p">=</span><span class="s">-lfftw3</span>
+<span class="py">FFT_OBJ</span><span class="p">=</span><span class="s">fft_fftw3.o</span>
 
-<span class="c"># Conquest XC library</span>
-<span class="c">#XC_LIBRARY = CQ</span>
-<span class="c">#XC_LIB =</span>
-<span class="c">#XC_COMPFLAGS =</span>
-
-<span class="c"># LibXC compatibility</span>
-<span class="c"># Choose old LibXC (v2.x) or modern versions</span>
-<span class="c">#XC_LIBRARY = LibXC_v2</span>
-XC_LIBRARY <span class="o">=</span> LibXC
-XC_LIB <span class="o">=</span> <span class="nt">-lxcf90</span> <span class="nt">-lxc</span>
-<span class="c">#XC_COMPFLAGS = -I/usr/local/include</span>
-XC_COMPFLAGS <span class="o">=</span> <span class="nt">-I</span>/opt/homebrew/include
-
-<span class="c"># Set FFT library</span>
-<span class="nv">FFT_LIB</span><span class="o">=</span><span class="nt">-lfftw3</span>
-<span class="nv">FFT_OBJ</span><span class="o">=</span>fft_fftw3.o
-
-<span class="c"># Matrix multiplication kernel type</span>
-MULT_KERN <span class="o">=</span> default
-<span class="c"># Use dummy DiagModule or not</span>
-DIAG_DUMMY <span class="o">=</span>
+<span class="c"># Matrix multiplication kernel type
+</span><span class="py">MULT_KERN</span> <span class="p">=</span> <span class="s">default</span>
+<span class="c"># Use dummy DiagModule or not
+</span><span class="py">DIAG_DUMMY</span> <span class="p">=</span>
 </code></pre></div></div>
 
-<p>执行编译安装命令：</p>
+<p>  执行编译安装命令：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>conquest/src/
 make clean <span class="o">&amp;&amp;</span> make
 </code></pre></div></div>
 
-<p>执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见<a href="/tech/conquest-introduction">使用指南</a>。</p>
+<p>  执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见<a href="/tech/conquest-introduction">使用指南</a>。</p>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#ubuntu-arm">Ubuntu ARM</a></li><li><a href="#m1">M1</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#ubuntu-arm">Ubuntu ARM</a><ul><li><a href="#安装依赖">安装依赖</a></li><li><a href="#编译-conquest">编译 CONQUEST</a></li></ul></li><li><a href="#m1">M1</a><ul><li><a href="#安装依赖-1">安装依赖</a></li><li><a href="#编译-conquest-1">编译 CONQUEST</a></li></ul></li></ul>
         </div>
       </div>
       

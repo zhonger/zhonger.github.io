@@ -156,13 +156,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 697 字
+          本文总共 705 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 2 分钟
+             阅读全文大约需要 3 分钟
           </span>
           
           <span class="post-meta-item">
@@ -191,9 +191,9 @@
           <article class="markdown-body">
             <p>  在一些生产平台或者做安全审计的时候往往看到一大堆的用户 SSH 连接到同一台服务器，或者连接后没有正常关闭进程还驻留在系统内。限制 SSH 连接数与手动断开空闲连接也有必要之举，这里写出手动剔出其他用户的过程。</p>
 
-<ul>
-  <li>查看系统在线用户</li>
-</ul>
+<h3 id="查看">查看</h3>
+
+<p>  查看系统当前所有在线用户</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@apache ~]# w 
 14:15:41 up 42 days, 56 min,  2 <span class="nb">users</span>,  load average: 0.07, 0.02, 0.00 
@@ -202,24 +202,24 @@ root     pts/0    116.204.64.165   14:15    0.00s  0.06s  0.04s w
 root     pts/1    116.204.64.165   14:15    2.00s  0.02s  0.02s –bash
 </code></pre></div></div>
 
-<ul>
-  <li>查看当前自己占用终端，别把自己干掉了</li>
-</ul>
+<h3 id="确认">确认</h3>
+
+<p>  查看当前自己占用终端，别误操作了。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@apache ~]# <span class="nb">who </span>am i 
 root     pts/0        2013-01-16 14:15 <span class="o">(</span>116.204.64.165<span class="o">)</span>
 </code></pre></div></div>
 
-<ul>
-  <li>用 pkill 命令剔除对方</li>
-</ul>
+<h3 id="踢掉用户">踢掉用户</h3>
+
+<p>  用 <code class="language-plaintext highlighter-rouge">pkill</code> 命令踢掉对方</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@apache ~]# pkill <span class="nt">-kill</span> <span class="nt">-t</span> pts/1
 </code></pre></div></div>
 
-<ul>
-  <li>用 w 命令在看看干掉没</li>
-</ul>
+<h3 id="验证">验证</h3>
+
+<p>  用 <code class="language-plaintext highlighter-rouge">w</code> 命令在看看踢掉了吗</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@apache ~]# w 
 14:19:47 up 42 days,  1:00,  1 user,  load average: 0.00, 0.00, 0.00 
@@ -227,20 +227,22 @@ USER     TTY      FROM              LOGIN@   IDLE   JCPU   PCPU WHAT
 root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
 </code></pre></div></div>
 
-<ul>
-  <li>如果最后查看还是没有干掉，建议加上 -9 强制杀死。</li>
-</ul>
+<h3 id="强制踢掉">强制踢掉</h3>
+
+<p>  如果最后查看还是没有踢掉，建议加上 <code class="language-plaintext highlighter-rouge">-9</code> 强制杀死。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@apache ~]# pkill <span class="nt">-9</span> <span class="nt">-t</span> pts/1
 </code></pre></div></div>
 
-<p>原文转自<a href="http://www.myhack58.com/Article/48/66/2013/37031.htm">http://www.myhack58.com/Article/48/66/2013/37031.htm</a></p>
+<h3 id="转载声明">转载声明</h3>
+
+<p>  原文转自 <a href="http://www.myhack58.com/Article/48/66/2013/37031.htm">《Linux 踢出其他正在 SSH 登陆用户》</a>（作者未知）</p>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          
+          <ul><li><a href="#查看">查看</a></li><li><a href="#确认">确认</a></li><li><a href="#踢掉用户">踢掉用户</a></li><li><a href="#验证">验证</a></li><li><a href="#强制踢掉">强制踢掉</a></li><li><a href="#转载声明">转载声明</a></li></ul>
         </div>
       </div>
       

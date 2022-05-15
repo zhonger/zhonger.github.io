@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 2866 字
+          本文总共 2869 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -262,31 +262,32 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 
 <span class="c"># 将主题目录与目录列表所在根目录软连接一下</span>
 <span class="nb">sudo ln</span> <span class="nt">-s</span> ~/downloads/Nginx-Fancyindex-Theme /var/www/html/Nginx-Fancyindex-Theme
+</code></pre></div></div>
 
-<span class="c"># 修改 Nginx 虚拟主机配置文件</span>
-server <span class="o">{</span>
-    listen 80<span class="p">;</span>
-    <span class="c">#listen [::]:80;</span>
-	server_name ftp.example.org<span class="p">;</span>
-	<span class="k">return </span>301 https://<span class="nv">$host$request_uri</span><span class="p">;</span>
-<span class="o">}</span>
-server <span class="o">{</span>
-	listen 443<span class="p">;</span>
-	listen <span class="o">[</span>::]:443<span class="p">;</span>
-	server_name ftp.example.org<span class="p">;</span>
-	ssl on<span class="p">;</span>
-	ssl_certificate /home/ubuntu/ssl/ftp.example.org.cert.pem<span class="p">;</span>
-	ssl_certificate_key /home/ubuntu/ssl/ftp.example.org.key.pem<span class="p">;</span>
-    root /var/www/html<span class="p">;</span>
-	index index.html<span class="p">;</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 修改 Nginx 虚拟主机配置文件</span>
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="c1">#listen [::]:80;</span>
+	<span class="kn">server_name</span> <span class="s">ftp.example.org</span><span class="p">;</span>
+	<span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">server</span> <span class="p">{</span>
+	<span class="kn">listen</span> <span class="mi">443</span><span class="p">;</span>
+	<span class="kn">listen</span> <span class="s">[::]:443</span><span class="p">;</span>
+	<span class="kn">server_name</span> <span class="s">ftp.example.org</span><span class="p">;</span>
+	<span class="kn">ssl</span> <span class="no">on</span><span class="p">;</span>
+	<span class="kn">ssl_certificate</span> <span class="n">/home/ubuntu/ssl/ftp.example.org.cert.pem</span><span class="p">;</span>
+	<span class="kn">ssl_certificate_key</span> <span class="n">/home/ubuntu/ssl/ftp.example.org.key.pem</span><span class="p">;</span>
+	<span class="kn">root</span> <span class="n">/var/www/html</span><span class="p">;</span>
+	<span class="kn">index</span> <span class="s">index.html</span><span class="p">;</span>
     
-    location / <span class="o">{</span>
-    	include /var/www/html/Nginx-Fancyindex-Theme/fancyindex.conf<span class="p">;</span>
-		autoindex_format html<span class="p">;</span>
-		charset utf-8,gbk<span class="p">;</span>
-	    disable_symlinks off<span class="p">;</span>
-    <span class="o">}</span>
-<span class="o">}</span>
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+		<span class="kn">include</span> <span class="n">/var/www/html/Nginx-Fancyindex-Theme/fancyindex.conf</span><span class="p">;</span>
+		<span class="kn">autoindex_format</span> <span class="s">html</span><span class="p">;</span>
+		<span class="kn">charset</span> <span class="s">utf-8,gbk</span><span class="p">;</span>
+		<span class="kn">disable_symlinks</span> <span class="no">off</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
           </article>

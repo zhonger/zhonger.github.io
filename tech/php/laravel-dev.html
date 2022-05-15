@@ -162,7 +162,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 5177 字
+          本文总共 5162 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -203,13 +203,11 @@
 
 <p>  Laravel 是 PHP 领域内一大流行的 Web 应用框架，因开发成本低、依赖管理方便等优势深受国内外开发者的喜爱，有很多的应用案例。Laravel 官方提供了 Valet 工具专门用于 PHP 项目的开发环境管理，相当简单、强大。Valet 不但可以支持 Laravel，还可以支持 Zend、CakePHP 等多种 PHP 常用框架和 Wordpress 等多种 PHP 常用应用。以下会简要介绍该工具的配置使用。</p>
 
-<p>  在前几年撰写的 <a href="/tech/laravel-lnmpa.html">laravel5.2 在 lnmpa 一键安装包环境下的部署</a> 一文中，使用了 <a href="https://lnmp.org">lnmp.org</a> 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。</p>
+<p>  在前几年撰写的 <a href="/tech/laravel-lnmpa.html">《laravel 5.2 在 lnmpa 一键安装包环境下的部署》</a> 一文中，使用了 <a href="https://lnmp.org">lnmp.org</a> 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。</p>
 
 <h2 id="基础环境配置">基础环境配置</h2>
 
-<ul>
-  <li>安装软件依赖</li>
-</ul>
+<h3 id="安装软件依赖">安装软件依赖</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt update
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> libnss3-tools jq xsel wget curl
@@ -218,9 +216,7 @@
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> network-manager php7.4 php7.4-fpm nginx
 </code></pre></div></div>
 
-<ul>
-  <li>配置 PHP</li>
-</ul>
+<h3 id="配置-php">配置 PHP</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>vim /etc/php/7.4/fpm/php.ini
 
@@ -230,18 +226,14 @@ max_file_uploads <span class="o">=</span> 20
 cgi.fix_pathinfo<span class="o">=</span>0
 </code></pre></div></div>
 
-<ul>
-  <li>安装 Composer</li>
-</ul>
+<h4 id="安装-composer">安装 Composer</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget <span class="nt">-c</span> https://mirrors.aliyun.com/composer/composer.phar
 <span class="nb">chmod</span> +x composer.phar
 <span class="nb">sudo mv </span>composer.phar /usr/local/bin/composer
 </code></pre></div></div>
 
-<ul>
-  <li>验证 Composer 安装</li>
-</ul>
+<h4 id="验证-composer-安装">验证 Composer 安装</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer diagnose
 
@@ -262,31 +254,23 @@ PHP binary path: /usr/bin/php7.4
 OpenSSL version: OpenSSL 1.1.1f  31 Mar 2020
 </code></pre></div></div>
 
-<ul>
-  <li>配置 Composer 镜像</li>
-</ul>
+<h4 id="配置-composer-镜像">配置 Composer 镜像</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>composer config <span class="nt">-g</span> repo.packagist composer https://mirrors.aliyun.com/composer/
 </code></pre></div></div>
 
-<ul>
-  <li>安装 MariaDB</li>
-</ul>
+<h3 id="安装-mariadb">安装 MariaDB</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> mariadb-client mariadb-server
 </code></pre></div></div>
 
-<ul>
-  <li>启动 MariaDB</li>
-</ul>
+<h4 id="启动-mariadb">启动 MariaDB</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>mariadb
 <span class="nb">sudo </span>systemctl start mariadb
 </code></pre></div></div>
 
-<ul>
-  <li>配置 MariaDB 的 root 用户密码</li>
-</ul>
+<h4 id="配置-mariadb-的-root-用户密码">配置 MariaDB 的 root 用户密码</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>mysql <span class="nt">-u</span> root
 MariaDB <span class="o">[</span>mysql]&gt; UPDATE mysql.user SET <span class="nv">password</span><span class="o">=</span>password<span class="o">(</span><span class="s1">'newpassword'</span><span class="o">)</span> WHERE <span class="nv">user</span><span class="o">=</span><span class="s1">'root'</span><span class="p">;</span>
@@ -294,9 +278,7 @@ MariaDB <span class="o">[</span>mysql]&gt; flush privileges<span class="p">;</sp
 MariaDB <span class="o">[</span>mysql]&gt; <span class="nb">exit</span><span class="p">;</span>
 </code></pre></div></div>
 
-<ul>
-  <li>创建新数据库</li>
-</ul>
+<h4 id="创建新数据库">创建新数据库</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-p</span> <span class="nt">-u</span> root
 
@@ -310,25 +292,19 @@ MariaDB <span class="o">[</span>blog]&gt; EXIT<span class="p">;</span>
 
 <h2 id="安装-laravel">安装 Laravel</h2>
 
-<ul>
-  <li>新建项目</li>
-</ul>
+<h3 id="新建项目">新建项目</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/web <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/web
 composer global require laravel/installer
 composer create-project <span class="nt">--prefer-dist</span> laravel/laravel blog <span class="s2">"6.*"</span>
 </code></pre></div></div>
 
-<ul>
-  <li>配置文件夹权限</li>
-</ul>
+<h3 id="配置文件夹权限">配置文件夹权限</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod</span> <span class="nt">-R</span> 755 ~/web/blog
 </code></pre></div></div>
 
-<ul>
-  <li>配置数据库</li>
-</ul>
+<h3 id="配置数据库">配置数据库</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim ~/web/blog/.env
 
@@ -340,14 +316,13 @@ composer create-project <span class="nt">--prefer-dist</span> laravel/laravel bl
 <span class="nv">DB_PASSWORD</span><span class="o">=</span>password
 </code></pre></div></div>
 
-<ul>
-  <li>测试应用</li>
-</ul>
+<h3 id="测试应用">测试应用</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> ~/web/blog
 php artisan serve <span class="nt">--port</span><span class="o">=</span>8000
 </code></pre></div></div>
-<p>  浏览器访问<code class="language-plaintext highlighter-rouge">http://localhost:8000</code>，<code class="language-plaintext highlighter-rouge">Ctrl+C</code>停止测试。</p>
+
+<p>  浏览器访问 <code class="language-plaintext highlighter-rouge">http://localhost:8000</code>，<code class="language-plaintext highlighter-rouge">Ctrl+C</code> 停止测试。</p>
 
 <h2 id="安装和配置-valet二选一">安装和配置 Valet（二选一）</h2>
 
@@ -359,133 +334,125 @@ PATH=</span><span class="nv">$PATH</span><span class="sh">:/home/</span><span cl
 valet <span class="nb">install
 cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">link </span>blog
 </code></pre></div></div>
-<p>  浏览器访问<code class="language-plaintext highlighter-rouge">http://blog.test</code>。</p>
+
+<p>  浏览器访问 <code class="language-plaintext highlighter-rouge">http://blog.test</code>。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>valet secure blog
 </code></pre></div></div>
-<p>  浏览器访问<code class="language-plaintext highlighter-rouge">https://blog.test</code>。由于最近浏览器对于 SSL 证书提升了验证的要求，对于本地签发的证书会报不信任，可以手动选择信任后访问。</p>
+
+<p>  浏览器访问 <code class="language-plaintext highlighter-rouge">https://blog.test</code>。由于最近浏览器对于 SSL 证书提升了验证的要求，对于本地签发的证书会报不信任，可以手动选择信任后访问。</p>
 
 <h2 id="配置-nginxphp-fpm-二选一">配置 Nginx+php-fpm （二选一）</h2>
 
-<ul>
-  <li>配置文件夹链接</li>
-</ul>
+<h3 id="配置文件夹链接">配置文件夹链接</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> ~/web/blog /var/www/blog
 </code></pre></div></div>
 
-<ul>
-  <li>配置 Nginx</li>
-</ul>
+<h3 id="配置-nginx">配置 Nginx</h3>
 
-<p>  以下为 /etc/nginx/sites-avaiable/blog 的内容，其中 SSL 证书为 acme.sh 工具申请的 Let’s Encrypt 提供的三个月免费通配符域名证书，<code class="language-plaintext highlighter-rouge">*.lisz.ml</code>解析 IP 为<code class="language-plaintext highlighter-rouge">127.0.0.1</code>。</p>
+<p>  以下为 /etc/nginx/sites-avaiable/blog 的内容，其中 SSL 证书为 acme.sh 工具申请的 Let’s Encrypt 提供的三个月免费通配符域名证书，<code class="language-plaintext highlighter-rouge">*.lisz.ml</code> 解析 IP 为 <code class="language-plaintext highlighter-rouge">127.0.0.1</code>。</p>
 
-<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
-    <span class="n">listen</span> <span class="m">80</span>;
-    <span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
-    <span class="n">index</span>  <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
-    <span class="n">server_name</span>  <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
-	<span class="n">return</span> <span class="m">301</span> <span class="n">https</span>://$<span class="n">host</span>$<span class="n">request_uri</span>;
-}
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">root</span> <span class="n">/var/www/blog/public</span><span class="p">;</span>
+    <span class="kn">index</span>  <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="kn">server_name</span>  <span class="s">blog.lisz.ml</span><span class="p">;</span>
+    <span class="kn">return</span> <span class="mi">301</span> <span class="s">https://</span><span class="nv">$host$request_uri</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="n">server</span> {
-	<span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span> <span class="n">http2</span>;
-	<span class="n">server_name</span> <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
-	<span class="n">ssl_certificate</span> /<span class="n">home</span>/<span class="n">zhonger</span>/<span class="n">ssl</span>/<span class="n">lisz</span>.<span class="n">ml</span>.<span class="n">cert</span>.<span class="n">pem</span>;
-	<span class="n">ssl_certificate_key</span> /<span class="n">home</span>/<span class="n">zhonger</span>/<span class="n">ssl</span>/<span class="n">lisz</span>.<span class="n">ml</span>.<span class="n">key</span>.<span class="n">pem</span>;
-	<span class="n">index</span> <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
-	<span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
+<span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">443</span> <span class="s">ssl</span> <span class="s">http2</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">blog.lisz.ml</span><span class="p">;</span>
+    <span class="kn">ssl_certificate</span> <span class="n">/home/zhonger/ssl/lisz.ml.cert.pem</span><span class="p">;</span>
+    <span class="kn">ssl_certificate_key</span> <span class="n">/home/zhonger/ssl/lisz.ml.key.pem</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="kn">root</span> <span class="n">/var/www/blog/public</span><span class="p">;</span>
 
-	<span class="n">add_header</span> <span class="n">X</span>-<span class="n">Frame</span>-<span class="n">Options</span> <span class="s2">"SAMEORIGIN"</span>;
-    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">XSS</span>-<span class="n">Protection</span> <span class="s2">"1; mode=block"</span>;
-    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">Content</span>-<span class="n">Type</span>-<span class="n">Options</span> <span class="s2">"nosniff"</span>;
+    <span class="kn">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">"SAMEORIGIN"</span><span class="p">;</span>
+    <span class="kn">add_header</span> <span class="s">X-XSS-Protection</span> <span class="s">"1</span><span class="p">;</span> <span class="kn">mode=block"</span><span class="p">;</span>
+    <span class="kn">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">"nosniff"</span><span class="p">;</span>
 
-	<span class="n">charset</span> <span class="n">utf</span>-<span class="m">8</span>;
+    <span class="kn">charset</span> <span class="s">utf-8</span><span class="p">;</span>
 
-    <span class="n">location</span> / {
-        <span class="n">try_files</span> $<span class="n">uri</span> $<span class="n">uri</span>/ /<span class="n">index</span>.<span class="n">php</span>?$<span class="n">query_string</span>;        
-    }
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php?</span><span class="nv">$query_string</span><span class="p">;</span>        
+    <span class="p">}</span>
 
-	<span class="n">location</span> = /<span class="n">favicon</span>.<span class="n">ico</span> { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
-    <span class="n">location</span> = /<span class="n">robots</span>.<span class="n">txt</span>  { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+    <span class="kn">location</span> <span class="p">=</span> <span class="n">/favicon.ico</span> <span class="p">{</span> <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span> <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kn">location</span> <span class="p">=</span> <span class="n">/robots.txt</span>  <span class="p">{</span> <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span> <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span> <span class="p">}</span>
 
-    <span class="n">error_page</span> <span class="m">404</span> /<span class="n">index</span>.<span class="n">php</span>;
+    <span class="kn">error_page</span> <span class="mi">404</span> <span class="n">/index.php</span><span class="p">;</span>
 
   
-    <span class="n">location</span> ~ \.<span class="n">php</span>$ {
-       <span class="n">include</span> <span class="n">fastcgi_params</span>;
-	   <span class="n">fastcgi_index</span> <span class="n">index</span>.<span class="n">php</span>;
-       <span class="n">fastcgi_pass</span>     <span class="n">unix</span>:/<span class="n">var</span>/<span class="n">run</span>/<span class="n">php</span>/<span class="n">php</span>-<span class="n">fpm</span>.<span class="n">sock</span>;
-       <span class="n">fastcgi_param</span>   <span class="n">SCRIPT_FILENAME</span> $<span class="n">document_root</span>$<span class="n">fastcgi_script_name</span>;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+       <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+       <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+       <span class="kn">fastcgi_pass</span>     <span class="s">unix:/var/run/php/php-fpm.sock</span><span class="p">;</span>
+       <span class="kn">fastcgi_param</span>   <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+    <span class="p">}</span>
 
-	<span class="n">location</span> ~ /\.(?!<span class="n">well</span>-<span class="n">known</span>).* {
-        <span class="n">deny</span> <span class="n">all</span>;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.(?!well-known).*</span> <span class="p">{</span>
+        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
 
-}
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>  未开启 HTTPS 的配置文件如下：</p>
 
-<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
-    <span class="n">listen</span> <span class="m">80</span>;
-    <span class="n">root</span> /<span class="n">var</span>/<span class="n">www</span>/<span class="n">blog</span>/<span class="n">public</span>;
-    <span class="n">index</span>  <span class="n">index</span>.<span class="n">php</span> <span class="n">index</span>.<span class="n">html</span> <span class="n">index</span>.<span class="n">htm</span>;
-    <span class="n">server_name</span>  <span class="n">blog</span>.<span class="n">lisz</span>.<span class="n">ml</span>;
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">root</span> <span class="n">/var/www/blog/public</span><span class="p">;</span>
+    <span class="kn">index</span>  <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+    <span class="kn">server_name</span>  <span class="s">blog.lisz.ml</span><span class="p">;</span>
 
-	<span class="n">add_header</span> <span class="n">X</span>-<span class="n">Frame</span>-<span class="n">Options</span> <span class="s2">"SAMEORIGIN"</span>;
-    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">XSS</span>-<span class="n">Protection</span> <span class="s2">"1; mode=block"</span>;
-    <span class="n">add_header</span> <span class="n">X</span>-<span class="n">Content</span>-<span class="n">Type</span>-<span class="n">Options</span> <span class="s2">"nosniff"</span>;
+    <span class="kn">add_header</span> <span class="s">X-Frame-Options</span> <span class="s">"SAMEORIGIN"</span><span class="p">;</span>
+    <span class="kn">add_header</span> <span class="s">X-XSS-Protection</span> <span class="s">"1</span><span class="p">;</span> <span class="kn">mode=block"</span><span class="p">;</span>
+    <span class="kn">add_header</span> <span class="s">X-Content-Type-Options</span> <span class="s">"nosniff"</span><span class="p">;</span>
 
-	<span class="n">charset</span> <span class="n">utf</span>-<span class="m">8</span>;
+    <span class="kn">charset</span> <span class="s">utf-8</span><span class="p">;</span>
 
-    <span class="n">location</span> / {
-        <span class="n">try_files</span> $<span class="n">uri</span> $<span class="n">uri</span>/ /<span class="n">index</span>.<span class="n">php</span>?$<span class="n">query_string</span>;        
-    }
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php?</span><span class="nv">$query_string</span><span class="p">;</span>        
+    <span class="p">}</span>
 
-	<span class="n">location</span> = /<span class="n">favicon</span>.<span class="n">ico</span> { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
-    <span class="n">location</span> = /<span class="n">robots</span>.<span class="n">txt</span>  { <span class="n">access_log</span> <span class="n">off</span>; <span class="n">log_not_found</span> <span class="n">off</span>; }
+    <span class="kn">location</span> <span class="p">=</span> <span class="n">/favicon.ico</span> <span class="p">{</span> <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span> <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span> <span class="p">}</span>
+    <span class="kn">location</span> <span class="p">=</span> <span class="n">/robots.txt</span>  <span class="p">{</span> <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span> <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span> <span class="p">}</span>
 
-    <span class="n">error_page</span> <span class="m">404</span> /<span class="n">index</span>.<span class="n">php</span>;
+    <span class="kn">error_page</span> <span class="mi">404</span> <span class="n">/index.php</span><span class="p">;</span>
 
   
-    <span class="n">location</span> ~ \.<span class="n">php</span>$ {
-       <span class="n">include</span> <span class="n">fastcgi_params</span>;
-	   <span class="n">fastcgi_index</span> <span class="n">index</span>.<span class="n">php</span>;
-       <span class="n">fastcgi_pass</span>     <span class="n">unix</span>:/<span class="n">var</span>/<span class="n">run</span>/<span class="n">php</span>/<span class="n">php</span>-<span class="n">fpm</span>.<span class="n">sock</span>;
-       <span class="n">fastcgi_param</span>   <span class="n">SCRIPT_FILENAME</span> $<span class="n">document_root</span>$<span class="n">fastcgi_script_name</span>;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+       <span class="kn">include</span> <span class="s">fastcgi_params</span><span class="p">;</span>
+       <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+       <span class="kn">fastcgi_pass</span>     <span class="s">unix:/var/run/php/php-fpm.sock</span><span class="p">;</span>
+       <span class="kn">fastcgi_param</span>   <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+    <span class="p">}</span>
 
-	<span class="n">location</span> ~ /\.(?!<span class="n">well</span>-<span class="n">known</span>).* {
-        <span class="n">deny</span> <span class="n">all</span>;
-    }
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.(?!well-known).*</span> <span class="p">{</span>
+        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+    <span class="p">}</span>
 
-}
+<span class="p">}</span>
 </code></pre></div></div>
 
-<ul>
-  <li>Nginx 配置文件生效</li>
-</ul>
+<h3 id="nginx-配置文件生效">Nginx 配置文件生效</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo ln</span> <span class="nt">-s</span> /etc/nginx/sites-avaiable/blog /etc/nginx/sites-enabled/
 <span class="nb">sudo </span>nginx <span class="nt">-t</span>
 <span class="nb">sudo </span>nginx <span class="nt">-s</span> reload
 </code></pre></div></div>
 
-<ul>
-  <li>开启 php-fpm</li>
-</ul>
+<h3 id="开启-php-fpm">开启 php-fpm</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl <span class="nb">enable </span>php-fpm
 <span class="nb">sudo </span>systemctl start php-fpm
 </code></pre></div></div>
 
-<ul>
-  <li>验证</li>
-</ul>
+<h3 id="验证">验证</h3>
 
-<p>  浏览器访问<code class="language-plaintext highlighter-rouge">https://blog.lisz.ml</code>。</p>
+<p>  浏览器访问 <code class="language-plaintext highlighter-rouge">https://blog.lisz.ml</code>。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
@@ -502,7 +469,7 @@ cd</span> ~/web/blog <span class="o">&amp;&amp;</span> valet <span class="nb">li
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#laravel">Laravel</a></li><li><a href="#基础环境配置">基础环境配置</a></li><li><a href="#安装-laravel">安装 Laravel</a></li><li><a href="#安装和配置-valet二选一">安装和配置 Valet（二选一）</a></li><li><a href="#配置-nginxphp-fpm-二选一">配置 Nginx+php-fpm （二选一）</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#laravel">Laravel</a></li><li><a href="#基础环境配置">基础环境配置</a><ul><li><a href="#安装软件依赖">安装软件依赖</a></li><li><a href="#配置-php">配置 PHP</a><ul><li><a href="#安装-composer">安装 Composer</a></li><li><a href="#验证-composer-安装">验证 Composer 安装</a></li><li><a href="#配置-composer-镜像">配置 Composer 镜像</a></li></ul></li><li><a href="#安装-mariadb">安装 MariaDB</a><ul><li><a href="#启动-mariadb">启动 MariaDB</a></li><li><a href="#配置-mariadb-的-root-用户密码">配置 MariaDB 的 root 用户密码</a></li><li><a href="#创建新数据库">创建新数据库</a></li></ul></li></ul></li><li><a href="#安装-laravel">安装 Laravel</a><ul><li><a href="#新建项目">新建项目</a></li><li><a href="#配置文件夹权限">配置文件夹权限</a></li><li><a href="#配置数据库">配置数据库</a></li><li><a href="#测试应用">测试应用</a></li></ul></li><li><a href="#安装和配置-valet二选一">安装和配置 Valet（二选一）</a></li><li><a href="#配置-nginxphp-fpm-二选一">配置 Nginx+php-fpm （二选一）</a><ul><li><a href="#配置文件夹链接">配置文件夹链接</a></li><li><a href="#配置-nginx">配置 Nginx</a></li><li><a href="#nginx-配置文件生效">Nginx 配置文件生效</a></li><li><a href="#开启-php-fpm">开启 php-fpm</a></li><li><a href="#验证">验证</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       

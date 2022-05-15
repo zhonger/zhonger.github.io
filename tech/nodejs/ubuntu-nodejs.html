@@ -5,12 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ubuntu-14.04-lts 安装配置 nodejs+bower - Mr Li</title>
+    <title>Ubuntu-14.04-LTS 安装配置 NodeJS+Bower - Mr Li</title>
     <meta name="author"  content="zhonger">
-    <meta name="description" content="ubuntu-14.04-lts 安装配置 nodejs+bower">
+    <meta name="description" content="Ubuntu-14.04-LTS 安装配置 NodeJS+Bower">
     <meta name="keywords"  content="ubuntu, nodejs, bower">
     <!-- Open Graph -->
-    <meta property="og:title" content="ubuntu-14.04-lts 安装配置 nodejs+bower - Mr Li">
+    <meta property="og:title" content="Ubuntu-14.04-LTS 安装配置 NodeJS+Bower - Mr Li">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lisz.me/tech/nodejs/ubuntu-nodejs.html">
     <meta property="og:baseurl" content="">
@@ -137,7 +137,7 @@
             
           
         </div>
-        <h1>ubuntu-14.04-lts 安装配置 nodejs+bower</h1>
+        <h1>Ubuntu-14.04-LTS 安装配置 NodeJS+Bower</h1>
         <div class="post-meta">
           <span class="post-meta-item">
             <svg class="icon" aria-hidden="true">
@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 915 字
+          本文总共 971 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -184,7 +184,7 @@
     </header>
     <div class="post-content visible">
       
-      <h2 class="post-subtitle">在 ubuntu 系统上安装 nodejs 和 bower 工具。</h2>
+      <h2 class="post-subtitle">在 Ubuntu 系统上安装 NodeJS 和 Bower 工具。</h2>
       
 
       
@@ -195,67 +195,94 @@
   <p>强烈推荐方案二</p>
 </blockquote>
 
-<h1 id="方案一">方案一</h1>
+<h2 id="方案一">方案一</h2>
 
-<p>安装准备：<code class="language-plaintext highlighter-rouge">pyhton</code>、<code class="language-plaintext highlighter-rouge">make</code>、<code class="language-plaintext highlighter-rouge">gcc</code>、<code class="language-plaintext highlighter-rouge">g++</code>均已安装</p>
+<p>安装准备：<code class="language-plaintext highlighter-rouge">Pyhton</code>、<code class="language-plaintext highlighter-rouge">make</code>、<code class="language-plaintext highlighter-rouge">gcc</code>、<code class="language-plaintext highlighter-rouge">g++</code> 均已安装</p>
 
-<ol>
-  <li>将 nodejs 的 ppa 源加入系统
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo  </span>add-apt-repository ppa:chris-lea/node.js
-</code></pre></div>    </div>
-  </li>
-  <li>更新系统软件源缓存并安装 nodejs
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
+<h3 id="增加源">增加源</h3>
+
+<p>  将 NodeJS 的 PPA 源加入系统。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo  </span>add-apt-repository ppa:chris-lea/node.js
+</code></pre></div></div>
+
+<h3 id="安装-nodejs">安装 NodeJS</h3>
+
+<p>  更新系统软件源缓存并安装 NodeJS。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get update
 <span class="nb">sudo </span>apt-get <span class="nb">install </span>nodejs
-</code></pre></div>    </div>
-  </li>
-  <li>使用 npm 命令全局安装 bower 命令
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>npm <span class="nb">install </span>bower <span class="nt">-g</span>
-</code></pre></div>    </div>
-    <p>到此<code class="language-plaintext highlighter-rouge">nodejs</code>和<code class="language-plaintext highlighter-rouge">bower</code>工具安装完成，接下来请享受<code class="language-plaintext highlighter-rouge">bower</code>工具带来的舒适吧！</p>
-  </li>
-</ol>
+</code></pre></div></div>
 
-<h1 id="方案二">方案二</h1>
+<h3 id="安装-bower">安装 Bower</h3>
 
-<p>  由于国内直接访问软件源的网速不是很好，而且<code class="language-plaintext highlighter-rouge">apt源</code>的<code class="language-plaintext highlighter-rouge">nodejs</code>版本也不是很好，所以建议采用方案二（使用 NPM 淘宝镜像来实现）。</p>
+<p>  使用 <code class="language-plaintext highlighter-rouge">npm</code> 命令全局安装 <code class="language-plaintext highlighter-rouge">bower</code> 命令。</p>
 
-<ol>
-  <li>在 https://npm.taobao.org/mirrors/node 中找到你想要的 nodejs 版本，建议采用<code class="language-plaintext highlighter-rouge">v4.4.3LTS版本</code>或者<code class="language-plaintext highlighter-rouge">Latest版本</code>
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget –no-check-certifica https://npm.taobao.org/mirrors/node/v4.4.3/node-v4.4.3-linux-x64.tar.gz
-</code></pre></div>    </div>
-    <p>（因为实验时主机为<code class="language-plaintext highlighter-rouge">Ubuntu 14.04 LTS 64位</code>操作系统，所以选择<code class="language-plaintext highlighter-rouge">node-v4.4.3-linux-x64.tar.gz</code>）</p>
-  </li>
-  <li>在用户根目录创建 node 文件夹，将下载的压缩包内容解压到该文件夹
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>zxf node-v4.4.3-linux-x64.tar.gz ~/node/
-</code></pre></div>    </div>
-  </li>
-  <li>将node和npm命令加入用户环境变量
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#在.bashrc文件的末尾加入</span>
-<span class="nb">tee</span> <span class="nt">-a</span> .bashrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>npm <span class="nb">install </span>bower <span class="nt">-g</span>
+</code></pre></div></div>
+
+<p>  到此 <code class="language-plaintext highlighter-rouge">NodeJS</code> 和 <code class="language-plaintext highlighter-rouge">bower</code> 工具安装完成，接下来请享受 <code class="language-plaintext highlighter-rouge">bower</code> 工具带来的舒适吧！</p>
+
+<h2 id="方案二">方案二</h2>
+
+<p>  由于国内直接访问软件源的网速不是很好，而且 <code class="language-plaintext highlighter-rouge">APT 源</code> 的 <code class="language-plaintext highlighter-rouge">NodeJS</code> 版本也不是很好，所以建议采用方案二（使用 NPM 淘宝镜像来实现）。</p>
+
+<h3 id="下载源码">下载源码</h3>
+
+<p>  在 <a href="https://npm.taobao.org/mirrors/node">https://npm.taobao.org/mirrors/node</a> 中找到你想要的 nodejs 版本，建议采用 <code class="language-plaintext highlighter-rouge">v4.4.3LTS版本</code> 或者 <code class="language-plaintext highlighter-rouge">Latest版本</code>。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget –no-check-certifica https://npm.taobao.org/mirrors/node/v4.4.3/node-v4.4.3-linux-x64.tar.gz
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>因为实验时主机为 <code class="language-plaintext highlighter-rouge">Ubuntu 14.04 LTS 64位</code> 操作系统，所以选择 <code class="language-plaintext highlighter-rouge">linux x64</code> 版本。</p>
+
+
+
+ </div> </div>
+<h3 id="解压">解压</h3>
+
+<p>  在用户根目录创建 node 文件夹，将下载的压缩包内容解压到该文件夹。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>zxf node-v4.4.3-linux-x64.tar.gz ~/node/
+</code></pre></div></div>
+
+<h3 id="配置环境变量">配置环境变量</h3>
+
+<p>  将 <code class="language-plaintext highlighter-rouge">node</code> 和 <code class="language-plaintext highlighter-rouge">npm</code> 命令加入用户环境变量。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在 .bashrc 文件的末尾加入</span>
+
+<span class="nb">tee</span> <span class="nt">-a</span> ~/.bashrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
 PATH=</span><span class="nv">$PATH</span><span class="sh">:~/node/bin
 </span><span class="no">EOF
-</span><span class="nb">source</span> .bashrc
+</span><span class="nb">source</span> ~/.bashrc
+
+<span class="c"># 验证 Node 是否安装成功</span>
 node <span class="nt">-v</span>
-</code></pre></div>    </div>
-    <p>（这样的命令就是只能单用户使用，如果需要多用户使用，请将<code class="language-plaintext highlighter-rouge">node文件夹</code>设置在系统公用目录，然后将<code class="language-plaintext highlighter-rouge">bin目录</code>赋给权限<strong>755</strong>）</p>
-  </li>
-  <li>安装cnpm
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> cnpm <span class="nt">--registry</span><span class="o">=</span>https://registry.npm.taobao.org
-</code></pre></div>    </div>
-    <p>到此为止，<code class="language-plaintext highlighter-rouge">cnpm</code>命令就可以完全替代<code class="language-plaintext highlighter-rouge">npm</code>进行使用，并且安装模块的速度杠杠的哦（毕竟是淘宝镜像源啊～）</p>
-  </li>
-  <li>安装bower
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cnpm <span class="nb">install</span> <span class="nt">-g</span> bower
-</code></pre></div>    </div>
-  </li>
-</ol>
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  这样的命令就是只能单用户使用，如果需要多用户使用，请  <code class="language-plaintext highlighter-rouge">node</code> 文件夹设置在系统公用目录，然后将 <code class="language-plaintext highlighter-rouge">bin</code> 目录赋给权限 <code class="language-plaintext highlighter-rouge">755</code>。</p>
+
+
+
+ </div> </div>
+<h3 id="安装-cnpm">安装 cnpm</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> cnpm <span class="nt">--registry</span><span class="o">=</span>https://registry.npm.taobao.org
+</code></pre></div></div>
+
+<p>  到此为止，<code class="language-plaintext highlighter-rouge">cnpm</code> 命令就可以完全替代 <code class="language-plaintext highlighter-rouge">npm</code> 进行使用，并且安装模块的速度杠杠的哦（毕竟是淘宝镜像源啊～）</p>
+
+<h3 id="安装-bower-1">安装 bower</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cnpm <span class="nb">install</span> <span class="nt">-g</span> bower
+</code></pre></div></div>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#方案一">方案一</a></li><li><a href="#方案二">方案二</a></li></ul>
+          <ul><li><a href="#方案一">方案一</a><ul><li><a href="#增加源">增加源</a></li><li><a href="#安装-nodejs">安装 NodeJS</a></li><li><a href="#安装-bower">安装 Bower</a></li></ul></li><li><a href="#方案二">方案二</a><ul><li><a href="#下载源码">下载源码</a></li><li><a href="#解压">解压</a></li><li><a href="#配置环境变量">配置环境变量</a></li><li><a href="#安装-cnpm">安装 cnpm</a></li><li><a href="#安装-bower-1">安装 bower</a></li></ul></li></ul>
         </div>
       </div>
       

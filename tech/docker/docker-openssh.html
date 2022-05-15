@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1126 字
+          本文总共 1132 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -197,7 +197,7 @@
 
 <p>  公钥文件的导入是这项任务的重点。一般来说，可能会有人想要以固定文件的形式写入到 Docker 镜像中，这样一来根据这个镜像启动的所有实例都将包含所需的公钥文件。但这样明显的缺点也是无法进行修改，不便于其他人复用这个 Docker 镜像。有一个叫 ssh-import-id 的工具，可以帮助我们实现这一目标。只要你在 Github 上有账户且已导入公钥，都可以通过 ssh-import-id 工具从 Github 中导入指定用户名的公钥。</p>
 
-<p>Dockerfile 文件如下所示：</p>
+<p>  Dockerfile 文件如下所示：</p>
 
 <div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> zhonger/ubuntu:latest</span>
 
@@ -217,7 +217,8 @@
 <span class="k">ENTRYPOINT</span><span class="s"> ["/entrypoint.sh"]</span>
 </code></pre></div></div>
 
-<p>文件 entrypoint.sh 内容如下：</p>
+<p>  文件 entrypoint.sh 内容如下：</p>
+
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 ssh-import-id gh:<span class="nv">$GITHUB_NAME</span>
 <span class="nb">sudo </span>service ssh restart
@@ -233,7 +234,8 @@ ssh-import-id gh:<span class="nv">$GITHUB_NAME</span>
 
 <h4 id="方式二">方式二</h4>
 
-<p>docker-compose.yml 文件如下：</p>
+<p>  docker-compose.yml 文件如下：</p>
+
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3.9"</span>
 <span class="na">services</span><span class="pi">:</span>
 

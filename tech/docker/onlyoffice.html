@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1050 字
+          本文总共 1052 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -193,7 +193,7 @@
 
 <h3 id="安装-docker">安装 Docker</h3>
 
-<p>  请移步 <a href="/tech/docker-init.html">Docker入门</a></p>
+<p>  请移步 <a href="/tech/docker-init.html">《Docker 入门》</a></p>
 
 <h3 id="安装-onlyoffice">安装 Onlyoffice</h3>
 
@@ -203,55 +203,56 @@
 <h3 id="配置-nginx-代理">配置 Nginx 代理</h3>
 
 <p>  主要是 onlyoffice 目前有部分内容是通过 websocket 进行通信的，并非完全是 http 代理。</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#/usr/local/nginx/conf/vhost/onlyoffice or /etc/nginx/site-available/onlyoffice</span>
 
-map <span class="nv">$http_host</span> <span class="nv">$this_host</span> <span class="o">{</span>
-    <span class="s2">""</span> <span class="nv">$host</span><span class="p">;</span>
-    default <span class="nv">$http_host</span><span class="p">;</span>
-<span class="o">}</span>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># /usr/local/nginx/conf/vhost/onlyoffice or /etc/nginx/site-available/onlyoffice</span>
 
-map <span class="nv">$http_x_forwarded_proto</span> <span class="nv">$the_scheme</span> <span class="o">{</span>
-     default <span class="nv">$http_x_forwarded_proto</span><span class="p">;</span>
-     <span class="s2">""</span> <span class="nv">$scheme</span><span class="p">;</span>
-<span class="o">}</span>
+<span class="k">map</span> <span class="nv">$http_host</span> <span class="nv">$this_host</span> <span class="p">{</span>
+    <span class="kn">""</span> <span class="nv">$host</span><span class="p">;</span>
+    <span class="kn">default</span> <span class="nv">$http_host</span><span class="p">;</span>
+<span class="p">}</span>
 
-map <span class="nv">$http_x_forwarded_host</span> <span class="nv">$the_host</span> <span class="o">{</span>
-    default <span class="nv">$http_x_forwarded_host</span><span class="p">;</span>
-    <span class="s2">""</span> <span class="nv">$this_host</span><span class="p">;</span>
-<span class="o">}</span>
+<span class="k">map</span> <span class="nv">$http_x_forwarded_proto</span> <span class="nv">$the_scheme</span> <span class="p">{</span>
+     <span class="kn">default</span> <span class="nv">$http_x_forwarded_proto</span><span class="p">;</span>
+     <span class="kn">""</span> <span class="nv">$scheme</span><span class="p">;</span>
+<span class="p">}</span>
 
-map <span class="nv">$http_upgrade</span> <span class="nv">$proxy_connection</span> <span class="o">{</span>
-  default upgrade<span class="p">;</span>
-  <span class="s2">""</span> close<span class="p">;</span>
-<span class="o">}</span>
+<span class="k">map</span> <span class="nv">$http_x_forwarded_host</span> <span class="nv">$the_host</span> <span class="p">{</span>
+    <span class="kn">default</span> <span class="nv">$http_x_forwarded_host</span><span class="p">;</span>
+    <span class="kn">""</span> <span class="nv">$this_host</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">map</span> <span class="nv">$http_upgrade</span> <span class="nv">$proxy_connection</span> <span class="p">{</span>
+  <span class="kn">default</span> <span class="s">upgrade</span><span class="p">;</span>
+  <span class="kn">""</span> <span class="s">close</span><span class="p">;</span>
+<span class="p">}</span>
 
 
-server<span class="o">{</span>
-    listen 80<span class="p">;</span>
-    <span class="c">#listen [::]:80;</span>
-    server_name onlyoffice<span class="p">;</span>
-    index index.html index.htm index.php default.html default.htm default.php<span class="p">;</span>
-    root  /home/wwwroot/onlyoffice<span class="p">;</span>
+<span class="k">server</span><span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="c1">#listen [::]:80;</span>
+    <span class="kn">server_name</span> <span class="s">onlyoffice</span><span class="p">;</span>
+    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.htm</span> <span class="s">index.php</span> <span class="s">default.html</span> <span class="s">default.htm</span> <span class="s">default.php</span><span class="p">;</span>
+    <span class="kn">root</span>  <span class="n">/home/wwwroot/onlyoffice</span><span class="p">;</span>
 
-    location /
-    <span class="o">{</span>
-        try_files <span class="nv">$uri</span> @apache<span class="p">;</span>
-    <span class="o">}</span>
+    <span class="kn">location</span> <span class="n">/</span>
+    <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="s">@apache</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    location @apache
-    <span class="o">{</span>
-        internal<span class="p">;</span>
-        proxy_pass http://127.0.0.1:7010<span class="p">;</span>
-        proxy_set_header Upgrade <span class="nv">$http_upgrade</span><span class="p">;</span>
-        proxy_set_header Connection <span class="nv">$proxy_connection</span><span class="p">;</span>
-        proxy_set_header X-Forwarded-Host <span class="nv">$the_host</span><span class="p">;</span>
-        proxy_set_header X-Forwarded-Proto <span class="nv">$the_scheme</span><span class="p">;</span>
-        proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
-        proxy_http_version 1.1<span class="p">;</span>
-    <span class="o">}</span>
+    <span class="kn">location</span> <span class="s">@apache</span>
+    <span class="p">{</span>
+        <span class="kn">internal</span><span class="p">;</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:7010</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="nv">$proxy_connection</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Host</span> <span class="nv">$the_host</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="nv">$the_scheme</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+        <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    access_log  /home/wwwlogs/onlyoffice.log  access<span class="p">;</span>
-<span class="o">}</span>
+    <span class="kn">access_log</span>  <span class="n">/home/wwwlogs/onlyoffice.log</span>  <span class="s">access</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
           </article>

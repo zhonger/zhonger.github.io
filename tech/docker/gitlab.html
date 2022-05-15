@@ -158,7 +158,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 9671 字
+          本文总共 9634 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -205,7 +205,7 @@
 
 <p>  举个例子，当我在写论文或者做 PPT 的时候，我习惯在文件名的最后加上完成年月日以示区分。这样做的唯一好处就是简单便捷，但是特别容易犯错，尤其是需要和之前的版本进行交叉修改的时候。为了解决这种问题，很久以前就有许多中本地版本控制系统被开发出来，其中大多数都是采用某种简单的数据库来记录文件的历次更新差异。其中最流行的一种叫做 RCS，现今许多计算机系统上还看得到它的踪影。RCS 的工作原理是在硬盘上保留补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。我们常用的网盘的增量同步就是采用了这种方式，网盘同步工具会在同步的主目录建立一个文件来描述本地文件的修订情况，在联网之后与远程服务器的信息进行对比就能发现本地文件与远程文件是否一致。如果两个文件的 MD5 值相同则可以说明文件无须操作，如果不同则根据时间戳来判断哪个文件最新，并将最新的文件更新给另一方。</p>
 
-<p><img src="https://git-scm.com/book/en/v2/images/local.png" alt="local-version" /></p>
+<p><img src="https://i.lisz.top/blog/pHTwoo.webp" alt="本地版本 local-version" /></p>
 
 <h4 id="集中化的版本控制系统">集中化的版本控制系统</h4>
 
@@ -213,7 +213,7 @@
 
 <p>  这样一来，的确在某种程度上提供了多人开发协同的功能，但是如果中央服务器发生了故障，那么谁也无法提交更新或者协同工作。如果磁盘发生损坏且未进行实时备份，毫无疑问所有或者一部分数据都会丢失。</p>
 
-<p><img src="https://git-scm.com/book/en/v2/images/centralized.png" alt="central-version" /></p>
+<p><img src="https://i.lisz.top/blog/DkO4GL.webp" alt="集中化版本 central-version" /></p>
 
 <h4 id="分布式版本控制系统">分布式版本控制系统</h4>
 
@@ -223,7 +223,7 @@
 
 <p>  Git 诞生以前几乎是 SVN 占据了开源届版本控制系统的江山，但之后随着 Git 的诞生与日臻完善，版本控制系统的天下早已被 Git 收入囊中。就连原来以 SVN 作为版本控制系统的 <a href="https://sf.net/">SourceForge</a> 和以 Mercurial 作为版本控制系统的 <a href="https://bitbucket.org/">Bitbucket</a> 都相继支持 Git。</p>
 
-<p><img src="https://git-scm.com/book/en/v2/images/distributed.png" alt="distributed-version" /></p>
+<p><img src="https://i.lisz.top/blog/ch8RN4.webp" alt="分布式版本 distributed-version" /></p>
 
 <h3 id="git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</h3>
 
@@ -232,6 +232,7 @@
 <p>  除了 Gitlab 这家开源的解决方案之外，其实还有 <a href="https://gogs.io/">gogs</a>、<a href="https://gitea.io/">Gitea</a> 等。Gitlab CE 版本提供了与 Gitlab EE 几乎一样的功能，并包含了非常丰富的特性，比如 Pages（静态页面托管）、Oauth2（第三方应用登录验证）、CI（持续集成）、CD（持续部署）等。相比之下，gogs 或者 Gitea 则偏向于更加基础、精悍的 Git 私有代码托管平台解决方案。从 Gitea 提供的 <a href="https://docs.gitea.io/en-us/comparison/">Gitea compared to other Git hosting options</a> 一文可以看出，Gitlab CE、Gitlab EE 与 Github EE 事实上是特性最为丰富的，Gitea 除了不支持 Pages、内置容器 Registry、内置 CI/CD、提交人身份验证等特性之外，还是支持大部分特性的。考虑到未来可能出现的更加复杂的应用场景需求，比如 JupyterLab 的 Oauth2 登录验证等，这里我们采用了 Gitlab CE 的解决方案。</p>
 
 <p>  随着 Docker 的广泛使用和发展，Gitlab CE 官方也提供了 Docker 化的部署方式，但是相比较而言，由 sameersbn 提供的 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 更加适合实践。主要的理由有以下两点：</p>
+
 <ul>
   <li>对 Gitlab CE 的多个组成部分包括数据库、缓存数据库、应用进行了分离，解耦程度更高，更有利于应用本身的独立升级。</li>
   <li>Gitlab CE 应用的升级并非只是镜像的更新，还涉及到应用容器实例启动后的内部数据库和文件的更新，<a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 提供了一键式的部署和更新，让用户无须关注容器内部的操作。唯一值得注意的是，Gitlab 的版本升级是具有路线图的，当跨版本升级的时候需要根据官方给出的路线图逐步迭代更新，<strong>不能直接从一个旧版本直接升级到最新版本</strong>。</li>
@@ -278,7 +279,7 @@ wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/dock
 
 <h4 id="pages-设置">Pages 设置</h4>
 
-<p>  Pages 功能是 Gitlab CE 提供的一个非常实用的内部静态页面托管方案，不像 Github Pages 是完全公开的， Gitlab Pages 也可以根据 Gitlab 本身的用户验证来限制页面的访问权限。这里上面下载的配置文件中默认不包含 Pages 的配置，需要进行添加如下以 GITLAB_PAGES_ 开头的配置节。当开启 Pages 功能后，需要设定好对应的域名（建议二级域名，非主域名），并将该域名对应的通配符解析到 Gitlab 服务器。解析好后，普通项目的访问 URL 是 <a href="https://{username}.pages.example.com/{project}">https://{username}.pages.example.com/{project}</a>，比如项目 zhonger/zhonger 的 Pages 访问 URL 为 <a href="https://zhonger.pages.example.com/zhonger">https://zhonger.pages.example.com/zhonger</a>。如果项目名与前面的域名完全对应，那么就可以直接使用域名访问，无须带子目录，比如项目 zhonger/zhonger.pages.example.com 的 Pages 使用 <a href="https://zhonger.pages.example.com">https://zhonger.pages.example.com</a> 访问即可。</p>
+<p>  Pages 功能是 Gitlab CE 提供的一个非常实用的内部静态页面托管方案，不像 Github Pages 是完全公开的， Gitlab Pages 也可以根据 Gitlab 本身的用户验证来限制页面的访问权限。这里上面下载的配置文件中默认不包含 Pages 的配置，需要进行添加如下以 GITLAB_PAGES_ 开头的配置节。当开启 Pages 功能后，需要设定好对应的域名（建议二级域名，非主域名），并将该域名对应的通配符解析到 Gitlab 服务器。解析好后，普通项目的访问 URL 是二级域名下的子目录，比如项目 zhonger/zhonger 的 Pages 访问 URL 为 <a href="https://zhonger.pages.example.com/zhonger">https://zhonger.pages.example.com/zhonger</a>。如果项目名与前面的域名完全对应，那么就可以直接使用域名访问，无须带子目录，比如项目 zhonger/zhonger.pages.example.com 的 Pages 使用 <a href="https://zhonger.pages.example.com">https://zhonger.pages.example.com</a> 访问即可。</p>
 
 <h4 id="相对路径配置">相对路径配置</h4>
 
@@ -423,6 +424,7 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner gi
 <p>  前面已经提到过 Gitlab 的升级实际上是要遵循 Gitlab 官方提供的路线图的，即按版本逐步迭代升级，具体可以查看 <a href="https://docs.gitlab.com/ce/update/#upgrade-paths">Upgrade-paths</a>。截止到文章撰写之时，Gitlab 的版本升级主要路线为：8.11.Z -&gt; 8.12.0 -&gt; 8.17.7 -&gt; 9.5.10 -&gt; 10.8.7 -&gt; 11.11.8 -&gt; 12.0.12 -&gt; 12.1.17 -&gt; 12.10.14 -&gt; 13.0.14 -&gt; 13.1.11 -&gt; latest 13.12.Z -&gt; latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z。这里的 Z 指的是该主要版本的最后一个次要版本，Y 指的是最新的主要版本。Gitlab 的版本可以通过 <a href="https://docs.gitlab.com/ce/update/#version-specific-upgrading-instructions">Version-specific upgrading instructions</a> 和 <a href="https://about.gitlab.com/releases/categories/releases/">Releases</a> 来确认。当然，在文档中我们也可以看到一些具体的版本升级路线的示例。如果我们当前的版本符合某一条升级路线，那么可以直接按照示例中的路线逐步升级。如果不符合则需要自行根据主要路线进行确认。</p>
 
 <p>  这里我们以当前版本 13.2.6 想要升级到 13 主要版本的最后一个次要版本 13.12.4 为例进行尝试。首先查阅一下 <a href="https://github.com/sameersbn/docker-gitlab/tags">sameersbn/docker-gitlab</a> 的版本号，发现如下：</p>
+
 <ul>
   <li>13.2.6 为 13.2.Z 的最后一个修补（patch）版本</li>
   <li>自 13.7.0 版本开始 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 采用 Postgresql 12</li>

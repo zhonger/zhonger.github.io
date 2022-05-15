@@ -156,7 +156,7 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 1233 字
+          本文总共 1339 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
@@ -189,13 +189,11 @@
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <h1 id="docker入门">Docker入门</h1>
+            <h2 id="安装-docker">安装 Docker</h2>
 
-<h2 id="安装">安装</h2>
+<p><del>  安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。</del></p>
 
-<p><del>安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。</del></p>
-
-<p>推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。</p>
+<p>  推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加中科大镜像源到list列表中</span>
 <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/apt/sources.list.d/docker.list <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
@@ -217,7 +215,7 @@
 
 <h2 id="更换-docker-镜像加速器">更换 docker 镜像加速器</h2>
 
-<p>由于 Docker Hub 的服务器只部署在美国，所以国内访问一般都比较慢，于是就要使用上大大佬们提供的镜像加速器，以下为修改加速器地址的方法（以中科大 docker 镜像仓库加速器为例）：</p>
+<p>  由于 Docker Hub 的服务器只部署在美国，所以国内访问一般都比较慢，于是就要使用大佬们提供的镜像加速器，以下为修改加速器地址的方法（以中科大 docker 镜像仓库加速器为例）：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加 中科大 Docker 镜像加速器</span>
 curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh | sh <span class="nt">-s</span> https://docker.mirrors.ustc.edu.cn/
@@ -226,7 +224,7 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
 <span class="nb">sudo </span>service docker restart
 </code></pre></div></div>
 
-<p>以下为国内主要的 docker 镜像仓库加速器：</p>
+<p>  以下为国内主要的 docker 镜像仓库加速器：</p>
 
 <table>
   <thead>
@@ -239,8 +237,20 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
   </thead>
   <tbody>
     <tr>
+      <td>南京大学镜像站</td>
+      <td>https://docker.nju.edu.cn</td>
+      <td>★★★★★</td>
+      <td>无任何限制</td>
+    </tr>
+    <tr>
       <td>中科大镜像站</td>
       <td>https://docker.mirrors.ustc.edu.cn</td>
+      <td>★★★★★</td>
+      <td>无任何限制</td>
+    </tr>
+    <tr>
+      <td>上海交通大学镜像站</td>
+      <td>https://docker.mirrors.sjtug.sjtu.edu.cn</td>
       <td>★★★★★</td>
       <td>无任何限制</td>
     </tr>
@@ -259,7 +269,7 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
     <tr>
       <td>Daocloud</td>
       <td>http://{your_id}.m.daocloud.io</td>
-      <td>★★★★★</td>
+      <td>★★★★</td>
       <td>大部分时候网速还是可以的</td>
     </tr>
     <tr>
@@ -273,7 +283,7 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
 
 <h2 id="安装-docker-compose">安装 docker-compose</h2>
 
-<p>docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。</p>
+<p>  docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装 python3 python3-pip</span>
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> python3 python3-pip
@@ -286,7 +296,7 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#docker入门">Docker入门</a><ul><li><a href="#安装">安装</a></li><li><a href="#更换-docker-镜像加速器">更换 docker 镜像加速器</a></li><li><a href="#安装-docker-compose">安装 docker-compose</a></li></ul></li></ul>
+          <ul><li><a href="#安装-docker">安装 Docker</a></li><li><a href="#更换-docker-镜像加速器">更换 docker 镜像加速器</a></li><li><a href="#安装-docker-compose">安装 docker-compose</a></li></ul>
         </div>
       </div>
       
@@ -367,7 +377,7 @@ curl <span class="nt">-sSL</span> https://get.daocloud.io/daotools/set_mirror.sh
           <a href="/tech/linux/mirrors-build.html" class="read-next-link" aria-label="镜像站构建"></a>
           <section>
             <span>镜像站构建</span>
-            <p>引言  构建镜像站主要是对于 linux 开源平台的软件源、 pypi 源、 cran 源、 mysql 等开源软...</p>
+            <p>前言</p>
           </section>
           
           <div class="filter"></div>

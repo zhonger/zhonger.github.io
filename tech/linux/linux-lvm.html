@@ -158,13 +158,13 @@
             <svg class="icon words" aria-hidden="true">
               <use xlink:href="#icon-words"></use>
             </svg>
-          本文总共 922 字
+          本文总共 1217 字
           </span>
           <span class="post-meta-item">
             <svg class="icon time" aria-hidden="true">
               <use xlink:href="#icon-time"></use>
             </svg>
-             阅读全文大约需要 3 分钟
+             阅读全文大约需要 4 分钟
           </span>
           
           <span class="post-meta-item">
@@ -199,7 +199,7 @@
   <li><strong>卷组</strong>: LVM 的卷组类似于物理硬盘，卷组上边可以建立多个虚拟的分区，LVM 卷组由一个或多个物理卷组成。</li>
   <li><strong>逻辑卷</strong>: LVM 的逻辑卷类似于非 LVM 系统中的硬盘分区，在逻辑卷上边可以建立文件系统，用于 mount 到不同的挂载点，提升分区空间——<code class="language-plaintext highlighter-rouge">真正跟用户打交道的部分</code>。</li>
   <li><strong>Physcial Extent</strong>:每一个物理卷被划分为一个个的基本存储单元，每一个 PE 都具有唯一的编址（类似于物理磁盘上的磁盘地址），PE 的大小默认为 4MB。</li>
-  <li><strong>Logical Extent</strong>:每一个逻辑卷也被划分为一个个的基本存储单元，每一个 LE 也具有唯一的编址，在同一个卷组中，LE 和PE的大小是相等的。</li>
+  <li><strong>Logical Extent</strong>:每一个逻辑卷也被划分为一个个的基本存储单元，每一个 LE 也具有唯一的编址，在同一个卷组中，LE 和 PE 的大小是相等的。</li>
 </ul>
 
 <h2 id="实验环境">实验环境</h2>
@@ -210,49 +210,92 @@
   <li>2 块 2T 空硬盘</li>
 </ul>
 
-<h2 id="实验步骤在root用户下操作">实验步骤(在root用户下操作)</h2>
+<h2 id="实验步骤">实验步骤</h2>
 
-<ol>
-  <li>分区
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 格式化</span>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>请在 root 用户下操作，否则所有命令前请加 <code class="language-plaintext highlighter-rouge">sudo</code>。</p>
+
+
+
+ </div> </div>
+<h3 id="分区">分区</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 格式化</span>
 fdisk /dev/sda
 Command<span class="o">(</span>m <span class="k">for </span><span class="nb">help</span><span class="o">)</span>: n  <span class="o">(</span>创建新分区<span class="o">)</span>
 <span class="c"># 接下来选择创建主分区、默认分区号为 1，把所有空间全部分配给这个分区(默认即可)</span>
 <span class="c"># 使用 p 查看分区情况，使用 t 命令(30 为 Linux LVM)</span>
 Hex code <span class="o">(</span><span class="nb">type </span>L to list codes<span class="o">)</span>: 30
 <span class="c"># 最后再用 w 命令保存分区表</span>
-<span class="c"># 另外一块也按照以上的步骤格式化为`LVM`格式</span>
-</code></pre></div>    </div>
-  </li>
-  <li>建立LVM分区和VG逻辑卷组
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pvcreate /dev/sda1 /dev/sdb1
+<span class="c"># 另外一块也按照以上的步骤格式化为 `LVM` 格式</span>
+</code></pre></div></div>
+
+<h3 id="建立-lvm-分区和-vg-逻辑卷组">建立 LVM 分区和 VG 逻辑卷组</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 为硬盘创建 PV</span>
+pvcreate /dev/sda1 /dev/sdb1
+
+<span class="c"># 查看当前所有的 PV 列表</span>
 pvdisplay
-vgextend asc-vg /dev/sda1 /dev/sdb1 <span class="o">(</span>或者vgcreate extspace /dev/sda1 /dev/sdb1<span class="o">)</span>
+
+<span class="c"># 利用新增的 PV 创建 VG</span>
+vgcreate extspace /dev/sda1 /dev/sdb1
+
+<span class="c"># 查看当前的 VG 列表</span>
 vgdisplay
-</code></pre></div>    </div>
-  </li>
-  <li>创建逻辑卷
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lvcreate <span class="nt">--name</span> data <span class="nt">--size</span> 3.6T asc-vg
+</code></pre></div></div>
+
+<h3 id="创建逻辑卷">创建逻辑卷</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 VG 中创建一个 3.6T 大小的 LV</span>
+lvcreate <span class="nt">--name</span> data <span class="nt">--size</span> 3.6T asc-vg
+
+<span class="c"># 查看当前已有的 LV 列表</span>
 lvdisplay
-</code></pre></div>    </div>
-  </li>
-  <li>挂载逻辑卷
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkfs.ext4 /dev/asc-vg/data 
+</code></pre></div></div>
+
+<h3 id="挂载逻辑卷">挂载逻辑卷</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 格式化 LV 为 ext4 文件格式</span>
+mkfs.ext4 /dev/asc-vg/data 
+
+<span class="c"># 挂载 LV 到 data 目录</span>
 mount /dev/asc-vg/data /home/data
-</code></pre></div>    </div>
-  </li>
-  <li>配置自动挂载
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改 /etc/fstab，增加以下几行：</span>
+</code></pre></div></div>
+
+<h3 id="配置自动挂载">配置自动挂载</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改 /etc/fstab，增加以下几行：</span>
 /dev/asc-vg/data /home/data ext4 rw,noatime 0 0
-</code></pre></div>    </div>
-  </li>
-</ol>
+</code></pre></div></div>
+
+<h3 id="后期扩容">后期扩容</h3>
+
+<p>(2022年5月16日更新)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 格式化新硬盘</span>
+fdisk /dev/sdb2
+
+<span class="c"># 新建 PV</span>
+pvcreate /dev/sdb2
+
+<span class="c"># 将新 PV 添加到已有的 VG zu</span>
+vgextend asc-vg /dev/sdb2
+
+<span class="c"># 利用新磁盘为原来的 LV 进行扩容</span>
+lvextend <span class="nt">-L</span> +2T /dev/asc-vg/data
+
+<span class="c"># 重新计算索引使扩容磁盘空间实时生效</span>
+resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-vg-data
+
+<span class="c"># 查看扩容后的容量空间</span>
+<span class="nb">df</span> <span class="nt">-hTl</span>
+</code></pre></div></div>
 
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#基本概念">基本概念</a></li><li><a href="#实验环境">实验环境</a></li><li><a href="#实验步骤在root用户下操作">实验步骤(在root用户下操作)</a></li></ul>
+          <ul><li><a href="#基本概念">基本概念</a></li><li><a href="#实验环境">实验环境</a></li><li><a href="#实验步骤">实验步骤</a><ul><li><a href="#分区">分区</a></li><li><a href="#建立-lvm-分区和-vg-逻辑卷组">建立 LVM 分区和 VG 逻辑卷组</a></li><li><a href="#创建逻辑卷">创建逻辑卷</a></li><li><a href="#挂载逻辑卷">挂载逻辑卷</a></li><li><a href="#配置自动挂载">配置自动挂载</a></li><li><a href="#后期扩容">后期扩容</a></li></ul></li></ul>
         </div>
       </div>
       
