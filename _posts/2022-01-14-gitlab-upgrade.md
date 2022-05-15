@@ -86,6 +86,7 @@ I, [2022-01-14T12:11:15.762011 #207818]  INFO -- : - Operations::FeatureFlagsCli
 I, [2022-01-14T12:11:15.762112 #207818]  INFO -- : Total: 5 row(s) affected
 I, [2022-01-14T12:11:15.762150 #207818]  INFO -- : Done!
 ```
+
 #### 连接数据库
 
 &emsp;&emsp;以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。
@@ -198,7 +199,6 @@ services:
     - prometheus_multiproc_dir=/dev/shm
     ......
 ```
-
 
 ## 参考资料
 

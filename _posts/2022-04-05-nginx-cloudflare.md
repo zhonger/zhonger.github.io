@@ -66,7 +66,7 @@ services:
 
 &emsp;&emsp;Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 [ibmcom/mysql-s390x:5.7.34](https://hub.docker.com/ibmcom/mysql-s390x)。
 
-![vgy.me](https://i.vgy.me/iY2gFc.png)
+![Yourls Dockerhub](https://i.lisz.top/blog/q0AAZg.webp)
 
 &emsp;&emsp;编辑完配置文件后执行以下命令启动 Yourls 服务：
 
@@ -83,23 +83,23 @@ docker-compose up -d
 - 进入 **DNS** 面板，点击**添加记录**按钮。
 - 采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。
 
-![vgy.me](https://i.vgy.me/PeqQd6.png)
+![添加域名 Add DNS record](https://i.lisz.top/blog/tQK16A.webp)
 
 #### 生成证书
 
 - 进入 **SSL/TLS** 的 **源服务器** 面板，点击**创建证书**按钮。
 
-![vgy.me](https://i.vgy.me/wQIIGc.png)
+![创建证书 Create certs](https://i.lisz.top/blog/gIMUvW.webp)
 
 - 使用默认配置点击**创建**按钮即可。
 
-![vgy.me](https://i.vgy.me/NutABj.png)
+![添加主机名 Add hosts](https://i.lisz.top/blog/pituGT.webp)
 
 - 然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。
 
-![vgy.me](https://i.vgy.me/uzEZNP.png)
+![保存证书 Save certs](https://i.lisz.top/blog/2CAEBX.webp)
 
-- 保存完成后，点击**确定**按钮结束操作。 
+- 保存完成后，点击**确定**按钮结束操作。
 
 #### 部署证书
 
@@ -120,23 +120,23 @@ scp url.com.* nginx:/home/ubuntu/ssl/
 
 server {
 
-	listen   443 ssl http2;
+  listen   443 ssl http2;
 
-	ssl_certificate    /home/linux1/ssl/url.com.pem;
-	ssl_certificate_key    /home/linux1/ssl/url.com.key;
+  ssl_certificate    /home/linux1/ssl/url.com.pem;
+  ssl_certificate_key    /home/linux1/ssl/url.com.key;
 
-	server_name url.com;
-	index index.php index.html index.htm;
+  server_name url.com;
+  index index.php index.html index.htm;
 
-	access_log /var/log/nginx/yourls.access.log;
-	error_log /var/log/nginx/yourls.error.log;
+  access_log /var/log/nginx/yourls.access.log;
+  error_log /var/log/nginx/yourls.error.log;
 
-	location / {
-		proxy_pass http://127.0.0.1:8080;
-		proxy_set_header Host $proxy_host;
-		proxy_set_header X-Real-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-	}
+  location / {
+    proxy_pass http://127.0.0.1:8080;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  }
 }
 ```
 
@@ -180,7 +180,7 @@ server {
     ...
     
     include cf.conf;
-	deny all;
+  deny all;
 }
 ```
 
@@ -195,7 +195,7 @@ sudo nginx -s reload
 
 &emsp;&emsp;访问 [https://url.com/install.php](https://url.com/install.php) 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 **Install YOURLS** 按钮即可完成安装。
 
-![vgy.me](https://i.vgy.me/IsDZVr.png)
+![Yourls](https://i.lisz.top/blog/bQwdsu.webp)
 
 ## 参考资料
 

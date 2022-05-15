@@ -11,7 +11,7 @@ categories: [tech, Linux]
 cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900'
 ---
 
-# 引言
+## 前言
 
 &emsp;&emsp;鉴于某些原因，我们日常生活中使用的公共 DNS 总是会存在一些奇奇怪怪的DNS解析，例如某些国内云平台大型网站无法正常解析 DNS ，因此搭建无污染 DNS 服务成为了一项值得尝试、有意义的事情。在搭建的技术栈上，我们选择了 unbound 和 dnscrypt。当然，这个世界上还有很多开源的、很好用的DNS服务器产品，比如 knot DNS、dnspord-sr、powerdns 等，它们也在很多大型的 ISP 提供商的 DNS 产品上得到了很多的实践，但是就我们个人而言，如果需要搭建一个小范围、公共的DNS服务，那么 unbound 是足够的，并且对于我们实现无污染有非常好的基础。废话少说，不如跟我一起来搭建一下。
 
@@ -19,18 +19,21 @@ cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600
 
 - 操作系统：CentOS 6.9
 - Unbound 版本：目前最新 1.6.7 [源码下载地址](http://unbound.net/downloads/unbound-latest.tar.gz)
-- Dnscrypt-proxy 版本：目前最新 1.9.5 [源码下载地址](https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.9.5.tar.gz) 
-- 依赖库 libsodium 版本：目前最新 1.0.15 [源码下载地址](https://download.libsodium.org/libsodium/releases/libsodium-1.0.15.tar.gz) 
+- Dnscrypt-proxy 版本：目前最新 1.9.5 [源码下载地址](https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.9.5.tar.gz)
+- 依赖库 libsodium 版本：目前最新 1.0.15 [源码下载地址](https://download.libsodium.org/libsodium/releases/libsodium-1.0.15.tar.gz)
 - 依赖库 libevent 版本：目前最新 2.1.8 [源码下载地址](https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz)(在github上，需要浏览器下载)
 
 ## 实验过程
 
-1. 安装 libsodium
+### 安装 libsodium
+
 ```bash
 # 解压 
-tar zxf libsodium-1.0.15.tar.gz 
+tar zxf libsodium-1.0.15.tar.gz
+
 # 进入文件夹
 cd libsodium-1.0.15
+
 # 编译
 ./configure
 ./autogen.sh
@@ -39,14 +42,19 @@ make -j12
 # j 后面为 CPU 核数，加快编译
 sudo make install
 sudo ldconfig
+
 # 安装完成
 ```
-2. 安装 libevent
+
+### 安装 libevent
+
 ```bash
 # 解压
 tar zxf libevent-2.1.8-stable.tar.gz
+
 # 进入文件夹
 cd libevent-2.1.8-stable
+
 # 编译源代码并安装
 ./configure --prefix=/usr
 ./autogen.sh
@@ -56,23 +64,31 @@ sudo make install
 sudo -i
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 sudo ldconfig
+
 # 安装完成
 ```
-3. 安装 dnscrypt-proxy
+
+### 安装 dnscrypt-proxy
+
 ```bash
 # 解压
 tar zxf dnscrypt-proxy-1.9.5.tar.gz
+
 # 进入文件夹
 cd dnscrypt-proxy-1.9.5
+
 # 编译源代码并安装
 ./configure
 make -j12
 sudo make install
+
 # 如果提示报错与 libevent 有关
 # 请再次运行 sudo ldconfig 并重新运行以上命令。
 ```
-4. 配置 dnscrypt-proxy
-```bash
+
+### 配置 dnscrypt-proxy
+
+```conf
 # 配置文件目录
 # /usr/local/etc/dnscrypt-proxy.conf
 ResolverName cisco
@@ -83,41 +99,58 @@ User dnscrypt
 LocalAddress 127.0.0.1:5353
 # 可选
 QueryLogFile /tmp/dns-queries.log
+```
+
+```bash
 # 添加用户 dnscrypt
 sudo useadd -d /var/run/dnscrypt dnscrypt
+
 # 创建主目录并赋予权限：
 sudo mkdir /var/run/dnscrypt && sudo chown dnscrypt /var/run/dnscrypt
+
 # 运行：
 sudo /usr/local/sbin/dnscrypt-proxy /usr/local/etc/dnscrypt-proxy.conf
-# 如果是在 ubuntu 系统下或者能够使用 systemctl 的环境下，请在 /usr/lib/systemd/system/dnscrypt-proxy.socket 修改配置，参考资料3中所示。
+
+# 如果是在 ubuntu 系统下或者能够使用 systemctl 的环境下，请在 /usr/lib/systemd/system/dnscrypt-proxy.socket 修改配置，参考资料 3 中所示。
 ```
-5. 安装 unbound
+
+### 安装 unbound
+
 ```bash
 # 解压
 tar zxf unbound-1.6.7.tar.gz
+
 # 进入文件夹 
 cd unbound-1.6.7
+
 # 编译源代码并安装
 ./configure --with-libevent
 make -j12
 sudo make install
+
 # 安装完成
 ```
-6. 配置 unbound
+
+### 配置 unbound
+
 ```bash
 # 下载 dnsmasq-china-list
 wget -c https://github.com/felixonmars/dnsmasq-china-list/archive/master.zip
+
 # 解压并进入文件夹：
 unzip master.zip && cd dnsmasq-china-list-master
+
 # 生成 accelerated-domains.china.unbound.conf
 make unbound
+
 # 移动加速配置到 unbound 配置目录：
 sudo mv accelerated-domains.china.unbound.conf /usr/local/etc/unbound
+
 # 下载 named.cache 到 /usr/local/etc/unbound 目录：
 wget -c ftp://FTP.INTERNIC.NET/domain/named.cache 
 ```
 
-```bash
+```ini
 # 修改配置文件 /usr/local/etc//unbound/unbound.conf
 server:
       num-threads: 2 # 线程数可以修改为物理核心数
@@ -163,10 +196,10 @@ forward-zone:
     name: "."
     forward-addr: 127.0.0.1@5353
 ```
+
 ```bash
-# 运行：
+# 运行并自动进入后台执行
 sudo /usr/local/sbin/unbound -c /usr/local/etc/unbound/unbound.conf 
-（会自动进入后台执行）
 ```
 
 ## 实验验证
@@ -177,8 +210,9 @@ dig facebook.com  @127.0.0.1
 ```
 
 &emsp;&emsp;将两条命令查询出的 ip 放到 ipip.net 查询一下，看是否属于 facebook 机房的。可以看出，前者不是后者是，那么就无污染 DNS 就搭建完成了。虽然这样一来你就能够获得正确的 facebook.com 的 ip，但是这并不意味着你就能正常访问 facebook，因为 ip 是不通，这也正是为什么修改 hosts 而无法访问某搜索引擎的原因了。
+
 ## 参考资料
 
-- https://03k.org/linux-dnscrypt-proxy.html
-- http://blog.csdn.net/guowenyan001/article/details/39048893
-- https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/
+- [linux 下编译安装 dnscrypt-proxy(centos,ubuntu,debian)](https://03k.org/linux-dnscrypt-proxy.html)
+- [unbound：安装与配置](http://blog.csdn.net/guowenyan001/article/details/39048893)
+- [使用 Unbound 搭建更好用的 DNS 服务器](https://blog.phoenixlzx.com/2016/04/27/better-dns-with-unbound/)

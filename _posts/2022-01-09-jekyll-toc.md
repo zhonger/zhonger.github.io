@@ -11,6 +11,7 @@ tags:
 - TOC
 categories: [tech, webmaster]
 cover: 'https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900'
+render_with_liquid: false
 ---
 
 * TOC
@@ -62,12 +63,14 @@ defaults:
 #### 第三种方案
 
 &emsp;&emsp;采用新增 jekyll 模板的方式来支持自动生成目录。这种方式也可以直接运行在 Github Pages 下。主要的步骤是：
+
 - 将 [toc.html](https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html) 文件下载到 _includes 目录下；
 - 在 _layouts 需要使用 toc 功能的页面模板的 content 前面加上 `% include toc.html html=content %`。
 
 ## 实践
 
 &emsp;&emsp;从上述三种方案综合来看，第三种方案能够同时支持自动生成目录和 Github Pages，比较适合预期的需求。另外，采用模板的方式还有一个好处，可以在全局配置文件 _config.yml 中一键设置“开启”或“关闭”，配置上比较简单。但如果仅仅照搬上述的第三种方案，还是不能完全满足实际的需求。因为第三种方案的结果是自动生成目录的内容，并不涉及到具体的布局，也就是说只能放在某一个固定的位置。总结的来说，实际的目标起码需要满足以下两点：
+
 - **目标一**：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。
 - **目标二**：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。
 
@@ -89,7 +92,6 @@ defaults:
 
 ### 最终代码
 
-{% raw %}
 ```liquid
 <!-- post.html -->
 
@@ -111,7 +113,6 @@ defaults:
   </article>
 {% endif %}
 ```
-{% endraw %}
 
 ```sass
 <!-- common.sass -->

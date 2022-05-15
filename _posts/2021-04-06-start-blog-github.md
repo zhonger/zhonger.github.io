@@ -22,16 +22,27 @@ cover: 'https://images.unsplash.com/photo-1617871911112-757893b9f0df?w=1600&q=90
 
 &emsp;&emsp;在已经完成 Jekyll 博客的内容编辑和更新提交的前提下，执行以下操作来完成在 Github 的在线部署。
 
-1.访问 Github 项目，点击 Settings。
+### 开启 Pages
 
-![vgy.me](https://i.vgy.me/u1sAjy.png)
+&emsp;&emsp;访问 Github 项目，点击 Settings。
 
-2.下拉至 Github Pages，选择分支为 master 或者 main，目录为根目录，不要选择主题，建议 Enforce HTTPS。
+![开启 Pages Enable Pages](https://i.lisz.top/blog/16b12O.webp)
 
-![vgy.me](https://i.vgy.me/XivwNm.png)
+### 选择分支
 
-3.(可选) 如果想用自己的域名，可以如上图所示添加一个 CNAME 解析记录到 username.github.io 上，并在自定义域名框中填写该域名。
+&emsp;&emsp;下拉至 Github Pages，选择分支为 master 或者 main，目录为根目录，不要选择主题，建议 Enforce HTTPS。
+
+![选择分支 Select branch](https://i.lisz.top/blog/2bRpVi.webp)
+
+### 自定义域名(可选)
+
+&emsp;&emsp;如果想用自己的域名，可以如上图所示添加一个 CNAME 解析记录到 username.github.io 上，并在自定义域名框中填写该域名。
 
 ## 验证
 
-&emsp;&emsp;浏览器访问 https://username.github.io 或自定义域名即可验证是否成功部署。如果访问失败，可能是因为编译过程失败。一般来说，在本地预览成功，Github 编译也不会有什么大问题。
+&emsp;&emsp;浏览器访问 <https://username.github.io> 或自定义域名即可验证是否成功部署。如果访问失败，可能是因为编译过程失败。一般来说，在本地预览成功，Github 编译也不会有什么大问题。
+
+（2022年5月15日更新）
+
+> info "小提示"
+> &emsp;&emsp;如果发现因为使用了 Github 默认不支持的插件而编译失败，可以使用 Github Action 来自定义编译过程。详情请移步 [《利用 Github Action 一键编译多平台 Docker 镜像》](../docker/github-action.html)。

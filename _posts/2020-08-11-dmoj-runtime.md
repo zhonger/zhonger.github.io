@@ -11,9 +11,9 @@ categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1594199679806-d543943615c8?w=1600&q=900'
 ---
 
-&emsp;&emsp;由于 DMOJ 支持多达63种编程语言环境，每一种环境都需要特别安装。如下为笔者尝试过的一些编程语言环境配置。
+&emsp;&emsp;由于 DMOJ 支持多达 63 种编程语言环境，每一种环境都需要特别安装。如下为笔者尝试过的一些编程语言环境配置。
 
-```shell
+```bash
 -----------------------------------------------------
 语言：Python2
 安装命令： sudo apt install -y python2 python2-pip

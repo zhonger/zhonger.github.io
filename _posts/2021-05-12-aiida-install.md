@@ -249,6 +249,7 @@ Repository directory [/home/lisz/.aiida/repository/conquest]:
 ## 验证安装
 
 &emsp;&emsp;AiiDA 的验证安装主要是检查：
+
 - AiiDA 主程序是否在后台正常运行？
 - verdi shell 是否能正常使用？
 - AiiDA 与数据库、消息队列是否连接正常？
@@ -291,5 +292,5 @@ In [1]: exit()
 
 - [AiiDA 官网中文文档](https://aiida.readthedocs.io/projects/aiida-core/zh_CN/latest/intro/installation.html#installing-the-aiida-core-package)
 - [Conda 安装 PostgreSQL 数据库](https://blog.csdn.net/r_nznf/article/details/108056919)
-- [离线安装 RabbitMQ ](https://segmentfault.com/a/1190000010480589)
+- [离线安装 RabbitMQ](https://segmentfault.com/a/1190000010480589)
 - [RabbitMQ 后台启动以及关闭](https://blog.csdn.net/yufanghu/article/details/80829108)

@@ -32,18 +32,18 @@ tags:
 
 ...
 var SupportedArches = map[string]OCIPlatform{
-	"amd64":    {OS: "linux", Architecture: "amd64"},
-	"arm32v5":  {OS: "linux", Architecture: "arm", Variant: "v5"},
-	"arm32v6":  {OS: "linux", Architecture: "arm", Variant: "v6"},
-	"arm32v7":  {OS: "linux", Architecture: "arm", Variant: "v7"},
-	"arm64v8":  {OS: "linux", Architecture: "arm64", Variant: "v8"},
-	"i386":     {OS: "linux", Architecture: "386"},
-	"mips64le": {OS: "linux", Architecture: "mips64le"},
-	"ppc64le":  {OS: "linux", Architecture: "ppc64le"},
-	"riscv64":  {OS: "linux", Architecture: "riscv64"},
-	"s390x":    {OS: "linux", Architecture: "s390x"},
+  "amd64":    {OS: "linux", Architecture: "amd64"},
+  "arm32v5":  {OS: "linux", Architecture: "arm", Variant: "v5"},
+  "arm32v6":  {OS: "linux", Architecture: "arm", Variant: "v6"},
+  "arm32v7":  {OS: "linux", Architecture: "arm", Variant: "v7"},
+  "arm64v8":  {OS: "linux", Architecture: "arm64", Variant: "v8"},
+  "i386":     {OS: "linux", Architecture: "386"},
+  "mips64le": {OS: "linux", Architecture: "mips64le"},
+  "ppc64le":  {OS: "linux", Architecture: "ppc64le"},
+  "riscv64":  {OS: "linux", Architecture: "riscv64"},
+  "s390x":    {OS: "linux", Architecture: "s390x"},
 
-	"windows-amd64": {OS: "windows", Architecture: "amd64"},
+  "windows-amd64": {OS: "windows", Architecture: "amd64"},
 }
 ...
 ```
@@ -137,13 +137,13 @@ jobs:
 
 &emsp;&emsp;由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。
 
-![vgy.me](https://i.vgy.me/dkk9YD.png)
+![变量配置 ENV Setting](https://i.lisz.top/blog/T8UIVu.webp)
 
 ### 发布新 tag
 
 &emsp;&emsp;访问 [https://github.com/用户名/项目名/releases/new](https://github.com/用户名/项目名/releases/new) 即可到达发布页面，如下所示。定义一个以 `v` 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 `Public release` 按钮完成发布。
 
-![vgy.me](https://i.vgy.me/ey8PCa.png)
+![新标签 New Tag](https://i.lisz.top/blog/y7i8fo.webp)
 
 &emsp;&emsp;发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。
 

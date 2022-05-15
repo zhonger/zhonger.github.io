@@ -78,63 +78,63 @@ services:
 
 &emsp;&emsp;访问 [http://127.0.0.1:8080/auth/realms/master/account/#/](http://127.0.0.1:8080/auth/realms/master/account/#/) 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。
 
-![vgy.me](https://i.vgy.me/ly4tKf.png)
+![用户页 User Page](https://i.lisz.top/blog/I7z7ma.webp)
 
-![vgy.me](https://i.vgy.me/aUGnww.png)
+![登录页 Login Page](https://i.lisz.top/blog/8CLUoY.webp)
 
 &emsp;&emsp;登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。
 
-![vgy.me](https://i.vgy.me/r19LoW.png)
+![登录成功 Login successfully](https://i.lisz.top/blog/VQHrFJ.webp)
 
 #### 国际化设置
 
 &emsp;&emsp;访问 [http://127.0.0.1:8080/auth/admin/master/console](http://127.0.0.1:8080/auth/admin/master/console) 即可进入管理员页面并自动登录。
 
-![vgy.me](https://i.vgy.me/Zc3XO1.png)
+![基本设置 Basic settings](https://i.lisz.top/blog/kNYBCF.webp)
 
 &emsp;&emsp;切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。
 
-![vgy.me](https://i.vgy.me/un2kGb.png)
+![国际化设置 International settings](https://i.lisz.top/blog/lZ0I0c.webp)
 
 &emsp;&emsp;刷新页面就能看见设置好的中文界面。
 
-![vgy.me](https://i.vgy.me/mxrpMe.png)
+![完成国际化设置 Finish international settings](https://i.lisz.top/blog/63o8ga.webp)
 
 #### 连接 LDAP
 
 &emsp;&emsp;左边导航栏切换到**用户联合**选项卡，选择添加 ldap。
 
-![vgy.me](https://i.vgy.me/VUTllR.png)
+![添加 LDAP 连接 Add LDAP connection](https://i.lisz.top/blog/p2pMlW.webp)
 
 &emsp;&emsp;如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择**其他**。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择**可写**。另外在填写完配置后可以用右侧的**测试连接**和**测试验证**按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。
 
-![vgy.me](https://i.vgy.me/GyOK27.png)
+![测试 LDAP 连接 Test LDAP connection](https://i.lisz.top/blog/umTHlh.webp)
 
 &emsp;&emsp;当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击**同步所有用户**即可将用户同步到 Keycloak。
 
-![vgy.me](https://i.vgy.me/Qt76Uc.png)
+![同步所有用户 Sync all users](https://i.lisz.top/blog/UJ78t0.webp)
 
 &emsp;&emsp;切换左边导航栏到**用户**选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。
 
-![vgy.me](https://i.vgy.me/MVgEWe.png)
+![默认用户列表 Default user list](https://i.lisz.top/blog/qJBLB3.webp)
 
 &emsp;&emsp;如下图所示，证明 Keycloak 成功连接 LDAP。
 
-![vgy.me](https://i.vgy.me/6iSaAf.png)
+![所有用户列表 All user list including LDAP](https://i.lisz.top/blog/P5w5eb.webp)
 
 #### 用户密码策略
 
 &emsp;&emsp;由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到**验证**选项卡，再选择**密码策略**选项卡，使用右上角的**添加策略**添加不同的策略要求，完成后点击保存按钮。
 
-![vgy.me](https://i.vgy.me/OzRYBk.png)
+![设置密码策略 Password strategy settings](https://i.lisz.top/blog/oDQGDG.webp)
 
-&emsp;&emsp;虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开**验证密码策略**。下图中的 **LDAPv3 密码** 可以选择打开或不打开，影响不大。 
+&emsp;&emsp;虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开**验证密码策略**。下图中的 **LDAPv3 密码** 可以选择打开或不打开，影响不大。
 
-![vgy.me](https://i.vgy.me/L14NPG.png)
+![开启密码策略 Enable password strategy](https://i.lisz.top/blog/SK5EQp.webp)
 
 &emsp;&emsp;为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 **Update** 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。
 
-![vgy.me](https://i.vgy.me/tkOthq.png)
+![尝试更新密码验证密码策略 Update password to verify password strategy](https://i.lisz.top/blog/1pkx9L.webp)
 
 &emsp;&emsp;以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：
 
@@ -143,25 +143,25 @@ services:
 - 密码中必须包含数字
 - 密码中必须包含至少一个特殊字符
 
-![vgy.me](https://i.vgy.me/rFN9HY.png)
+![密码策略验证结果 Results by password strategies](https://i.lisz.top/blog/GPSGJr.webp)
 
 #### OTP 验证
 
 &emsp;&emsp;正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。
 
-![vgy.me](https://i.vgy.me/D2ipD0.png)
+![设置 OTP 策略 OTP strategy](https://i.lisz.top/blog/Ak4ck9.webp)
 
 &emsp;&emsp;为了让系统的所有用户都开启 OTP，可以如下所示在**必要操作**选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）
 
-![vgy.me](https://i.vgy.me/Gi3FQB.png)
+![强制所有用户启用 OTP 策略 Enable OTP for all users](https://i.lisz.top/blog/Lqi4RG.webp)
 
 &emsp;&emsp;为了验证 OTP 是否可用，移步至用户页点击**设置验证应用**按钮。
 
-![vgy.me](https://i.vgy.me/sgq7hF.png)
+![验证 OTP Verify OTP](https://i.lisz.top/blog/WaedQr.webp)
 
 &emsp;&emsp;点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。
 
-![vgy.me](https://i.vgy.me/mFizpx.png)
+![OTP 设置页面 OTP set page](https://i.lisz.top/blog/TkcriA.webp)
 
 ## LDAP 直接集成应用
 
@@ -169,14 +169,14 @@ services:
 
 &emsp;&emsp;这里，打算之后就《LDAP 集成》为主题写一个系列（挖一个坑）。（PS：先预给出对应链接，如果能够访问那就是写好了。）
 
-- [《LDAP 集成之 Gitlab 篇》](/tech/webmaster/ldap-gitlab.html)
-- [《LDAP 集成之 Nextcloud 篇》](/tech/webmaster/ldap-nextcloud.html)
-- [《LDAP 集成之 Dokuwiki 篇》](/tech/webmaster/ldap-dokuwiki.html)
-- [《LDAP 集成之 Squid 篇》](/tech/webmaster/ldap-squid.html)
-- [《LDAP 集成之 OpenVPN 篇》](/tech/webmaster/ldap-openvpn.html)
-- [《LDAP 集成之 Nexus3 篇》](/tech/webmaster/ldap-nexus3.html)
-- [《LDAP 集成之 Apache 篇》](/tech/webmaster/ldap-apache.html)
-- [《LDAP 集成之 Nginx 篇》](/tech/webmaster/ldap-nginx.html)
+- [《LDAP 集成之 Gitlab 篇》](./ldap-gitlab.html)
+- [《LDAP 集成之 Nextcloud 篇》](./ldap-nextcloud.html)
+- [《LDAP 集成之 Dokuwiki 篇》](./ldap-dokuwiki.html)
+- [《LDAP 集成之 Squid 篇》](./ldap-squid.html)
+- [《LDAP 集成之 OpenVPN 篇》](./ldap-openvpn.html)
+- [《LDAP 集成之 Nexus3 篇》](./ldap-nexus3.html)
+- [《LDAP 集成之 Apache 篇》](./ldap-apache.html)
+- [《LDAP 集成之 Nginx 篇》](./ldap-nginx.html)
 
 ## 参考资料
 

@@ -10,30 +10,39 @@ tags:
 - 美化
 ---
 
-# 安装扁平化主题
+## 安装扁平化主题
 
-1. 安装ubuntu-tweak
+### 安装 ubuntu-tweak
+
 ```bash
 sudo add-apt-repository ppa:tualatrix/ppa
 sudo apt-get update
 sudo apt-get install ubuntu-tweak
 ```
-2. 下载主题包文件
+
+### 下载主题包文件
+
 ```bash
 wget –no-check-certificate https://github.com/anmoljagetia/Flatabulous/archive/master.zip
 ```
-下载好后解压到用户根目录的.themes文件夹（没有请使用`mkdir .themes`命令新建文件夹）
-3. 安装图标
+
+&emsp;&emsp;下载好后解压到用户根目录的 `.themes` 文件夹（没有请使用 `mkdir .themes` 命令新建文件夹）。
+
+### 安装图标
+
 ```bash
 sudo add-apt-repository ppa:noobslab/icons
 sudo apt-get update
 sudo apt-get install ultra-flat-icons
 ```
-也可 `sudo apt-get install ultra-flat-icons-orange` 或者 `sudo apt-get install ultra-flat-icons-green` 来安装其他两种颜色
-4. 使用ubuntu-tweak图形化界面更改主题及图标即可
-（该部分参考自 [http://www.jianshu.com/p/5b80711f304f](http://www.jianshu.com/p/5b80711f304f)）
 
-# 安装 Shadowsocks
+&emsp;&emsp;也可 `sudo apt-get install ultra-flat-icons-orange` 或者 `sudo apt-get install ultra-flat-icons-green` 来安装其他两种颜色。
+
+### 应用主题及图标
+
+&emsp;&emsp;使用 ubuntu-tweak 图形化界面更改主题及图标即可。
+
+## 安装 Shadowsocks
 
 &emsp;&emsp;百度一下 `ubuntu shadowsocks` 的结果很凄惨，根本没有什么有用的，不过 Google 还是挺厉害的，安装 `shadowsocks-qt5` 即可。
 
@@ -43,11 +52,15 @@ sudo apt-get update
 sudo apt-get install shadowsocks-qt5
 ```
 
-（该部分参考自 [https://aitanlu.com/ubuntu-shadowsocks-ke-hu-duan-pei-zhi.html](https://aitanlu.com/ubuntu-shadowsocks-ke-hu-duan-pei-zhi.html)）
+## 安装常用工具
 
-# 安装常用工具
+### Rinetd 端口转发工具
 
-1. Rinetd 端口转发工具
 ```bash
 sudo apt-get install rinetd    (配置文件为/etc/rinetd.conf)
 ```
+
+## 参考资料
+
+- [(译)Ubuntu下一款极好的扁平化主题](https://www.jianshu.com/p/5b80711f304f)
+- [https://aitanlu.com/ubuntu-shadowsocks-ke-hu-duan-pei-zhi.html](https://aitanlu.com/ubuntu-shadowsocks-ke-hu-duan-pei-zhi.html)

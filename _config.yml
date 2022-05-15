@@ -80,6 +80,9 @@ cclicense: true
 # CNZZ Analytics
 cnzz: 
 
+# Busuanzi
+busuanzi: true
+
 # Google Analytics
 # google_analytics: UA-164207041-1
 google_analytics: G-9E8SEJ5JNY
@@ -104,6 +107,9 @@ markdown: kramdown
 highlighter: rouge
 kramdown:
   input: GFM
+prism:
+  theme:
+  line_numbers: true
 
 RSS: true
 

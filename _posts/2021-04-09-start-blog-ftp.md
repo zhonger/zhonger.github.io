@@ -38,16 +38,16 @@ $ dig box.u-file.cn @1.1.1.1
 ;; OPT PSEUDOSECTION:
 ; EDNS: version: 0, flags:; udp: 1232
 ;; QUESTION SECTION:
-;box.u-file.cn.			IN	A
+;box.u-file.cn.     IN  A
 
 ;; ANSWER SECTION:
-box.u-file.cn.		600	IN	CNAME	mxk.own-cloud.cn.
-mxk.own-cloud.cn.	600	IN	CNAME	v0.ftp.upyun.com.
-v0.ftp.upyun.com.	300	IN	A	118.116.2.3
-v0.ftp.upyun.com.	300	IN	A	121.12.52.4
-v0.ftp.upyun.com.	300	IN	A	36.99.71.15
-v0.ftp.upyun.com.	300	IN	A	58.222.16.5
-v0.ftp.upyun.com.	300	IN	A	117.21.235.5
+box.u-file.cn.      600 IN CNAME mxk.own-cloud.cn.
+mxk.own-cloud.cn. 600 IN CNAME v0.ftp.upyun.com.
+v0.ftp.upyun.com. 300 IN A 118.116.2.3
+v0.ftp.upyun.com. 300 IN A 121.12.52.4
+v0.ftp.upyun.com. 300 IN A 36.99.71.15
+v0.ftp.upyun.com. 300 IN A 58.222.16.5
+v0.ftp.upyun.com. 300 IN A 117.21.235.5
 
 ;; Query time: 940 msec
 ;; SERVER: 1.1.1.1#53(1.1.1.1)
@@ -59,31 +59,34 @@ v0.ftp.upyun.com.	300	IN	A	117.21.235.5
 
 &emsp;&emsp;以 U-File 为例解释一下如何使用 FTP 的方式部署静态博客。根据部署方式的不同，可以分为 **手动部署** 和 **自动部署**：
 
-> 如何注册并获取 U-File 的 FTP 账号等信息请移步 [U-File 官网](https://u-file.cn)。
+> note "注意"
+> ~~如何注册并获取 U-File 的 FTP 账号等信息请移步 [U-File 官网](https://u-file.cn)。~~  
+> (2022年5月15日更新)不知什么原因 U-File 现在已经关闭，无法访问其官网。
 
-### 手动部署 
+### 手动部署
 
 &emsp;&emsp;手动部署一般是要借助一些 FTP 客户端来上传最新的静态博客内容，比如 Filezilla (全平台)、WinSCP (Windows)、Transmit (Mac) 等等。这三款软件笔者分别在三个平台都使用过，总体上感觉都不错。本地目录和远程目录都是左右式布局，直接拖拽就可以完成上传下载，操作简单便捷。下面就以 Filezilla 为例：
 
 #### 下载安装 Filezilla
 
-访问 [Filezilla 官网](https://filezilla-project.org/) 点击安装按钮。
-![vgy.me](https://i.vgy.me/XgchsU.png)
+&emsp;&emsp;访问 [Filezilla 官网](https://filezilla-project.org/) 点击安装按钮。
+![下载 Filezilla Download Filezilla](https://i.lisz.top/blog/UDbqKm.webp)
 
 #### 新建主机
 
-打开 Filezilla，点击左上角**新建虚拟主机**按钮。
-![vgy.me](https://i.vgy.me/XxzF1N.png)
+&emsp;&emsp;打开 Filezilla，点击左上角**新建虚拟主机**按钮。
+![新建主机 New host connection](https://i.lisz.top/blog/qPR1Lg.webp)
 
-填写 FTP 服务器信息、登录用户名和密码。
-![vgy.me](https://i.vgy.me/wlE1Wl.png)
+&emsp;&emsp;填写 FTP 服务器信息、登录用户名和密码。
+![输入 FTP 信息 Input the information](https://i.lisz.top/blog/2IBv6o.webp)
 
 #### 上传最新静态博客文件
 
-点击**连接**按钮开始访问 FTP 空间，将 _site 目录下的文件拖到右边远程根目录。
+&emsp;&emsp;点击**连接**按钮开始访问 FTP 空间，将 _site 目录下的文件拖到右边远程根目录。
 
-![vgy.me](https://i.vgy.me/franDc.png)
+![上传文件 Upload files](https://i.lisz.top/blog/1HDsxR.webp)
 
+> info "小提示"
 > 使用 `bundle exec jekyll b` 命令可以生成 _site 目录。
 
 ### 自动部署
@@ -96,58 +99,58 @@ v0.ftp.upyun.com.	300	IN	A	117.21.235.5
 
 &emsp;&emsp;访问 [Buddy 官网](https://buddy.works) ，使用 Github 账户登录即可，如下图所示搜索到想要部署的项目，并选中创建。
 
-![vgy.me](https://i.vgy.me/jPs082.png)
+![创建项目 Create project](https://i.lisz.top/blog/zERtXj.webp)
 
 #### 创建流水线
 
-转到项目页面后，点击 **Create a pipeline** 按钮。
+&emsp;&emsp;转到项目页面后，点击 **Create a pipeline** 按钮。
 
-![vgy.me](https://i.vgy.me/dBicNi.png)
+![创建流水线 Create pipeline](https://i.lisz.top/blog/yWlC0t.webp)
 
 &emsp;&emsp;如下图所示填写流水线名称、选中在代码发生 PUSH 操作时触发流水线、操作的分支设置为 master 单分支，点击下面按钮完成创建。
 
-![vgy.me](https://i.vgy.me/KVsyYc.png)
+![设置基本信息 Basic settings](https://i.lisz.top/blog/W8apKH.webp)
 
 #### 添加 Jekyll 编译动作
 
-如下图所示，点击 Add an action 按钮，选中 Jekyll。
+&emsp;&emsp;如下图所示，点击 Add an action 按钮，选中 Jekyll。
 
-![vgy.me](https://i.vgy.me/pofkrx.png)
+![添加动作 Add an action](https://i.lisz.top/blog/V74aZS.webp)
 
-无须作任何修改，点击右下角的 Add this action 按钮即可完成添加。
+&emsp;&emsp;无须作任何修改，点击右下角的 Add this action 按钮即可完成添加。
 
-![vgy.me](https://i.vgy.me/22iq0A.png)
+![自定义编译命令 Define compile commands](https://i.lisz.top/blog/CFZBt5.webp)
 
 #### 添加 FTP 部署动作
 
-如下图所示再次添加一个动作，这次使用 FTP 字符筛选选中 TRANSFER 的 FTP。
+&emsp;&emsp;如下图所示再次添加一个动作，这次使用 FTP 字符筛选选中 TRANSFER 的 FTP。
 
-![vgy.me](https://i.vgy.me/rDMp5G.png)
+![添加 FTP 上传方式 Add FTP upload way](https://i.lisz.top/blog/B1HEq5.webp)
 
 &emsp;&emsp;选择从流水线文件系统加载文件，并将源目录设置为 _site，远程目录不变。同时修改 FTP 主机地址及端口、登录用户名和密码三个参数。
 
-![vgy.me](https://i.vgy.me/KJ5gY7.png)
+![输入 FTP 信息 Input FTP information](https://i.lisz.top/blog/bFdlex.webp)
 
-为了防止同名文件，开启删除同名旧文件，不使用缓存文件，点击 Add this action 按钮完成添加。
+&emsp;&emsp;为了防止同名文件，开启删除同名旧文件，不使用缓存文件，点击 Add this action 按钮完成添加。
 
-![vgy.me](https://i.vgy.me/QW3Dqp.png)
+![上传设置 Upload settings](https://i.lisz.top/blog/4Dmc3R.webp)
 
 #### 运行流水线
 
-如下图所示，可以看到两个动作添加完毕，点击右上角 Run pipeline 按钮开始执行流水线。
+&emsp;&emsp;如下图所示，可以看到两个动作添加完毕，点击右上角 Run pipeline 按钮开始执行流水线。
 
-![vgy.me](https://i.vgy.me/I8oZgQ.png)
+![运行流水线 Run pipeline](https://i.lisz.top/blog/5kte8s.webp)
 
-从下图可以看到**环境准备**和 Jekyll 编译动作正在执行。
+&emsp;&emsp;从下图可以看到**环境准备**和 Jekyll 编译动作正在执行。
 
-![vgy.me](https://i.vgy.me/h4ptZ3.png)
+![查看运行情况 Check the status](https://i.lisz.top/blog/5aKADO.webp)
 
-等待两分钟左右，可以看到 FTP 部署动作成功完成。
+&emsp;&emsp;等待两分钟左右，可以看到 FTP 部署动作成功完成。
 
-![vgy.me](https://i.vgy.me/TtKsWd.png)
+![运行完成 Finish](https://i.lisz.top/blog/R7XsVH.webp)
 
 ### 评价
 
-&emsp;&emsp;FTP 虽然已经慢慢成为了一个古老的东西，但一直都不过时。在使用 FTP 方式将静态网站页面部署到虚拟主机空间时，仍然体现了 FTP 文件管理的优势。从手动部署和自动部署的对比来看，虽然手动部署需要页面生成和拖拽上传这两步，自动部署则只需要将代码上传到 Github，但是所花的时间也不会相差太大。有了自动部署的好处就是，可以更加专注于博客内容本身，即使是在不常用的机器上编写再推送到 Github，也不需要担心本地没有环境编译 Jekyll 以及用 FTP 客户端配置 FTP 信息和上传静态页面。 
+&emsp;&emsp;FTP 虽然已经慢慢成为了一个古老的东西，但一直都不过时。在使用 FTP 方式将静态网站页面部署到虚拟主机空间时，仍然体现了 FTP 文件管理的优势。从手动部署和自动部署的对比来看，虽然手动部署需要页面生成和拖拽上传这两步，自动部署则只需要将代码上传到 Github，但是所花的时间也不会相差太大。有了自动部署的好处就是，可以更加专注于博客内容本身，即使是在不常用的机器上编写再推送到 Github，也不需要担心本地没有环境编译 Jekyll 以及用 FTP 客户端配置 FTP 信息和上传静态页面。
 
 &emsp;&emsp;上文中笔者选择 Buddy 的原因，除了和其他的对比它更加具有安全私密性，还因为它同时支持多种部署方式。也就是说，如果想要添加一个新的部署方式，只需要添加一个部署动作即可，非常方便快捷，所有多节点部署一步到位。

@@ -18,7 +18,7 @@ cover: 'https://images.unsplash.com/photo-1587471384749-6d25c9944c5a?w=1600&q=90
 
 &emsp;&emsp;近年来，随着云计算技术的大力发展和 VPS 成本降低，越来越多的人开始用上了 VPS。与虚拟主机空间相比，VPS 具有更大的自由度。用户可以在 VPS 上安装各式各样的环境，也可以使用各种方式提供对外服务。对于 Jekyll 等静态网页来说，虚拟主机和 VPS 的使用体验差异可能在一般情况下感受不出来，如果网站流量变大、并发访问人数增多，VPS 就能展现出比虚拟主机的优越之处。其实，一般的虚拟主机也是在 VPS 上搭建的，只不过转换为一种服务提供给用户，用户能使用比较容易接受的网页进行环境的配置和其他操作。而在 VPS 上，往往需要自己从零开始动手，涉及到的专业知识要求也相对多一些。
 
-&emsp;&emsp;笔者使用的第一款 VPS 是 [阿里云](https://cn.aliyun.com) 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 [腾讯云](https://cloud.tencent.com)、[AWS](https://aws.amazon.com)、[Digital Ocean](https://www.digitalocean.com/)、[Bandwagon Host](https://bandwagonhost.com/)、[Vultr](https://www.vultr.com/)、[Azure](https://azure.microsoft.com/)、[GCP](https://cloud.google.com/)、[Scaleway](https://www.scaleway.com/)、[CLOUDCONE](https://cloudcone.com/) 、[Hostinger](https://www.hostinger.com/)等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。
+&emsp;&emsp;笔者使用的第一款 VPS 是 [阿里云](https://cn.aliyun.com) 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 [腾讯云](https://cloud.tencent.com)、[AWS](https://aws.amazon.com)、[Digital Ocean](https://www.digitalocean.com/)、[Bandwagon Host](https://bandwagonhost.com/)、[Vultr](https://www.vultr.com/)、[Azure](https://azure.microsoft.com/)、[GCP](https://cloud.google.com/)、[Scaleway](https://www.scaleway.com/)、[CLOUDCONE](https://cloudcone.com/) 、[Hostinger](https://www.hostinger.com/) 等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。
 
 &emsp;&emsp;如果想要自己购买一台 VPS 的话，个人建议国内可以在阿里云和腾讯云中选择。腾讯云的价格相比阿里云便宜一点，不过据说阿里云比腾讯云稳定一点（可能没有什么根据，只要不是自己的 VPS 数据丢失了其实稳定性都很好）。如果想要购买国外的 VPS 的话，推荐 AWS、Azure、Digital Ocean。这三家都是可以随时删除、随时创建的，根据实际使用的时间计费，也可以随时更换 IP 地址，非常方便。当然前两者价格上的确有点高，Digital Ocean 相对来说更便宜一点，而且几乎没有流量上的限制。不过，AWS 提供的 [Lightsail](lightsail.aws.amazon.com) 也是一款低配高流量的 VPS，适合博客建站。
 
@@ -45,7 +45,9 @@ sudo chown -R ubunut:ubuntu /var/www/lisz.me
 
 # 创建配置文件
 sudo vim /etc/nginx/sites-available/lisz.me
+```
 
+```nginx
 # 配置文件内容
 server
 {
@@ -53,7 +55,7 @@ server
     server_name lisz.me
     index index.html index.htm index.php default.html default.htm default.php;
     root  /var/www/lisz.me;
-	return 301 https://$host$request_uri;
+    return 301 https://$host$request_uri;
 }
 
 server
@@ -74,7 +76,9 @@ server
 
     access_log  /var/log/nginx/lisz.me.log;
 }
+```
 
+```bash
 # 使用 `:wq` 保存配置
 
 # 激活虚拟主机配置
@@ -114,23 +118,23 @@ scp -r _site/* /var/www/lisz.me/
 
 &emsp;&emsp;VPS 的自动部署与 FTP 的自动部署非常类似，只是使用的模板不一样。如下图所示使用 SSH 筛选出 SFTP 模板，并点击选中创建。
 
-![vgy.me](https://i.vgy.me/PuWyca.png)
+![新建 SFTP 部署 New SFTP deploy](https://i.lisz.top/blog/EBFlZd.webp)
 
-填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。
+&emsp;&emsp;填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。
 
-![vgy.me](https://i.vgy.me/JukwSX.png)
+![输入信息 Input vps information](https://i.lisz.top/blog/eeplHr.webp)
 
 &emsp;&emsp;复制命令将 Buddy key 添加到 VPS ，同时设置远程目录，其他配置默认即可，点击 Add this action 按钮完成创建。
 
-![vgy.me](https://i.vgy.me/9oviJc.png)
+![添加秘钥 Add Buddy key to vps](https://i.lisz.top/blog/MPvmSO.webp)
 
-执行流水线，如下图所示开始 Jekyll 编译动作。
+&emsp;&emsp;执行流水线，如下图所示开始 Jekyll 编译动作。
 
-![vgy.me](https://i.vgy.me/7MSNqH.png)
+![运行流水线 Run pipeline](https://i.lisz.top/blog/FAtP0C.webp)
 
-如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。
+&emsp;&emsp;如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。
 
-![vgy.me](https://i.vgy.me/9zaXO1.png)
+![查看部署 Check status](https://i.lisz.top/blog/fB9tVg.webp)
 
 ### 评价
 

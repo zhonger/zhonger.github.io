@@ -2,6 +2,7 @@
 layout: page
 home-title: Welcome to zhonger's blog!
 description: Writing, writing, writing ...
+cover: https://images.unsplash.com/photo-1571813713677-c2c8e45ae571?w=1600&q=900
 ---
 
 # 更新日志

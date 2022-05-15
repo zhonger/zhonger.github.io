@@ -25,7 +25,6 @@ cover: 'https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=90
 
 &emsp;&emsp;ShareLaTex 官方提供的 docker 镜像就已经支持多种语言了，但是字体上比较缺少，毕竟官方镜像只能使用开源字体或者得到授权的字体。为了提供编写所需的字体，需要往官方 docker 镜像中加入自己需要的字体。编写一个如下的 Dockerfile 文件，用`docker build . -t zhonger/sharelatex`生成新的镜像。（PS：此处使用的字体包是 windows 本地打包得到，仅为个人学习使用，非为商用或公开提供服务）构建镜像之前可以自行准备好字体压缩包，压缩包内只需含有字体文件即可。
 
-
 ```dockerfile
 FROM sharelatex/sharelatex:latest
 
@@ -178,7 +177,7 @@ services:
 
 ### 初始化平台
 
-&emsp;&emsp;浏览器访问`http://服务所在计算机IP地址:8070/launchpad`创建超级管理员用户。创建成功后访问该页面就会被自动跳转到登录页。
+&emsp;&emsp;浏览器访问 `http://服务所在计算机IP地址:8070/launchpad` 创建超级管理员用户。创建成功后访问该页面就会被自动跳转到登录页。
 
 &emsp;&emsp;至此，ShareLaTex 在线编辑平台就搭建成功了。
 

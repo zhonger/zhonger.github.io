@@ -25,7 +25,7 @@ cover: 'https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=90
 - 可以直接把编辑的内容直接放在一起导出一本 PDF 电子书。
 - 由于运行资源没有限制，完全与平台相关，访问速度及最大并发访问量可能较高。
 
-当然，这种方式也会有一定的缺点：
+&emsp;&emsp;当然，这种方式也会有一定的缺点：
 
 - 无法定制呈现内容的样式，更无法修改模板；
 - 平台提供的在线编辑器的体验可能并没有离线编辑器的体验这么好，比如优秀的 [Typora](https://typora.io)；
@@ -40,24 +40,23 @@ cover: 'https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=90
 
 #### 登录
 
-访问 [Read the Docs](https://readthedocs.org/) 点击**登录**按钮，这里支持直接使用 Github 登录（推荐）。
+&emsp;&emsp;访问 [Read the Docs](https://readthedocs.org/) 点击**登录**按钮，这里支持直接使用 Github 登录（推荐）。
 
-![vgy.me](https://i.vgy.me/WiYCRb.png)
+![访问 Visit Read the Docs](https://i.lisz.top/blog/fVRO1k.webp)
 
-![vgy.me](https://i.vgy.me/ef4cKr.png)
-
+![登录 Login Read the Docs](https://i.lisz.top/blog/t2pFT9.webp)
 
 #### 导入项目
 
-由于是 Github 方式登录，可以直接从 Github 中导入项目，如下图所示。
+&emsp;&emsp;由于是 Github 方式登录，可以直接从 Github 中导入项目，如下图所示。
 
-![vgy.me](https://i.vgy.me/PaSfl7.png)
+![导入项目 Import codes](https://i.lisz.top/blog/MryiQH.webp)
 
-点击右侧加号按钮完成导入。
+&emsp;&emsp;点击右侧加号按钮完成导入。
 
-![vgy.me](https://i.vgy.me/TQYwpR.png)
+![选择项目 Select project](https://i.lisz.top/blog/2wtoFP.webp)
 
-![vgy.me](https://i.vgy.me/i0DQXU.png)
+![基本配置 Basic settings](https://i.lisz.top/blog/dU4Mkp.webp)
 
 #### 预览项目
 
@@ -69,27 +68,27 @@ cover: 'https://images.unsplash.com/photo-1618146355713-b1077f33a87a?w=1600&q=90
 
 #### 登录
 
-访问 [Gitbook](https://gitbook.com) ，可以选择 Sign Up With Github 进行快速注册。
+&emsp;&emsp;访问 [Gitbook](https://gitbook.com) ，可以选择 Sign Up With Github 进行快速注册。
 
-![vgy.me](https://i.vgy.me/DDsCsE.png)
+![访问 Visit Gitbook](https://i.lisz.top/blog/Ih0lNS.webp)
 
 #### 创建项目
 
-点击 create a new space 按钮，输入项目名称完成创建。
+&emsp;&emsp;点击 create a new space 按钮，输入项目名称完成创建。
 
-![vgy.me](https://i.vgy.me/mR46gg.png)
+![创建项目 Create project](https://i.lisz.top/blog/uEgF18.webp)
 
 #### 导入内容
 
 &emsp;&emsp;如下图所示，可以直接导入 Markdown 文件。由于本站是采用 Jekyll 静态生成器的，所有只需将 _posts 目录下的 Markdown 文件全部拖拽到这里导入即可完成 Gitbook 的转换。
 
-![vgy.me](https://i.vgy.me/3lGk46.png)
+![导入内容 Import codes](https://i.lisz.top/blog/BLngkD.webp)
 
-![vgy.me](https://i.vgy.me/J25FIN.png)
+![查看内容文件 Check files](https://i.lisz.top/blog/ssplcq.webp)
 
 #### 预览项目
 
-Gitbook 采用的是 https://用户名.gitbook.io/项目名/ 的方式预览，当然也支持自定义域名。
+&emsp;&emsp;Gitbook 采用的是 <https://用户名.gitbook.io/项目名/> 的方式预览，当然也支持自定义域名。
 
 ### 评价
 

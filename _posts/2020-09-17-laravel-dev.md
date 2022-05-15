@@ -21,11 +21,11 @@ cover: 'https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=90
 
 &emsp;&emsp;Laravel 是 PHP 领域内一大流行的 Web 应用框架，因开发成本低、依赖管理方便等优势深受国内外开发者的喜爱，有很多的应用案例。Laravel 官方提供了 Valet 工具专门用于 PHP 项目的开发环境管理，相当简单、强大。Valet 不但可以支持 Laravel，还可以支持 Zend、CakePHP 等多种 PHP 常用框架和 Wordpress 等多种 PHP 常用应用。以下会简要介绍该工具的配置使用。
 
-&emsp;&emsp;在前几年撰写的 [laravel5.2 在 lnmpa 一键安装包环境下的部署](/tech/laravel-lnmpa.html) 一文中，使用了 [lnmp.org](https://lnmp.org) 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。
+&emsp;&emsp;在前几年撰写的 [《laravel 5.2 在 lnmpa 一键安装包环境下的部署》](/tech/laravel-lnmpa.html) 一文中，使用了 [lnmp.org](https://lnmp.org) 提供的一键 PHP 项目生产环境来开发和部署 Laravel。虽然说这种方式也是比较简单粗暴，可以利用脚本进行管理，后期的管理、配置成本都比较低，但是随着不断对各个基础环境的了解，可以自行对每个基础环境的进行单独配置和组合配置，这样的一键方式反而显得有不少冗余和复杂化。因此，此处想要介绍自行搭建 L(inux)+N(ginx)+M(ysql)+P(HP) 开发和部署环境。
 
 ## 基础环境配置
 
-- 安装软件依赖
+### 安装软件依赖
 
 ```bash
 sudo apt update
@@ -35,7 +35,7 @@ sudo apt install -y php7.4-readline php7.4-xml php7.4-zip php7.4-sqlite3 php7.4-
 sudo apt install -y network-manager php7.4 php7.4-fpm nginx
 ```
 
-- 配置 PHP
+### 配置 PHP
 
 ```bash
 sudo vim /etc/php/7.4/fpm/php.ini
@@ -46,7 +46,7 @@ max_file_uploads = 20
 cgi.fix_pathinfo=0
 ```
 
-- 安装 Composer
+#### 安装 Composer
 
 ```bash
 wget -c https://mirrors.aliyun.com/composer/composer.phar
@@ -54,7 +54,7 @@ chmod +x composer.phar
 sudo mv composer.phar /usr/local/bin/composer
 ```
 
-- 验证 Composer 安装
+#### 验证 Composer 安装
 
 ```bash
 composer diagnose
@@ -76,26 +76,26 @@ PHP binary path: /usr/bin/php7.4
 OpenSSL version: OpenSSL 1.1.1f  31 Mar 2020
 ```
 
-- 配置 Composer 镜像
+#### 配置 Composer 镜像
 
 ```bash
 composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ```
 
-- 安装 MariaDB
+### 安装 MariaDB
 
 ```bash
 sudo apt install -y mariadb-client mariadb-server
 ```
 
-- 启动 MariaDB
+#### 启动 MariaDB
 
 ```bash
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
 ```
 
-- 配置 MariaDB 的 root 用户密码
+#### 配置 MariaDB 的 root 用户密码
 
 ```bash
 sudo mysql -u root
@@ -104,7 +104,7 @@ MariaDB [mysql]> flush privileges;
 MariaDB [mysql]> exit;
 ```
 
-- 创建新数据库
+#### 创建新数据库
 
 ```bash
 mysql -p -u root
@@ -119,7 +119,7 @@ MariaDB [blog]> EXIT;
 
 ## 安装 Laravel
 
-- 新建项目
+### 新建项目
 
 ```bash
 mkdir -p ~/web && cd ~/web
@@ -127,13 +127,13 @@ composer global require laravel/installer
 composer create-project --prefer-dist laravel/laravel blog "6.*"
 ```
 
-- 配置文件夹权限
+### 配置文件夹权限
 
 ```bash
 chmod -R 755 ~/web/blog
 ```
 
-- 配置数据库
+### 配置数据库
 
 ```bash
 vim ~/web/blog/.env
@@ -146,14 +146,14 @@ DB_USERNAME=bloguser
 DB_PASSWORD=password
 ```
 
-- 测试应用
+### 测试应用
 
 ```bash
 cd ~/web/blog
 php artisan serve --port=8000
 ```
-&emsp;&emsp;浏览器访问`http://localhost:8000`，`Ctrl+C`停止测试。
 
+&emsp;&emsp;浏览器访问 `http://localhost:8000`，`Ctrl+C` 停止测试。
 
 ## 安装和配置 Valet（二选一）
 
@@ -166,54 +166,55 @@ source ~/.zshrc
 valet install
 cd ~/web/blog && valet link blog
 ```
-&emsp;&emsp;浏览器访问`http://blog.test`。
+
+&emsp;&emsp;浏览器访问 `http://blog.test`。
 
 ```bash
 valet secure blog
 ```
-&emsp;&emsp;浏览器访问`https://blog.test`。由于最近浏览器对于 SSL 证书提升了验证的要求，对于本地签发的证书会报不信任，可以手动选择信任后访问。
 
+&emsp;&emsp;浏览器访问 `https://blog.test`。由于最近浏览器对于 SSL 证书提升了验证的要求，对于本地签发的证书会报不信任，可以手动选择信任后访问。
 
 ## 配置 Nginx+php-fpm （二选一）
 
-- 配置文件夹链接
+### 配置文件夹链接
 
 ```bash
 sudo ln -s ~/web/blog /var/www/blog
 ```
 
-- 配置 Nginx
+### 配置 Nginx
 
-&emsp;&emsp;以下为 /etc/nginx/sites-avaiable/blog 的内容，其中 SSL 证书为 acme.sh 工具申请的 Let's Encrypt 提供的三个月免费通配符域名证书，`*.lisz.ml`解析 IP 为`127.0.0.1`。
+&emsp;&emsp;以下为 /etc/nginx/sites-avaiable/blog 的内容，其中 SSL 证书为 acme.sh 工具申请的 Let's Encrypt 提供的三个月免费通配符域名证书，`*.lisz.ml` 解析 IP 为 `127.0.0.1`。
 
-```conf
+```nginx
 server {
     listen 80;
     root /var/www/blog/public;
     index  index.php index.html index.htm;
     server_name  blog.lisz.ml;
-	return 301 https://$host$request_uri;
+    return 301 https://$host$request_uri;
 }
 
 server {
-	listen 443 ssl http2;
-	server_name blog.lisz.ml;
-	ssl_certificate /home/zhonger/ssl/lisz.ml.cert.pem;
-	ssl_certificate_key /home/zhonger/ssl/lisz.ml.key.pem;
-	index index.php index.html index.htm;
-	root /var/www/blog/public;
+    listen 443 ssl http2;
+    server_name blog.lisz.ml;
+    ssl_certificate /home/zhonger/ssl/lisz.ml.cert.pem;
+    ssl_certificate_key /home/zhonger/ssl/lisz.ml.key.pem;
+    index index.php index.html index.htm;
+    root /var/www/blog/public;
 
-	add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
 
-	charset utf-8;
+    charset utf-8;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;        
     }
 
-	location = /favicon.ico { access_log off; log_not_found off; }
+    location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 
     error_page 404 /index.php;
@@ -221,12 +222,12 @@ server {
   
     location ~ \.php$ {
        include fastcgi_params;
-	   fastcgi_index index.php;
+       fastcgi_index index.php;
        fastcgi_pass     unix:/var/run/php/php-fpm.sock;
        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
-	location ~ /\.(?!well-known).* {
+    location ~ /\.(?!well-known).* {
         deny all;
     }
 
@@ -235,24 +236,24 @@ server {
 
 &emsp;&emsp;未开启 HTTPS 的配置文件如下：
 
-```conf
+```nginx
 server {
     listen 80;
     root /var/www/blog/public;
     index  index.php index.html index.htm;
     server_name  blog.lisz.ml;
 
-	add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Frame-Options "SAMEORIGIN";
     add_header X-XSS-Protection "1; mode=block";
     add_header X-Content-Type-Options "nosniff";
 
-	charset utf-8;
+    charset utf-8;
 
     location / {
         try_files $uri $uri/ /index.php?$query_string;        
     }
 
-	location = /favicon.ico { access_log off; log_not_found off; }
+    location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 
     error_page 404 /index.php;
@@ -260,19 +261,19 @@ server {
   
     location ~ \.php$ {
        include fastcgi_params;
-	   fastcgi_index index.php;
+       fastcgi_index index.php;
        fastcgi_pass     unix:/var/run/php/php-fpm.sock;
        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
     }
 
-	location ~ /\.(?!well-known).* {
+    location ~ /\.(?!well-known).* {
         deny all;
     }
 
 }
 ```
 
-- Nginx 配置文件生效
+### Nginx 配置文件生效
 
 ```bash
 sudo ln -s /etc/nginx/sites-avaiable/blog /etc/nginx/sites-enabled/
@@ -280,17 +281,16 @@ sudo nginx -t
 sudo nginx -s reload
 ```
 
-- 开启 php-fpm
+### 开启 php-fpm
 
 ```bash
 sudo systemctl enable php-fpm
 sudo systemctl start php-fpm
 ```
 
-- 验证
+### 验证
 
-&emsp;&emsp;浏览器访问`https://blog.lisz.ml`。
-
+&emsp;&emsp;浏览器访问 `https://blog.lisz.ml`。
 
 ## 参考资料
 

@@ -57,7 +57,7 @@ cd /opt/softwares \
 
 ### 安装 MKL
 
-注意此处使用的 bash 配置 PATH，如果是 zsh 请对应修改 为 .zshrc。
+&emsp;&emsp;注意此处使用的 bash 配置 PATH，如果是 zsh 请对应修改 为 .zshrc。
 
 ```bash
 echo "export PATH=/opt/openmpi/bin:/opt/fftw3/bin:$PATH" >> ~/.bashrc \
@@ -74,7 +74,11 @@ sudo apt update
 sudo apt install -y intel-mkl-2020.4-912
 ```
 
-#### 如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？
+> error "问题"
+> 如果遇到 E: Sub-process /usr/bin/dpkg returned an error code (1)，怎么办？
+
+> info "解决办法"
+> &emsp;&emsp;这个问题一般是由于某个软件安装过程失败造成的，只需要如下所示将安装到一半的软件删除重来一遍即可。
 
 ```bash
 cd /var/lib/dpkg/
@@ -89,9 +93,7 @@ sudo mv info_bak info           # 把以前的info文件夹重新改回名
 
 ### 编译安装 CONQUEST
 
-
-
-下载 CONQUEST 最新源代码：
+&emsp;&emsp;下载 CONQUEST 最新源代码：
 
 ```bash
 cd /opt/softwares/
@@ -100,7 +102,7 @@ git clone https://github.com/OrderN/CONQUEST-release conquest
 
 修改 conquest/src/system.make 文件如下所示：
 
-```bash
+```ini
 # For Docker (2021/01/27 zhonger)
 
 # Set compilers
@@ -149,12 +151,13 @@ MULT_KERN = default
 DIAG_DUMMY =
 ```
 
-
 #### 编译错误解决
 
-**编译错误：**generic_blas.o: in function `__genblas_MOD_two_potri':......
+> error "问题"
+> **编译错误：**generic_blas.o: in function `__genblas_MOD_two_potri':......
 
-**解决办法：**修改 conquest/src/Makefile 文件，如下修改。这里发生编译错误的原因是编译程序如果按照原来的顺序无法寻找到 MKL 提供的依赖库文件，相反将链接依赖库文件的顺序放到后面编译程序就能成功找到依赖库文件。这么听起来有点玄学，但事实就是这样的。
+> info "解决办法"
+> &emsp;&emsp;修改 conquest/src/Makefile 文件，如下修改。这里发生编译错误的原因是编译程序如果按照原来的顺序无法寻找到 MKL 提供的依赖库文件，相反将链接依赖库文件的顺序放到后面编译程序就能成功找到依赖库文件。这么听起来有点玄学，但事实就是这样的。
 
 ```bash
 # 第68行
@@ -166,9 +169,9 @@ $(FC) -o $(TARGET) $(NODE_OBJECTS) $(LIBS) $(LINKFLAGS)
 
 ## Docker 化
 
-以下为 Docker 化所需的 Dockerfile 文件（基于笔者个性化后的 Intel 官方 Docker 镜像）：
+&emsp;&emsp;以下为 Docker 化所需的 Dockerfile 文件（基于笔者个性化后的 Intel 官方 Docker 镜像）：
 
-```bash
+```dockerfile
 FROM zhonger/oneapi-hpckit:latest
 
 LABEL maintainer="zhonger zhonger@live.cn"
@@ -242,16 +245,18 @@ docker build . -t zhonger/conquest
 #### 方式一
 
 ```bash
+# 启动一个实例
 docker run -ti -d --name dev zhonger/conquest:latest
-```
 
-```bash
+# 进入实例终端
 docker exec -ti dev /bin/zsh
 ```
 
 #### 方式二
 
 ```yaml
+# docker-compose.yml
+
 version: "3.9"
 services:
 
@@ -266,6 +271,9 @@ services:
 ```
 
 ```bash
+# 启动一个实例
 docker-compose up -d
+
+# 进入实例终端
 docker exec -ti dev /bin/zsh
 ```

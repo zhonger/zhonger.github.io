@@ -23,27 +23,28 @@ cover: 'https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=90
 
 ## 搭建
 
-&emsp;&emsp;说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的[文档网站](https://jupyter-docker-stacks.readthedocs.io/)，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 [Dockerfile 集合](https://github.com/jupyter/docker-stacks) 吧。
+&emsp;&emsp;说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的 [文档网站](https://jupyter-docker-stacks.readthedocs.io/)，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 [Dockerfile 集合](https://github.com/jupyter/docker-stacks) 吧。
 
 &emsp;&emsp;JupyterLab 提供两种方式启动多用户多实例：
+
 - **DockerSpawner 方式**：每个用户独享一个 Docker 实例，能有效隔离用户。
 - **SystemSpawner 方式**：共享同一个 Docker 实例，以系统用户身份运行。
 
 &emsp;&emsp;事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。
 
-![JupyterHub 架构图](https://jupyterhub.readthedocs.io/en/stable/_images/jhub-fluxogram.jpeg)
+![架构图 JupyterHub Design](https://i.lisz.top/blog/Uibi3q.webp)
 
 &emsp;&emsp;以下为搭建所需的文件的列表：
 
-![vgy.me](https://i.vgy.me/4pnx0D.png)
+![文件列表 Files](https://i.lisz.top/blog/tU3EqP.webp)
 
 ### 构建 Jupyter Notebook 实例镜像
 
 #### 基础镜像 base-notebook
 
-&emsp;&emsp;这里的基础镜像可以根据需要自行选择，与 [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks/tree/master/base-notebook) 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 [base-notebook 目录](https://github.com/jupyter/docker-stacks/tree/master/base-notebook)一致。
+&emsp;&emsp;这里的基础镜像可以根据需要自行选择，与 [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks/tree/master/base-notebook) 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 [base-notebook 目录](https://github.com/jupyter/docker-stacks/tree/master/base-notebook) 一致。
 
-```yaml
+```dockerfile
 # Dockerfile
 ARG ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04
 
@@ -200,7 +201,9 @@ ARG JUPYTERHUB_VERSION=master
 RUN true && \
     python3 -m pip install notebook jupyterhub
 ```
-install_jupyterhub 脚本文件
+
+&emsp;&emsp;install_jupyterhub 脚本文件
+
 ```python
 #!/usr/bin/env python
 import os
@@ -223,7 +226,6 @@ else:
     req = 'jupyterhub%s' % vs
 
 check_call(pip_install + [req])
-
 ```
 
 ```bash
@@ -232,7 +234,7 @@ docker build -t singleuser:latest .
 
 #### JupyterLab 单用户镜像 jupyter_lab_singleuser
 
-```yaml
+```dockerfile
 ARG BASE_IMAGE=singleuser:latest
 FROM ${BASE_IMAGE}
 
@@ -264,7 +266,7 @@ docker build -t jupyter_lab_single:latest .
 
 ### 构建 JupyterHub 镜像
 
-```yaml
+```dockerfile
 # Dockerfile
 
 ARG BASE_IMAGE=jupyterhub/jupyterhub:latest
@@ -353,7 +355,7 @@ docker-compose up -d
 
 ## 测试
 
-&emsp;&emsp;访问 [https://{JupyterHub Domain}/](https://{JupyterHub Domain}/) 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。
+&emsp;&emsp;访问 `https://{JupyterHub Domain}/` 即可，点击登录按钮后跳转到 Gitlab 登录页，如果 Gitlab 已登录会自动跳回。
 
 ## 参考资料
 

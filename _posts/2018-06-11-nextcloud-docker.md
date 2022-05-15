@@ -20,9 +20,7 @@ cover: 'https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=90
 
 &emsp;&emsp;对于 Docker 方式部署来说，存储数据文件夹只需要在启动应用时挂载目录到容器应用的对应目录即可，因此无需做任何更改。
 
-&emsp;&emsp;由于配置文件 config/config.php 文件会在 Docker 应用创建是重新生成，只需保证文件中重要部分相同即可。
-
-&emsp;&emsp;所以只需备份数据库。
+&emsp;&emsp;由于配置文件 config/config.php 文件会在 Docker 应用创建是重新生成，只需保证文件中重要部分相同即可。所以只需备份数据库。
 
 ### 备份数据库
 
@@ -33,6 +31,7 @@ cover: 'https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=90
 #### 从命令行备份
 
 &emsp;&emsp;这种方式需要登录服务器操作（如果开放对外访问，那也可在远程操作）。
+
 ```bash
 # 服务器本地操作
 mysqldump -u root -p yun > ~/yun.sql
@@ -46,6 +45,7 @@ mysqldump -u root -p yun > ~/yun.sql
 ### 启动容器
 
 &emsp;&emsp;首先在 /home/ubuntu/nextcloud 目录下编写如下 docker-compose.yml 文件。
+
 ```yaml
 version: '2'
 
@@ -72,7 +72,9 @@ services:
       - /home/data/:/var/www/html/data
     restart: always
 ```
-使用 `docker-compose up -d` 启动应用。由于数据库和应用配置尚未恢复，此时无法在浏览器上通过`http://127.0.0.1:7009`访问。
+
+使用 `docker-compose up -d` 启动应用。由于数据库和应用配置尚未恢复，此时无法在浏览器上通过 `http://127.0.0.1:7009` 访问。
+
 ### 恢复数据库
 
 ```bash
@@ -95,7 +97,7 @@ mysql> source /opt/yun.sql
 
 &emsp;&emsp;通过拷贝旧配置中的内容即可初始化容器应用，主要内容如下所示：
 
-```yaml
+```php
   'passwordsalt' => '一大串文本',
   'secret' => '一大串文本',
   'datadirectory' => '/var/www/html/data',

@@ -12,13 +12,11 @@ tags:
 
 ## 制作 archlinux 启动盘
 
-从 archlinux 官方或者是镜像源下载到 iso 文件
-使用以下命令制作启动U盘
+&emsp;&emsp;从 archlinux 官方或者是镜像源下载到 iso 文件，并使用以下命令制作启动U盘。
 
 ```bash
 dd if=image.iso of=/dev/sd[x]
 ```
-> 参考自 [Install_from_a_USB_flash_drive](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
 
 ## 安装准备
 
@@ -112,13 +110,15 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```bash
 # 配置显卡: 
 pacman -S nvidia
+
 # 删除`/etc/pacman.conf`中的`multilib`部分注释，
 pacman -Syy
-# 刷新软件缓存，
+
+# 刷新软件缓存
 pacman -S lib32-nvidia-utils
+
 # 安装对应的基本库。
 ```
-参考自 [NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)
 
 ```bash
 # 安装 xorg
@@ -134,3 +134,8 @@ systemctl enable gdm
 ## 重启
 
 &emsp;&emsp;重启之后从硬盘启动就会进入 gdm 登录界面，使用上面设置的 username 和密码登录即可，如果用户名和密码都正确无法登录，说明该用户未建立对应用户主目录，重新创建用户即可。
+
+## 参考资料
+
+- [Install_from_a_USB_flash_drive](https://wiki.archlinux.org/index.php/USB_flash_installation_media)
+- [NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)

@@ -19,7 +19,6 @@ render_with_liquid: false
 
 &emsp;&emsp;Jekyll 是一款采用 Ruby 语言编写的、非常方便简单又功能强大的静态站点生成器，适合于搭建个人博客、静态网站等。我们知道，Github Page 默认支持的也是 Jekyll，而非 Hexo、Hugo等静态站点生成器。Hexo 是用 NodeJS 语言编写的，Hugo 是用 Go 语言编写的，它们三者背后其实都有非常丰富的插件来增强它们自身，从而为用户提供一个可插拔式的个人定制功能。由于本站目前是采用 Jekyll 来搭建的，所以为了提供给读者更加高效的阅读条件，笔者在廖柯杰大佬开发的 [H2O](https://github.com/kaeyleo/jekyll-theme-H2O) 主题的基础上做了一些功能上的增加和优化，接下来就来详细介绍一下。
 
-
 ## 功能需求
 
 - 原有的 Rouge 代码高亮支持的语言种类较少、代码主题有限；
@@ -36,26 +35,26 @@ render_with_liquid: false
 
 #### Pygments
 
-首先在 Gemfile 中配置下面行，以便安装好对应的插件模块。
+&emsp;&emsp;首先在 Gemfile 中配置下面行，以便安装好对应的插件模块。
 
 ```bash
 gem install pygments.rb
 ```
 
-然后是修改 _config.yml 配置文件，其中的 highlighter 修改如下：
+&emsp;&emsp;然后是修改 _config.yml 配置文件，其中的 highlighter 修改如下：
 
 ```yaml
 markdown: kramdown
 highlighter: pygments
 ```
 
-之后不要忘记要引入 Pygments 的 CSS 样式，可以直接访问以下地址下载：
+&emsp;&emsp;之后不要忘记要引入 Pygments 的 CSS 样式，可以直接访问以下地址下载：
 
 ```bash
 https://pygments.org/_static/pygments.css
 ```
 
-不过也是可以引入其他主题的 CSS 样式的。
+&emsp;&emsp;不过也是可以引入其他主题的 CSS 样式的。
 
 #### Rouge
 
@@ -68,8 +67,9 @@ highlighter: rouge
 
 #### Prism
 
-本站所采用的代码高亮就是 Prism，选择 Prism 的原因主要有三点：
-- Prism 生成代码比较简洁，没有多余代码，颜色在不同网站主题上都试用；
+&emsp;&emsp;本站所采用的代码高亮就是 Prism，选择 Prism 的原因主要有三点：
+
+- Prism 生成代码比较简洁，没有多余代码，颜色在不同网站主题上都适用；
 - 支持的高亮编程语言丰富，虽然在某些地方还是有所瑕疵，但是总体上还是很实用；
 - 高亮主题基本上现有的都能用，本站所用的就是 Github 官方同款主题。
 
@@ -185,7 +185,7 @@ module Jekyll
 </body>
 ```
 
-这里使用的是默认配置，想要更多定制可以移步 [fancybox 官网](http://fancyapps.com/fancybox/3/docs/#options)。
+&emsp;&emsp;这里使用的是默认配置，想要更多定制可以移步 [fancybox 官网](http://fancyapps.com/fancybox/3/docs/#options)。
 
 ### 学术首页
 
@@ -441,9 +441,9 @@ cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900
 }
 ```
 
-另外，也需要在 _config.yml 文件中在导航栏中添加链接，如下所示。
+&emsp;&emsp;另外，也需要在 _config.yml 文件中在导航栏中添加链接，如下所示。
 
-```yml
+```yaml
 _config.yml
 nav:
   home: '/'
@@ -457,7 +457,7 @@ nav:
 
 (本小节更新于 2021年12月20日)
 
-&emsp;&emsp;作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用**双$符号**来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在 _layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。
+&emsp;&emsp;作为一名研究机器学习的计算机专业科研狗，LaTex 公式在解释机器学习算法基础理论时时不时会被需要。由于 Markdown 语言解析器对 Markdown 标准支持的不同，可能不支持 LaTex 公式，本站所使用的主题原来就尚未对 Markdown 公式或者 LaTex 公式进行支持。这里实现方法是采用 MathJax v3 插件增加对 LaTex 公式的解析支持：只需要在 _layouts/post.html 文件的 body 之前增加以下代码即可。此处，为了原生支持 LaTex 语法中采用**双$符号**来声明公式，同时也相应调整了 MathJax 的配置。于是就可以在基于文章模板的页面中直接使用如下所示的 LaTex 声明即可正确显示数学公式了。当然，如果想要全站所有的页面都有这个功能，可以在_layouts 目录下的所有模板文件的 body 之前都添加以下代码，或者在 _includes 目录下的全局模块文件 head.html 或者 footer.html 文件中添加以下代码。想要了解更多，可以访问参考资料查看详细介绍。
 
 ```html
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -496,7 +496,7 @@ $$
 
 &emsp;&emsp;当然可能有的人要问了，这样计算出来的字数是否正确呢？毕竟中英文字符还是有差别的嘛。这个问题在参考资料的博文中做了一些比较深刻的讨论，最后给出来的方案就是这里采用的方案。也可能会有人问如果存在公式、代码、图片等非可计数的内容，那么阅读时长岂不是准确性很差？这个问题其实主要还是在统计上，由于这些非可计数内容不在正常字数统计内，也无法根据它们的数量来评估对应所需的时间，自然也不能加入到阅读时长里。回过头来看，这里的字数统计及阅读时长估算功能本来就是给读者一个信息好做出预判，至于读者阅读是否需要那么长时间或者甚至更长时间，那都没有太大关系。
 
-### 参考资料
+## 参考资料
 
 - [让 Jekyll 支持 LaTex 数学公式（MathJax v3）](https://hansenz42.github.io/posts/add-latex-support-to-jekyll/)
 - [Jekyll 实现文章阅读耗时与字数统计](https://too.pub/Jekyll-count-of-characters)

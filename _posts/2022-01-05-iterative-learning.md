@@ -27,10 +27,10 @@ tags:
 
 &emsp;&emsp;首先将预处理的训练数据集引入到模型中。在对给定的数据进行处理和构建模型后，对模型进行测试，然后将结果与所期待的输出进行匹配。然后将反馈返回给系统，以便算法那进一步学习和微调其结果。这清楚地表明，这里发生了两个迭代过程：
 
-1.	数据迭代——算法固有的
-2.	模型训练迭代——外部引入
+1. 数据迭代——算法固有的
+2. 模型训练迭代——外部引入
 
-![vgy.me](https://i.vgy.me/mYccJd.png)
+![迭代机器学习 Iterative Machine Learning](https://i.lisz.top/blog/19OqPp.webp)
 
 &emsp;&emsp;现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？
 
@@ -41,6 +41,7 @@ tags:
 ## 提升算法：有监督机器学习中的迭代
 
 &emsp;&emsp;提升算法本质上是迭代的，是通过最小化错误来改善结果的最佳方式。它们主要旨在减少结果中的偏差，并将一组特定的弱学习分类器算法转换为强学习器，从而使它们能够减少错误。以下是一些示例：
+
 - AdaBoost（Adaptive Boosting）
 - 梯度提升树（Gradient Tree Boosting）
 - XGBoost
@@ -56,6 +57,7 @@ tags:
 ## 人工神经网络：无监督机器学习中的迭代
 
 &emsp;&emsp;神经网络已经成为无监督机器学习的典型代表，因为它们在预测数据模型方面的准确性。一些众所周知的神经网络有：
+
 - 卷积神经网络（Convolutional Neural Networks，CNNs）
 - 玻尔兹曼机（Boltzman Machines，BMs）
 - 循环神经网络（Recurrent Neural Networks，RNNs）
@@ -86,7 +88,7 @@ tags:
 
 &emsp;&emsp;为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：
 
-![vgy.me](https://i.vgy.me/4XY4X4.png)
+![迭代的不同阶段 Different stages](https://i.lisz.top/blog/WMRZBJ.webp)
 
 1. **参数迭代**：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。
 2. **数据迭代**：一旦模型参数最终确定之后，将数据放入系统并模拟模型。将多组数据放入系统中，以检查参数在产生想要的结果方面的有效性。因此，如果数据迭代阶段表明某些参数不适合模型，则将它们带回参数迭代阶段，并添加或修改参数。
@@ -97,8 +99,6 @@ tags:
 
 &emsp;&emsp;我们相信，迭代机器学习技术将在不久的将来继续引领人工智能领域的转型。
 
-## 版权声明
-
-&emsp;&emsp;由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。
-
-&emsp;&emsp;As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.
+> note "版权声明"
+> &emsp;&emsp;由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。  
+> &emsp;&emsp;As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.

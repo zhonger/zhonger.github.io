@@ -26,30 +26,29 @@ cover: 'https://images.unsplash.com/photo-1610070945206-2f5cafcb4e2b?w=1600&q=90
 
 #### 登录
 
-访问 [Cloudflare Pages 官网](https://pages.cloudflare.com/)，点击 Sign Up 按钮使用 Cloudflare 账户登录。
+&emsp;&emsp;访问 [Cloudflare Pages 官网](https://pages.cloudflare.com/)，点击 Sign Up 按钮使用 Cloudflare 账户登录。
 
-![vgy.me](https://i.vgy.me/4A80Ui.png)
-
+![登录 Login](https://i.lisz.top/blog/a0C23w.webp)
 
 #### 创建项目
 
-登录后点击**创建项目**按钮开始创建。
+&emsp;&emsp;登录后点击**创建项目**按钮开始创建。
 
-![vgy.me](https://i.vgy.me/oQhDqd.png)
+![创建项目 Create project](https://i.lisz.top/blog/s12Jkr.webp)
 
-选择一个 Github 的项目，比如 zhonger/zhonger.github.io。
+&emsp;&emsp;选择一个 Github 的项目，比如 zhonger/zhonger.github.io。
 
-![vgy.me](https://i.vgy.me/dpAjv1.png)
+![选择项目 Select project](https://i.lisz.top/blog/YwXaml.webp)
 
-设置永久访问域名前缀，部署分支，以及所用的静态生成框架，然后点击**保存并部署**。
+&emsp;&emsp;设置永久访问域名前缀，部署分支，以及所用的静态生成框架，然后点击**保存并部署**。
 
-![vgy.me](https://i.vgy.me/fEfYR6.png)
+![设置域名前缀 Set domain prefix](https://i.lisz.top/blog/Q3uTjI.webp)
 
 #### 预览
 
-添加完成后等待完成构建与部署，可以看到目前绑定的域名。点击访问站点即可跳转预览
+&emsp;&emsp;添加完成后等待完成构建与部署，可以看到目前绑定的域名。点击访问站点即可跳转预览
 
-![vgy.me](https://i.vgy.me/cGq97f.png)
+![预览 Preview](https://i.lisz.top/blog/t8ZdUt.webp)
 
 ### 评价
 

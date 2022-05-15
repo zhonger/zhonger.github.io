@@ -10,25 +10,43 @@ tags:
 categories: [tech, PHP]
 cover: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900'
 ---
-安装前提：系统已安装好 php 环境，可在全局使用 php 命令。
-## 安装 compsoer 并设置为全局调用
+
+## 安装前提
+
+&emsp;&emsp;系统已安装好 php 环境，可在全局使用 php 命令。
+
+## 安装步骤
+
+### 安装 Compsoer
+
+&emsp;&emsp;从 [Composer 官网](https://getcomposer.org/) 下载已编译可执行文件并设置为全局调用。
 
 ```bash
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 ```
 
-## 使用 composer 建立 laravel installer 安装工具
+### 安装 Laravel 工具
+
+&emsp;&emsp;使用 Composer 命令全局安装 Laravel Installer 工具库。
 
 ```bash
 composer global require "laravel/installer"
 ```
 
-## 将 laravel 命令添加进用户环境变量
+### 配置环境变量
 
-&emsp;&emsp;打开`~/.bashrc`文件最末添加命令：`PATH=$PATH:~/.composer/vendor/bin`
-`source ~/.bashrc` 命令使环境变量变化生效。
+&emsp;&emsp;将 `laravel` 命令添加进用户环境变量。
 
-## 完成配置
+```bash
+# 在 .bashrc 文件的末尾加入
 
-&emsp;&emsp;可以在全局使用`laravel new {应用名称}`了。
+tee -a ~/.bashrc << EOF
+PATH=$PATH:~/.composer/vendor/bin
+EOF
+source ~/.bashrc
+```
+
+## 验证安装
+
+&emsp;&emsp;可以在全局使用 `laravel new {应用名称}` 了。

@@ -22,13 +22,13 @@ cover: 'https://images.unsplash.com/photo-1551978429-3dbfed5cacc9?w=1600&q=900'
 
 ## 安装配置
 
-笔者想要构建的开发环境基础 Docker 镜像主要的特点是以上两点，具体来说是：
+&emsp;&emsp;笔者想要构建的开发环境基础 Docker 镜像主要的特点是以上两点，具体来说是：
 
 - 具有 sudo 权限的非 root 用户：ubuntu
 - 执行 sudo 命令时不需要输入密码，即免密 sudo
 - ubuntu 用户的默认 shell 是 zsh
 
-因此，所对应的 Docker 镜像生成配置文件（Dockerfile）如下所示。
+&emsp;&emsp;因此，所对应的 Docker 镜像生成配置文件（Dockerfile）如下所示。
 
 ```dockerfile
 FROM ubuntu:latest
@@ -65,13 +65,13 @@ RUN sudo apt autoremove -y \
 ENTRYPOINT ["/bin/zsh"]
 ```
 
-使用以下命令编译生成 Docker 镜像：
+&emsp;&emsp;使用以下命令编译生成 Docker 镜像：
 
 ```bash
 docker build . -t zhonger/ubuntu:latest
 ```
 
-使用以下命令运行一个 Docker 实例验证：
+&emsp;&emsp;使用以下命令运行一个 Docker 实例验证：
 
 ```bash
 docker run -ti -d --name dev zhonger/ubuntu:latest

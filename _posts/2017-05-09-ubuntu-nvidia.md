@@ -16,14 +16,19 @@ cover: 'https://images.unsplash.com/photo-1474835409173-5dc81aae3faa?w=1600&h=90
 
 ## 准备工作
 
-1. 下载 NVIDIA 驱动程序
-在[NVIDIA官网下载](http://www.nvidia.cn/Download/index.aspx?lang=cn)对应的驱动（.run 文件）
-2. 删除旧驱动
+### 下载 NVIDIA 驱动程序
+
+&emsp;&emsp;在 [NVIDIA官网](http://www.nvidia.cn/Download/index.aspx?lang=cn) 下载对应的驱动（.run 文件）
+
+### 删除旧驱动
+
 ```bash
 sudo apt-get purge nvidia*
 #（如果返回卸载成功或无匹配结果均可）
 ```
-3. 禁用自带的 nouveau nvidia 驱动
+
+### 禁用自带的 nouveau nvidia 驱动
+
 ```bash
 sudo vim /etc/modprobe.d/blacklist-nouveau.conf
 # 创建文件，并添加内容如下：
@@ -34,7 +39,9 @@ sudo update-initramfs -u
 # 重启操作系统
 #（重启后可用`lsmod | grep nouveau`检查是否禁用成功）
 ```
-4. 安装内核头
+
+### 安装内核头
+
 ```bash
 sudo apt-get install linux-headers-$(uname -r)
 ```

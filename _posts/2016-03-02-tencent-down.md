@@ -8,21 +8,35 @@ tags:
 categories: [tech, Linux]
 cover: 'https://images.unsplash.com/photo-1455459182396-ae46100617cb?w=1600&h=900'
 ---
-## 添加用户并设为 sudo 权限
+## 添加新用户及赋权
+
+### 新增用户及配置默认密码
 
 ```bash
 sudo useradd 用户名
 sudo passwd 用户名
-sudo chmod +w /etc/sudoers
-sudo vi  /etc/sudoers (加入 用户名 ALL=(ALL:ALL) ALL )
 ```
 
-## 更改用户 linux 的 shell 的操作方法
+### 添加用户到 sudo 组
 
 ```bash
-查看当前用户的 shell 方式 `echo $SHELL`    
-输出 `/bin/sh`
-更换 shell 操作方式为`/bin/bash`   
-`sudo vi /etc/passwd`  在用户行尾加上`/bin/bash`
-退出系统再次登录
+sudo chmod +w /etc/sudoers
+sudo vi  /etc/sudoers 
+# 加入 用户名 ALL=(ALL:ALL) ALL
+```
+
+## 配置默认 Shell
+
+&emsp;&emsp;更改Linux 用户的 Shell 的操作方法如下所示：
+
+```bash
+# 查看当前用户的 shell 方式 
+echo $SHELL    
+>> /bin/sh
+
+# 更换 shell 操作方式为 `/bin/bash`   
+sudo vim /etc/passwd  
+# 在用户行尾加上`/bin/bash`
+
+# 退出系统再次登录
 ```

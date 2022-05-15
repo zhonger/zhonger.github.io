@@ -9,14 +9,12 @@ tags:
 categories: [tech, docker]
 cover: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900'
 ---
-# Docker入门
 
-## 安装
+## 安装 Docker
 
-~~安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。~~ 
+~~&emsp;&emsp;安装 Docker 环境当然要使用上海大学开源镜像站提供的 docker-ce 镜像源咯。~~ 
 
-推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。
-
+&emsp;&emsp;推荐使用中科大开源镜像站提供的 docker-ce 镜像源安装 Docker 环境，下面以 Ubuntu 操作系统为例开始实验。
 
 ```bash
 # 添加中科大镜像源到list列表中
@@ -39,8 +37,7 @@ sudo usermod -aG docker $(whoami)
 
 ## 更换 docker 镜像加速器
 
-由于 Docker Hub 的服务器只部署在美国，所以国内访问一般都比较慢，于是就要使用上大大佬们提供的镜像加速器，以下为修改加速器地址的方法（以中科大 docker 镜像仓库加速器为例）：
-
+&emsp;&emsp;由于 Docker Hub 的服务器只部署在美国，所以国内访问一般都比较慢，于是就要使用大佬们提供的镜像加速器，以下为修改加速器地址的方法（以中科大 docker 镜像仓库加速器为例）：
 
 ```bash
 # 添加 中科大 Docker 镜像加速器
@@ -50,20 +47,21 @@ curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sh -s https://docker.
 sudo service docker restart
 ```
 
-
-以下为国内主要的 docker 镜像仓库加速器：
+&emsp;&emsp;以下为国内主要的 docker 镜像仓库加速器：
 
 | 服务提供者 | 加速地址 | 推荐指数 | 备注 |
 | ---- | ---- | ---- | ---- |
+| 南京大学镜像站 | https://docker.nju.edu.cn | ★★★★★ | 无任何限制 |
 | 中科大镜像站 | https://docker.mirrors.ustc.edu.cn | ★★★★★ | 无任何限制 |
+| 上海交通大学镜像站 | https://docker.mirrors.sjtug.sjtu.edu.cn | ★★★★★ | 无任何限制 |
 | Docker官方 | https://registry.docker-cn.com | ★★★★ | 无任何限制，由于服务器在香港阿里云，和阿里云差不多 |
 | 阿里云 | https://{your_id}.mirror.aliyuncs.com | ★★★★ | 某些时候会限速 |
-| Daocloud |  http://{your_id}.m.daocloud.io | ★★★★★ | 大部分时候网速还是可以的 |
+| Daocloud |  http://{your_id}.m.daocloud.io | ★★★★ | 大部分时候网速还是可以的 |
 | 网易云 | https://hub-mirror.c.163.com  | ★★★★ | 没有尝试过 |
 
 ## 安装 docker-compose
 
-docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
+&emsp;&emsp;docker-compose 是一个由 Docker 官方提供的应用多容器搭配管理工具，适合一个应用需要多个容器配合统一管理，进一步简化部署、升级步骤。
 
 ```bash
 # 安装 python3 python3-pip

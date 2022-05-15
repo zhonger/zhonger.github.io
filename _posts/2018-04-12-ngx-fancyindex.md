@@ -90,7 +90,9 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 
 # 将主题目录与目录列表所在根目录软连接一下
 sudo ln -s ~/downloads/Nginx-Fancyindex-Theme /var/www/html/Nginx-Fancyindex-Theme
+```
 
+```nginx
 # 修改 Nginx 虚拟主机配置文件
 server {
     listen 80;
@@ -105,14 +107,14 @@ server {
 	ssl on;
 	ssl_certificate /home/ubuntu/ssl/ftp.example.org.cert.pem;
 	ssl_certificate_key /home/ubuntu/ssl/ftp.example.org.key.pem;
-    root /var/www/html;
+	root /var/www/html;
 	index index.html;
     
     location / {
-    	include /var/www/html/Nginx-Fancyindex-Theme/fancyindex.conf;
+		include /var/www/html/Nginx-Fancyindex-Theme/fancyindex.conf;
 		autoindex_format html;
 		charset utf-8,gbk;
-	    disable_symlinks off;
+		disable_symlinks off;
     }
 }
 ```

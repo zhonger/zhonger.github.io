@@ -19,7 +19,7 @@ cover: 'https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=90
 
 ## Ubuntu ARM
 
-以下为 CONQUEST 所需的软件或依赖库列表：
+&emsp;&emsp;以下为 CONQUEST 所需的软件或依赖库列表：
 
 | 名称 | 安装包名称 |
 | ---- | ---- |
@@ -33,7 +33,9 @@ cover: 'https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=90
 | scalapack library | libscalapack-mpi-dev libmlpack-dev |
 | fftw3 library| fftw3 fftw3-dev pkg-config |
 
-使用以下命令安装上述软件或者依赖库。
+### 安装依赖
+
+&emsp;&emsp;使用以下命令安装上述软件或者依赖库。
 
 ```bash
 sudo apt update
@@ -44,15 +46,17 @@ sudo apt install -y libscalapack-mpi-dev libmlpack-dev
 sudo apt install -y fftw3 fftw3-dev pkg-config
 ```
 
-下载 CONQUEST 最新源代码：
+### 编译 CONQUEST
+
+&emsp;&emsp;下载 CONQUEST 最新源代码：
 
 ```bash
 git clone https://github.com/OrderN/CONQUEST-release conquest
 ```
 
-修改 conquest/src/system.make 文件如下所示：
+&emsp;&emsp;修改 conquest/src/system.make 文件如下所示：
 
-```bash
+```ini
 # For Docker
 
 # Set compilers
@@ -98,18 +102,21 @@ MULT_KERN = default
 DIAG_DUMMY =
 ```
 
-执行编译安装命令：
+&emsp;&emsp;执行编译安装命令：
 
 ```bash
 cd conquest/src/
 make clean && make
 ```
 
-执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见[使用指南](/tech/conquest-introduction)。
+&emsp;&emsp;执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见 [使用指南](/tech/conquest-introduction)。
 
+> info "小提示"
 > 有一点有意思的事是，在 Ubuntu 平台下可能会出现无法寻找对应的依赖库的问题。解决这一问题比较好的办法是在所使用的 .bashrc 或者 .zshrc 文件里添加完整的 LIBRARY_PATH 和 LD_LIBRARY_PATH 配置。
 
 ## M1
+
+### 安装依赖
 
 &emsp;&emsp;M1 平台下的依赖库安装相对比较简单一点，直接使用 Homebrew 和以下命令即可一键式安装所需的所有依赖库和软件。M1 平台下的 Homebrew 的安装请移步 [brew.sh](https://brew.sh/)。
 
@@ -117,15 +124,17 @@ make clean && make
 brew install gcc scalapack openblas liblas lapack open-mpi libxc fftw vecLibFort
 ```
 
-下载 CONQUEST 最新源代码：
+### 编译 CONQUEST
+
+&emsp;&emsp;下载 CONQUEST 最新源代码：
 
 ```bash
 git clone https://github.com/OrderN/CONQUEST-release conquest
 ```
 
-以下为 M1 平台下对应的 system.make 文件：
+&emsp;&emsp;以下为 M1 平台下对应的 system.make 文件：
 
-```bash
+```ini
 # For Mac M1 aarch64
 
 # Set compilers
@@ -171,11 +180,11 @@ MULT_KERN = default
 DIAG_DUMMY =
 ```
 
-执行编译安装命令：
+&emsp;&emsp;执行编译安装命令：
 
 ```bash
 cd conquest/src/
 make clean && make
 ```
 
-执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见[使用指南](/tech/conquest-introduction)。
+&emsp;&emsp;执行成功后会在 conquest/bin/ 目录下生成 Conquest 可执行文件，具体使用请见[使用指南](/tech/conquest-introduction)。

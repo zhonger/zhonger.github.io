@@ -39,14 +39,14 @@ ssh_proxy       1080
 
 ## 配置
 
-&emsp;&emsp;现以 macOS Big Sur 操作系统为例进行实际配置操作： 
+&emsp;&emsp;现以 macOS Big Sur 操作系统为例进行实际配置操作：
 
 ### HTTP 和 HTTPS
 
 #### 全局设置
 
 &emsp;&emsp;在 **设置 > 网络 > WiFi > 高级 > 代理** 中如下进行设置“网页代理”和“安全网页代理”之后，除终端外其他应用均会自动应用此代理配置。
-![HTTP和HTTPS代理](https://i.vgy.me/rdCHul.png)
+![HTTP 和 HTTPS 代理 Proxy](https://i.lisz.top/blog/z3DnTh.webp)
 
 #### 终端设置
 
@@ -87,7 +87,7 @@ Host app
 
 &emsp;&emsp;近年来 FTP 的访问需求感觉越来越少，毕竟大部分的时候可以使用基于 SSH 的 `scp` 和 `rsync` 命令来替代。这里给出 Filezilla 软件的 FTP 代理设置示例，同时也提供终端上的替代命令。
 
-![FTP 通用代理配置](https://i.vgy.me/X668Vv.png)
+![FTP 通用代理配置 FTP Proxy Settings](https://i.lisz.top/blog/DkWnSx.webp)
 
 ```bash
 # 以下命令的使用需先配置好上述的 SSH 终端代理配置
@@ -115,4 +115,4 @@ rsync -avh -e ssh app:/home/ubuntu/ /home/zhonger/test/
 4. 按 ctrl + ` 键即可打开终端
 5. 点击“打开文件夹”按钮即可打开远程服务器上的文件夹显示目录
 
-![VS Code 远程开发](https://i.vgy.me/usZH3y.png)
+![VS Code 远程开发 Remove develope](https://i.lisz.top/blog/zw3gDC.webp)

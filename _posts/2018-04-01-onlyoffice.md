@@ -14,7 +14,7 @@ cover: https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900
 
 ### 安装 Docker
 
-&emsp;&emsp;请移步 [Docker入门](/tech/docker-init.html)
+&emsp;&emsp;请移步 [《Docker 入门》](/tech/docker-init.html)
 
 ### 安装 Onlyoffice
 
@@ -25,8 +25,9 @@ docker run -i -t -d --restart=always -p 7010:80 onlyoffice/documentserver
 ### 配置 Nginx 代理
 
 &emsp;&emsp;主要是 onlyoffice 目前有部分内容是通过 websocket 进行通信的，并非完全是 http 代理。
-```bash
-#/usr/local/nginx/conf/vhost/onlyoffice or /etc/nginx/site-available/onlyoffice
+
+```nginx
+# /usr/local/nginx/conf/vhost/onlyoffice or /etc/nginx/site-available/onlyoffice
 
 map $http_host $this_host {
     "" $host;

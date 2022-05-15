@@ -12,20 +12,29 @@ cover: 'https://images.unsplash.com/photo-1552162679-446212964bfc?w=1600&h=900'
 
 ## caddy 篇
 
-1. 安装 caddy
+### 安装 caddy
+
 ```bash
 curl https://getcaddy.com | bash
 ```
-2. 配置 Caddyfile
+
+### 配置 Caddyfile
+
 ```bash
 yun.lisz.me {
     gzip
     proxy / http://127.0.0.1:10080
 }
 ```
-3. 安装并配置 supervisor
+
+### 安装并配置 supervisor
+
 ```bash
+# 安装 superviosr
 sudo pip install supervisor
+```
+
+```conf
 # /etc/supervisord.conf`
 [program:caddy]
 command=caddy -conf /root/Caddyfile
@@ -37,7 +46,9 @@ stderr_logfile=/tmp/caddy_err.log
 stdout_logfile=/tmp/caddy.log
 [supervisord]
 ```
-4. 安装 apache
+
+### 安装 apache
+
 ```bash
 sudo apt-get install -y apache2 
 sudo a2enmod rewrite env headers mime dir setenvif
@@ -45,7 +56,8 @@ sudo a2enmod rewrite env headers mime dir setenvif
 
 ## php 篇
 
-1. 安装 php7.0
+### 安装 php7.0
+
 ```bash
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:ondrej/php
@@ -55,9 +67,10 @@ sudo apt-get install -y libapache2-mod-php7.0 php7.0-mysql php7.0-curl php7.0-js
 sudo apt-get install -y php7.0-common php7.0-gd php7.0-zip php7.0-xml php7.0-mbstring
 sudo systemctl restart apache2.service
 ```
-2. 配置虚拟主机
 
-```bash
+### 配置虚拟主机
+
+```apacheconf
 # /etc/apache2/sites-available/yun.conf
 <VirtualHost *:10080>
     DocumentRoot "/var/www/yun"
@@ -69,18 +82,24 @@ sudo systemctl restart apache2.service
         Allow from all
     </Directory>
 </VirtualHost>
+```
 
+```bash
 # 使配置生效
 sudo ln -s /etc/apache2/sites-available/yun.conf /etc/apache2/sites-enabled/yun.conf
 sudo systemctl restart apache2.service
 ```
 
 ## Mysql 篇
-1. 安装 mysql
+
+### 安装 mysql
+
 ```bash
 sudo apt install mariadb-server mariadb-client -y
 ```
-2. 配置 mysql
+
+### 配置 mysql
+
 ```bash
 # 设置开机启动
 sudo systemctl enable mariadb.service
@@ -103,4 +122,5 @@ Remove test database and access to it? [Y/n]
 # 输入回车进行重载：
 Reload privilege tables now? [Y/n]
 ```
-以上就完成了数据库的安全设置。
+
+&emsp;&emsp;以上就完成了数据库的安全设置。
