@@ -11,6 +11,7 @@ tags:
 - workflow
 - docker
 - 多平台
+render_with_liquid: false
 ---
 
 ## 前言
@@ -87,8 +88,8 @@ jobs:
         name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${\{ secrets.DOCKERHUB_USERNAME }}
-          password: ${\{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
         name: Generate App Version
         run: echo APP_VERSION=`git describe --tags --always` >> $GITHUB_ENV
@@ -108,11 +109,11 @@ jobs:
             linux/s390x
           push: true
           build-args: |
-            APP_NAME=${\{ env.APP_NAME }}
-            APP_VERSION=${\{ env.APP_VERSION }}
+            APP_NAME=${{ env.APP_NAME }}
+            APP_VERSION=${{ env.APP_VERSION }}
           tags: |
-            ${\{ env.DOCKERHUB_REPO }}:latest
-            ${\{ env.DOCKERHUB_REPO }}:${\{ env.APP_VERSION }}
+            ${{ env.DOCKERHUB_REPO }}:latest
+            ${{ env.DOCKERHUB_REPO }}:${{ env.APP_VERSION }}
 ```
 
 &emsp;&emsp;以下对该文件内容分别进行解释：
