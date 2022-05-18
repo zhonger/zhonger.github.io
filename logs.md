@@ -62,6 +62,7 @@ cover: https://images.unsplash.com/photo-1571813713677-c2c8e45ae571?w=1600&q=900
 
 - 2022年1月1日，上线 [Vercel](https://vercel.com) 节点。
 - 2022年1月11日，上线 [Azure](https://azure.microsoft.com/zh-cn/services/app-service/static/#overview) 和 [4EVERLAND](https://hosting.4everland.org) 节点。
+- 2022年5月，由于在 [vgy.me](https://vgy.me) 托管的图片不知原因发生了丢失，而且打算对全站进行一次图片改造——将原来所有的 png 图片全部转成 webp 图片。vgy.me 不支持 webp 图片上传，故而自行搭建了私人图床服务，文章中涉及到的图片全部转成 webp 图片。
 
 ## 站点节点信息
 
