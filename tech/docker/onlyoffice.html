@@ -17,6 +17,10 @@
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
     <meta property="og:gray" content="false">
+    <meta property="post-date-format" content="0">
+    
+    <meta property="post-date" content="2018-04-01 19:10:35 +0900" />
+    
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
@@ -147,9 +151,7 @@
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-calendar"></use>
             </svg>
-            
-              2018-04-01 19:10:35 +0900 
-            
+            <span></span>
           </time>
           
           <span class="post-meta-item">
@@ -255,6 +257,12 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
+            <div class="post-copyright">
+              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">Mr Li</a>&nbsp;所有，转载请注明本文链接。</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p><span>本文标题：</span>《 Onlyoffice 搭建 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/onlyoffice.html">https://lisz.me/tech/docker/onlyoffice.html</a></p>
+            </div>
           </article>
         </div>   
         <div class="table-of-contents">
@@ -384,10 +392,7 @@
     <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
-  
-  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" class="license" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
-  
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.4  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
   
   </section>
   
@@ -484,6 +489,9 @@
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   
   <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
@@ -508,12 +516,28 @@
           
           
 
+          dayjs.extend(window.dayjs_plugin_customParseFormat);
+          dayjs.extend(window.dayjs_plugin_relativeTime);
+          var post_date = $("meta[property='post-date']").attr('content');
+          var post_date_format = $("meta[property='post-date-format']").attr('content');
+          if(post_date_format == 0){
+            var local_post_date_org = dayjs(post_date, 'YYYY-MM-DD HH:mm:ss ZZ');
+            var local_post_date = local_post_date_org.format('YYYY-MM-DD HH:mm:ss ZZ');
+          }else if(post_date_format == 1){
+            var local_post_date_org = dayjs(post_date, 'YYYY DD MMM HH:mm:ss ZZ');
+            var local_post_date = local_post_date_org.format('YYYY DD MMM HH:mm:ss ZZ');
+          }else {
+            var local_post_date_org = dayjs(post_date, 'YYYY年MM月DD日 HH:mm:ss ZZ');
+            var local_post_date = local_post_date_org.format('YYYY年MM月DD日 HH:mm:ss ZZ');
+          }
+          $(".post time span").html(local_post_date);
+          var relative_time = dayjs().diff(local_post_date_org, 'month');
+          if(relative_time > 24){
+            $(".post-copyright").append("<p class='tips'><span>友情提醒：</span>这篇文章发表有点久远了，内容可能有所过时。</p>");
+          }
       });
   </script>
   <script src="https://at.alicdn.com/t/font_3046306_5ex1jlxzv93.js"></script>
-  
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-  
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -524,6 +548,10 @@
 
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
+
+  
+  
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
   <script>
     if ("serviceWorker" in navigator) {

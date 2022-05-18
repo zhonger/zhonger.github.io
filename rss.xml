@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 15 May 2022 23:29:15 +0900</pubDate>
-    <lastBuildDate>Sun, 15 May 2022 23:29:15 +0900</lastBuildDate>
+    <pubDate>Wed, 18 May 2022 23:46:06 +0900</pubDate>
+    <lastBuildDate>Wed, 18 May 2022 23:46:06 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -286,8 +286,8 @@
         &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Login to DockerHub&lt;/span&gt;
         &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker/login-action@v1&lt;/span&gt;
         &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${\{ secrets.DOCKERHUB_USERNAME }}&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${\{ secrets.DOCKERHUB_TOKEN }}&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${{ secrets.DOCKERHUB_USERNAME }}&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${{ secrets.DOCKERHUB_TOKEN }}&lt;/span&gt;
       &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; 
         &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate App Version&lt;/span&gt;
         &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo APP_VERSION=`git describe --tags --always` &amp;gt;&amp;gt; $GITHUB_ENV&lt;/span&gt;
@@ -307,11 +307,11 @@
             &lt;span class=&quot;s&quot;&gt;linux/s390x&lt;/span&gt;
           &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
           &lt;span class=&quot;na&quot;&gt;build-args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;APP_NAME=${\{ env.APP_NAME }}&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;APP_VERSION=${\{ env.APP_VERSION }}&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;APP_NAME=${{ env.APP_NAME }}&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;APP_VERSION=${{ env.APP_VERSION }}&lt;/span&gt;
           &lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;${\{ env.DOCKERHUB_REPO }}:latest&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;${\{ env.DOCKERHUB_REPO }}:${\{ env.APP_VERSION }}&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;${{ env.DOCKERHUB_REPO }}:latest&lt;/span&gt;
+            &lt;span class=&quot;s&quot;&gt;${{ env.DOCKERHUB_REPO }}:${{ env.APP_VERSION }}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;  以下对该文件内容分别进行解释：&lt;/p&gt;
