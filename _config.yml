@@ -7,6 +7,12 @@ url: 'https://lisz.me' # your host
 # if you don't need baseurl, you should leave this value blank.
 baseurl: ''
 
+# Github
+github:
+  enabled: true
+  owner: zhonger
+  repository: zhonger.github.io
+
 # Theme
 theme: jekyll-theme-h2o-ac
 
