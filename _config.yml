@@ -50,7 +50,7 @@ nightMode: false
 
 # Comments
 comments:
-  disqus: true
+  disqus: false
   disqus_url: 'https://zhonger.disqus.com/embed.js'
 
 # Share
