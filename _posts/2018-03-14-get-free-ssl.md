@@ -58,7 +58,7 @@ acme.sh --issue --dns -d shu.aixinwu.org -d *.shu.aixinwu.org --yes-I-know-dns-m
 
 &emsp;&emsp;根据上一步返回的 TXT 记录添加要求，在相应的域名 DNS 服务提供商那里添加好对应的 TXT 记录即可。如下图所示。
 
-![TXT 记录新增 Add TXT record](https://i.lisz.top/blog/HUb1uu.png)
+![TXT 记录新增 Add TXT record](https://i.lisz.top/blog/bI1lze.webp)
 
 ### 生成泛域名证书
 
