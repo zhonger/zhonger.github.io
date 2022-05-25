@@ -3,12 +3,15 @@ layout: post
 title: '科学文献的那些事儿'
 subtitle: '如何找到自己需要的科学文献，并进行阅读和管理？'
 date: 2021-12-10 09:10:00 +0800
+categories: [ac, experience]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1638298272604-d71dbda8ff7d.webp'
+cover_author: 'Shubham Dhage'
+cover_author_link: 'https://unsplash.com/@theshubhamdhage'
 tags: 
 - Paper
 - Reading
 - manage
-categories: [ac, experience]
-cover: 'https://images.unsplash.com/photo-1638298272604-d71dbda8ff7d?w=1600&q=900'
 ---
 
 ## 前言

@@ -5,7 +5,9 @@ subtitle: '用 LDAP 来为各式各样的应用提供统一认证服务'
 date: 2022-04-27 15:44:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://images.unsplash.com/photo-1510423579098-f47bf52b6764?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1510423579098-f47bf52b6764.webp'
+cover_author: 'Jennifer Chen'
+cover_author_link: 'https://unsplash.com/@jnnfrchn'
 tags:  
 - LDAP
 - 集成

@@ -5,7 +5,9 @@ subtitle: '你是否还在困扰如何为 Docker 镜像提供多平台支持？'
 date: 2022-04-22 13:54:00 +0900
 categories: [tech, docker]
 author: zhonger
-cover: 'https://images.unsplash.com/photo-1648191887037-133cc13d2d20?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1648191887037-133cc13d2d20.webp'
+cover_author: 'Daniel Buhat'
+cover_author_link: 'https://unsplash.com/@danielbuhat'
 tags:  
 - github action
 - workflow

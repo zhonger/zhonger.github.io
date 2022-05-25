@@ -5,7 +5,9 @@ subtitle: 'Iterative Machine Learning: A step towards Model Accuracy'
 date: 2022-01-05 20:30:00 +0900
 categories: [ac, ml]
 author: zhonger
-cover: 'https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1641119554941-1c286b163e1c.webp'
+cover_author: 'masahiro miyagi'
+cover_author_link: 'https://unsplash.com/@masamasa3'
 tags: 
 - 迭代学习 
 - 机器学习 

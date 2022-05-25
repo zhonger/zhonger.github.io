@@ -3,14 +3,17 @@ layout: post
 title: 'Nextcloud 升级那些事儿'
 subtitle: '了解更加深入的 Nextcloud 升级及修复'
 date: 2022-01-13 11:26:00 +0900
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1640554518394-5c45f8f95deb.webp'
+cover_author: 'Caleb Riston'
+cover_author_link: 'https://unsplash.com/@calebriston'
 tags: 
 - Nextcloud
 - Upgrade
 - Docker
 - 升级
 - 修复
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1640554518394-5c45f8f95deb?w=1600&q=900'
 ---
 
 ## 前言

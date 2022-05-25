@@ -5,7 +5,9 @@ subtitle: '如何通过 Cloudflare 来提升 Nginx 站点访问速度'
 date: 2022-04-05 15:44:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://images.unsplash.com/photo-1649017049683-94ddea424f46?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1649017049683-94ddea424f46.webp'
+cover_author: 'Andrea De Santis'
+cover_author_link: 'https://unsplash.com/@santesson89'
 tags:  
 - Nginx
 - Cloudflare

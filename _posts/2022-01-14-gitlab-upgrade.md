@@ -3,14 +3,17 @@ layout: post
 title: 'Gitlab 升级那些事儿'
 subtitle: '了解更加深入的 Gitlab 升级及修复'
 date: 2022-01-14 11:13:00 +0900
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1510001618818-4b4e3d86bf0f.webp'
+cover_author: 'Theodor Lundqvist'
+cover_author_link: 'https://unsplash.com/@umbriferous'
 tags: 
 - Nextcloud
 - Upgrade
 - Fix
 - 升级
 - 修复
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1510001618818-4b4e3d86bf0f?w=1600&q=900'
 ---
 
 ## 前言

@@ -3,6 +3,11 @@ layout: post
 title: 'Jekyll 社交图标集合创建'
 subtitle: '如何用 Iconfont 创建自己想要的社交图标集合？'
 date: 2021-12-22 10:30:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1424873380396-9580028d74db.webp'
+cover_author: '301+ Kim'
+cover_author_link: 'https://unsplash.com/@301px'
 tags: 
 - Jekyll
 - 主题
@@ -11,8 +16,6 @@ tags:
 - sns
 - icons
 - Iconfont
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900'
 ---
 
 ## 前言

@@ -5,7 +5,9 @@ subtitle: 'Utility vs Understanding: the State of Machine Learning Entering 2022
 date: 2022-03-21 14:30:00 +0900
 categories: [ac, ml]
 author: zhonger
-cover: 'https://images.unsplash.com/photo-1647715360138-33fb6fe68539?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1647715360138-33fb6fe68539.webp'
+cover_author: 'Simone Hutsch'
+cover_author_link: 'https://unsplash.com/@heysupersimi'
 tags:  
 - 机器学习 
 - 实用性

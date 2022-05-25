@@ -3,12 +3,15 @@ layout: post
 title: 'JupyterLab 的搭建与运维'
 subtitle: '多实例多用户的 Jupyterhub'
 date: 2021-07-25 07:20:00 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1624258012762-6c0fc69cccf5.webp'
+cover_author: 'Annie Spratt'
+cover_author_link: 'https://unsplash.com/@anniespratt'
 tags: 
 - JupyterLab
 - Docker
 - Gitlab
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1624258012762-6c0fc69cccf5?w=1600&q=900'
 ---
 
 ## 前言
