@@ -3,12 +3,15 @@ layout: post
 title: Unbound + Dnscrypt 搭建无污染 DNS 服务
 subtitle: 从零开始搭建一个无污染的 DNS 服务
 date: 2017-12-03 18:23:41 +0800
+categories: [tech, Linux]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1653461560890-60bdd00f290d.webp'
+cover_author: 'zoo_monkey'
+cover_author_link: 'https://unsplash.com/@zoo_monkey'
 tags:
 - DNS
 - unbound
 - dnscrypt
-categories: [tech, Linux]
-cover: 'https://images.unsplash.com/flagged/photo-1563248101-a975e9a18cc6?w=1600&h=900'
 ---
 
 ## 前言

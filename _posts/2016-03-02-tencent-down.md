@@ -3,10 +3,13 @@ layout: post
 title: 腾讯云服务器重装系统后……
 subtitle: 重装系统
 date: 2016-03-02 16:36:27 +0800
+categories: [tech, Linux]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1455459182396-ae46100617cb.webp'
+cover_author: 'Adi Constantin'
+cover_author_link: 'https://unsplash.com/@idoevolve'
 tags:
 - 腾讯云
-categories: [tech, Linux]
-cover: 'https://images.unsplash.com/photo-1455459182396-ae46100617cb?w=1600&h=900'
 ---
 ## 添加新用户及赋权
 

@@ -3,13 +3,16 @@ layout: post
 title: Nextcloud 源码部署迁移到容器部署
 subtitle: LNMPA 源码部署通常不便于更新，迁移到容器部署倒是个不错的法子
 date: 2018-06-11 12:46:00 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1509226704106-8a5a71ffbfa4.webp'
+cover_author: 'Jason Blackeye'
+cover_author_link: 'https://unsplash.com/@jeisblack'
 tags:
 - Nextcloud
 - docker
 - lnmpa
 - 云盘
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1509226704106-8a5a71ffbfa4?w=1600&h=900'
 ---
 
 &emsp;&emsp;在以前我们部署 Nextcloud 都是采用 LNMPA 架构和源码来直接部署，到版本升级时一般都需要比较复杂的操作，虽然也还算比较可以接受，但是相比较 Docker 方式而言，这就显得复杂多了，而且还对宿主机的环境还有所要求。因此，今天就来尝试一下从源码部署迁移到容器部署。

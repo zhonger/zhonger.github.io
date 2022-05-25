@@ -3,11 +3,14 @@ layout: post
 title: 使用 Caddy 和 Apache 搭建 PHP 环境
 subtitle: 用 Caddy 来替代 Nginx 效果会怎样？
 date: 2017-06-21 20:53:02 +0800
+categories: [tech, PHP]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1604317312017-f7adcb7f6f8b.webp'
+cover_author: 'Charlie Green'
+cover_author_link: 'https://unsplash.com/@charliegreen998'
 tags: 
 - caddy 
 - apache
-categories: [tech, PHP]
-cover: 'https://images.unsplash.com/photo-1552162679-446212964bfc?w=1600&h=900'
 ---
 
 ## caddy 篇

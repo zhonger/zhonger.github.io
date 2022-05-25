@@ -4,7 +4,10 @@ title: 'Ubuntu 14.04 常用美化、配置、软件安装（持续更新中.....
 subtitle: '美化 Ubuntu 你值得拥有'
 date: 2016-01-06 13:11:23 +0800
 categories: [tech, Linux]
-cover: 'https://images.unsplash.com/photo-1566055212219-ebd214dc9bdc?w=1600&h=900'
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1566055212219-ebd214dc9bdc.webp'
+cover_author: 'Alexander Tsang'
+cover_author_link: 'https://unsplash.com/@alexander_tsang'
 tags: 
 - ubuntu 
 - 美化

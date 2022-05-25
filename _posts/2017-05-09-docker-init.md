@@ -3,11 +3,14 @@ layout: post
 title: Docker 入门
 subtitle: Docker 的常用安装与加速
 date: 2017-05-09 12:43:31 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1637124817193-cd74b309de6c.webp'
+cover_author: 'Payam Moghtader'
+cover_author_link: 'https://unsplash.com/@payamm'
 tags:
 - docker 
 - ubuntu
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?w=1600&h=900'
 ---
 
 ## 安装 Docker

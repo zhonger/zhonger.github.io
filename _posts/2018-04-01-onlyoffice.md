@@ -3,11 +3,14 @@ layout: post
 title: Onlyoffice 搭建
 subtitle: 使用 Docker 搭建 Onlyoffice 如此轻松愉快
 date: 2018-04-01 18:10:35 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1561572639-773635958b8f.webp'
+cover_author: 'Boban Simonovski'
+cover_author_link: 'https://unsplash.com/@3031n'
 tags: 
 - onlyoffice
 - docker
-categories: [tech, docker]
-cover: https://images.unsplash.com/photo-1561572639-773635958b8f?w=1600&h=900
 ---
 
 ## Onlyoffice 搭建

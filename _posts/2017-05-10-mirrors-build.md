@@ -3,6 +3,11 @@ layout: post
 title: 镜像站构建
 subtitle: 一步一步搭建开源镜像站
 date: 2017-05-10 10:02:50 +0800
+categories: [tech, Linux]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1464817739973-0128fe77aaa1.webp'
+cover_author: 'Christian Joudrey'
+cover_author_link: 'https://unsplash.com/@cjoudrey'
 tags:
 - mirror
 - build
@@ -10,8 +15,6 @@ tags:
 - cran
 - wget
 - bandsnatch
-categories: [tech, Linux]
-cover: 'https://images.unsplash.com/photo-1464817739973-0128fe77aaa1?w=1600&h=900'
 ---
 
 ## 前言

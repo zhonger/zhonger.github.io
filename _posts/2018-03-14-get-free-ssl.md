@@ -3,13 +3,16 @@ layout: post
 title: Letsencrypt 泛域名 SSL 证书免费申请
 subtitle: 内网站点也可以轻松 HTTPS 化了
 date: 2018-03-14 20:25:44 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1564649498425-cf60f32d2283.webp'
+cover_author: 'cheng feng'
+cover_author_link: 'https://unsplash.com/@chengfengrecord'
 tags:
 - Letsencrypt
 - ssl
 - 泛域名
 - 免费
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1564649498425-cf60f32d2283?w=1600&h=900'
 ---
 ## HTTPS 和 Let's encrypt 简介
 

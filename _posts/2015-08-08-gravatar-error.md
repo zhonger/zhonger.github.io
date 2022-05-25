@@ -3,11 +3,14 @@ layout: post
 title: Gravatar Fixed 头像载入出错
 subtitle: WordPress 中的 Gravatar 头像问题
 date: 2015-08-08 15:41:01 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1465189684280-6a8fa9b19a7a.webp'
+cover_author: 'Kalen Emsley'
+cover_author_link: 'https://unsplash.com/@kalenemsley'
 tags:
 - gravatar 
 - wordpress
-categories: [tech, webmaster]
-cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900
 ---
 
 &emsp;&emsp;WordPress 使用的用户默认头像是 Gravatar Fixed 头像，由于种种原因，经常在国内载入出错。一般的解决办法有好几种，主要的是 Gravatar Fixed 插件和修改 wp-include 中文件代码。

@@ -4,7 +4,10 @@ title: 'Windows 配置 Composer 和 Laravel 笔记'
 subtitle: '在 Windows 系统上配置 Composer，并应用于 Laravel 框架开发过程中。'
 date: 2015-11-11 12:12:12 +0800
 categories: [tech, PHP]
-cover: 'https://images.unsplash.com/photo-1557600280-9ceddf1a3cc3?w=1600&h=900'
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1557600280-9ceddf1a3cc3.webp'
+cover_author: 'Jeremy Weber'
+cover_author_link: 'https://unsplash.com/@doubleweber'
 tags: 
 - windows 
 - composer 

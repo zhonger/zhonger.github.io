@@ -3,13 +3,16 @@ layout: post
 title: Nextcloud 搭建自己的云盘
 subtitle: Docker 搭建 or LNMPA 搭建 随你选
 date: 2018-03-24 16:49:44 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1563373270-6f4a70c096b9.webp'
+cover_author: 'Andre Furtado'
+cover_author_link: 'https://unsplash.com/@andre_furtado'
 tags:
 - Nextcloud
 - docker
 - lnmpa
 - 云盘
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1563373270-6f4a70c096b9?w=1600&h=900'
 ---
 
 ## Nextcloud 简介

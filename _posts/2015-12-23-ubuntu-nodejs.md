@@ -4,7 +4,10 @@ title: 'Ubuntu-14.04-LTS 安装配置 NodeJS+Bower'
 subtitle: '在 Ubuntu 系统上安装 NodeJS 和 Bower 工具。'
 date: 2015-11-11 22:20:20 +0800
 categories: [tech, Nodejs]
-cover: 'https://images.unsplash.com/photo-1565984556409-b0d4946ce2d4?w=1600&h=900'
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1565984556409-b0d4946ce2d4.webp'
+cover_author: 'NATHAN MULLET'
+cover_author_link: 'https://unsplash.com/@nate072107'
 tags: 
 - ubuntu 
 - nodejs 

@@ -3,11 +3,14 @@ layout: post
 title: Ubuntu 16.04 下安装 NVIDIA GTX 970 显卡驱动
 subtitle: Linux 的 NVIDIA 驱动安装
 date: 2017-05-09 12:02:49 +0800
+categories: [tech, Linux]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1474835409173-5dc81aae3faa.webp'
+cover_author: 'Jeremy Cai'
+cover_author_link: 'https://unsplash.com/@j'
 tags:
 - ubuntu
 - nvidia
-categories: [tech, Linux]
-cover: 'https://images.unsplash.com/photo-1474835409173-5dc81aae3faa?w=1600&h=900'
 ---
 ## 实验环境
 

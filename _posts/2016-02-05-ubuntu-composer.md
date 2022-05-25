@@ -3,12 +3,15 @@ layout: post
 title: Ubuntu 14.04 安装 Composer+Laravel 配置
 subtitle: Linux 下配置 laravel 环境
 date: 2016-02-05 16:29:05 +0800
+categories: [tech, PHP]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1453906971074-ce568cccbc63.webp'
+cover_author: 'Dayne Topkin'
+cover_author_link: 'https://unsplash.com/@dtopkin1'
 tags:
 - ubuntu
 - composer
 - laravel
-categories: [tech, PHP]
-cover: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900'
 ---
 
 ## 安装前提
