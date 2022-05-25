@@ -3,12 +3,15 @@ layout: post
 title: 'ShareLaTeX 搭建'
 subtitle: '搭建一个属于自己的在线中英文 LaTex 编辑平台'
 date: 2020-08-12 13:51:45 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1569110462378-8bef8f4d9241.webp'
+cover_author: 'Adli Wahid'
+cover_author_link: 'https://unsplash.com/@adliwahid'
 tags: 
 - ShareLaTeX
 - LaTex
 - Ubuntu
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1569110462378-8bef8f4d9241?w=1600&q=900'
 ---
 
 ## LaTeX 和 ShareLaTex

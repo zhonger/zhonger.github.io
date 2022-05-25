@@ -3,13 +3,16 @@ layout: post
 title: 'Docker 快速部署 Slurm 集群'
 subtitle: '多机集群上部署 Slurm 有没有什么简单快捷的方法呢？'
 date: 2021-02-18 16:02:00 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1514613453913-ec5da0db2faa.webp'
+cover_author: 'Brxxto'
+cover_author_link: 'https://unsplash.com/@brxxto'
 tags: 
 - Docker
 - Ubuntu
 - Slurm
 - Cluster
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1514613453913-ec5da0db2faa?w=1600&q=900'
 ---
 
 ## 前言

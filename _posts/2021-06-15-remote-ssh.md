@@ -3,13 +3,16 @@ layout: post
 title: '[原创]远程服务环境与本地环境互联'
 subtitle: '如何曲线实现异地组网？'
 date: 2021-06-15 13:30:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1623626981328-fae05b4bc2a0.webp'
+cover_author: 'Yevgeniy Mironov'
+cover_author_link: 'https://unsplash.com/@fottolok'
 tags: 
 - 多地
 - 组网
 - 互联
 - Zerotier
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1623626981328-fae05b4bc2a0?w=1600&q=900'
 ---
 
 ## 前言

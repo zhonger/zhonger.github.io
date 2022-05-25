@@ -3,12 +3,15 @@ layout: post
 title: 'CONQUEST 编译安装指南 Intel 篇'
 subtitle: '欢迎进入量子化学的世界'
 date: 2021-02-07 20:22:00 +0800
+categories: [tech, conquest]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1611908494970-3eea5e0a773e.webp'
+cover_author: 'Sajad Nori'
+cover_author_link: 'https://unsplash.com/@sajadnori'
 tags: 
 - CONQUEST
 - 量子化学
 - Intel
-categories: [tech, conquest]
-cover: 'https://images.unsplash.com/photo-1611908494970-3eea5e0a773e?w=1600&q=900'
 ---
 
 ## 前言

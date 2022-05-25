@@ -3,12 +3,15 @@ layout: post
 title: 'CONQUEST 编译安装指南 Slurm 篇'
 subtitle: '欢迎使用作业任务管理的方式运行多个 CONQUEST 任务'
 date: 2021-02-07 20:24:00 +0800
+categories: [tech, conquest, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1552845108-5f775a2ccb9b.webp'
+cover_author: 'Fabrizio Conti'
+cover_author_link: 'https://unsplash.com/@conti_photos'
 tags: 
 - CONQUEST
 - 量子化学
 - Slurm
-categories: [tech, conquest, docker]
-cover: 'https://images.unsplash.com/photo-1606669059257-19fc4ca49f79?w=1600&q=900'
 ---
 
 ## 前言

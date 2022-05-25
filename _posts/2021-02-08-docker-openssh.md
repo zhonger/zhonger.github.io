@@ -3,11 +3,14 @@ layout: post
 title: 'Docker 镜像支持 SSH 远程登录'
 subtitle: '为 Docker 镜像开启远程开发模式'
 date: 2021-02-08 20:11:00 +0800
+categories: [tech, docker]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1612533923019-b532b3131212.webp'
+cover_author: 'Annie Spratt'
+cover_author_link: 'https://unsplash.com/@anniespratt'
 tags: 
 - Docker
 - SSH
-categories: [tech, docker]
-cover: 'https://images.unsplash.com/photo-1612533923019-b532b3131212?w=1600&q=900'
 ---
 
 ## 前言

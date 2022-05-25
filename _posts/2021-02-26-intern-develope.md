@@ -3,14 +3,17 @@ layout: post
 title: '内网环境下的远程登录和开发实践'
 subtitle: '只能通过内部服务器代理上网的条件下也能无障碍使用远程服务器开发吗？'
 date: 2021-02-26 14:33:00 +0800
+categories: [tech, devops]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1580574875107-2eb4a7d77040.webp'
+cover_author: 'VietNam Beautiful'
+cover_author_link: 'https://unsplash.com/@vietnambeautiful'
 tags: 
 - Docker
 - Ubuntu
 - SSH
 - Proxy
 - Dev
-categories: [tech, devops]
-cover: 'https://images.unsplash.com/photo-1580574875107-2eb4a7d77040?w=1600&q=900'
 ---
 
 ## 前言

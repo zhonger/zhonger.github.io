@@ -3,12 +3,15 @@ layout: post
 title: 'CONQUEST 编译安装指南 ARM 篇'
 subtitle: '欢迎进入量子化学的世界'
 date: 2021-02-07 20:20:00 +0800
+categories: [tech, conquest]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1612409578638-b890d0fa9364.webp'
+cover_author: 'Mohammed Nasim'
+cover_author_link: 'https://unsplash.com/@nasimgs'
 tags: 
 - CONQUEST
 - 量子化学
 - ARM
-categories: [tech, conquest]
-cover: 'https://images.unsplash.com/photo-1612409578638-b890d0fa9364?w=1600&q=900'
 ---
 
 ## 前言

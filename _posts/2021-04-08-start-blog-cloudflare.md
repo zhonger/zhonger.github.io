@@ -3,6 +3,11 @@ layout: post
 title: '个人免费博客花式搭建指南 Cloudflare 篇'
 subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-08 16:18:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1610070945206-2f5cafcb4e2b.webp'
+cover_author: 'Malik Skydsgaard'
+cover_author_link: 'https://unsplash.com/@malikskyds'
 tags: 
 - blog
 - free
@@ -12,8 +17,6 @@ tags:
 - cloudflare
 - netlify
 - github
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1610070945206-2f5cafcb4e2b?w=1600&q=900'
 ---
 
 ## 前言

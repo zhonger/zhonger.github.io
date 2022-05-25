@@ -3,6 +3,12 @@ layout: post
 title: 'Jekyll 优化合集'
 subtitle: '为 Jekyll 添加更多的功能支持'
 date: 2021-03-24 10:10:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1550408483-bafa35b0a433.webp'
+cover_author: 'Fer Nando'
+cover_author_link: 'https://unsplash.com/@fer_nando'
+render_with_liquid: false
 tags: 
 - Jekyll
 - Plugins
@@ -10,9 +16,6 @@ tags:
 - fancybox
 - prism
 - LaTex
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1550408483-bafa35b0a433?w=1600&q=900'
-render_with_liquid: false
 ---
 
 ## 前言
@@ -390,7 +393,7 @@ layout: page
 home-title: Welcome to zhonger's blog!
 description: Writing, writing, writing ...
 permalink: /archives.html
-cover: https://images.unsplash.com/photo-1465189684280-6a8fa9b19a7a?w=1600&q=900
+cover: https://unsplash.lisz.tk/1465189684280-6a8fa9b19a7a?w=1600&q=900
 ---
 
 <h2>Archives</h2>

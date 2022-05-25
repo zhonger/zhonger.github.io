@@ -3,14 +3,17 @@ layout: post
 title: 'Laravel 开发和部署环境搭建'
 subtitle: '利用 Valet 或传统的 Nginx+php-fpm 的方式'
 date: 2020-08-12 13:51:45 +0800
+categories: [tech, PHP]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1600224432239-d9f31d2e303d.webp'
+cover_author: 'Danist Soh'
+cover_author_link: 'https://unsplash.com/@danist07'
 tags: 
 - Laravel
 - Valet
 - Linux Mint
 - Nginx
 - php-fpm
-categories: [tech, PHP]
-cover: 'https://images.unsplash.com/photo-1600224432239-d9f31d2e303d?w=1600&q=900'
 ---
 
 ## 前言

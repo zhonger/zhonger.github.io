@@ -3,6 +3,11 @@ layout: post
 title: '个人免费博客花式搭建指南 FTP 篇'
 subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-09 16:23:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1601812535834-2e65e370af6d.webp'
+cover_author: 'aranprime'
+cover_author_link: 'https://unsplash.com/@aranprime'
 tags: 
 - blog
 - free
@@ -10,8 +15,6 @@ tags:
 - hexo
 - jekyll
 - ftp
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1601812535834-2e65e370af6d?w=1600&q=900'
 ---
 
 ## 前言

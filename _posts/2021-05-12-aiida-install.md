@@ -3,14 +3,17 @@ layout: post
 title: 'AiiDA 开源数据管理软件'
 subtitle: '用一个开源软件把你计算的数据管起来'
 date: 2021-05-12 15:30:00 +0800
+categories: [tech, aiida]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1606765962248-7ff407b51667.webp'
+cover_author: 'Lars Kienle'
+cover_author_link: 'https://unsplash.com/@larskienle'
 tags: 
 - AiiDA
 - data management
 - calculation
 - postgresql
 - rabbitmq
-categories: [tech, aiida]
-cover: 'https://images.unsplash.com/photo-1606765962248-7ff407b51667?w=1600&q=900'
 ---
 
 ## 前言

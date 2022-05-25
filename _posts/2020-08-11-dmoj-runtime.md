@@ -3,12 +3,15 @@ layout: post
 title: 'DMOJ 判题环境配置集锦'
 subtitle: '边搭边理解 OJ 是如何写成的'
 date: 2020-08-04 16:06:45 +0800
+categories: [tech, Linux]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1594199679806-d543943615c8.webp'
+cover_author: 'Gontran Isnard'
+cover_author_link: 'https://unsplash.com/@gontranid'
 tags: 
 - DMOJ
 - 判题系统
 - Ubuntu
-categories: [tech, Linux]
-cover: 'https://images.unsplash.com/photo-1594199679806-d543943615c8?w=1600&q=900'
 ---
 
 &emsp;&emsp;由于 DMOJ 支持多达 63 种编程语言环境，每一种环境都需要特别安装。如下为笔者尝试过的一些编程语言环境配置。

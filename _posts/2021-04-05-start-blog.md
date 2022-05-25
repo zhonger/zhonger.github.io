@@ -3,6 +3,11 @@ layout: post
 title: '个人免费博客花式搭建指南'
 subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-05 16:03:00 +0800
+categories: [tech, webmaster]
+author: zhonger
+cover: 'https://unsplash.lisz.tk/1471107340929-a87cd0f5b5f3.webp'
+cover_author: 'Aaron Burden'
+cover_author_link: 'https://unsplash.com/@aaronburden'
 tags: 
 - blog
 - free
@@ -12,8 +17,6 @@ tags:
 - netlify
 - ftp
 - github
-categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=1600&q=900'
 ---
 
 ## 前言
@@ -168,7 +171,7 @@ tags:
 - free
 - static
 categories: [tech, webmaster]
-cover: 'https://images.unsplash.com/photo-1471107340929-a87cd0f5b5f3?w=1600&q=900'
+cover: 'https://unsplash.lisz.tk/1471107340929-a87cd0f5b5f3?w=1600&q=900'
 ---
 
 ## 前言
