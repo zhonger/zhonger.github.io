@@ -123,6 +123,6 @@ prism:
 RSS: true
 
 # Plugins
-# plugins: [jekyll-paginate, jekyll-feed, jekyll-sitemap, premonition]
+# plugins: [jekyll-paginate-v2, jekyll-feed, jekyll-sitemap, premonition]
 
 include: [_redirects]
