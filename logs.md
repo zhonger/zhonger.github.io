@@ -2,7 +2,9 @@
 layout: page
 home-title: Welcome to zhonger's blog!
 description: Writing, writing, writing ...
-cover: https://images.unsplash.com/photo-1571813713677-c2c8e45ae571?w=1600&q=900
+cover: https://unsplash.lisz.tk/1571813713677-c2c8e45ae571.webp
+cover_author: 'Chenwei Yao'
+cover_author_link: 'https://unsplash.com/@phounius'
 ---
 
 # 更新日志
