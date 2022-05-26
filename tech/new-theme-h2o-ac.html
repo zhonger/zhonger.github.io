@@ -35,7 +35,9 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous" />
     <link rel="stylesheet" href="/assets/fonts/Merriweather-Regular.ttf" media="print" onload="this.media='all'" />
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
     
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
@@ -174,27 +176,39 @@
             <span class="update-at"></span>
           </time>
           
-          <span class="post-meta-item">
-            <svg class="icon words" aria-hidden="true">
-              <use xlink:href="#icon-words"></use>
-            </svg>
+            <span class="post-meta-item">
+              <svg class="icon words" aria-hidden="true">
+                <use xlink:href="#icon-words"></use>
+              </svg>
+              
+              本文总共  7.5k  字
+            </span>
+            <span class="post-meta-item">
+              <svg class="icon time" aria-hidden="true">
+                <use xlink:href="#icon-time"></use>
+              </svg>
+              阅读全文大约需要 22 分钟
+            </span>
             
-          本文总共  6.0k  字
-          </span>
-          <span class="post-meta-item">
-            <svg class="icon time" aria-hidden="true">
-              <use xlink:href="#icon-time"></use>
-            </svg>
-             阅读全文大约需要 18 分钟
-          </span>
+              <span class="post-meta-item">
+                <svg class="icon pv" aria-hidden="true">
+                  <use xlink:href="#icon-pv"></use>
+                </svg>
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+              </span>
+            
           
-          <span class="post-meta-item">
-            <svg class="icon pv" aria-hidden="true">
-              <use xlink:href="#icon-pv"></use>
-            </svg>
-            本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
-          </span>
           
+            <span class="post-meta-item">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-image"></use>
+              </svg>
+              
+                
+                  封面图片由 <a href="https://unsplash.com/@paris168" target="_blank">Paris Hour</a> 提供
+                
+              
+            </span>
           
         </div>
       </div>
@@ -321,6 +335,10 @@
 
 <p>  更换 Prism 库加载方式，采用按需自动加载代码类型，尽可能减少因 Prism 造成的阻塞。修复了某些样式问题。增加显示行数支持、官方主题选择支持。如下所示可以进行设置，具体主题风格样式可以访问 <a href="https://prismjs.com/">Prism 官网</a> 了解更多。</p>
 
+<p>(2022年5月23日更新)</p>
+
+<p>  除官方代码库中默认代码主题外，新增扩展代码主题支持，比如常用的 One Light 等等。具体主题风格样式可以查看 <a href="https://github.com/PrismJS/prism-themes/tree/master/themes">PrismJS/prism-themes</a> 了解更多。</p>
+
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Prism</span>
 <span class="na">prism</span><span class="pi">:</span>
   <span class="na">theme</span><span class="pi">:</span> <span class="s">tomorrow</span>
@@ -346,9 +364,87 @@
 <span class="nt">&lt;/button&gt;</span>
 </code></pre></div></div>
 
+<h4 id="文章置顶功能">文章置顶功能</h4>
+
+<p>(2022年5月26日更新)</p>
+
+<p>  鉴于现有的 Jekyll 文章置顶库有点年久失修，决定徒手实现了一下文章置顶功能。具体文章列表页和归档页置顶效果如下所示：</p>
+
+<p><img src="https://i.lisz.top/blog/mcF2Z3.webp" alt="文章置顶 Top acticles" />
+<img src="https://i.lisz.top/blog/yajcoi.webp" alt="归档页文章置顶 Top acticles in archives" /></p>
+
+<h4 id="分页依赖升级">分页依赖升级</h4>
+
+<p>(2022年5月26日更新)</p>
+
+<p>  由于原有的 jekyll-paginate 库已停止更新，所以升级到目前更新、维护活跃的 <a href="https://github.com/sverrirs/jekyll-paginate-v2">jekyll-paginate-v2</a> 库。原有的分页配置自 v1.1.7 版本后无法使用，请更换为如下类似设置：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _config.yml 旧配置</span>
+<span class="na">paginate</span><span class="pi">:</span> <span class="m">10</span>
+<span class="na">paginate_path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">blog/page:num'</span>
+
+<span class="c1"># _config.yml 新配置</span>
+<span class="na">pagination</span><span class="pi">:</span>
+  <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">per_page</span><span class="pi">:</span> <span class="m">10</span>
+  <span class="na">permalink</span><span class="pi">:</span> <span class="s1">'</span><span class="s">page:num/'</span>
+</code></pre></div></div>
+
+<p>  另外，blog/index.html 的头部信息中应该加上如下<strong>启用分页</strong>的配置。否则，jekyll-paginate-v2 不会主动工作。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">pagination</span><span class="pi">:</span> 
+  <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+</code></pre></div></div>
+
+<h4 id="封面图片作者及链接">封面图片作者及链接</h4>
+
+<p>(2022年5月26日更新)</p>
+
+<p>  一直以来封面图片都是来自 <a href="https://unsplash.com">Unsplash</a> 的免费高清图片，为了表明封面图片的来源和作者，现在文章的元信息中添加了对封面图片作者及链接的支持。如果想要声明，可以直接在文章的头部信息中添加如下配置：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">......</span>
+<span class="na">cover</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+<span class="na">cover_author</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+<span class="na">cover_author_link</span><span class="pi">:</span> <span class="s1">'</span><span class="s">'</span>
+<span class="s">......</span>
+</code></pre></div></div>
+
+<p>  非文章的页面中也可以像上面那样声明相关的封面作者及链接，效果如下所示：</p>
+
+<p><img src="https://i.lisz.top/blog/fzWjPs.webp" alt="页面封面图片信息 Cover author for pages" /></p>
+
 <h4 id="字数统计及阅读时间估计">字数统计及阅读时间估计</h4>
 
 <p>  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。</p>
+
+<h4 id="时间本地化与最近更新时间">时间本地化与最近更新时间</h4>
+
+<p>(2022年5月22日更新)</p>
+
+<p>  为了支持来自不同时区的读者直接可以看到文章发布对应的本地时间，现已利用 dayjs 新增<strong>时间本地化</strong>功能。并利用 Github API 查询页面的最近一次 commit 更新时间作为文章<strong>最近更新时间</strong>。效果如下图所示。</p>
+
+<p><img src="https://i.lisz.top/blog/Anb4xH.webp" alt="构建位置时区 Jekyll deployment timezone" />
+<img src="https://i.lisz.top/blog/NMPXmQ.webp" alt="读者时区 Reader timezone" /></p>
+
+<p>  如需使用<strong>最近更新时间</strong>功能，务必在 _config.yml 文件中添加以下配置项：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Github</span>
+<span class="na">github</span><span class="pi">:</span>
+  <span class="na">enabled</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">owner</span><span class="pi">:</span> <span class="s">github_username</span>
+  <span class="na">repository</span><span class="pi">:</span> <span class="s">github_project_name</span>
+</code></pre></div></div>
+
+<p>  如未正确进行以上配置，默认会将最近更新时间与发布时间保持一致。</p>
+
+<h4 id="版权显式声明">版权显式声明</h4>
+
+<p>(2022年5月18日更新)</p>
+
+<p>  之前的版本只会在页面底部的信息栏中显示一个 CC 4.0 的小图标，不是很醒目。根据调研其他静态网站主题，发现一般都会在文章的末尾自动生成一个比较醒目的版权声明。另外，在版权声明中也将根据最近更新时间来判断内容是否可能过时。如果最近更新时间距离当前时间大于 365 天，则会显示具体日期并提醒有内容过时的可能。效果如下所示。</p>
+
+<p><img src="https://i.lisz.top/blog/scNRyd.webp" alt="版权显式声明 Copyright" />
+<img src="https://i.lisz.top/blog/C8RWtL.webp" alt="内容可能过时提醒 Long time ago notification" /></p>
 
 <h4 id="文章侧边索引导航">文章侧边索引导航</h4>
 
@@ -366,7 +462,7 @@
 
 <h4 id="支持-waline-评论系统">支持 Waline 评论系统</h4>
 
-<p>  目前已支持基于 Valine 衍生的简洁、安全的评论系统。可以根据官方提供的 <a href="https://waline.js.org/guide/get-started.html">快速上手</a> 进行配置，以下为 _config.yml 中需要配置的内容：</p>
+<p>  目前已支持基于 Valine 衍生的简洁、安全的评论系统 Waline。可以根据官方提供的 <a href="https://waline.js.org/guide/get-started.html">快速上手</a> 进行配置，以下为 _config.yml 中需要配置的内容：</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _config.yml</span>
 
@@ -375,7 +471,16 @@
   <span class="na">waline_url</span><span class="pi">:</span> <span class="s">https://xxxxxx.vercel.app</span>
 </code></pre></div></div>
 
-<p>  目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。</p>
+<p>  <del>目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。</del></p>
+
+<p>(2022年5月22日更新)</p>
+
+<p>  新增多评论切换按钮：当同时使用 Disqus 和 Waline 时，会在评论区域的右上角看到一个左右滑动切换按钮。如下所示，从左往右滑动即可从 Disqus 切换到 Waline。</p>
+
+<p>  同时修复了手动切换深色模式时 Disqus 不会自动切换模式而造成的显示问题。目前在模式切换时 Disqus 会主动进行重新加载以适应当前模式。</p>
+
+<p><img src="https://i.lisz.top/blog/WBgbUB.webp" alt="Disqus 评论系统 Disqus comment" />
+<img src="https://i.lisz.top/blog/45JQ9H.webp" alt="Waline 评论系统 Waline comments" /></p>
 
 <h4 id="支持-pwa">支持 PWA</h4>
 
@@ -395,11 +500,15 @@
 
 <p>(2022年4月30日更新)</p>
 
-<p>  新增全站一键灰度化功能、时间格式配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。</p>
+<p>  新增<strong>全站一键灰度化功能</strong>、<strong>时间格式</strong>配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。</p>
 
 <p>(2022年5月14日更新)</p>
 
-<p>  新增 <a href="https://busuanzi.ibruce.info/">不蒜子</a> 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。</p>
+<p>  新增 <a href="https://busuanzi.ibruce.info/"><strong>不蒜子</strong></a> 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。</p>
+
+<p>(2022年5月16日更新)</p>
+
+<p>  新增 <a href="https://github.com/mikecao/umami"><strong>umami</strong></a> 统计方式，需要自行先搭建 umami 然后接入。接入配置只需要如下所示配置跟踪 id 和 JS 脚本地址。</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Links 友情链接</span>
 <span class="na">links</span><span class="pi">:</span>
@@ -418,11 +527,17 @@
 
 <span class="c1"># Busuanzi Analytics</span>
 <span class="na">busuanzi</span><span class="pi">:</span> <span class="no">true</span>
+
+<span class="c1"># Umami Analytics</span>
+<span class="na">umami</span><span class="pi">:</span>
+  <span class="na">status</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">id</span><span class="pi">:</span> <span class="s">xxxxxxxxxxxxx</span>
+  <span class="na">js</span><span class="pi">:</span> <span class="s">https://umami.example.com/umami.js</span>
 </code></pre></div></div>
 
 <h4 id="前端自动构建工作流优化">前端自动构建工作流优化</h4>
 
-<p>  H2O 主题中使用了 Gulp + Node-Sass 的方案来自动化前端构建工作流。不得不说，这个方案还是很不错的，只是随着 Gulp 和 Node-Sass 版本的更新，对 NodeJS 环境及其他依赖库都有一些要求。这里，H2O-ac 主题在 package.json 文件中将所有库都更新到目前最新，对应版本列表如下所示。另外，为了减少一些第三方 CSS 样式的请求数，利用自动构建工作流将固定的第三方 CSS 样式文件合并并压缩为 plugins.min.css 文件。app.min.css 仍为多个自编写 CSS 样式文件的合并压缩。</p>
+<p>  H2O 主题中使用了 Gulp + <del>Node-Sass</del> Sass 的方案来自动化前端构建工作流。不得不说，这个方案还是很不错的，只是随着 Gulp 和 <del>Node-Sass</del> Sass 版本的更新，对 NodeJS 环境及其他依赖库都有一些要求。这里，H2O-ac 主题在 package.json 文件中将所有库都更新到目前最新，对应版本列表如下所示。另外，为了减少一些第三方 CSS 样式的请求数，利用自动构建工作流将固定的第三方 CSS 样式文件合并并压缩为 plugins.min.css 文件。app.min.css 仍为多个自编写 CSS 样式文件的合并压缩。</p>
 
 <table>
   <thead>
@@ -461,8 +576,12 @@
       <td style="text-align: center">v2.6.1</td>
     </tr>
     <tr>
-      <td style="text-align: center">node-sass</td>
-      <td style="text-align: center">v7.0.0</td>
+      <td style="text-align: center"><del>node-sass</del></td>
+      <td style="text-align: center"><del>v7.0.0</del></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">sass</td>
+      <td style="text-align: center">v1.51.0</td>
     </tr>
   </tbody>
 </table>
@@ -510,7 +629,7 @@
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#新特性">新特性</a><ul><li><a href="#更适合学术人和运维程序员的页面结构">更适合学术人和运维程序员的页面结构</a><ul><li><a href="#学术首页">学术首页</a></li><li><a href="#归档页">归档页</a></li><li><a href="#系统日志页">系统日志页</a></li></ul></li><li><a href="#使用体验提升">使用体验提升</a><ul><li><a href="#社交图标扩展">社交图标扩展</a></li><li><a href="#查看大图">查看大图</a></li><li><a href="#深色模式切换按钮">深色模式切换按钮</a></li><li><a href="#提示框">提示框</a></li><li><a href="#代码高亮优化">代码高亮优化</a></li><li><a href="#代码复制">代码复制</a></li><li><a href="#字数统计及阅读时间估计">字数统计及阅读时间估计</a></li><li><a href="#文章侧边索引导航">文章侧边索引导航</a></li><li><a href="#支持-waline-评论系统">支持 Waline 评论系统</a></li><li><a href="#支持-pwa">支持 PWA</a></li><li><a href="#配置项">配置项</a></li><li><a href="#前端自动构建工作流优化">前端自动构建工作流优化</a></li></ul></li></ul></li><li><a href="#使用方法">使用方法</a><ul><li><a href="#初始化">初始化</a><ul><li><a href="#方式一从模板新建博客">方式一：从模板新建博客</a></li><li><a href="#方式二已有博客迁移">方式二：已有博客迁移</a></li></ul></li><li><a href="#本地测试">本地测试</a></li><li><a href="#发布部署">发布部署</a></li></ul></li><li><a href="#结束语">结束语</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#新特性">新特性</a><ul><li><a href="#更适合学术人和运维程序员的页面结构">更适合学术人和运维程序员的页面结构</a><ul><li><a href="#学术首页">学术首页</a></li><li><a href="#归档页">归档页</a></li><li><a href="#系统日志页">系统日志页</a></li></ul></li><li><a href="#使用体验提升">使用体验提升</a><ul><li><a href="#社交图标扩展">社交图标扩展</a></li><li><a href="#查看大图">查看大图</a></li><li><a href="#深色模式切换按钮">深色模式切换按钮</a></li><li><a href="#提示框">提示框</a></li><li><a href="#代码高亮优化">代码高亮优化</a></li><li><a href="#代码复制">代码复制</a></li><li><a href="#文章置顶功能">文章置顶功能</a></li><li><a href="#分页依赖升级">分页依赖升级</a></li><li><a href="#封面图片作者及链接">封面图片作者及链接</a></li><li><a href="#字数统计及阅读时间估计">字数统计及阅读时间估计</a></li><li><a href="#时间本地化与最近更新时间">时间本地化与最近更新时间</a></li><li><a href="#版权显式声明">版权显式声明</a></li><li><a href="#文章侧边索引导航">文章侧边索引导航</a></li><li><a href="#支持-waline-评论系统">支持 Waline 评论系统</a></li><li><a href="#支持-pwa">支持 PWA</a></li><li><a href="#配置项">配置项</a></li><li><a href="#前端自动构建工作流优化">前端自动构建工作流优化</a></li></ul></li></ul></li><li><a href="#使用方法">使用方法</a><ul><li><a href="#初始化">初始化</a><ul><li><a href="#方式一从模板新建博客">方式一：从模板新建博客</a></li><li><a href="#方式二已有博客迁移">方式二：已有博客迁移</a></li></ul></li><li><a href="#本地测试">本地测试</a></li><li><a href="#发布部署">发布部署</a></li></ul></li><li><a href="#结束语">结束语</a></li></ul>
         </div>
       </div>
       
@@ -595,7 +714,7 @@
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1641119554941-1c286b163e1c?w=1600&q=900" alt="">
+          <img src="https://unsplash.lisz.tk/1641119554941-1c286b163e1c.webp" alt="">
           
       </div>
         
@@ -609,7 +728,7 @@
             </section>
             
             <div class="filter"></div>
-            <img src="https://images.unsplash.com/photo-1615339236992-e4c1c175faef?w=1600&q=900" alt="">
+            <img src="https://unsplash.lisz.tk/1424873380396-9580028d74db.webp" alt="">
             
         </div>
         
@@ -633,7 +752,7 @@
     <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.6  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.7  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
   
   </section>
   
@@ -794,7 +913,7 @@
           });         
       });
   </script>
-  <script src="https://at.alicdn.com/t/font_3046306_j3cma4iq93.js"></script>
+  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>

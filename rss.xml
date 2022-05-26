@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 24 May 2022 00:41:42 +0900</pubDate>
-    <lastBuildDate>Tue, 24 May 2022 00:41:42 +0900</lastBuildDate>
+    <pubDate>Thu, 26 May 2022 22:16:48 +0900</pubDate>
+    <lastBuildDate>Thu, 26 May 2022 22:16:48 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -1578,6 +1578,10 @@ storages.numeric_id
 
 &lt;p&gt;  更换 Prism 库加载方式，采用按需自动加载代码类型，尽可能减少因 Prism 造成的阻塞。修复了某些样式问题。增加显示行数支持、官方主题选择支持。如下所示可以进行设置，具体主题风格样式可以访问 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism 官网&lt;/a&gt; 了解更多。&lt;/p&gt;
 
+&lt;p&gt;(2022年5月23日更新)&lt;/p&gt;
+
+&lt;p&gt;  除官方代码库中默认代码主题外，新增扩展代码主题支持，比如常用的 One Light 等等。具体主题风格样式可以查看 &lt;a href=&quot;https://github.com/PrismJS/prism-themes/tree/master/themes&quot;&gt;PrismJS/prism-themes&lt;/a&gt; 了解更多。&lt;/p&gt;
+
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Prism&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;prism&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
   &lt;span class=&quot;na&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;tomorrow&lt;/span&gt;
@@ -1603,9 +1607,87 @@ storages.numeric_id
 &lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;h4 id=&quot;文章置顶功能&quot;&gt;文章置顶功能&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
+
+&lt;p&gt;  鉴于现有的 Jekyll 文章置顶库有点年久失修，决定徒手实现了一下文章置顶功能。具体文章列表页和归档页置顶效果如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/mcF2Z3.webp&quot; alt=&quot;文章置顶 Top acticles&quot; /&gt;
+&lt;img src=&quot;https://i.lisz.top/blog/yajcoi.webp&quot; alt=&quot;归档页文章置顶 Top acticles in archives&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;分页依赖升级&quot;&gt;分页依赖升级&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
+
+&lt;p&gt;  由于原有的 jekyll-paginate 库已停止更新，所以升级到目前更新、维护活跃的 &lt;a href=&quot;https://github.com/sverrirs/jekyll-paginate-v2&quot;&gt;jekyll-paginate-v2&lt;/a&gt; 库。原有的分页配置自 v1.1.7 版本后无法使用，请更换为如下类似设置：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml 旧配置&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;paginate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;paginate_path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;blog/page:num&apos;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# _config.yml 新配置&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;pagination&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;per_page&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;permalink&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;page:num/&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  另外，blog/index.html 的头部信息中应该加上如下&lt;strong&gt;启用分页&lt;/strong&gt;的配置。否则，jekyll-paginate-v2 不会主动工作。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;pagination&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;封面图片作者及链接&quot;&gt;封面图片作者及链接&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
+
+&lt;p&gt;  一直以来封面图片都是来自 &lt;a href=&quot;https://unsplash.com&quot;&gt;Unsplash&lt;/a&gt; 的免费高清图片，为了表明封面图片的来源和作者，现在文章的元信息中添加了对封面图片作者及链接的支持。如果想要声明，可以直接在文章的头部信息中添加如下配置：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;cover_author&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;cover_author_link&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  非文章的页面中也可以像上面那样声明相关的封面作者及链接，效果如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/fzWjPs.webp&quot; alt=&quot;页面封面图片信息 Cover author for pages&quot; /&gt;&lt;/p&gt;
+
 &lt;h4 id=&quot;字数统计及阅读时间估计&quot;&gt;字数统计及阅读时间估计&lt;/h4&gt;
 
 &lt;p&gt;  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。&lt;/p&gt;
+
+&lt;h4 id=&quot;时间本地化与最近更新时间&quot;&gt;时间本地化与最近更新时间&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月22日更新)&lt;/p&gt;
+
+&lt;p&gt;  为了支持来自不同时区的读者直接可以看到文章发布对应的本地时间，现已利用 dayjs 新增&lt;strong&gt;时间本地化&lt;/strong&gt;功能。并利用 Github API 查询页面的最近一次 commit 更新时间作为文章&lt;strong&gt;最近更新时间&lt;/strong&gt;。效果如下图所示。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Anb4xH.webp&quot; alt=&quot;构建位置时区 Jekyll deployment timezone&quot; /&gt;
+&lt;img src=&quot;https://i.lisz.top/blog/NMPXmQ.webp&quot; alt=&quot;读者时区 Reader timezone&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  如需使用&lt;strong&gt;最近更新时间&lt;/strong&gt;功能，务必在 _config.yml 文件中添加以下配置项：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Github&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github_username&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github_project_name&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  如未正确进行以上配置，默认会将最近更新时间与发布时间保持一致。&lt;/p&gt;
+
+&lt;h4 id=&quot;版权显式声明&quot;&gt;版权显式声明&lt;/h4&gt;
+
+&lt;p&gt;(2022年5月18日更新)&lt;/p&gt;
+
+&lt;p&gt;  之前的版本只会在页面底部的信息栏中显示一个 CC 4.0 的小图标，不是很醒目。根据调研其他静态网站主题，发现一般都会在文章的末尾自动生成一个比较醒目的版权声明。另外，在版权声明中也将根据最近更新时间来判断内容是否可能过时。如果最近更新时间距离当前时间大于 365 天，则会显示具体日期并提醒有内容过时的可能。效果如下所示。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/scNRyd.webp&quot; alt=&quot;版权显式声明 Copyright&quot; /&gt;
+&lt;img src=&quot;https://i.lisz.top/blog/C8RWtL.webp&quot; alt=&quot;内容可能过时提醒 Long time ago notification&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;文章侧边索引导航&quot;&gt;文章侧边索引导航&lt;/h4&gt;
 
@@ -1623,7 +1705,7 @@ storages.numeric_id
 
 &lt;h4 id=&quot;支持-waline-评论系统&quot;&gt;支持 Waline 评论系统&lt;/h4&gt;
 
-&lt;p&gt;  目前已支持基于 Valine 衍生的简洁、安全的评论系统。可以根据官方提供的 &lt;a href=&quot;https://waline.js.org/guide/get-started.html&quot;&gt;快速上手&lt;/a&gt; 进行配置，以下为 _config.yml 中需要配置的内容：&lt;/p&gt;
+&lt;p&gt;  目前已支持基于 Valine 衍生的简洁、安全的评论系统 Waline。可以根据官方提供的 &lt;a href=&quot;https://waline.js.org/guide/get-started.html&quot;&gt;快速上手&lt;/a&gt; 进行配置，以下为 _config.yml 中需要配置的内容：&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml&lt;/span&gt;
 
@@ -1632,7 +1714,16 @@ storages.numeric_id
   &lt;span class=&quot;na&quot;&gt;waline_url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://xxxxxx.vercel.app&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;  目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。&lt;/p&gt;
+&lt;p&gt;  &lt;del&gt;目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。&lt;/del&gt;&lt;/p&gt;
+
+&lt;p&gt;(2022年5月22日更新)&lt;/p&gt;
+
+&lt;p&gt;  新增多评论切换按钮：当同时使用 Disqus 和 Waline 时，会在评论区域的右上角看到一个左右滑动切换按钮。如下所示，从左往右滑动即可从 Disqus 切换到 Waline。&lt;/p&gt;
+
+&lt;p&gt;  同时修复了手动切换深色模式时 Disqus 不会自动切换模式而造成的显示问题。目前在模式切换时 Disqus 会主动进行重新加载以适应当前模式。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WBgbUB.webp&quot; alt=&quot;Disqus 评论系统 Disqus comment&quot; /&gt;
+&lt;img src=&quot;https://i.lisz.top/blog/45JQ9H.webp&quot; alt=&quot;Waline 评论系统 Waline comments&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;支持-pwa&quot;&gt;支持 PWA&lt;/h4&gt;
 
@@ -1652,11 +1743,15 @@ storages.numeric_id
 
 &lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
 
-&lt;p&gt;  新增全站一键灰度化功能、时间格式配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。&lt;/p&gt;
+&lt;p&gt;  新增&lt;strong&gt;全站一键灰度化功能&lt;/strong&gt;、&lt;strong&gt;时间格式&lt;/strong&gt;配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。&lt;/p&gt;
 
 &lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
 
-&lt;p&gt;  新增 &lt;a href=&quot;https://busuanzi.ibruce.info/&quot;&gt;不蒜子&lt;/a&gt; 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。&lt;/p&gt;
+&lt;p&gt;  新增 &lt;a href=&quot;https://busuanzi.ibruce.info/&quot;&gt;&lt;strong&gt;不蒜子&lt;/strong&gt;&lt;/a&gt; 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。&lt;/p&gt;
+
+&lt;p&gt;(2022年5月16日更新)&lt;/p&gt;
+
+&lt;p&gt;  新增 &lt;a href=&quot;https://github.com/mikecao/umami&quot;&gt;&lt;strong&gt;umami&lt;/strong&gt;&lt;/a&gt; 统计方式，需要自行先搭建 umami 然后接入。接入配置只需要如下所示配置跟踪 id 和 JS 脚本地址。&lt;/p&gt;
 
 &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Links 友情链接&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
@@ -1675,11 +1770,17 @@ storages.numeric_id
 
 &lt;span class=&quot;c1&quot;&gt;# Busuanzi Analytics&lt;/span&gt;
 &lt;span class=&quot;na&quot;&gt;busuanzi&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Umami Analytics&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;umami&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;xxxxxxxxxxxxx&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;js&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://umami.example.com/umami.js&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h4 id=&quot;前端自动构建工作流优化&quot;&gt;前端自动构建工作流优化&lt;/h4&gt;
 
-&lt;p&gt;  H2O 主题中使用了 Gulp + Node-Sass 的方案来自动化前端构建工作流。不得不说，这个方案还是很不错的，只是随着 Gulp 和 Node-Sass 版本的更新，对 NodeJS 环境及其他依赖库都有一些要求。这里，H2O-ac 主题在 package.json 文件中将所有库都更新到目前最新，对应版本列表如下所示。另外，为了减少一些第三方 CSS 样式的请求数，利用自动构建工作流将固定的第三方 CSS 样式文件合并并压缩为 plugins.min.css 文件。app.min.css 仍为多个自编写 CSS 样式文件的合并压缩。&lt;/p&gt;
+&lt;p&gt;  H2O 主题中使用了 Gulp + &lt;del&gt;Node-Sass&lt;/del&gt; Sass 的方案来自动化前端构建工作流。不得不说，这个方案还是很不错的，只是随着 Gulp 和 &lt;del&gt;Node-Sass&lt;/del&gt; Sass 版本的更新，对 NodeJS 环境及其他依赖库都有一些要求。这里，H2O-ac 主题在 package.json 文件中将所有库都更新到目前最新，对应版本列表如下所示。另外，为了减少一些第三方 CSS 样式的请求数，利用自动构建工作流将固定的第三方 CSS 样式文件合并并压缩为 plugins.min.css 文件。app.min.css 仍为多个自编写 CSS 样式文件的合并压缩。&lt;/p&gt;
 
 &lt;table&gt;
   &lt;thead&gt;
@@ -1718,8 +1819,12 @@ storages.numeric_id
       &lt;td style=&quot;text-align: center&quot;&gt;v2.6.1&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;node-sass&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v7.0.0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;del&gt;node-sass&lt;/del&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;del&gt;v7.0.0&lt;/del&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;sass&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;v1.51.0&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;

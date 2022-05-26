@@ -35,7 +35,9 @@
     <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous" />
     <link rel="stylesheet" href="/assets/fonts/Merriweather-Regular.ttf" media="print" onload="this.media='all'" />
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/themes/prism.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
     
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
@@ -162,33 +164,45 @@
             <span class="update-at"></span>
           </time>
           
-          <span class="post-meta-item">
-            <svg class="icon words" aria-hidden="true">
-              <use xlink:href="#icon-words"></use>
-            </svg>
+            <span class="post-meta-item">
+              <svg class="icon words" aria-hidden="true">
+                <use xlink:href="#icon-words"></use>
+              </svg>
+              
+              本文总共  1.5k  字
+            </span>
+            <span class="post-meta-item">
+              <svg class="icon time" aria-hidden="true">
+                <use xlink:href="#icon-time"></use>
+              </svg>
+              阅读全文大约需要 5 分钟
+            </span>
             
-          本文总共  1.5k  字
-          </span>
-          <span class="post-meta-item">
-            <svg class="icon time" aria-hidden="true">
-              <use xlink:href="#icon-time"></use>
-            </svg>
-             阅读全文大约需要 5 分钟
-          </span>
+              <span class="post-meta-item">
+                <svg class="icon pv" aria-hidden="true">
+                  <use xlink:href="#icon-pv"></use>
+                </svg>
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+              </span>
+            
           
-          <span class="post-meta-item">
-            <svg class="icon pv" aria-hidden="true">
-              <use xlink:href="#icon-pv"></use>
-            </svg>
-            本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
-          </span>
           
+            <span class="post-meta-item">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-image"></use>
+              </svg>
+              
+                
+                  封面图片由 <a href="https://unsplash.com/@ollila" target="_blank">Mylon Ollila</a> 提供
+                
+              
+            </span>
           
         </div>
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1600&h=900') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://unsplash.lisz.tk/1564760055775-d63b17a55c44.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
@@ -225,9 +239,9 @@ cn/uid: 一条记录的名字/ID <span class="o">(</span>即哪一个苹果名�
 LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准 DN"</span>
 </code></pre></div></div>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？
-用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。<br />
-把 LDAP 与传统的数据库相比，LDAP 除了快速查找的特点，它还有很多的运用场景，比如域验证等。</p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？<br />
+  用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。<br />
+  把 LDAP 与传统的数据库相比，LDAP 除了快速查找的特点，它还有很多的运用场景，比如域验证等。</p>
 
 
 
@@ -373,7 +387,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
           </section>
           
           <div class="filter"></div>
-          <img src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=1600&h=900" alt="">
+          <img src="https://unsplash.lisz.tk/1508804185872-d7badad00f7d.webp" alt="">
           
       </div>
         
@@ -387,7 +401,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
             </section>
             
             <div class="filter"></div>
-            <img src="https://images.unsplash.com/photo-1479819893311-9c362f79976e?w=1600&h=900" alt="">
+            <img src="https://unsplash.lisz.tk/1479819893311-9c362f79976e.webp" alt="">
             
         </div>
         
@@ -411,7 +425,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
     <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.6  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.7  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
   
   </section>
   
@@ -572,7 +586,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
           });         
       });
   </script>
-  <script src="https://at.alicdn.com/t/font_3046306_j3cma4iq93.js"></script>
+  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>

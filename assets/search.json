@@ -247,7 +247,7 @@
     } ,
   
     {
-      "title"    : "Ubuntu 搭建 Postfix 邮件SMTP发送服务器",
+      "title"    : "Ubuntu 搭建 Postfix 邮件 SMTP 发送服务器",
       "tags"     : "Ubuntu Postfix SMTP 邮件通知",
       "url"      : "/tech/linux/postfix.html"
     } ,
