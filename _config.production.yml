@@ -1,0 +1,130 @@
+# Site settings 配置站点
+title: 'Mr Li'
+description: '个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。'
+keyword: 'zhonger，zhonger的博客，nodejs，kvm'
+url: 'https://lisz.me' # your host
+
+# if you don't need baseurl, you should leave this value blank.
+baseurl: ''
+
+# Github
+github:
+  enabled: true
+  owner: zhonger
+  repository: zhonger.github.io
+
+# Theme
+theme: jekyll-theme-h2o-ac
+
+# Navigation links
+nav:
+  home: '/'
+  blog: '/blog/index.html'
+  archives: '/archives.html'
+  tags: '/tags.html'
+  RSS: '/feed.xml'
+  logs: '/logs.html'
+
+# Footer
+footer:
+  since: 2015
+
+# Author 配置博主信息
+author: 'zhonger'
+nickname: 'zhonger'
+bio: 'Developer & Maintainer'
+avatar: '/assets/img/profile.webp'
+favicon: "/assets/icons/favicon.ico"
+
+# permalink
+permalink: /:categories/:title.html
+
+# Search
+search: true
+
+# MathJax
+mathjax: true
+
+# Night mode
+nightMode: false
+
+# Comments
+comments:
+  disqus: true
+  disqus_url: 'https://zhonger.disqus.com/embed.js'
+  waline: true
+  waline_url: 'https://lisz-waline.deta.dev/'
+
+# Share
+social-share: true
+social-share-items: ['wechat', 'weibo', 'douban', 'twitter']
+
+# theme color 主题皮肤
+theme-color: 'default'  # pink or default
+
+# Post header background patterns (when the post no cover): circuitBoard, overlappingCircles, food, glamorous, ticTacToe, seaOfClouds
+postPatterns: 'food'
+
+# SNS settings 配置社交网站url: weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
+sns:
+  google-scholar: 'https://scholar.google.com/citations?user=AUupIooAAAAJ'
+  researchgate: 'https://www.researchgate.net/profile/Shengzhou-Li'
+  ORCID: 'https://orcid.org/0000-0001-6973-3825'
+  github: 'https://github.com/zhonger'
+  linkedin: 'https://www.linkedin.com/in/shengzhouli/'
+  segmentfault: 'https://segmentfault.com/u/wuwozhonger'
+
+# Links 友情链接
+links:
+  Kala Search: 'https://kalasearch.cn'
+  个人导航: 'https://nav.lisz.me'
+
+# Beian 备案号
+beian: '沪ICP备15014851号'
+
+# CC License
+cclicense: true
+
+# CNZZ Analytics
+cnzz: 
+
+# Busuanzi
+busuanzi: true
+
+# Google Analytics
+# google_analytics: UA-164207041-1
+google_analytics: G-9E8SEJ5JNY
+
+# Google Search
+google_search: v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c
+
+# TZ 时区
+timezone: Asia/Tokyo
+
+# Tags 设置标签
+recommend-tags: true # whether or not display recommend-tags on the sidebar
+recommend-condition-size: 12 # a tag will be recommended if the size of it is more than this value
+
+# Build settings
+pagination:
+  enabled: true
+  per_page: 10
+# paginate: 10
+# paginate_path: 'blog/page:num'
+exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'README.md']
+
+# Markdown
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+prism:
+  theme:
+  line_numbers: true
+
+RSS: true
+
+# Plugins
+# plugins: [jekyll-paginate-v2, jekyll-feed, jekyll-sitemap, premonition]
+
+include: [_redirects]
