@@ -5,7 +5,7 @@ subtitle: '如何通过 Cloudflare 来提升 Nginx 站点访问速度'
 date: 2022-04-05 15:44:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1649017049683-94ddea424f46.webp'
+cover: 'https://i.luish.cc/cover/ZKXzeo.webp'
 cover_author: 'Andrea De Santis'
 cover_author_link: 'https://unsplash.com/@santesson89'
 tags:  
@@ -68,7 +68,7 @@ services:
 
 &emsp;&emsp;Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 [ibmcom/mysql-s390x:5.7.34](https://hub.docker.com/ibmcom/mysql-s390x)。
 
-![Yourls Dockerhub](https://i.lisz.top/blog/q0AAZg.webp)
+![Yourls Dockerhub](https://i.luish.cc/blog/q0AAZg.webp)
 
 &emsp;&emsp;编辑完配置文件后执行以下命令启动 Yourls 服务：
 
@@ -85,21 +85,21 @@ docker-compose up -d
 - 进入 **DNS** 面板，点击**添加记录**按钮。
 - 采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。
 
-![添加域名 Add DNS record](https://i.lisz.top/blog/tQK16A.webp)
+![添加域名 Add DNS record](https://i.luish.cc/blog/tQK16A.webp)
 
 #### 生成证书
 
 - 进入 **SSL/TLS** 的 **源服务器** 面板，点击**创建证书**按钮。
 
-![创建证书 Create certs](https://i.lisz.top/blog/gIMUvW.webp)
+![创建证书 Create certs](https://i.luish.cc/blog/gIMUvW.webp)
 
 - 使用默认配置点击**创建**按钮即可。
 
-![添加主机名 Add hosts](https://i.lisz.top/blog/pituGT.webp)
+![添加主机名 Add hosts](https://i.luish.cc/blog/pituGT.webp)
 
 - 然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。
 
-![保存证书 Save certs](https://i.lisz.top/blog/2CAEBX.webp)
+![保存证书 Save certs](https://i.luish.cc/blog/2CAEBX.webp)
 
 - 保存完成后，点击**确定**按钮结束操作。
 
@@ -197,7 +197,7 @@ sudo nginx -s reload
 
 &emsp;&emsp;访问 [https://url.com/install.php](https://url.com/install.php) 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 **Install YOURLS** 按钮即可完成安装。
 
-![Yourls](https://i.lisz.top/blog/bQwdsu.webp)
+![Yourls](https://i.luish.cc/blog/bQwdsu.webp)
 
 ## 参考资料
 

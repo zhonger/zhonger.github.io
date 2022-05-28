@@ -5,7 +5,7 @@ subtitle: '如何用 Iconfont 创建自己想要的社交图标集合？'
 date: 2021-12-22 10:30:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1424873380396-9580028d74db.webp'
+cover: 'https://i.luish.cc/cover/RQG1ZH.webp'
 cover_author: '301+ Kim'
 cover_author_link: 'https://unsplash.com/@301px'
 tags: 
@@ -85,33 +85,33 @@ tags:
 
 效果如下所示：
 
-![svg 效果图](https://i.lisz.top/blog/rZFS4U.webp)
+![svg 效果图](https://i.luish.cc/blog/rZFS4U.webp)
 
 ## 创建自定义社交图标集合
 
 &emsp;&emsp;现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 [Iconfont 首页](https://www.iconfont.cn) 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。
 
-![搜索图标 Search icons](https://i.lisz.top/blog/FgfB74.webp)
+![搜索图标 Search icons](https://i.luish.cc/blog/FgfB74.webp)
 
 &emsp;&emsp;接着点击右上角的购物车按钮如下所示可以查看已加入到购物车的所有图标，并点击**添加到项目**。
 
-![添加到项目 Add icons to project](https://i.lisz.top/blog/1EhfE8.webp)
+![添加到项目 Add icons to project](https://i.luish.cc/blog/1EhfE8.webp)
 
 &emsp;&emsp;然后给项目取名（这里的名字随便起），点击**确认**按钮完成项目添加，自动跳转到项目页。
 
-![新建项目 New project](https://i.lisz.top/blog/TCoJ2r.webp)
+![新建项目 New project](https://i.luish.cc/blog/TCoJ2r.webp)
 
 &emsp;&emsp;点击生成代码即可生成专属链接，并出现**点击复制代码**按钮。
 
-![生成链接 Generate unique link](https://i.lisz.top/blog/e2na7v.webp)
+![生成链接 Generate unique link](https://i.luish.cc/blog/e2na7v.webp)
 
 &emsp;&emsp;点击**收起在线链接**旁边的下箭头可以看到**预览字体**，点击**预览字体**即跳转到在线预览页面，如下所示。
 
-![预览图标 Preview](https://i.lisz.top/blog/dHfIAq.webp)
+![预览图标 Preview](https://i.luish.cc/blog/dHfIAq.webp)
 
 &emsp;&emsp;这里提供了三种方式来使用创建好的社交图标集合，目前平台推荐的是**Symbol 引用**方式。接着即可按照以下三个步骤在你的网页上轻松使用自定义好的社交图标集合了。
 
-![Symbol 引用](https://i.lisz.top/blog/QsBEoq.webp)
+![Symbol 引用](https://i.luish.cc/blog/QsBEoq.webp)
 
 ### 小提示
 

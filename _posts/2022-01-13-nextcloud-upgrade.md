@@ -5,7 +5,7 @@ subtitle: '了解更加深入的 Nextcloud 升级及修复'
 date: 2022-01-13 11:26:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1640554518394-5c45f8f95deb.webp'
+cover: 'https://i.luish.cc/cover/QE6i2e.webp'
 cover_author: 'Caleb Riston'
 cover_author_link: 'https://unsplash.com/@calebriston'
 tags: 
