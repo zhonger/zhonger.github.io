@@ -5,7 +5,7 @@ subtitle: '如何曲线实现异地组网？'
 date: 2021-06-15 13:30:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1623626981328-fae05b4bc2a0.webp'
+cover: 'https://i.luish.cc/cover/DONTCQ.webp'
 cover_author: 'Yevgeniy Mironov'
 cover_author_link: 'https://unsplash.com/@fottolok'
 tags: 
@@ -31,7 +31,7 @@ tags:
 
 &emsp;&emsp;**第二种方法**是，将公网服务器分别与远程服务环境的节点、本地环境的节点使用 Zerotier 组网互通，并设置公网服务器允许转发来自 Zerotier 网卡的流量请求，然后在本地环境的节点上设置将所有发往远程服务环境的节点的网络请求经由公网服务器进行转发。因为这种方法是把公网服务器作为一个软件式的路由器，在网络上实现了本地环境与远程服务环境的完全互联，所以对于本地环境而言，远程服务环境中的任意节点的任意端口是完全可达的。这也存在某种安全上的隐患，一般来说只建议网络或服务管理用户使用这样的方式，对于普通用户来说第一种方法已经完全够用，且安全性较高。
 
-![示意图 Methods](https://i.lisz.top/blog/03IAl5.webp)
+![示意图 Methods](https://i.luish.cc/blog/03IAl5.webp)
 
 ## 实现
 

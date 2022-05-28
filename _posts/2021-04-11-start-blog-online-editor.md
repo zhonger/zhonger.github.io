@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-11 16:15:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1618146355713-b1077f33a87a.webp'
+cover: 'https://i.luish.cc/cover/iuGS5d.webp'
 cover_author: 'Polina Abramova'
 cover_author_link: 'https://unsplash.com/@mandariin'
 tags: 
@@ -45,21 +45,21 @@ tags:
 
 &emsp;&emsp;访问 [Read the Docs](https://readthedocs.org/) 点击**登录**按钮，这里支持直接使用 Github 登录（推荐）。
 
-![访问 Visit Read the Docs](https://i.lisz.top/blog/fVRO1k.webp)
+![访问 Visit Read the Docs](https://i.luish.cc/blog/fVRO1k.webp)
 
-![登录 Login Read the Docs](https://i.lisz.top/blog/t2pFT9.webp)
+![登录 Login Read the Docs](https://i.luish.cc/blog/t2pFT9.webp)
 
 #### 导入项目
 
 &emsp;&emsp;由于是 Github 方式登录，可以直接从 Github 中导入项目，如下图所示。
 
-![导入项目 Import codes](https://i.lisz.top/blog/MryiQH.webp)
+![导入项目 Import codes](https://i.luish.cc/blog/MryiQH.webp)
 
 &emsp;&emsp;点击右侧加号按钮完成导入。
 
-![选择项目 Select project](https://i.lisz.top/blog/2wtoFP.webp)
+![选择项目 Select project](https://i.luish.cc/blog/2wtoFP.webp)
 
-![基本配置 Basic settings](https://i.lisz.top/blog/dU4Mkp.webp)
+![基本配置 Basic settings](https://i.luish.cc/blog/dU4Mkp.webp)
 
 #### 预览项目
 
@@ -73,21 +73,21 @@ tags:
 
 &emsp;&emsp;访问 [Gitbook](https://gitbook.com) ，可以选择 Sign Up With Github 进行快速注册。
 
-![访问 Visit Gitbook](https://i.lisz.top/blog/Ih0lNS.webp)
+![访问 Visit Gitbook](https://i.luish.cc/blog/Ih0lNS.webp)
 
 #### 创建项目
 
 &emsp;&emsp;点击 create a new space 按钮，输入项目名称完成创建。
 
-![创建项目 Create project](https://i.lisz.top/blog/uEgF18.webp)
+![创建项目 Create project](https://i.luish.cc/blog/uEgF18.webp)
 
 #### 导入内容
 
 &emsp;&emsp;如下图所示，可以直接导入 Markdown 文件。由于本站是采用 Jekyll 静态生成器的，所有只需将 _posts 目录下的 Markdown 文件全部拖拽到这里导入即可完成 Gitbook 的转换。
 
-![导入内容 Import codes](https://i.lisz.top/blog/BLngkD.webp)
+![导入内容 Import codes](https://i.luish.cc/blog/BLngkD.webp)
 
-![查看内容文件 Check files](https://i.lisz.top/blog/ssplcq.webp)
+![查看内容文件 Check files](https://i.luish.cc/blog/ssplcq.webp)
 
 #### 预览项目
 
