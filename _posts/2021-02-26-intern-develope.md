@@ -5,7 +5,7 @@ subtitle: '只能通过内部服务器代理上网的条件下也能无障碍使
 date: 2021-02-26 14:33:00 +0800
 categories: [tech, devops]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1580574875107-2eb4a7d77040.webp'
+cover: 'https://i.luish.cc/cover/KysykI.webp'
 cover_author: 'VietNam Beautiful'
 cover_author_link: 'https://unsplash.com/@vietnambeautiful'
 tags: 
@@ -49,7 +49,7 @@ ssh_proxy       1080
 #### 全局设置
 
 &emsp;&emsp;在 **设置 > 网络 > WiFi > 高级 > 代理** 中如下进行设置“网页代理”和“安全网页代理”之后，除终端外其他应用均会自动应用此代理配置。
-![HTTP 和 HTTPS 代理 Proxy](https://i.lisz.top/blog/z3DnTh.webp)
+![HTTP 和 HTTPS 代理 Proxy](https://i.luish.cc/blog/z3DnTh.webp)
 
 #### 终端设置
 
@@ -90,7 +90,7 @@ Host app
 
 &emsp;&emsp;近年来 FTP 的访问需求感觉越来越少，毕竟大部分的时候可以使用基于 SSH 的 `scp` 和 `rsync` 命令来替代。这里给出 Filezilla 软件的 FTP 代理设置示例，同时也提供终端上的替代命令。
 
-![FTP 通用代理配置 FTP Proxy Settings](https://i.lisz.top/blog/DkWnSx.webp)
+![FTP 通用代理配置 FTP Proxy Settings](https://i.luish.cc/blog/DkWnSx.webp)
 
 ```bash
 # 以下命令的使用需先配置好上述的 SSH 终端代理配置
@@ -118,4 +118,4 @@ rsync -avh -e ssh app:/home/ubuntu/ /home/zhonger/test/
 4. 按 ctrl + ` 键即可打开终端
 5. 点击“打开文件夹”按钮即可打开远程服务器上的文件夹显示目录
 
-![VS Code 远程开发 Remove develope](https://i.lisz.top/blog/zw3gDC.webp)
+![VS Code 远程开发 Remove develope](https://i.luish.cc/blog/zw3gDC.webp)

@@ -5,7 +5,7 @@ subtitle: '边搭边理解 OJ 是如何写成的'
 date: 2020-08-04 16:06:45 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1594199679806-d543943615c8.webp'
+cover: 'https://i.luish.cc/cover/iRkEOx.webp'
 cover_author: 'Gontran Isnard'
 cover_author_link: 'https://unsplash.com/@gontranid'
 tags: 

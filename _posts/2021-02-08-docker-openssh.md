@@ -5,7 +5,7 @@ subtitle: '为 Docker 镜像开启远程开发模式'
 date: 2021-02-08 20:11:00 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1612533923019-b532b3131212.webp'
+cover: 'https://i.luish.cc/cover/6jFNXU.webp'
 cover_author: 'Annie Spratt'
 cover_author_link: 'https://unsplash.com/@anniespratt'
 tags: 

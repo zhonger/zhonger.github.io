@@ -5,7 +5,7 @@ subtitle: 为 Ubuntu 18.04 定制属于你的 Mac 主题
 date: 2018-08-28 16:18:00 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1560568082-c15188aa6510.webp'
+cover: 'https://i.luish.cc/cover/kXWXt4.webp'
 cover_author: 'Matthew Buchanan'
 cover_author_link: 'https://unsplash.com/@mthwbchn'
 tags:
@@ -47,7 +47,7 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 &emsp;&emsp;访问 [https://www.opendesktop.org/s/Gnome/p/1013714/](https://www.opendesktop.org/s/Gnome/p/1013714/) ，点击 Install 按钮下拉出所有选项，前八个选项是主题，后四个分别是图标主题、背景图片、鼠标主题、字体主题。点击选项将请求交给 ocs-url-tools 处理（它收到同意操作之后会将压缩包下载并解压到对应的文件夹中）。
 
-![选择主题 Select theme](https://i.lisz.top/blog/EXx8fw.webp)
+![选择主题 Select theme](https://i.luish.cc/blog/EXx8fw.webp)
 
 > note "注意"
 > SHELL 主题是指顶部任务栏的风格，由于顶部为白色的话有些图标不容易看清，所以此处主题选用白色（不带透明）、SHELL 主题选用黑色（不带透明）。
@@ -56,15 +56,15 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 &emsp;&emsp;访问 [https://www.opendesktop.org/s/Gnome/p/1102582/](https://www.opendesktop.org/s/Gnome/p/1102582/)，如下图一样操作，选择 macOS11.tar.xz 即可。
 
-![选择图标 Select icons](https://i.lisz.top/blog/uCGyC5.webp)
+![选择图标 Select icons](https://i.luish.cc/blog/uCGyC5.webp)
 
 ### 更换系统搭配
 
 &emsp;&emsp;可以按照以下配置调整系统主题、系统图标和 SHELL 主题。
-![主题 Theme](https://i.lisz.top/blog/CQnHVR.webp)
+![主题 Theme](https://i.luish.cc/blog/CQnHVR.webp)
 
 &emsp;&emsp;可以按照以下配置调整桌面设置。
-![桌面 Desktop](https://i.lisz.top/404.webp)
+![桌面 Desktop](https://i.luish.cc/404.webp)
 
 > warning "图片丢失说明"
 > (2022年5月15日更新)  
@@ -72,11 +72,11 @@ cd ~/Downloads && sudo dpkg -i ocs-url_3.1.0-0ubuntu1_amd64.deb
 
 &emsp;&emsp;可以按照以下配置 Dock 为顶部类 Mac 操作系统显示方式，点击 Dash to docker 一行的设置图标进入设置详细内容。
 
-![导航 Dock](https://i.lisz.top/blog/G0mJDO.webp)
+![导航 Dock](https://i.luish.cc/blog/G0mJDO.webp)
 
 ## 大功告成的结果
 
-![效果截图 screenshot](https://i.lisz.top/blog/NxNuGA.webp)
+![效果截图 screenshot](https://i.luish.cc/blog/NxNuGA.webp)
 
 ## 参考资料
 

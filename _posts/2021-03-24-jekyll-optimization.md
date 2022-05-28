@@ -5,7 +5,7 @@ subtitle: '为 Jekyll 添加更多的功能支持'
 date: 2021-03-24 10:10:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1550408483-bafa35b0a433.webp'
+cover: 'https://i.luish.cc/cover/XY4HbP.webp'
 cover_author: 'Fer Nando'
 cover_author_link: 'https://unsplash.com/@fer_nando'
 render_with_liquid: false

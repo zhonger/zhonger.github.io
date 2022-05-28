@@ -5,7 +5,7 @@ subtitle: '欢迎进入量子化学的世界'
 date: 2021-02-07 20:18:00 +0800
 categories: [tech, conquest]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1612572767699-093823e475af.webp'
+cover: 'https://i.luish.cc/cover/rg7Rwh.webp'
 cover_author: 'joel protasio'
 cover_author_link: 'https://unsplash.com/@jmp_travel'
 tags: 

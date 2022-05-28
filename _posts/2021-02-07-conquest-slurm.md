@@ -5,7 +5,7 @@ subtitle: '欢迎使用作业任务管理的方式运行多个 CONQUEST 任务'
 date: 2021-02-07 20:24:00 +0800
 categories: [tech, conquest, docker]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1552845108-5f775a2ccb9b.webp'
+cover: 'https://i.luish.cc/cover/p9XKnc.webp'
 cover_author: 'Fabrizio Conti'
 cover_author_link: 'https://unsplash.com/@conti_photos'
 tags: 

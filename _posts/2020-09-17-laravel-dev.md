@@ -5,7 +5,7 @@ subtitle: '利用 Valet 或传统的 Nginx+php-fpm 的方式'
 date: 2020-08-12 13:51:45 +0800
 categories: [tech, PHP]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1600224432239-d9f31d2e303d.webp'
+cover: 'https://i.luish.cc/cover/b4cfw5.webp'
 cover_author: 'Danist Soh'
 cover_author_link: 'https://unsplash.com/@danist07'
 tags: 
