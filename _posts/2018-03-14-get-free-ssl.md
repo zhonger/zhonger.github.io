@@ -5,7 +5,7 @@ subtitle: 内网站点也可以轻松 HTTPS 化了
 date: 2018-03-14 20:25:44 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1564649498425-cf60f32d2283.webp'
+cover: 'https://i.luish.cc/cover/3ruY1v.webp'
 cover_author: 'cheng feng'
 cover_author_link: 'https://unsplash.com/@chengfengrecord'
 tags:
@@ -58,7 +58,7 @@ acme.sh --issue --dns -d shu.aixinwu.org -d *.shu.aixinwu.org --yes-I-know-dns-m
 
 &emsp;&emsp;根据上一步返回的 TXT 记录添加要求，在相应的域名 DNS 服务提供商那里添加好对应的 TXT 记录即可。如下图所示。
 
-![TXT 记录新增 Add TXT record](https://i.lisz.top/blog/bI1lze.webp)
+![TXT 记录新增 Add TXT record](https://i.luish.cc/blog/bI1lze.webp)
 
 ### 生成泛域名证书
 

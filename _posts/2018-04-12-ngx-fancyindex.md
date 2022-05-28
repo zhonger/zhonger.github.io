@@ -5,7 +5,7 @@ subtitle: 使用 Ngx-fancyindex 插件一键美化Nginx目录列表
 date: 2018-04-12 15:26:35 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1560613717-c793db79055e.webp'
+cover: 'https://i.luish.cc/cover/u4nUxr.webp'
 cover_author: 'Pang Yuhao'
 cover_author_link: 'https://unsplash.com/@yuhao'
 tags: 

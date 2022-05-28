@@ -5,7 +5,7 @@ subtitle: Docker 的常用安装与加速
 date: 2017-05-09 12:43:31 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1637124817193-cd74b309de6c.webp'
+cover: 'https://i.luish.cc/cover/wjFGWW.webp'
 cover_author: 'Payam Moghtader'
 cover_author_link: 'https://unsplash.com/@payamm'
 tags:

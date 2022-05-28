@@ -5,7 +5,7 @@ subtitle: Linux 下配置 laravel 环境
 date: 2016-02-05 16:29:05 +0800
 categories: [tech, PHP]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1453906971074-ce568cccbc63.webp'
+cover: 'https://i.luish.cc/cover/6MMpoJ.webp'
 cover_author: 'Dayne Topkin'
 cover_author_link: 'https://unsplash.com/@dtopkin1'
 tags:

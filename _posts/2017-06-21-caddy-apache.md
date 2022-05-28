@@ -5,7 +5,7 @@ subtitle: 用 Caddy 来替代 Nginx 效果会怎样？
 date: 2017-06-21 20:53:02 +0800
 categories: [tech, PHP]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1604317312017-f7adcb7f6f8b.webp'
+cover: 'https://i.luish.cc/cover/V7dOou.webp'
 cover_author: 'Charlie Green'
 cover_author_link: 'https://unsplash.com/@charliegreen998'
 tags: 

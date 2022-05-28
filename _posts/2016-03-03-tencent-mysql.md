@@ -5,7 +5,7 @@ subtitle: 腾讯云服务器 CVM 安装 MySQL 的配置
 date: 2016-03-03 22:04:40 +0800
 categories: [tech, SQL]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1499006619764-59e5b0c0e7ca.webp'
+cover: 'https://i.luish.cc/cover/ovn2ST.webp'
 cover_author: '郑 无忌'
 cover_author_link: 'https://unsplash.com/@godslar'
 tags: 

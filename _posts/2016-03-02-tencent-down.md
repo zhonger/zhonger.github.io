@@ -5,7 +5,7 @@ subtitle: 重装系统
 date: 2016-03-02 16:36:27 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1455459182396-ae46100617cb.webp'
+cover: 'https://i.luish.cc/cover/r41lbG.webp'
 cover_author: 'Adi Constantin'
 cover_author_link: 'https://unsplash.com/@idoevolve'
 tags:

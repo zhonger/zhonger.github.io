@@ -5,7 +5,7 @@ subtitle: WordPress 中的 Gravatar 头像问题
 date: 2015-08-08 15:41:01 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://unsplash.lisz.tk/1465189684280-6a8fa9b19a7a.webp'
+cover: 'https://i.luish.cc/cover/XtFvt5.webp'
 cover_author: 'Kalen Emsley'
 cover_author_link: 'https://unsplash.com/@kalenemsley'
 tags:
