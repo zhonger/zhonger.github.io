@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 27 May 2022 11:20:48 +0900</pubDate>
-    <lastBuildDate>Fri, 27 May 2022 11:20:48 +0900</lastBuildDate>
+    <pubDate>Sat, 28 May 2022 15:34:14 +0900</pubDate>
+    <lastBuildDate>Sat, 28 May 2022 15:34:14 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -76,63 +76,63 @@
 
 &lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/realms/master/account/#/&quot;&gt;http://127.0.0.1:8080/auth/realms/master/account/#/&lt;/a&gt; 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/I7z7ma.webp&quot; alt=&quot;用户页 User Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/I7z7ma.webp&quot; alt=&quot;用户页 User Page&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/8CLUoY.webp&quot; alt=&quot;登录页 Login Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8CLUoY.webp&quot; alt=&quot;登录页 Login Page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/VQHrFJ.webp&quot; alt=&quot;登录成功 Login successfully&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/VQHrFJ.webp&quot; alt=&quot;登录成功 Login successfully&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;国际化设置&quot;&gt;国际化设置&lt;/h4&gt;
 
 &lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/admin/master/console&quot;&gt;http://127.0.0.1:8080/auth/admin/master/console&lt;/a&gt; 即可进入管理员页面并自动登录。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/kNYBCF.webp&quot; alt=&quot;基本设置 Basic settings&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/kNYBCF.webp&quot; alt=&quot;基本设置 Basic settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lZ0I0c.webp&quot; alt=&quot;国际化设置 International settings&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/lZ0I0c.webp&quot; alt=&quot;国际化设置 International settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  刷新页面就能看见设置好的中文界面。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/63o8ga.webp&quot; alt=&quot;完成国际化设置 Finish international settings&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/63o8ga.webp&quot; alt=&quot;完成国际化设置 Finish international settings&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;连接-ldap&quot;&gt;连接 LDAP&lt;/h4&gt;
 
 &lt;p&gt;  左边导航栏切换到&lt;strong&gt;用户联合&lt;/strong&gt;选项卡，选择添加 ldap。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/p2pMlW.webp&quot; alt=&quot;添加 LDAP 连接 Add LDAP connection&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/p2pMlW.webp&quot; alt=&quot;添加 LDAP 连接 Add LDAP connection&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择&lt;strong&gt;其他&lt;/strong&gt;。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择&lt;strong&gt;可写&lt;/strong&gt;。另外在填写完配置后可以用右侧的&lt;strong&gt;测试连接&lt;/strong&gt;和&lt;strong&gt;测试验证&lt;/strong&gt;按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/umTHlh.webp&quot; alt=&quot;测试 LDAP 连接 Test LDAP connection&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/umTHlh.webp&quot; alt=&quot;测试 LDAP 连接 Test LDAP connection&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击&lt;strong&gt;同步所有用户&lt;/strong&gt;即可将用户同步到 Keycloak。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/UJ78t0.webp&quot; alt=&quot;同步所有用户 Sync all users&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/UJ78t0.webp&quot; alt=&quot;同步所有用户 Sync all users&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  切换左边导航栏到&lt;strong&gt;用户&lt;/strong&gt;选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/qJBLB3.webp&quot; alt=&quot;默认用户列表 Default user list&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/qJBLB3.webp&quot; alt=&quot;默认用户列表 Default user list&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如下图所示，证明 Keycloak 成功连接 LDAP。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/P5w5eb.webp&quot; alt=&quot;所有用户列表 All user list including LDAP&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/P5w5eb.webp&quot; alt=&quot;所有用户列表 All user list including LDAP&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;用户密码策略&quot;&gt;用户密码策略&lt;/h4&gt;
 
 &lt;p&gt;  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到&lt;strong&gt;验证&lt;/strong&gt;选项卡，再选择&lt;strong&gt;密码策略&lt;/strong&gt;选项卡，使用右上角的&lt;strong&gt;添加策略&lt;/strong&gt;添加不同的策略要求，完成后点击保存按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/oDQGDG.webp&quot; alt=&quot;设置密码策略 Password strategy settings&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oDQGDG.webp&quot; alt=&quot;设置密码策略 Password strategy settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开&lt;strong&gt;验证密码策略&lt;/strong&gt;。下图中的 &lt;strong&gt;LDAPv3 密码&lt;/strong&gt; 可以选择打开或不打开，影响不大。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/SK5EQp.webp&quot; alt=&quot;开启密码策略 Enable password strategy&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/SK5EQp.webp&quot; alt=&quot;开启密码策略 Enable password strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 &lt;strong&gt;Update&lt;/strong&gt; 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/1pkx9L.webp&quot; alt=&quot;尝试更新密码验证密码策略 Update password to verify password strategy&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/1pkx9L.webp&quot; alt=&quot;尝试更新密码验证密码策略 Update password to verify password strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：&lt;/p&gt;
 
@@ -143,25 +143,25 @@
   &lt;li&gt;密码中必须包含至少一个特殊字符&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/GPSGJr.webp&quot; alt=&quot;密码策略验证结果 Results by password strategies&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/GPSGJr.webp&quot; alt=&quot;密码策略验证结果 Results by password strategies&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;otp-验证&quot;&gt;OTP 验证&lt;/h4&gt;
 
 &lt;p&gt;  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Ak4ck9.webp&quot; alt=&quot;设置 OTP 策略 OTP strategy&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Ak4ck9.webp&quot; alt=&quot;设置 OTP 策略 OTP strategy&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了让系统的所有用户都开启 OTP，可以如下所示在&lt;strong&gt;必要操作&lt;/strong&gt;选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Lqi4RG.webp&quot; alt=&quot;强制所有用户启用 OTP 策略 Enable OTP for all users&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Lqi4RG.webp&quot; alt=&quot;强制所有用户启用 OTP 策略 Enable OTP for all users&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  为了验证 OTP 是否可用，移步至用户页点击&lt;strong&gt;设置验证应用&lt;/strong&gt;按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WaedQr.webp&quot; alt=&quot;验证 OTP Verify OTP&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WaedQr.webp&quot; alt=&quot;验证 OTP Verify OTP&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/TkcriA.webp&quot; alt=&quot;OTP 设置页面 OTP set page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/TkcriA.webp&quot; alt=&quot;OTP 设置页面 OTP set page&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;ldap-直接集成应用&quot;&gt;LDAP 直接集成应用&lt;/h2&gt;
 
@@ -336,13 +336,13 @@
 
 &lt;p&gt;  由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/T8UIVu.webp&quot; alt=&quot;变量配置 ENV Setting&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/T8UIVu.webp&quot; alt=&quot;变量配置 ENV Setting&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;发布新-tag&quot;&gt;发布新 tag&lt;/h3&gt;
 
 &lt;p&gt;  访问 &lt;a href=&quot;https://github.com/用户名/项目名/releases/new&quot;&gt;https://github.com/用户名/项目名/releases/new&lt;/a&gt; 即可到达发布页面，如下所示。定义一个以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt; 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Public release&lt;/code&gt; 按钮完成发布。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/y7i8fo.webp&quot; alt=&quot;新标签 New Tag&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/y7i8fo.webp&quot; alt=&quot;新标签 New Tag&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。&lt;/p&gt;
 
@@ -430,7 +430,7 @@
 
 &lt;p&gt;  Yourls 的官方 Docker 镜像提供了多种服务方式和体系架构，如下图所示。如果使用的服务器体系架构不同，对应的 mysql 镜像也应做出更改。比如，如果服务器是 IBM 的 s390x 架构，就可以选 &lt;a href=&quot;https://hub.docker.com/ibmcom/mysql-s390x&quot;&gt;ibmcom/mysql-s390x:5.7.34&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/q0AAZg.webp&quot; alt=&quot;Yourls Dockerhub&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/q0AAZg.webp&quot; alt=&quot;Yourls Dockerhub&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  编辑完配置文件后执行以下命令启动 Yourls 服务：&lt;/p&gt;
 
@@ -450,7 +450,7 @@
   &lt;li&gt;采用 A 记录或 CNAME 记录类型，这里的代理状态一定要像现在这样打开，否则 Cloudflare 将不会被启用。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/tQK16A.webp&quot; alt=&quot;添加域名 Add DNS record&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/tQK16A.webp&quot; alt=&quot;添加域名 Add DNS record&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;生成证书&quot;&gt;生成证书&lt;/h4&gt;
 
@@ -458,19 +458,19 @@
   &lt;li&gt;进入 &lt;strong&gt;SSL/TLS&lt;/strong&gt; 的 &lt;strong&gt;源服务器&lt;/strong&gt; 面板，点击&lt;strong&gt;创建证书&lt;/strong&gt;按钮。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/gIMUvW.webp&quot; alt=&quot;创建证书 Create certs&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/gIMUvW.webp&quot; alt=&quot;创建证书 Create certs&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;使用默认配置点击&lt;strong&gt;创建&lt;/strong&gt;按钮即可。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/pituGT.webp&quot; alt=&quot;添加主机名 Add hosts&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/pituGT.webp&quot; alt=&quot;添加主机名 Add hosts&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;然后新的证书和私钥就生成了。需要注意的是，以下的私钥只能在生成时看到，证书可以之后也能看到，所以这里一定要复制好如下框内的源证书和私钥的内容。可以分别保存为 url.com.pem 和 url.com.key 文件。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/2CAEBX.webp&quot; alt=&quot;保存证书 Save certs&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/2CAEBX.webp&quot; alt=&quot;保存证书 Save certs&quot; /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;保存完成后，点击&lt;strong&gt;确定&lt;/strong&gt;按钮结束操作。&lt;/li&gt;
@@ -565,7 +565,7 @@
 
 &lt;p&gt;  访问 &lt;a href=&quot;https://url.com/install.php&quot;&gt;https://url.com/install.php&lt;/a&gt; 确认是否正常访问 Yourls 的安装初始化界面，如下所示。点击 &lt;strong&gt;Install YOURLS&lt;/strong&gt; 按钮即可完成安装。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/bQwdsu.webp&quot; alt=&quot;Yourls&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/bQwdsu.webp&quot; alt=&quot;Yourls&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
@@ -612,7 +612,7 @@
 
 &lt;p&gt;  一般来说，我们期待效用和理解是松散相关的，因为被很好理解的东西比那些不被理解的东西可能更有用。这意味着大多数领域应位于左下象限或右上象限。远离对角线的领域代表着有趣的例外。通常，实用性落后于理论，因为将新兴的研究转化为实际应用需要时间。因此，对角线应该位于原点上方，而不是直接穿过它。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/PJcfa1.webp&quot; alt=&quot;机器学习领域分布图 The distribution of Machine Learning fields&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/PJcfa1.webp&quot; alt=&quot;机器学习领域分布图 The distribution of Machine Learning fields&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;2022-年的机器学习领域&quot;&gt;2022 年的机器学习领域&lt;/h2&gt;
 
@@ -632,7 +632,7 @@
 
 &lt;p&gt;  假设，&lt;strong&gt;通用人工智能&lt;/strong&gt;将占据右下角，因为根据定义，超级智能超出了人类的理解范围，可以用于解决任何问题。目前，它仅作为思想实验包含在内。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/aSdim3.webp&quot; alt=&quot;理论理解力 vs 经验实用性 understanding vs utility&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/aSdim3.webp&quot; alt=&quot;理论理解力 vs 经验实用性 understanding vs utility&quot; /&gt;
 &lt;strong&gt;&lt;center&gt;图1. 每个象限的定性描述。领域可以通过其对应区域的部分或全部描述来描述。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;左上象限高理解低效用&quot;&gt;左上象限：高理解，低效用&lt;/h3&gt;
@@ -657,7 +657,7 @@
 
 &lt;p&gt;  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的&lt;strong&gt;有监督机器学习&lt;/strong&gt;就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。&lt;sup id=&quot;fnref:2&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lR1g7Q.webp&quot; alt=&quot;领域发展机制 The steps of development&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/lR1g7Q.webp&quot; alt=&quot;领域发展机制 The steps of development&quot; /&gt;
 &lt;strong&gt;&lt;center&gt;图2. 领域可以遍历矩阵的方式的说明性示例。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;  由于技术的飞跃，一些领域看到了科学进步的阶梯式变化。&lt;strong&gt;深度学习&lt;/strong&gt;领域并没有因其理论基础而解锁，这些理论基础是在 2010 年代深度学习热潮之前 20 多年发现的——它是由消费级 GPU 支持的并行处理推动了它的复兴。技术飞跃通常表现为沿经验效用轴向右跳跃。然而，并非所有以技术为主导的进步都是飞跃。今天的深度学习的特点是通过使用更多的计算能力和越来越专业的硬件训练越来越大的模型来实现跃进式进步。&lt;/p&gt;
@@ -672,7 +672,7 @@
 
 &lt;p&gt;&lt;strong&gt;&lt;center&gt;表1. 机器学习的特定领域未来可能会或可能不会取得进展的预测。&lt;/center&gt;&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/w4ELGn.webp&quot; alt=&quot;未来可能的发展方向 Possible development in future&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/w4ELGn.webp&quot; alt=&quot;未来可能的发展方向 Possible development in future&quot; /&gt;&lt;/p&gt;
 
 &lt;!-- | 研究领域 | 2022 年以后的预测 |
 | -- | -- |
@@ -1366,7 +1366,7 @@ storages.numeric_id
   &lt;li&gt;模型训练迭代——外部引入&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/19OqPp.webp&quot; alt=&quot;迭代机器学习 Iterative Machine Learning&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/19OqPp.webp&quot; alt=&quot;迭代机器学习 Iterative Machine Learning&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？&lt;/p&gt;
 
@@ -1428,7 +1428,7 @@ storages.numeric_id
 
 &lt;p&gt;  为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WMRZBJ.webp&quot; alt=&quot;迭代的不同阶段 Different stages&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WMRZBJ.webp&quot; alt=&quot;迭代的不同阶段 Different stages&quot; /&gt;&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;&lt;strong&gt;参数迭代&lt;/strong&gt;：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。&lt;/li&gt;
@@ -1489,19 +1489,19 @@ storages.numeric_id
 
 &lt;p&gt;  学术首页如下图所示，并将原来 H2O 中的卡片首页移动到 blog 子目录下了。如果读者想要看到文章卡片展示页，还是可以点击顶部的导航栏中的 BLOG 直接访问。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/XyT038.webp&quot; alt=&quot;首页 Home&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/XyT038.webp&quot; alt=&quot;首页 Home&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;归档页&quot;&gt;归档页&lt;/h4&gt;
 
 &lt;p&gt;  归档页设置为由 Jekyll 按照模板自动生成，以年份、日期、文章标题分级列表展示，简洁清晰。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/lj4vUP.webp&quot; alt=&quot;归档页 Archives&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/lj4vUP.webp&quot; alt=&quot;归档页 Archives&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;系统日志页&quot;&gt;系统日志页&lt;/h4&gt;
 
 &lt;p&gt;  系统日志页其实也不是经常更新的，只有在博客整体作出设置或改进的才加以说明。另外，也可以将一些固定的站点信息放置在系统日志页，比如站点的多点部署信息，读者可以根据此信息访问最快、最合适的节点。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/7QLEc6.webp&quot; alt=&quot;系统日志 Log&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/7QLEc6.webp&quot; alt=&quot;系统日志 Log&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;使用体验提升&quot;&gt;使用体验提升&lt;/h3&gt;
 
@@ -1511,13 +1511,13 @@ storages.numeric_id
 
 &lt;p&gt;  H2O 原有的社交图标其实已经比较广泛，只是还有些领域局限性，比如学术研究人员可能更希望展示谷歌学术、ResearchGate、ORCID 等社交图标及链接，而运维开发人员可能更希望展示 SegmentFault、CSDN、博客园等社交图标及链接。这里在 H2O 提供的社交图标类型基础上做了这些平台图标的扩充，同时尝试了 Symbol 引用的方式来实现社交图标鼠标悬停的效果，从而简化代码（H2O 采用的是字体图标的方式，需要为每一个社交图标定义不同的主题色）。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/UpnQdk.webp&quot; alt=&quot;社交图标 SNS&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/UpnQdk.webp&quot; alt=&quot;社交图标 SNS&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;查看大图&quot;&gt;查看大图&lt;/h4&gt;
 
 &lt;p&gt;  查看大图功能的确对于读者的阅读体验来说有很大的提升。就像我们阅读文献一样，可能首先会只看文章附图来大致掌握文章的核心点。博文的查看大图功能也可能有这样的异曲同工之妙。这里是采用的 &lt;a href=&quot;https://fancyapps.com/docs/ui/fancybox&quot;&gt;Fancybox&lt;/a&gt; 插件实现的。H2O-ac 主题中只使用了最简单的配置，用户可以根据需求查看文档做出更多的修改。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BzfBoz.webp&quot; alt=&quot;查看大图 Fancybox&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BzfBoz.webp&quot; alt=&quot;查看大图 Fancybox&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
 
@@ -1529,9 +1529,9 @@ storages.numeric_id
 
 &lt;p&gt;  原来 H2O 主题的深色模式切换需要在 _config.yml 文件中配置开启，并且只能在固定时间段使用。此次更新在页面右上角提供了深色/浅色模式一键切换按钮，如下图所示。由于更新了深色模式采用 cookie 的方式来确定，此深色模式切换按钮可以与原来的深色模式配置共存。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/EPhFN9.webp&quot; alt=&quot;浅色模式 Day mode&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/EPhFN9.webp&quot; alt=&quot;浅色模式 Day mode&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BD7BqC.webp&quot; alt=&quot;深色模式 Night mode&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BD7BqC.webp&quot; alt=&quot;深色模式 Night mode&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;提示框&quot;&gt;提示框&lt;/h4&gt;
 
@@ -1613,8 +1613,8 @@ storages.numeric_id
 
 &lt;p&gt;  鉴于现有的 Jekyll 文章置顶库有点年久失修，决定徒手实现了一下文章置顶功能。具体文章列表页和归档页置顶效果如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/mcF2Z3.webp&quot; alt=&quot;文章置顶 Top acticles&quot; /&gt;
-&lt;img src=&quot;https://i.lisz.top/blog/yajcoi.webp&quot; alt=&quot;归档页文章置顶 Top acticles in archives&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/mcF2Z3.webp&quot; alt=&quot;文章置顶 Top acticles&quot; /&gt;
+&lt;img src=&quot;https://i.luish.cc/blog/yajcoi.webp&quot; alt=&quot;归档页文章置顶 Top acticles in archives&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;分页依赖升级&quot;&gt;分页依赖升级&lt;/h4&gt;
 
@@ -1654,7 +1654,7 @@ storages.numeric_id
 
 &lt;p&gt;  非文章的页面中也可以像上面那样声明相关的封面作者及链接，效果如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/fzWjPs.webp&quot; alt=&quot;页面封面图片信息 Cover author for pages&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/fzWjPs.webp&quot; alt=&quot;页面封面图片信息 Cover author for pages&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;字数统计及阅读时间估计&quot;&gt;字数统计及阅读时间估计&lt;/h4&gt;
 
@@ -1666,8 +1666,8 @@ storages.numeric_id
 
 &lt;p&gt;  为了支持来自不同时区的读者直接可以看到文章发布对应的本地时间，现已利用 dayjs 新增&lt;strong&gt;时间本地化&lt;/strong&gt;功能。并利用 Github API 查询页面的最近一次 commit 更新时间作为文章&lt;strong&gt;最近更新时间&lt;/strong&gt;。效果如下图所示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Anb4xH.webp&quot; alt=&quot;构建位置时区 Jekyll deployment timezone&quot; /&gt;
-&lt;img src=&quot;https://i.lisz.top/blog/NMPXmQ.webp&quot; alt=&quot;读者时区 Reader timezone&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Anb4xH.webp&quot; alt=&quot;构建位置时区 Jekyll deployment timezone&quot; /&gt;
+&lt;img src=&quot;https://i.luish.cc/blog/NMPXmQ.webp&quot; alt=&quot;读者时区 Reader timezone&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如需使用&lt;strong&gt;最近更新时间&lt;/strong&gt;功能，务必在 _config.yml 文件中添加以下配置项：&lt;/p&gt;
 
@@ -1686,8 +1686,8 @@ storages.numeric_id
 
 &lt;p&gt;  之前的版本只会在页面底部的信息栏中显示一个 CC 4.0 的小图标，不是很醒目。根据调研其他静态网站主题，发现一般都会在文章的末尾自动生成一个比较醒目的版权声明。另外，在版权声明中也将根据最近更新时间来判断内容是否可能过时。如果最近更新时间距离当前时间大于 365 天，则会显示具体日期并提醒有内容过时的可能。效果如下所示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/scNRyd.webp&quot; alt=&quot;版权显式声明 Copyright&quot; /&gt;
-&lt;img src=&quot;https://i.lisz.top/blog/C8RWtL.webp&quot; alt=&quot;内容可能过时提醒 Long time ago notification&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/scNRyd.webp&quot; alt=&quot;版权显式声明 Copyright&quot; /&gt;
+&lt;img src=&quot;https://i.luish.cc/blog/C8RWtL.webp&quot; alt=&quot;内容可能过时提醒 Long time ago notification&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;文章侧边索引导航&quot;&gt;文章侧边索引导航&lt;/h4&gt;
 
@@ -1722,8 +1722,8 @@ storages.numeric_id
 
 &lt;p&gt;  同时修复了手动切换深色模式时 Disqus 不会自动切换模式而造成的显示问题。目前在模式切换时 Disqus 会主动进行重新加载以适应当前模式。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WBgbUB.webp&quot; alt=&quot;Disqus 评论系统 Disqus comment&quot; /&gt;
-&lt;img src=&quot;https://i.lisz.top/blog/45JQ9H.webp&quot; alt=&quot;Waline 评论系统 Waline comments&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WBgbUB.webp&quot; alt=&quot;Disqus 评论系统 Disqus comment&quot; /&gt;
+&lt;img src=&quot;https://i.luish.cc/blog/45JQ9H.webp&quot; alt=&quot;Waline 评论系统 Waline comments&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;支持-pwa&quot;&gt;支持 PWA&lt;/h4&gt;
 
@@ -1837,7 +1837,7 @@ storages.numeric_id
 
 &lt;p&gt;  为了方便用户使用 H2O-ac 主题，特别提供了 Github 的模板功能。如下图所示，访问 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;H2O-ac&lt;/a&gt; 可以看到如下的 Use this template 按钮，点击该按钮即可用 H2O-ac 主题创建自己的博客代码仓库。想要了解更多步骤，可以访问 Github 官方文档之 &lt;a href=&quot;https://docs.github.com/cn/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template&quot;&gt;从模板创建仓库&lt;/a&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/oHHZZh.webp&quot; alt=&quot;从模板新建 Start the blog from the template&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oHHZZh.webp&quot; alt=&quot;从模板新建 Start the blog from the template&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;方式二已有博客迁移&quot;&gt;方式二：已有博客迁移&lt;/h4&gt;
 
@@ -2008,33 +2008,33 @@ storages.numeric_id
 
 &lt;p&gt;效果如下所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/rZFS4U.webp&quot; alt=&quot;svg 效果图&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/rZFS4U.webp&quot; alt=&quot;svg 效果图&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;创建自定义社交图标集合&quot;&gt;创建自定义社交图标集合&lt;/h2&gt;
 
 &lt;p&gt;  现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 &lt;a href=&quot;https://www.iconfont.cn&quot;&gt;Iconfont 首页&lt;/a&gt; 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/FgfB74.webp&quot; alt=&quot;搜索图标 Search icons&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/FgfB74.webp&quot; alt=&quot;搜索图标 Search icons&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  接着点击右上角的购物车按钮如下所示可以查看已加入到购物车的所有图标，并点击&lt;strong&gt;添加到项目&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/1EhfE8.webp&quot; alt=&quot;添加到项目 Add icons to project&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/1EhfE8.webp&quot; alt=&quot;添加到项目 Add icons to project&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  然后给项目取名（这里的名字随便起），点击&lt;strong&gt;确认&lt;/strong&gt;按钮完成项目添加，自动跳转到项目页。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/TCoJ2r.webp&quot; alt=&quot;新建项目 New project&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/TCoJ2r.webp&quot; alt=&quot;新建项目 New project&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击生成代码即可生成专属链接，并出现&lt;strong&gt;点击复制代码&lt;/strong&gt;按钮。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/e2na7v.webp&quot; alt=&quot;生成链接 Generate unique link&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/e2na7v.webp&quot; alt=&quot;生成链接 Generate unique link&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  点击&lt;strong&gt;收起在线链接&lt;/strong&gt;旁边的下箭头可以看到&lt;strong&gt;预览字体&lt;/strong&gt;，点击&lt;strong&gt;预览字体&lt;/strong&gt;即跳转到在线预览页面，如下所示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/dHfIAq.webp&quot; alt=&quot;预览图标 Preview&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/dHfIAq.webp&quot; alt=&quot;预览图标 Preview&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  这里提供了三种方式来使用创建好的社交图标集合，目前平台推荐的是&lt;strong&gt;Symbol 引用&lt;/strong&gt;方式。接着即可按照以下三个步骤在你的网页上轻松使用自定义好的社交图标集合了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/QsBEoq.webp&quot; alt=&quot;Symbol 引用&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/QsBEoq.webp&quot; alt=&quot;Symbol 引用&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;小提示&quot;&gt;小提示&lt;/h3&gt;
 
