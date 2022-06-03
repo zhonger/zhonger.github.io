@@ -65,6 +65,7 @@ cover_author_link: 'https://unsplash.com/@phounius'
 - 2022年1月1日，上线 [Vercel](https://vercel.com) 节点。
 - 2022年1月11日，上线 [Azure](https://azure.microsoft.com/zh-cn/services/app-service/static/#overview) 和 [4EVERLAND](https://hosting.4everland.org) 节点。
 - 2022年5月，由于在 [vgy.me](https://vgy.me) 托管的图片不知原因发生了丢失，而且打算对全站进行一次图片改造——将原来所有的 png 图片全部转成 webp 图片。vgy.me 不支持 webp 图片上传，故而自行搭建了私人图床服务，文章中涉及到的图片全部转成 webp 图片。
+- 2022年6月2日，重新上线阿里云服务器节点。
 
 ## 站点节点信息
 
@@ -73,7 +74,7 @@ cover_author_link: 'https://unsplash.com/@phounius'
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
-| 阿里云服务器 | www.lisz.ink(下线) | 是 | 否 | 国内单节点 |
+| 阿里云服务器 | [www.lisz.ink](https://www.lisz.ink) | 是 | 否 | 国内单节点 |
 | 腾讯云服务器 | [luish.cc](https://luish.cc) | 是 | 否 | 国内单节点 |
 | 腾讯云 COS | [lisz.ink](https://lisz.ink) | 是 | 否 | 国内 CDN 节点 |
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
