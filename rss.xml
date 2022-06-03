@@ -5,9 +5,316 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 01 Jun 2022 16:46:28 +0900</pubDate>
-    <lastBuildDate>Wed, 01 Jun 2022 16:46:28 +0900</lastBuildDate>
+    <pubDate>Fri, 03 Jun 2022 16:05:56 +0900</pubDate>
+    <lastBuildDate>Fri, 03 Jun 2022 16:05:56 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>PWA：可能是成本最低的站点加速方式</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  PWA（Progressive Web App），中文称为“&lt;strong&gt;渐进式网络应用程序&lt;/strong&gt;”，利用一系列现代的 Web 技术来增强 Web App 的功能，从而实现应用程序一样的用户体验。事实上，任何的网站都可以做成 PWA。从这个概念上来说，PWA 实际上是一种理念。根据这种理念可以创造出各式各样的东西，比如说微信小程序、百度小程序、支付宝小程序等等（😂 虽然它们都不承认自己是和 PWA 一脉相承的）。&lt;/p&gt;
+
+&lt;h3 id=&quot;为何有-pwa&quot;&gt;为何有 PWA&lt;/h3&gt;
+
+&lt;p&gt;  随着网络和智能设备的飞速发展及提升，越来越多的原生应用程序占据了智能设备的空间和资源。曾几何时，一个微博应用程序还只有 100M 左右，现在一安装一登录就要到快 1G。再没事刷一刷新闻或者视频，可能就要变成 1.5G，甚至更多。类似微博这样，我们日常可能常用的淘宝、微信、QQ、知乎等等几乎都是如此。虽然这样的空间和运行内存资源占用能给我们带来很好的用户体验，但实际上还是在一点点榨干智能设备的资源。最后智能设备越来越卡，只能依靠时常清理、重置或者升级硬件来焕发新机。&lt;/p&gt;
+
+&lt;p&gt;  相比原生应用开发而言，Web 应用程序的开发和更新维护则显得不要太轻松，真正实现了“一遍更新所有客户端适用”。如果要从性能和可调用设备资源来看，可能以前原生应用要占上风。但是随着 HTML5 和 CSS3 的发展，Web 应用程序在性能和设备资源调用上已经与原生应用差别无二了。所以越来越多的基于 Web 技术的 Hybrid 客户端或者纯 Web 客户端开始涌现，比如非常知名的网易云客户端，无论是 PC 客户端还是移动客户端都已经切换到了 Web 技术栈。还有现在非常流行的代码编辑器 VS Code，是基于 Electron 框架进行二次开发，其简易的操作逻辑和丰富的插件为开发者带来了无限的可能。&lt;/p&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 代码编辑器小知识 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。&lt;br /&gt;
+  “巨无霸”代码编辑器也有其好处，能够提供保姆式的界面交互，可能看着省心一点。但这也是一个缺点，你需要先学习如何使用代码编辑器，才能用它来编写你想要的程序。“简洁”代码编辑器只提供必要的组件，比如文件列表、终端、搜索替换、高亮等。如果需要更多的功能，可以通过安装插件的方式来扩展支持。当然，“简洁”代码编辑器会要求你对“一切皆文件”的 Unix/Linux 哲学有比较好的认识，因为你需要通过手动修改文件配置内容的方式来设置各种各样的东西，而极少有交互界面提供。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;  当我们把原生应用和 Web 应用放在一起来考虑时，我们就会想是否能有一种方式可以结合两者的优点来为用户提供更好的服务呢？&lt;strong&gt;PWA 于是应运而生&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 其他方案 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  除了 PWA 之外，其实还是其他的方案出现。比如像 Hybrid 应用、React Native、Flutter 等，具体可以阅读参考资料了解更多。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h3 id=&quot;什么是渐进式&quot;&gt;什么是渐进式&lt;/h3&gt;
+
+&lt;p&gt;  所谓的“&lt;strong&gt;渐进式&lt;/strong&gt;”有两个含义：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;一是 &lt;strong&gt;Web 应用渐进式接近原生应用&lt;/strong&gt;：通过各种 Web 技术实现与原生应用相近的用户体验。&lt;/li&gt;
+  &lt;li&gt;二是&lt;strong&gt;给支持 PWA 的浏览器用户带来更好的体验&lt;/strong&gt;：由于不同浏览器支持的 HTML/CSS 的情况有所差别，可以利用 PWA 来分步骤、分阶段在不同浏览器上新增特性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 渐进式应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  一个渐进式应用首先是一个网页，通过各种 Web 技术编写出的一个网页应用。之后通过添加应用 Manifest 实现添加到主屏幕，通过 Service Worker 来实现离线缓存和消息推送等功能。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;  正是由于这些因素，PWA 至少可以给你的站点带来以下好处：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;更快、更安全的用户体验&lt;/li&gt;
+  &lt;li&gt;更好的搜索排名（尤其对于 Google）&lt;/li&gt;
+  &lt;li&gt;更好的可用性&lt;/li&gt;
+  &lt;li&gt;更好的性能&lt;/li&gt;
+  &lt;li&gt;离线访问&lt;/li&gt;
+  &lt;li&gt;手机屏幕上的快捷方式像是原生应用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;为-jekyll-配置-pwa&quot;&gt;为 Jekyll 配置 PWA&lt;/h2&gt;
+
+&lt;p&gt;  从上面列举的 PWA 的好处，我们可以很显然知道：PWA 的离线缓存、原生式体验、搜索引擎友好这些优点都能用于实现站点加速。通常的静态站点加速方法可能是：减少请求、缩减请求的大小、CDN 加速等等，但是 PWA 本身的特性对于用户体验来说也是有一些加速效果的，毕竟被访问过一次就会缓存下来。这与 CDN 的缓存有些类似，只不过 CDN 有很多缓存节点，而 PWA 是把本机作为唯一的缓存节点。&lt;/p&gt;
+
+&lt;p&gt;  经过一番对于 Jekyll 上 PWA 支持的调查后，发现的确也存在一些号称可以很方便、简单地使用的 PWA 插件。但是尝试了一下觉得有点复杂且插件看起来毫无用处。根据上面提到的 PWA 实现方式来看，只要我们配置好 Manifest 和 Service Worker，就可以把一个站点全部变成 PWA 应用。根本上与是否 Jekyll 或其他应用无关，因此使用 PWA 插件的必要性不大。&lt;/p&gt;
+
+&lt;p&gt;  接下来就让我们来尝试一下徒手配置 PWA。&lt;/p&gt;
+
+&lt;h3 id=&quot;配置-manifest&quot;&gt;配置 Manifest&lt;/h3&gt;
+
+&lt;h4 id=&quot;元信息&quot;&gt;元信息&lt;/h4&gt;
+
+&lt;p&gt;  Manifest 实际上是一个声明了 PWA 应用的所有元信息的 JSON 配置文件，如下所示。我们需要定义 PWA 应用的名称、语言、缩写、图标、主题颜色、背景颜色、起始路径。&lt;/p&gt;
+
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;lang&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.language }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;dir&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;site.title&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;smartify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;jsonify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;site.pwa.short_name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;smartify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;jsonify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;icons&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192x192&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;512x512&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome-maskable&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192x192&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;purpose&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;maskable&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome-maskable&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;512x512&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;purpose&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;maskable&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;theme_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.pwa.color }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;background_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.pwa.color }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;start_url&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;display&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;standalone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;orientation&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;natural&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  这里大部分的元信息都可以通过 Jekyll 的 _config.yml 全局配置文件来动态配置。其中，由于图标需要适用于不同的设备、屏幕分辨率，所以需要准备不同尺寸、分辨率的站点图标。这里可以使用 &lt;a href=&quot;https://cthedot.de&quot;&gt;cthedot&lt;/a&gt; 开发的 &lt;a href=&quot;https://github.com/cthedot/icongen&quot;&gt;cthedot/icongen&lt;/a&gt; 工具来一键生成，非常简单方便。生成后将图标文件放置在上面设置好的位置（可自行对应修改）。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; icongen 镜像站 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 &lt;a href=&quot;https://icongen.pages.dev/&quot;&gt;icongen&lt;/a&gt;，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;模板化&quot;&gt;模板化&lt;/h4&gt;
+
+&lt;p&gt;  由于 manifest.json 文件我们不想要每个用户都来复制一遍，所以可以将这个文件内容模板化，即把 manifest.json 文件放置在 _layouts 文件夹中。这样一来，用户可以非常简单地在源码的主目录下建立一个新的 manifest.json 文件，内容如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;manifest&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  另外，在全局配置文件 _config.yml 中需确保有如下配置：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;zh&apos;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Blog&apos;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# PWA&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;pwa&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#81BBFF&apos;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lisz&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;链接到页面&quot;&gt;链接到页面&lt;/h4&gt;
+
+&lt;p&gt;  当上面的内容都设置好后，我们还需将 manifest.json 的声明配置加入到网站的所有页面，内容如下所示。一般来说，Jekyll 主题只需要在 head.html 和 post-head.html 两个头文件模块中加入下面内容即可（一个是普通页面，一个是文章页面）。&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;配置-service-worker&quot;&gt;配置 Service Worker&lt;/h3&gt;
+
+&lt;h4 id=&quot;注册-service-worker&quot;&gt;注册 Service Worker&lt;/h4&gt;
+
+&lt;p&gt;  配置完  Manifest 之后，只是能告诉浏览器你的应用是一个 PWA 应用，而实际的 PWA 的离线缓存等特性都还没有实现，这些都是在 Service Worker 中实现的。首先在 _includes 目录中创建 pwa.html 文件，用于注册 PWA 应用，内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-liquid highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- pwa.html --&amp;gt;
+&amp;lt;script&amp;gt;
+    if (&quot;serviceWorker&quot; in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log(&quot;An active service worker found, no need to register&quot;);
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register(&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/sw.js&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;prepend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;, {
+                scope: &quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;prepend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;
+            })
+            .then(function (reg) {
+                console.log(&quot;Service worker has been registered for scope: &quot; + reg.scope);
+            });
+        }
+    }
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  并且为了启用 pwa.html 小插件，应该在 page.html 和 post.html 模板的 body 末尾添加上对小插件的引用，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-liquid highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+&amp;lt;body&amp;gt;
+...
+  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;pwa.html&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
+...
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;离线缓存&quot;&gt;离线缓存&lt;/h4&gt;
+
+&lt;p&gt;  Service Worker 功能定义文件实际上也是一个 JS 文件（这里命名为 sw.js），参考内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// sw.js&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;pwabuilder-offline&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;index.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// Install stage sets up the index page (home page) in the cache and opens a new cache&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Install Event processing&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Cached offline page during install&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ToDo-replace-this-name.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Update the value of the offlineFallbackPage constant in the serviceworker.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// If any fetch fails, it will look for the request in the cache and serve it from there first&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;respondWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Add page to offline cache: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// If request was success, add or update it in the cache&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;updateCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()));&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;        
+        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Network request Failed. Serving content from cache: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fromCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fromCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Check to see if you have it in the cache&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Return response&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// If not in the cache, then return error page&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;404&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;no-match&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;updateCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  sw.js 文件的内容主要定义了第一次访问时将文件离线缓存下来，再次请求是从缓存中加载。如果首次从缓存中没有找到想要的文件，则会请求更新缓存获取该文件。&lt;/p&gt;
+
+&lt;h4 id=&quot;模板化-1&quot;&gt;模板化&lt;/h4&gt;
+
+&lt;p&gt;  为了在 Jekyll 主题中能更方便用户使用，这里也应该像 Manifest 那样模板化，即在 _layouts 目录下创建以上内容的 sw.js 文件。而用户只需要在源代码主目录下创建如下内容的 sw.js 文件即可：&lt;/p&gt;
+
+&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sw&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;验证-pwa&quot;&gt;验证 PWA&lt;/h2&gt;
+
+&lt;p&gt;  当我们设置好 Manifest 和 Service Worker，并且再次生成 Jekyll 静态页面并托管到服务器之后，用 Chrome 浏览器访问主页就会发现地址栏的右边会出现一个新的图标，如下图所示。这个图标就是在提示你所访问的页面是 PWA 应用，支持安装快捷方式。点击该图标，会有一个像下面这样的小弹窗提示，点击安装即可安装到主屏幕，PC 端、移动端均可。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8nPgKk.webp&quot; alt=&quot;安装提示 Install tips&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  除此之外，我们还可以在 PC 端打开浏览器的控制台。如下图所示，我们可以发现一些来自 sw.js 的打印信息。这些信息告诉我们 Service Worker 已经注册成功了，并且有哪些文件已经离线缓存了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/OnrGr1.webp&quot; alt=&quot;控制台提示 Command line tips&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  在浏览器开发工具中，我们还可以通过查看&lt;strong&gt;应用&lt;/strong&gt;的 &lt;strong&gt;Service Workers&lt;/strong&gt; 来再次确认 PWA 的情况。如下图所示，我们可以看到 sw.js 从 Initial 到 Wait 到 Activate 的过程，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/mXdqdH.webp&quot; alt=&quot;应用提示 App tips&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
+
+&lt;p&gt;  从上面的步骤来看，Web 应用 PWA 化似乎也不是那么难。只要有 Manifest 和 Service Worker 就能成功把 Web 应用 PWA 化。当然，也有一些更加简单 PWA 化的方法，比如说 &lt;a href=&quot;https://www.pwabuilder.com/&quot;&gt;pwabuilder&lt;/a&gt;。不过，pwabuilder 更擅长帮你优化 PWA 应用并且转成 Windodws、Apple 和 Android 三个平台的应用。如果你想要把你的 PWA 应用上传到应用商店，那么不妨试试。&lt;/p&gt;
+
+&lt;p&gt;  除了 Jekyll 之外，其他的静态生成器比如 Hexo、Next.js 等等或者动态网站都可以 PWA 化，而且和 CDN 加速一起使用也非常合适。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 推荐一款 PWA 应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – &lt;a href=&quot;https://squoosh.app/&quot;&gt;Squoosh&lt;/a&gt;。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 &lt;a href=&quot;https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli&quot;&gt;squoosh cli&lt;/a&gt;。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dev.to/thewhitewulfy/make-any-jekyll-site-into-a-pwa-1de2&quot;&gt;Make any Jekyll site into a PWA&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sunbufu.vercel.app/posts/2019/2019-01-23-pwa/&quot;&gt;jekyll 博客的 PWA 配置&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000041729491&quot;&gt;小程序鼻祖 —— 在国内逐渐消亡的 PWA 可以带给我们哪些启示？&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000018590996&quot;&gt;Flutter 、React Native 、 Ionic、 NativeScript 、小程序和 PWA 哪个值得学？&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 03 Jun 2022 10:54:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/pwa.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/pwa.html</guid>
+        
+        <category>PWA</category>
+        
+        <category>渐进式网络应用程序</category>
+        
+        <category>小程序</category>
+        
+        <category>加速</category>
+        
+        <category>Accelerate</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>GPG：为你的 Git 提交记录加一把锁</title>
@@ -1718,428 +2025,6 @@ storages.numeric_id
         <category>ac</category>
         
         <category>ml</category>
-        
-      </item>
-    
-      <item>
-        <title>H2O-ac theme for Jekyll</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  正如大家所知，Jekyll 是一款高可定制的、非常流行的静态博客生成工具。围绕着 Jekyll 也衍生出了很多优秀的 Jekyll 主题， 由 &lt;a href=&quot;https://github.com/kaeyleo&quot;&gt;廖柯宇&lt;/a&gt; 开发的 &lt;a href=&quot;https://github.com/kaeyleo/jekyll-theme-H2O&quot;&gt;H2O&lt;/a&gt; 主题就是其中之一。极简主义、风格扁平化、卡片式布局、Medium 及知乎专栏的视觉风格等等特点，为我们带来了或许是迄今为止最漂亮的 Jekyll 主题。&lt;/p&gt;
-
-&lt;p&gt;  诞生之初，H2O 主题就在 Github 平台上以 MIT 许可证协议开放了源代码。这吸引了很多小伙伴纷纷转投 Jekyll 和 H2O 主题的阵营，本人也是其中之一。随着使用者越来越多，不少的小伙伴在使用过程中发现了一些小问题并主动修复，最后贡献到了 H2O 的主项目，这让 H2O 主题变得更好。本人在使用过程中也的确是发现了一些与自己实际需求不大一致的地方，并且在原 H2O 主题的基础上做了一些改动。考虑到这些改动可能并不是大多数人的需求，直接向原 H2O 主题提交 pull 请求合并的必要性不大，因此决定将原项目 fork 并改名为 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;zhonger/jekyll-theme-H2O-ac&lt;/a&gt;。现正式将源代码以与 H2O 主题相同的 MIT 许可证协议在 Github 平台上公开。&lt;/p&gt;
-
-&lt;p&gt;  在此，非常感谢廖柯宇及其他小伙伴对于 H2O-ac 主题的基础主题 H2O 的代码开发和开放共享。&lt;/p&gt;
-
-&lt;h2 id=&quot;新特性&quot;&gt;新特性&lt;/h2&gt;
-
-&lt;h3 id=&quot;更适合学术人和运维程序员的页面结构&quot;&gt;更适合学术人和运维程序员的页面结构&lt;/h3&gt;
-
-&lt;p&gt;  H2O 主题其实在很大程度上已经满足了大部分人的需求，只是对于学术研究人员和运维程序员来说，个人觉得页面结构还是有点不够合适。学术研究人员比较重视在首页直接展示个人信息和研究情况，能够让人很快地了解到所需的信息，这其实是将 About me 这样一个平常的辅助页面当成了主页面来用。另外，运维程序员比较重视能一览所有文章的标题以迅速找到感兴趣的文章。虽然搜索功能、标签页、卡片展示页都能够列出所有的文章，但个人觉得还是不够简洁、方便。而像 Hexo 静态生成工具自带的 Archive 归档页面比较能满足这样的需求。除此之外，整个博客的系统日志变迁记录对于运维程序员来说也非常重要，毕竟如果通过发布一篇文章来描述变迁过程并不适合联系起来完整了解。如果有系统日志页，就可以按照年份、月份、事件的先后进行简要的描述，并且一览无遗。&lt;/p&gt;
-
-&lt;p&gt;  因此，在 H2O-ac 主题中，从原来 H2O 的主页中抽出框架做成了页面模板。根据实际页面的内容需求，增加了&lt;strong&gt;学术首页&lt;/strong&gt;、&lt;strong&gt;归档页&lt;/strong&gt;和&lt;strong&gt;系统日志页&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h4 id=&quot;学术首页&quot;&gt;学术首页&lt;/h4&gt;
-
-&lt;p&gt;  学术首页如下图所示，并将原来 H2O 中的卡片首页移动到 blog 子目录下了。如果读者想要看到文章卡片展示页，还是可以点击顶部的导航栏中的 BLOG 直接访问。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/XyT038.webp&quot; alt=&quot;首页 Home&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;归档页&quot;&gt;归档页&lt;/h4&gt;
-
-&lt;p&gt;  归档页设置为由 Jekyll 按照模板自动生成，以年份、日期、文章标题分级列表展示，简洁清晰。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/lj4vUP.webp&quot; alt=&quot;归档页 Archives&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;系统日志页&quot;&gt;系统日志页&lt;/h4&gt;
-
-&lt;p&gt;  系统日志页其实也不是经常更新的，只有在博客整体作出设置或改进的才加以说明。另外，也可以将一些固定的站点信息放置在系统日志页，比如站点的多点部署信息，读者可以根据此信息访问最快、最合适的节点。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/7QLEc6.webp&quot; alt=&quot;系统日志 Log&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;使用体验提升&quot;&gt;使用体验提升&lt;/h3&gt;
-
-&lt;p&gt;  廖柯宇也在 H2O 主题的默认页面中写道，目前 H2O 主题还有一些可优化的内容，比如夜间模式、查看大图等。这里，根据个人的一些实际需求和了解，在 H2O-ac 主题中做了调整。&lt;/p&gt;
-
-&lt;h4 id=&quot;社交图标扩展&quot;&gt;社交图标扩展&lt;/h4&gt;
-
-&lt;p&gt;  H2O 原有的社交图标其实已经比较广泛，只是还有些领域局限性，比如学术研究人员可能更希望展示谷歌学术、ResearchGate、ORCID 等社交图标及链接，而运维开发人员可能更希望展示 SegmentFault、CSDN、博客园等社交图标及链接。这里在 H2O 提供的社交图标类型基础上做了这些平台图标的扩充，同时尝试了 Symbol 引用的方式来实现社交图标鼠标悬停的效果，从而简化代码（H2O 采用的是字体图标的方式，需要为每一个社交图标定义不同的主题色）。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/UpnQdk.webp&quot; alt=&quot;社交图标 SNS&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;查看大图&quot;&gt;查看大图&lt;/h4&gt;
-
-&lt;p&gt;  查看大图功能的确对于读者的阅读体验来说有很大的提升。就像我们阅读文献一样，可能首先会只看文章附图来大致掌握文章的核心点。博文的查看大图功能也可能有这样的异曲同工之妙。这里是采用的 &lt;a href=&quot;https://fancyapps.com/docs/ui/fancybox&quot;&gt;Fancybox&lt;/a&gt; 插件实现的。H2O-ac 主题中只使用了最简单的配置，用户可以根据需求查看文档做出更多的修改。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BzfBoz.webp&quot; alt=&quot;查看大图 Fancybox&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
-
-&lt;p&gt;  ，由于 fancybox 库作者对原使用的 v3.5.7 版本不再进行维护和更新，现将版本更新至新的 v4.0 版本，即 &lt;a href=&quot;https://github.com/fancyapps/ui&quot;&gt;fancyapps/ui&lt;/a&gt;。另，新增将 alt 内容作为图片的描述显示在 fancybox 中。&lt;/p&gt;
-
-&lt;h4 id=&quot;深色模式切换按钮&quot;&gt;深色模式切换按钮&lt;/h4&gt;
-
-&lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
-
-&lt;p&gt;  原来 H2O 主题的深色模式切换需要在 _config.yml 文件中配置开启，并且只能在固定时间段使用。此次更新在页面右上角提供了深色/浅色模式一键切换按钮，如下图所示。由于更新了深色模式采用 cookie 的方式来确定，此深色模式切换按钮可以与原来的深色模式配置共存。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/EPhFN9.webp&quot; alt=&quot;浅色模式 Day mode&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BD7BqC.webp&quot; alt=&quot;深色模式 Night mode&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;提示框&quot;&gt;提示框&lt;/h4&gt;
-
-&lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
-
-&lt;p&gt;  通过引入 &lt;a href=&quot;https://github.com/lazee/premonition&quot;&gt;lazee/premonition&lt;/a&gt; 库新增五种提示框：笔记、提示、警告、错误、引用，完全兼容原生 Markdown 语法，并对样式进行了主题适应。以下为五种提示框的实际效果。&lt;/p&gt;
-
-&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Note &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;The body of the note goes here. Premonition allows you to write any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; inside the block.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;The body of the info goes here. Premonition allows you to write any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; inside the block.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Warning &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;The body of the warning goes here. Premonition allows you to write any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; inside the block.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Error &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;The body of the error goes here. Premonition allows you to write any &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Markdown&lt;/code&gt; inside the block.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition citation&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon citation&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-citation&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;To be or not to be is a question.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;div class=&quot;ref&quot;&gt; ------ 莎士比亚 &lt;/div&gt; &lt;/div&gt;
-&lt;h4 id=&quot;代码高亮优化&quot;&gt;代码高亮优化&lt;/h4&gt;
-
-&lt;p&gt;  本人使用 H2O 主题的时候代码高亮功能还是沿用的 Jekyll 自带的，后来 H2O 主题也开始采用了 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism.js&lt;/a&gt;。不过由于使用的是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OKAIDIA&lt;/code&gt; 高亮主题，所以有些段落中的格式化字段显示上有些问题。这里，仍然采用默认主题，并且扩增到 Prism.js 支持的所有编程语言类型。效果可以从前一句的 OKAIDIA 字段和下面即将出现的代码片段看出。&lt;/p&gt;
-
-&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;@font-face&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;font-family&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&apos;Merriweather&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;nl&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;local&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&apos;Merriweather&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(https://fonts.gstatic.com/...)&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&apos;woff2&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
-
-&lt;p&gt;  更换 Prism 库加载方式，采用按需自动加载代码类型，尽可能减少因 Prism 造成的阻塞。修复了某些样式问题。增加显示行数支持、官方主题选择支持。如下所示可以进行设置，具体主题风格样式可以访问 &lt;a href=&quot;https://prismjs.com/&quot;&gt;Prism 官网&lt;/a&gt; 了解更多。&lt;/p&gt;
-
-&lt;p&gt;(2022年5月23日更新)&lt;/p&gt;
-
-&lt;p&gt;  除官方代码库中默认代码主题外，新增扩展代码主题支持，比如常用的 One Light 等等。具体主题风格样式可以查看 &lt;a href=&quot;https://github.com/PrismJS/prism-themes/tree/master/themes&quot;&gt;PrismJS/prism-themes&lt;/a&gt; 了解更多。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Prism&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;prism&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;theme&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;tomorrow&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;line_numbers&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;代码复制&quot;&gt;代码复制&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月1日更新)&lt;/p&gt;
-
-&lt;p&gt;  由于主题设置有复制自动添加版权保护文字，导致复制代码或无法直接使用。但是如果直接去掉版权保护又不大合适，于是新增代码复制功能。当使用如下所示代码片段右上角的复制按钮时，代码会被复制到粘贴板，且不包含版权保护文字，可以放心直接使用。&lt;/p&gt;
-
-&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
-
-&lt;p&gt;  调整复制按钮位置，自动识别代码块的代码类型并显示。&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Target --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;input&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;foo&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;value=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://github.com/zenorocha/clipboard.js.git&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Trigger --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;button&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;btn&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-clipboard-target=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;#foo&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;assets/clippy.svg&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alt=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Copy to clipboard&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;文章置顶功能&quot;&gt;文章置顶功能&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
-
-&lt;p&gt;  鉴于现有的 Jekyll 文章置顶库有点年久失修，决定徒手实现了一下文章置顶功能。具体文章列表页和归档页置顶效果如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/mcF2Z3.webp&quot; alt=&quot;文章置顶 Top acticles&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/yajcoi.webp&quot; alt=&quot;归档页文章置顶 Top acticles in archives&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;分页依赖升级&quot;&gt;分页依赖升级&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
-
-&lt;p&gt;  由于原有的 jekyll-paginate 库已停止更新，所以升级到目前更新、维护活跃的 &lt;a href=&quot;https://github.com/sverrirs/jekyll-paginate-v2&quot;&gt;jekyll-paginate-v2&lt;/a&gt; 库。原有的分页配置自 v1.1.7 版本后无法使用，请更换为如下类似设置：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml 旧配置&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;paginate&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;paginate_path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;blog/page:num&apos;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# _config.yml 新配置&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;pagination&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;per_page&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;permalink&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;page:num/&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  另外，blog/index.html 的头部信息中应该加上如下&lt;strong&gt;启用分页&lt;/strong&gt;的配置。否则，jekyll-paginate-v2 不会主动工作。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;pagination&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
-  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;封面图片作者及链接&quot;&gt;封面图片作者及链接&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月26日更新)&lt;/p&gt;
-
-&lt;p&gt;  一直以来封面图片都是来自 &lt;a href=&quot;https://unsplash.com&quot;&gt;Unsplash&lt;/a&gt; 的免费高清图片，为了表明封面图片的来源和作者，现在文章的元信息中添加了对封面图片作者及链接的支持。如果想要声明，可以直接在文章的头部信息中添加如下配置：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;cover&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;cover_author&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;cover_author_link&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
-&lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  非文章的页面中也可以像上面那样声明相关的封面作者及链接，效果如下所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/fzWjPs.webp&quot; alt=&quot;页面封面图片信息 Cover author for pages&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;字数统计及阅读时间估计&quot;&gt;字数统计及阅读时间估计&lt;/h4&gt;
-
-&lt;p&gt;  字数统计及阅读时间估计这个小功能其实以前在用 WordPress 的时候比较常见。虽然说统计和估计的结果不一定完全准确，但是还是起到了一定的辅助阅读的作用。效果可以查看本页标题下的基本信息区域。&lt;/p&gt;
-
-&lt;h4 id=&quot;时间本地化与最近更新时间&quot;&gt;时间本地化与最近更新时间&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月22日更新)&lt;/p&gt;
-
-&lt;p&gt;  为了支持来自不同时区的读者直接可以看到文章发布对应的本地时间，现已利用 dayjs 新增&lt;strong&gt;时间本地化&lt;/strong&gt;功能。并利用 Github API 查询页面的最近一次 commit 更新时间作为文章&lt;strong&gt;最近更新时间&lt;/strong&gt;。效果如下图所示。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Anb4xH.webp&quot; alt=&quot;构建位置时区 Jekyll deployment timezone&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/NMPXmQ.webp&quot; alt=&quot;读者时区 Reader timezone&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  如需使用&lt;strong&gt;最近更新时间&lt;/strong&gt;功能，务必在 _config.yml 文件中添加以下配置项：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Github&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;github&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;owner&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github_username&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github_project_name&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  如未正确进行以上配置，默认会将最近更新时间与发布时间保持一致。&lt;/p&gt;
-
-&lt;h4 id=&quot;版权显式声明&quot;&gt;版权显式声明&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月18日更新)&lt;/p&gt;
-
-&lt;p&gt;  之前的版本只会在页面底部的信息栏中显示一个 CC 4.0 的小图标，不是很醒目。根据调研其他静态网站主题，发现一般都会在文章的末尾自动生成一个比较醒目的版权声明。另外，在版权声明中也将根据最近更新时间来判断内容是否可能过时。如果最近更新时间距离当前时间大于 365 天，则会显示具体日期并提醒有内容过时的可能。效果如下所示。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/scNRyd.webp&quot; alt=&quot;版权显式声明 Copyright&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/C8RWtL.webp&quot; alt=&quot;内容可能过时提醒 Long time ago notification&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;文章侧边索引导航&quot;&gt;文章侧边索引导航&lt;/h4&gt;
-
-&lt;p&gt;(2022年1月9日更新)&lt;/p&gt;
-
-&lt;p&gt;  在一些基于 Bootstrap 前端框架的 Jekyll 主题中，这个功能比较常见。由于本主题未使用 Bootstrap 前端框架，所以添加起来稍微有些麻烦，现已增加此功能。在浏览器窗口超过 1050 px 的情况下，在文章页面可以正常看到右侧的文章侧边索引导航。当窗口滑动时，侧边索引导航也会跟着滑动。在浏览器窗口不足 1050 px 的情况下，侧边索引导航自动隐藏。在 _config.yml 配置文件中，可以通过设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;toc: false&lt;/code&gt; 来全局禁用此功能。&lt;/p&gt;
-
-&lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
-
-&lt;p&gt;  在原来的基础上增加了跟随左侧内容滑动高亮。当左侧内容向上或向下滑动时，右侧索引导航将会使对应的对应一级标题高亮。&lt;/p&gt;
-
-&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
-
-&lt;p&gt;  为文章的移动端页面添加了索引导航按钮。鉴于单页面的内容有限及侧边位置空间有限，暂未对单页面进行支持。&lt;/p&gt;
-
-&lt;h4 id=&quot;支持-waline-评论系统&quot;&gt;支持 Waline 评论系统&lt;/h4&gt;
-
-&lt;p&gt;  目前已支持基于 Valine 衍生的简洁、安全的评论系统 Waline。可以根据官方提供的 &lt;a href=&quot;https://waline.js.org/guide/get-started.html&quot;&gt;快速上手&lt;/a&gt; 进行配置，以下为 _config.yml 中需要配置的内容：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# _config.yml&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;comments&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;waline&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;waline_url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://xxxxxx.vercel.app&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  &lt;del&gt;目前未对多评论系统同时支持进行优化，所以如果 Disqus 和 Waline 同时开启时，Disqus 在前 Waline 在后同时出现。如果用户环境无法访问 Disqus 即只能看到 Waline。&lt;/del&gt;&lt;/p&gt;
-
-&lt;p&gt;(2022年5月22日更新)&lt;/p&gt;
-
-&lt;p&gt;  新增多评论切换按钮：当同时使用 Disqus 和 Waline 时，会在评论区域的右上角看到一个左右滑动切换按钮。如下所示，从左往右滑动即可从 Disqus 切换到 Waline。&lt;/p&gt;
-
-&lt;p&gt;  同时修复了手动切换深色模式时 Disqus 不会自动切换模式而造成的显示问题。目前在模式切换时 Disqus 会主动进行重新加载以适应当前模式。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WBgbUB.webp&quot; alt=&quot;Disqus 评论系统 Disqus comment&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/45JQ9H.webp&quot; alt=&quot;Waline 评论系统 Waline comments&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;支持-pwa&quot;&gt;支持 PWA&lt;/h4&gt;
-
-&lt;p&gt;(2022年5月11日更新)&lt;/p&gt;
-
-&lt;p&gt;  全面支持 PWA，访问速度得到较大提升。移动端访问可以像原生 APP 那样使用。如果访问过全站一遍之后，则可以完全离线使用。如下所示，可以配置 PWA 的主题色和短名称。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# PWA&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;pwa&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#81BBFF&apos;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lisz&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;配置项&quot;&gt;配置项&lt;/h4&gt;
-
-&lt;p&gt;  配置项中新增了&lt;strong&gt;友情链接&lt;/strong&gt;和&lt;strong&gt;备案号&lt;/strong&gt;功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。&lt;/p&gt;
-
-&lt;p&gt;(2022年4月30日更新)&lt;/p&gt;
-
-&lt;p&gt;  新增&lt;strong&gt;全站一键灰度化功能&lt;/strong&gt;、&lt;strong&gt;时间格式&lt;/strong&gt;配置。在国家公祭日等需要灰度化以示哀悼的时候可以将灰度化配置设置为 true，平常使用默认配置 false。时间格式这里一共提供了 3 种：第一种中英文站点使用皆宜，第二种适用于英文站点，第三种适用于中文站点。默认时间格式为第一种。&lt;/p&gt;
-
-&lt;p&gt;(2022年5月14日更新)&lt;/p&gt;
-
-&lt;p&gt;  新增 &lt;a href=&quot;https://busuanzi.ibruce.info/&quot;&gt;&lt;strong&gt;不蒜子&lt;/strong&gt;&lt;/a&gt; 统计方式，可以显示全站访问次数、全站访问用户数、文章页面阅读量。如下设置可以开启。&lt;/p&gt;
-
-&lt;p&gt;(2022年5月16日更新)&lt;/p&gt;
-
-&lt;p&gt;  新增 &lt;a href=&quot;https://github.com/mikecao/umami&quot;&gt;&lt;strong&gt;umami&lt;/strong&gt;&lt;/a&gt; 统计方式，需要自行先搭建 umami 然后接入。接入配置只需要如下所示配置跟踪 id 和 JS 脚本地址。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# Links 友情链接&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Mr&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Li&apos;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://lisz.me&apos;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Beian 备案号&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;beian&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;沪ICP备xxxxxxxx号&apos;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Gray 灰度化&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;gray&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Time format 时间格式 &lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;# 0 -- 2022-04-29    1 -- 29 Apr 2022   2 -- 2022年4月29日&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;formats&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;0&lt;/span&gt; 
-
-&lt;span class=&quot;c1&quot;&gt;# Busuanzi Analytics&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;busuanzi&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# Umami Analytics&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;umami&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;xxxxxxxxxxxxx&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;js&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;https://umami.example.com/umami.js&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;前端自动构建工作流优化&quot;&gt;前端自动构建工作流优化&lt;/h4&gt;
-
-&lt;p&gt;  H2O 主题中使用了 Gulp + &lt;del&gt;Node-Sass&lt;/del&gt; Sass 的方案来自动化前端构建工作流。不得不说，这个方案还是很不错的，只是随着 Gulp 和 &lt;del&gt;Node-Sass&lt;/del&gt; Sass 版本的更新，对 NodeJS 环境及其他依赖库都有一些要求。这里，H2O-ac 主题在 package.json 文件中将所有库都更新到目前最新，对应版本列表如下所示。另外，为了减少一些第三方 CSS 样式的请求数，利用自动构建工作流将固定的第三方 CSS 样式文件合并并压缩为 plugins.min.css 文件。app.min.css 仍为多个自编写 CSS 样式文件的合并压缩。&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;运行环境或依赖库&lt;/th&gt;
-      &lt;th style=&quot;text-align: center&quot;&gt;版本号&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;NodeJS&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v17.0.0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v4.0.2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp-clean-css&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v4.3.0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp-rename&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v20.0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp-sass&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v5.0.0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp-uglify&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v3.0.2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;gulp-concat&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v2.6.1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;&lt;del&gt;node-sass&lt;/del&gt;&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;&lt;del&gt;v7.0.0&lt;/del&gt;&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;sass&lt;/td&gt;
-      &lt;td style=&quot;text-align: center&quot;&gt;v1.51.0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h2 id=&quot;使用方法&quot;&gt;使用方法&lt;/h2&gt;
-
-&lt;h3 id=&quot;初始化&quot;&gt;初始化&lt;/h3&gt;
-
-&lt;h4 id=&quot;方式一从模板新建博客&quot;&gt;方式一：从模板新建博客&lt;/h4&gt;
-
-&lt;p&gt;  为了方便用户使用 H2O-ac 主题，特别提供了 Github 的模板功能。如下图所示，访问 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;H2O-ac&lt;/a&gt; 可以看到如下的 Use this template 按钮，点击该按钮即可用 H2O-ac 主题创建自己的博客代码仓库。想要了解更多步骤，可以访问 Github 官方文档之 &lt;a href=&quot;https://docs.github.com/cn/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template&quot;&gt;从模板创建仓库&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oHHZZh.webp&quot; alt=&quot;从模板新建 Start the blog from the template&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;方式二已有博客迁移&quot;&gt;方式二：已有博客迁移&lt;/h4&gt;
-
-&lt;p&gt;  &lt;del&gt;暂时无法支持 gem 直接切换主题，后续将更新此方式。目前只能使用方式一创建仓库后，将文章的 markdown 文件复制到 _posts 目录下应用 H2O-ac 主题。&lt;/del&gt;&lt;/p&gt;
-
-&lt;p&gt;(2021年12月26日更新)&lt;/p&gt;
-
-&lt;p&gt;  现已支持使用 gem 直接切换主题 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jekyll-theme-h2o-ac&lt;/code&gt;。同时，也推出了一键式构建工具 &lt;a href=&quot;https://github.com/zhonger/easy-to-h2o-ac&quot;&gt;easy-to-h2o-ac&lt;/a&gt;，详细可以见项目主页。&lt;/p&gt;
-
-&lt;h3 id=&quot;本地测试&quot;&gt;本地测试&lt;/h3&gt;
-
-&lt;p&gt;  在进行本地测试时，如果需要修改一些样式，则需要先执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install&lt;/code&gt; 来完成前端自动构建工作流依赖库的安装。注意，这里设定的可用 NodeJS 版本为 v17.0.0，使用老版本会报错。其次，务必使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle install&lt;/code&gt; 安装主题所需的所有 Ruby 依赖库。最后执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bundle exec jekyll serve --livereload&lt;/code&gt; 命令即可在本地实时同步预览。只要不修改 _config.yml 文件，不必中断后再启动。然后就是在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;_posts&lt;/code&gt; 目录下写 markdown 文章即可。&lt;/p&gt;
-
-&lt;h3 id=&quot;发布部署&quot;&gt;发布部署&lt;/h3&gt;
-
-&lt;p&gt;  由于 Github 提供 Jekyll 静态生成器的静态页面托管，只要打开仓库的 Pages 功能，当推送更新到 Github 时即会自动部署。此处值得注意的是，如果代码仓库的名字不是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;username.github.io&lt;/code&gt;，而也没有为该仓库的 Pages 提供自定义域名，那么这个仓库将会被部署到子目录，因此此时必须在 _config.yml 文件中设置 base_url，从而生成正常的静态页面。&lt;/p&gt;
-
-&lt;h2 id=&quot;结束语&quot;&gt;结束语&lt;/h2&gt;
-
-&lt;p&gt;  再次感谢廖柯宇及其他小伙伴们对 H2O 主题的付出，没有 H2O 主题就没有 H2O-ac 主题！H2O-ac 主题后续也将继续更新，欢迎小伙伴们使用和 &lt;a href=&quot;https://github.com/zhonger/jekyll-theme-H2O-ac&quot;&gt;Star&lt;/a&gt;，也欢迎大家一起来贡献代码。&lt;/p&gt;
-
-&lt;p&gt;（Ps: &lt;del&gt;由于沿用了 H2O 的 Logo，可能会侵犯廖柯宇的版权。如果的确如此，后续将会设计一个新的 Logo。&lt;/del&gt; 已采用新 Logo。）
-（2022年1月10日更新）&lt;/p&gt;
-</description>
-        <pubDate>Wed, 22 Dec 2021 20:50:00 +0900</pubDate>
-        <link>https://lisz.me/tech/new-theme-h2o-ac.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/new-theme-h2o-ac.html</guid>
-        
-        <category>jekyll</category>
-        
-        <category>theme</category>
-        
-        <category>blog</category>
-        
-        <category>ac</category>
-        
-        <category>develop</category>
-        
-        <category>主题</category>
-        
-        <category>前端开发</category>
-        
-        <category>学术</category>
-        
-        <category>运维</category>
-        
-        
-        <category>tech</category>
         
       </item>
     
