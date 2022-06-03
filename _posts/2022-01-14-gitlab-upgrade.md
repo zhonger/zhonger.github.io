@@ -9,7 +9,7 @@ cover: 'https://i.luish.cc/cover/SD8cop.webp'
 cover_author: 'Theodor Lundqvist'
 cover_author_link: 'https://unsplash.com/@umbriferous'
 tags: 
-- Nextcloud
+- Gitlab
 - Upgrade
 - Fix
 - 升级
