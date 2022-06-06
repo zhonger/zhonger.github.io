@@ -10,7 +10,7 @@
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
-| 阿里云服务器 | www.lisz.ink(下线) | 是 | 否 | 国内单节点 |
+| 阿里云服务器 | [www.lisz.ink](https://www.lisz.ink) | 是 | 否 | 国内单节点 |
 | 腾讯云服务器 | [luish.cc](https://luish.cc) | 是 | 否 | 国内单节点 |
 | 腾讯云 COS | [lisz.ink](https://lisz.ink) | 是 | 否 | 国内 CDN 节点 |
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
