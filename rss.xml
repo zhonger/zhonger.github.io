@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 03 Jun 2022 16:05:56 +0900</pubDate>
-    <lastBuildDate>Fri, 03 Jun 2022 16:05:56 +0900</lastBuildDate>
+    <pubDate>Wed, 08 Jun 2022 19:03:00 +0900</pubDate>
+    <lastBuildDate>Wed, 08 Jun 2022 19:03:00 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -286,6 +286,31 @@
 
 
  &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;相关补充&quot;&gt;相关补充&lt;/h2&gt;
+
+&lt;h3 id=&quot;pwa-空间占用及流量消耗&quot;&gt;PWA 空间占用及流量消耗&lt;/h3&gt;
+
+&lt;p&gt;(2022年6月8日)&lt;/p&gt;
+
+&lt;p&gt;  前两天刚发布本文时，有位叫 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 的网友向我提了一个关于“PWA 空间占用及流量消耗”的问题，我也回答了一些自己的想法（可以在博客主节点 &lt;a href=&quot;https://lisz.me/tech/webmaster/pwa.html&quot;&gt;lisz.me&lt;/a&gt; 的评论区看到具体内容）。首先非常感谢 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 的热心提问，其次他的这个问题也让我觉得可能我需要再进一步了解一下，否则这篇博文的标题中的加速可能需要打上引号了。&lt;/p&gt;
+
+&lt;p&gt;  虽然从我自身的安卓手机 PWA 应用空间占用查询来看，Chrome 的空间设置中的空间占用量有点大（最高 4.9 GB，首次访问 480 MB，如下图所示），但查询手机系统中的空间管理却没有发现 PWA 应用或者 Chrome 占用了所谓的“4.9 GB”空间（PWA 应用 230K 左右，Chrome 1.4 GB 左右）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/IYuKyo.webp&quot; alt=&quot;Chrome 显示存储用量 Storage&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  正如 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 所说，Chrome 显示的空间占用量存在水分，毕竟不可能只访问一个页面就需要下载 400 MB 的东西吧。而且，根本就没有那么多文件让 PWA 应用下载。据个人不完全统计，本站目前所有代码加上所有图床托管图片的总体大小在 15 MB 左右。即使全站都缓存下来，也不可能用到 400 MB。&lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 用在 Stack Overflows 上查到的命令在 Chrome 的控制台中输出了类似 “Using 23K out of 270M”的结果，因此他猜测可能是预申请了过百兆的空间，而实际使用量只有几十 K 左右。对此，我表示赞同。从实际的源站流量监控来看，与所谓的 400 MB 也不匹配。从上月 26 日到今天（共 14 天）为止消耗了 323.2 MB 流量，本月截止到今天（共 8 天）图床托管消耗了 131 MB 流量。&lt;/p&gt;
+
+&lt;p&gt;  综合以上的信息来看，一个像本站一样的静态博客 PWA 化之后对于智能终端空间占用量或者服务提供的流量消耗影响不会太大。如果是其他非常复杂的站点或者有大量未经优化图片的站点，可能全部 PWA 化会在空间占用了和流量消耗上面有一些比较明显的影响。这一点可以查看参考资料《PWA 初探》一文了解更多。其实我们还是应该回到我们使用 PWA 的初衷上来，PWA 是用来加速和优化提升用户体验的，因此我们可以选择某些部分 PWA 化而非整体。&lt;/p&gt;
+
+&lt;p&gt;  对于博客或者静态站点 PWA 化，个人有几点小建议可以在一定程度上降低 PWA 化对空间占用和流量消耗的影响：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;图片 webp 化&lt;/strong&gt;：压缩图片大小、保留大部分的质量，从而加快所有图片加载时间。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;图床托管图片&lt;/strong&gt;：图片交由图床来管理和存储，这样可以分担一部分的源站流量，毕竟也是有很多可以免费使用的图床的。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;懒加载和骨架屏&lt;/strong&gt;：懒加载可以只加载可视区域内的若干张图片，只有在页面滑动时才会陆续加载将要看到的区域内的图片，减少初次渲染页面的时间；骨架屏能够在元素尚未完全加载前填充元素的空间，不会突然冒出元素占用（Vue 用得不好的时候会有这种情况），从视觉上给用户更加友好的体验。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CDN 化&lt;/strong&gt;：虽然 PWA 应用有缓存能力，但是只是本地缓存，对于大多数第一次请求缓存的时间还是取决于用户客户端到源站之间的网络，CDN 能够很好地弥补这一点。&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
 &lt;ul&gt;
@@ -293,6 +318,9 @@
   &lt;li&gt;&lt;a href=&quot;https://sunbufu.vercel.app/posts/2019/2019-01-23-pwa/&quot;&gt;jekyll 博客的 PWA 配置&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000041729491&quot;&gt;小程序鼻祖 —— 在国内逐渐消亡的 PWA 可以带给我们哪些启示？&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000018590996&quot;&gt;Flutter 、React Native 、 Ionic、 NativeScript 、小程序和 PWA 哪个值得学？&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mrluo.life/article/detail/140/pwa-primer&quot;&gt;PWA 初探&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://web.dev/storage-for-the-web/&quot;&gt;Web 存储&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lavas-project.github.io/pwa-book/&quot;&gt;《PWA 应用实战》&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Fri, 03 Jun 2022 10:54:00 +0900</pubDate>
@@ -1521,7 +1549,7 @@ docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;n
         <link>https://lisz.me/tech/webmaster/gitlab-upgrade.html</link>
         <guid isPermaLink="true">https://lisz.me/tech/webmaster/gitlab-upgrade.html</guid>
         
-        <category>Nextcloud</category>
+        <category>Gitlab</category>
         
         <category>Upgrade</category>
         
