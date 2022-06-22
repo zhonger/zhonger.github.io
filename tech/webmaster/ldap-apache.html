@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDAP 集成之 Apache 篇 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="LDAP 集成之 Apache 篇">
+    <meta name="keywords"  content="LDAP, Apache">
+    <!-- Open Graph -->
+    <meta property="og:title" content="LDAP 集成之 Apache 篇 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/ldap-apache.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
+    <meta property="post-date-format" content="0">
+    
+    <meta property="post-date" content="2022-06-21 13:24:00 +0900" />
+    
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <meta name="theme-color" content="#81BBFF" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png"/>
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/assets/fonts/Merriweather-Regular.ttf" media="print" onload="this.media='all'" />
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+
+
+
+<body class="line-numbers" ontouchstart="">
+
+
+  <!--[if lt IE 10]>
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all" class="post">
+  
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/" aria-label="logo"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+            <li>
+                <a href="/" aria-label="home">
+                    home
+                </a>
+            </li>
+            
+            <li>
+                <a href="/blog/index.html" aria-label="blog">
+                    blog
+                </a>
+            </li>
+            
+            <li>
+                <a href="/archives.html" aria-label="archives">
+                    archives
+                </a>
+            </li>
+            
+            <li>
+                <a href="/tags.html" aria-label="tags">
+                    tags
+                </a>
+            </li>
+            
+            <li>
+                <a href="/feed.xml" aria-label="RSS">
+                    RSS
+                </a>
+            </li>
+            
+            <li>
+                <a href="/logs.html" aria-label="logs">
+                    logs
+                </a>
+            </li>
+            
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
+          
+            
+              <a href="/tags.html#LDAP" class="post-tag">LDAP</a>
+            
+              <a href="/tags.html#Apache" class="post-tag">Apache</a>
+            
+          
+        </div>
+        <h1>LDAP 集成之 Apache 篇</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-user"></use>
+            </svg>
+            zhonger
+          </span>
+          <time class="post-meta-item" datetime="22-06-21">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-calendar"></use>
+            </svg>
+            <span class="create-at"></span>
+          </time>
+          <time class="post-meta-item" datetime="22-06-21">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-update"></use>
+            </svg>
+            <span class="update-at"></span>
+          </time>
+          
+            <span class="post-meta-item">
+              <svg class="icon words" aria-hidden="true">
+                <use xlink:href="#icon-words"></use>
+              </svg>
+              
+              本文总共  5.3k  字
+            </span>
+            <span class="post-meta-item">
+              <svg class="icon time" aria-hidden="true">
+                <use xlink:href="#icon-time"></use>
+              </svg>
+              阅读全文大约需要 16 分钟
+            </span>
+            
+              <span class="post-meta-item">
+                <svg class="icon pv" aria-hidden="true">
+                  <use xlink:href="#icon-pv"></use>
+                </svg>
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-image"></use>
+              </svg>
+              
+                
+                  封面图片由 <a href="https://unsplash.com/@melpoole" target="_blank">Mel Poole</a> 提供
+                
+              
+            </span>
+          
+        </div>
+      </div>
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://i.luish.cc/cover/c7e20u.webp') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">利用 LDAP 为 Apache 提供用户认证服务</h2>
+      
+
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
+
+<h3 id="apache">Apache</h3>
+
+<p>  Apache HTTP 服务器作为当今流行的几大 HTTP 服务器之一，几乎占据了半壁江山。与知名的Nginx（现已被 F1 收购）、微软的 IIS 相比，Apache 具有更好的模块化支持，无论是从服务端的编程语言还是到身份认证方案。Apache 支持 Perl、Python、PHP 等常用服务端语言，同时也支持 Basic 认证、LDAP 认证、OAuth 2.0 等。尤其是 LAMP（Linux+Apache+MySQL+PHP）集成环境已经成为了虚拟主机的首选。当然，也有提供 ASP 虚拟主机环境的。</p>
+
+<h3 id="apache-与博客发展">Apache 与博客发展</h3>
+
+<p>  实际上，在博客兴起的初期，大部分博客是最简单的静态页面。而随着服务器端语言的发展，开始有了基于 ASP.net 或 PHP 的博客开源程序，例如最为流行的 WordPress 就是基于 PHP 编写的。在笔者学习博客的初期，也是使用了 WordPress 和 PHP 虚拟主机来搭建自己的博客。可以说，PHP 或 ASP 集成环境在相当一段时间内可能都是最好的博客或者网站解决方案。但随着云服务、无服务计算、Git 等的兴起，以 Git 为中心的持续集成、持续部署的方式越来越成为了搭建个人静态博客的首选。这也反映了博客发展的动态变化过程：<strong>静态博客→动态博客→静态博客</strong>。</p>
+
+<p>  以 Github Page、Gitlab Page、Netlify、Vercel、Cloudflare Page 等为代表的静态站点部署方式越来越受到大家的喜爱，现在大部分大公司的文档都已经转变为这种方式，比如 Azure 的官方文档、Cloudflare 的官方文档、腾讯云的官方文档等。这样一种方式不仅有利于开发的快速迭代，还有利于吸引大众参与到文档的贡献与纠错中来，可以使文档越来越好。当然，这其实就是“开源”的思想。那这是不是就意味着 Apache 对静态网站变得不那么有用了呢？当然不是。Apache 所支持的认证模块、日志模块、重写模块、代理模块等对静态网站也非常重要。</p>
+
+<h3 id="apache-对文档的妙用">Apache 对文档的妙用</h3>
+
+<p>  现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：</p>
+
+<p><img src="https://i.luish.cc/blog/4hsLnz.webp" alt="基于 Apache 的文档方案 Solutions based on Apache" /></p>
+
+<p>  如上图所示，基于 Apache 的解决方案主要包含以下三点：</p>
+
+<ol>
+  <li>利用 Apache 与 LDAP 或其他用户系统集成来验证权限；</li>
+  <li>利用 Apache 的日志功能来记录所有验权动作以及用户行为；</li>
+  <li>利用 Apache 的重写模块和代理模块将所有文档集中在一个域名的不同子目录下。</li>
+</ol>
+
+<h2 id="实践">实践</h2>
+
+<p>  为了尽可能简单地实现一下上面所提到的基于 Apache 的文档解决方案，这里采用了 Docker 镜像的方式。</p>
+
+<h3 id="环境准备">环境准备</h3>
+
+<ul>
+  <li>Docker 环境（推荐 Linux 或 Mac）</li>
+  <li>已安装 docker-compose 工具</li>
+</ul>
+
+<h3 id="配置文件准备">配置文件准备</h3>
+
+<p>  如需自行构建 Docker 镜像，请将以下三个配置文件放置在 conf 子目录中。如直接使用下面笔者构建的 <a href="https://hub.docker.com/r/zhonger/ldap-apache">zhonger/ldap-apache</a> 镜像，可以忽略。</p>
+
+<h4 id="ldap-验证定义">LDAP 验证定义</h4>
+
+<pre><code class="language-apacheconf"># ldap-demo.conf
+
+&lt;AuthnProviderAlias ldap demo&gt;
+  AuthLDAPBindDN ${LDAP_BindDN}
+  AuthLDAPBindPassword ${LDAP_BindPass}
+  AuthLDAPURL ${LDAP_URL}
+  Require ldap-group ${LDAP_BindGroup}
+&lt;/AuthnProviderAlias&gt;
+</code></pre>
+
+<h4 id="激活-ldap-验证">激活 LDAP 验证</h4>
+
+<pre><code class="language-apacheconf"># .htaccess
+
+AuthBasicProvider demo
+AuthType Basic
+AuthName "Protected Area"
+Require valid-user
+</code></pre>
+
+<h4 id="重写-apache-配置文件">重写 Apache 配置文件</h4>
+
+<pre><code class="language-apacheconf"># apache2.conf
+
+DefaultRuntimeDir ${APACHE_RUN_DIR}
+
+PidFile ${APACHE_PID_FILE}
+
+Timeout 300
+
+KeepAlive On
+
+MaxKeepAliveRequests 100
+
+KeepAliveTimeout 5
+
+User ${APACHE_RUN_USER}
+Group ${APACHE_RUN_GROUP}
+
+HostnameLookups Off
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+
+LogLevel warn
+
+# Include module configuration:
+IncludeOptional mods-enabled/*.load
+IncludeOptional mods-enabled/*.conf
+
+# Include list of ports to listen on
+Include ports.conf
+
+&lt;Directory /&gt;
+    Options FollowSymLinks
+    AllowOverride None
+    Require all denied
+&lt;/Directory&gt;
+
+&lt;Directory /usr/share&gt;
+    AllowOverride None
+    Require all granted
+&lt;/Directory&gt;
+
+&lt;Directory /var/www/&gt;
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;
+
+AccessFileName .htaccess
+
+&lt;FilesMatch "^\.ht"&gt;
+    Require all denied
+&lt;/FilesMatch&gt;
+
+LogFormat "%v:%p %h %l %u %t \"%r\" %&gt;s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
+LogFormat "%h %l %u %t \"%r\" %&gt;s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %&gt;s %O" common
+LogFormat "%{Referer}i -&gt; %U" referer
+LogFormat "%{User-agent}i" agent
+
+IncludeOptional conf-enabled/*.conf
+IncludeOptional sites-enabled/*.conf
+</code></pre>
+
+<h3 id="apache-子目录设置">Apache 子目录设置</h3>
+
+<p>  之前提到如果有多个文档分别以多个 Git 项目存在，那么最终编译成的静态文件也是分别存放或者分别部署。这里介绍两种子目录的形式：<strong>目录假名（Alias）</strong>和<strong>代理（Proxy）</strong>。</p>
+
+<h4 id="目录假名">目录假名</h4>
+
+<p>  目录假名比较简单，我们可以直接使用以下配置实现方案图中的各个文档目录：</p>
+
+<pre><code class="language-apacheconf">...
+Alias "/dvm/" "/var/www/dvm/"
+Alias "/ds3/" "/var/www/ds3/"
+Alias "/dgit/" "/var/www/dgit/"
+Alias "/dml/" "/var/www/dml/"
+Alias "/dnc/" "/var/www/dnc/"
+...
+&lt;Directory /var/www/&gt;
+...
+</code></pre>
+
+<p>  由于下面构建的镜像仍采用了上面的 Apache 配置文件，所以不包含以上目录假名设置。如有需要，可以按照上面给出的顺序将目录假名设置加入到新的 apache2.conf 文件中，并且在 docker-compose.yml 文件中如下所示挂载新的 apache2.conf 文件即可生效。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">./data:/var/www/</span>
+        <span class="pi">-</span> <span class="s">./logs:/var/log/apache2/</span>
+        <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime</span>
+        <span class="pi">-</span> <span class="s">./apache2.conf:/etc/apache2/apache2.conf</span>
+<span class="nn">...</span>
+</code></pre></div></div>
+
+<h4 id="代理">代理</h4>
+
+<p>  下面的构建镜像 Dockerfile 中将会预先启用代理模块，由于可能会代理 HTTPS 端口，所以 HTTP 模块和 SSL 模块也预先启用了。除此之外，如果需要代理 HTTPS 站点，就要像下面一样开启 SSLProxyEngine 配置，否则只能完成 HTTP 代理。代理配置的第二行是“ProxyPass+子目录+代理 URL”。</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>需要注意的是应该把<strong>代理配置</strong>放在<strong>目录配置</strong>之前。</p>
+
+
+
+ </div> </div>
+<pre><code class="language-apacheconf">...
+SSLProxyEngine On
+ProxyPass /foo https://foo.example.com
+...
+&lt;Directory /var/www/&gt;
+...
+</code></pre>
+
+<h3 id="构建镜像">构建镜像</h3>
+
+<p>  Docker 镜像的构建实际上就是要做这么几件事：</p>
+
+<ul>
+  <li>复制三个配置文件到容器镜像中</li>
+  <li>启用 LDAP 认证模块</li>
+  <li>准备好日志目录和默认日志文件</li>
+</ul>
+
+<div class="language-docker highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> php:7-apache</span>
+
+<span class="k">LABEL</span><span class="s"> maintainer="zhonger zhonger@live.cn"</span>
+
+<span class="c"># Enable ldap for apache2</span>
+<span class="k">COPY</span><span class="s"> conf/ldap-demo.conf /etc/apache2/conf-available/ldap-demo.conf</span>
+
+<span class="k">RUN </span>a2enmod authnz_ldap proxy proxy_http ssl <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">ln</span> <span class="nt">-s</span> /etc/apache2/conf-available/ldap-demo.conf /etc/apache2/conf-enabled/ldap-demo.conf
+
+<span class="k">COPY</span><span class="s"> conf/.htaccess /var/www/html/</span>
+<span class="k">COPY</span><span class="s"> conf/apache2.conf /etc/apache2/apache2.conf</span>
+
+<span class="c"># Save logs for apache</span>
+<span class="k">RUN </span><span class="nb">rm</span> /var/log/apache2/<span class="k">*</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">cd</span> /var/log/apache2/ <span class="o">&amp;&amp;</span> <span class="se">\
+</span>    <span class="nb">touch </span>access.log error.log
+
+<span class="c"># Remove cache</span>
+<span class="k">RUN </span><span class="nb">rm</span> <span class="nt">-rf</span> /var/lib/apt/lists/<span class="k">*</span>
+
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+</code></pre></div></div>
+
+<p>  当准备好配置文件和上面的 Dockerfile 文件时，执行 <code class="language-plaintext highlighter-rouge">docker build . -t zhonger/ldap-apache</code> 命令构建 Docker 镜像。</p>
+
+<h3 id="运行验证">运行验证</h3>
+
+<p>  构建 Docker 镜像成功后，新建 docker-compose.yml 文件并使用 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令来运行一个实例。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+    <span class="na">apache</span><span class="pi">:</span>
+      <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/ldap-apache:latest</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">./data:/var/www/</span>
+        <span class="pi">-</span> <span class="s">./logs:/var/log/apache2/</span>
+        <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime</span>
+      <span class="na">environment</span><span class="pi">:</span>
+        <span class="na">LDAP_URL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ldap://ldap.example.com/ou=users,dc=example,dc=com?uid"</span>
+        <span class="na">LDAP_BindDN</span><span class="pi">:</span> <span class="s2">"</span><span class="s">cn=admin,dc=example,dc=com"</span>
+        <span class="na">LDAP_BindPass</span><span class="pi">:</span> <span class="s2">"</span><span class="s">xxxxxxxxxx"</span>
+        <span class="na">LDAP_BindGroup</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ou=people,dc=example,dc=com"</span>
+        <span class="na">APACHE_LOG_DIR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/log/apache2"</span>
+      <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">80:80</span>
+      <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+</code></pre></div></div>
+
+<h4 id="验证网页">验证网页</h4>
+
+<p>  为了验证 LDAP 认证是否有效，这里写了一个简单的 PHP 文件 /var/www/html/p.php。当没有放置 .htaccess 文件时，无须任何认证即可访问。当在 /var/www/html 目录放置 .htaccess 文件时，浏览器再次访问会弹出如下登录弹窗。正确输入 LDAP 允许的用户名和密码后，浏览器会再次正常显示刚才看到的内容。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- p.php --&gt;</span>
+<span class="cp">&lt;?</span> <span class="n">php</span>
+    <span class="k">echo</span> <span class="nb">phpinfo</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p><img src="https://i.luish.cc/blog/iw6WKt.webp" alt="正常内容 Normal Page Content" />
+<img src="https://i.luish.cc/blog/Px1PiS.webp" alt="要求验证 Auth Required" /></p>
+
+<h4 id="验证日志">验证日志</h4>
+
+<p>  当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。</p>
+
+<p><img src="https://i.luish.cc/blog/CdxxGU.webp" alt="日志文件 Log file" /></p>
+
+<h4 id="验证目录假名">验证目录假名</h4>
+
+<p>  这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。</p>
+
+<p><img src="https://i.luish.cc/blog/NDnuLk.webp" alt="目录假名 Alias" /></p>
+
+<h4 id="验证代理">验证代理</h4>
+
+<p>  这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。</p>
+
+<p><img src="https://i.luish.cc/blog/kdbabl.webp" alt="代理 Proxy" /></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://zh.wikipedia.org/zh-cn/Apache_HTTP_Server">Apache HTTP 服务器</a></li>
+  <li><a href="https://httpd.apache.org/docs/current/ja/mod/mod_alias.html">Apache Module mod_alias</a></li>
+  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension">How To Use Apache HTTP Server As Reverse-Proxy Using mod_proxy Extension</a></li>
+</ul>
+
+            <div class="post-copyright">
+              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">Mr Li</a>&nbsp;所有，转载请注明本文链接。</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p><span>本文标题：</span>《 LDAP 集成之 Apache 篇 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-apache.html">https://lisz.me/tech/webmaster/ldap-apache.html</a></p>
+            </div>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a><ul><li><a href="#apache">Apache</a></li><li><a href="#apache-与博客发展">Apache 与博客发展</a></li><li><a href="#apache-对文档的妙用">Apache 对文档的妙用</a></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#环境准备">环境准备</a></li><li><a href="#配置文件准备">配置文件准备</a><ul><li><a href="#ldap-验证定义">LDAP 验证定义</a></li><li><a href="#激活-ldap-验证">激活 LDAP 验证</a></li><li><a href="#重写-apache-配置文件">重写 Apache 配置文件</a></li></ul></li><li><a href="#apache-子目录设置">Apache 子目录设置</a><ul><li><a href="#目录假名">目录假名</a></li><li><a href="#代理">代理</a></li></ul></li><li><a href="#构建镜像">构建镜像</a></li><li><a href="#运行验证">运行验证</a><ul><li><a href="#验证网页">验证网页</a></li><li><a href="#验证日志">验证日志</a></li><li><a href="#验证目录假名">验证目录假名</a></li><li><a href="#验证代理">验证代理</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
+      </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
+    </div>
+
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
+        
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank" aria-label="github">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
+        
+      </section>
+      <section class="post-footer-item read-next">
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/webmaster/pwa.html" class="read-next-link" aria-label="PWA：可能是成本最低的站点加速方式"></a>
+            <section>
+              <span>PWA：可能是成本最低的站点加速方式</span>
+              <p>前言</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://i.luish.cc/cover/EBXSnv.webp" alt="">
+            
+        </div>
+        
+      </section>
+      
+   
+      
+
+      
+    </section>
+
+    <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.9  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  
+  </section>
+  
+  <section>
+    <span id="busuanzi_container_site_pv">
+      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+    </span>
+    <span id="busuanzi_container_site_uv">
+      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </section>
+  
+</footer>
+<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
+  <svg class="icon list day" aria-hidden="true">
+    <use xlink:href="#icon-list-day"></use>
+  </svg>
+  <svg class="icon list night" aria-hidden="true">
+    <use xlink:href="#icon-list-night"></use>
+  </svg>
+  <svg class="icon exit day" aria-hidden="true">
+    <use xlink:href="#icon-exit-day"></use>
+  </svg>
+  <svg class="icon exit night" aria-hidden="true">
+    <use xlink:href="#icon-exit-night"></use>
+  </svg>
+</button>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
+  </svg>
+</button>
+
+
+  </div>
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+    $("a.social-share-icon").each(function() {
+      $(this).attr("aria-label", $(this).attr("class").split(' ')[1])
+    });
+  </script>
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          var baseurl = $("meta[property='og:baseurl']").attr('content');
+          $("p img").each(function() {
+              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload").attr('src', baseurl + '/assets/img/loading.gif');
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });   
+          
+          
+
+          if($("#comments-switch").length > 0){
+            var comment_status = $("#cmn-toggle-4")[0].checked;
+            if(comment_status){
+              $("#waline").addClass("active");
+            }else {
+              $("#disqus_thread").addClass("active");
+            }
+            $("#cmn-toggle-4").click(function(){
+              $("#disqus_thread").toggleClass("active");
+              $("#waline").toggleClass("active");
+            })
+          }else {
+            if($("#disqus_thread").length > 0) {
+              $("#disqus_thread").addClass("active");
+            }else if($("#waline").length > 0) {
+              $("#waline").addClass("active");
+            }
+          }
+
+          var time_formats = ['YYYY-MM-DD HH:mm:ss ZZ', 'YYYY DD MMM HH:mm:ss ZZ', 'YYYY年MM月DD日 HH:mm:ss ZZ'];
+          function dateFormat(date, format){
+            var date_org = dayjs(date, time_formats[format]);
+            var date     = date_org.format(time_formats[format]);
+            return {"date_org": date_org, "date": date}
+          }
+
+          dayjs.extend(window.dayjs_plugin_customParseFormat);
+          dayjs.extend(window.dayjs_plugin_relativeTime);
+          var post_date = $("meta[property='post-date']").attr('content');
+          var post_date_format = $("meta[property='post-date-format']").attr('content');
+          var local_post_date = dateFormat(post_date, post_date_format);
+
+          $(".post time span.create-at").html(local_post_date["date"]);
+
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-06-21-ldap-apache.md")
+          .then((response) => {
+            return response.json();
+          })
+          .then((commits) => {
+            if(commits.length != 0){
+              var update_at = dayjs(commits[0]['commit']['committer']['date']);
+            }else {
+              var update_at = post_date
+            }
+
+            var local_update_at = dateFormat(update_at, post_date_format);
+            $('.post time span.update-at').html(local_update_at["date"]);
+
+            var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            if(relative_time > 365){
+              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+            }
+          });         
+      });
+  </script>
+  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+  
+  
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log("An active service worker found, no need to register");
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/"
+            })
+            .then(function (reg) {
+                console.log("Service worker has been registered for scope: " + reg.scope);
+            });
+        }
+    }
+
+// 检测浏览器是否支持SW
+// if(navigator.serviceWorker != null){
+//     navigator.serviceWorker.register("/sw.js")
+//         .then(function(registartion){
+//             console.log('支持sw:',registartion.scope)
+//         })
+// } else {
+//     console.log('不支持sw')
+// }
+</script>
+  
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+</body>
+
+</html>

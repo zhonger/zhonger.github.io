@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "LDAP 集成之 Apache 篇",
+      "tags"     : "LDAP Apache",
+      "url"      : "/tech/webmaster/ldap-apache.html"
+    } ,
+  
+    {
       "title"    : "PWA：可能是成本最低的站点加速方式",
       "tags"     : "PWA 渐进式网络应用程序 小程序 加速 Accelerate",
       "url"      : "/tech/webmaster/pwa.html"

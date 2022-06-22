@@ -5,9 +5,301 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 08 Jun 2022 19:03:00 +0900</pubDate>
-    <lastBuildDate>Wed, 08 Jun 2022 19:03:00 +0900</lastBuildDate>
+    <pubDate>Wed, 22 Jun 2022 12:49:56 +0900</pubDate>
+    <lastBuildDate>Wed, 22 Jun 2022 12:49:56 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>LDAP 集成之 Apache 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;h3 id=&quot;apache&quot;&gt;Apache&lt;/h3&gt;
+
+&lt;p&gt;  Apache HTTP 服务器作为当今流行的几大 HTTP 服务器之一，几乎占据了半壁江山。与知名的Nginx（现已被 F1 收购）、微软的 IIS 相比，Apache 具有更好的模块化支持，无论是从服务端的编程语言还是到身份认证方案。Apache 支持 Perl、Python、PHP 等常用服务端语言，同时也支持 Basic 认证、LDAP 认证、OAuth 2.0 等。尤其是 LAMP（Linux+Apache+MySQL+PHP）集成环境已经成为了虚拟主机的首选。当然，也有提供 ASP 虚拟主机环境的。&lt;/p&gt;
+
+&lt;h3 id=&quot;apache-与博客发展&quot;&gt;Apache 与博客发展&lt;/h3&gt;
+
+&lt;p&gt;  实际上，在博客兴起的初期，大部分博客是最简单的静态页面。而随着服务器端语言的发展，开始有了基于 ASP.net 或 PHP 的博客开源程序，例如最为流行的 WordPress 就是基于 PHP 编写的。在笔者学习博客的初期，也是使用了 WordPress 和 PHP 虚拟主机来搭建自己的博客。可以说，PHP 或 ASP 集成环境在相当一段时间内可能都是最好的博客或者网站解决方案。但随着云服务、无服务计算、Git 等的兴起，以 Git 为中心的持续集成、持续部署的方式越来越成为了搭建个人静态博客的首选。这也反映了博客发展的动态变化过程：&lt;strong&gt;静态博客→动态博客→静态博客&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;  以 Github Page、Gitlab Page、Netlify、Vercel、Cloudflare Page 等为代表的静态站点部署方式越来越受到大家的喜爱，现在大部分大公司的文档都已经转变为这种方式，比如 Azure 的官方文档、Cloudflare 的官方文档、腾讯云的官方文档等。这样一种方式不仅有利于开发的快速迭代，还有利于吸引大众参与到文档的贡献与纠错中来，可以使文档越来越好。当然，这其实就是“开源”的思想。那这是不是就意味着 Apache 对静态网站变得不那么有用了呢？当然不是。Apache 所支持的认证模块、日志模块、重写模块、代理模块等对静态网站也非常重要。&lt;/p&gt;
+
+&lt;h3 id=&quot;apache-对文档的妙用&quot;&gt;Apache 对文档的妙用&lt;/h3&gt;
+
+&lt;p&gt;  现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/4hsLnz.webp&quot; alt=&quot;基于 Apache 的文档方案 Solutions based on Apache&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  如上图所示，基于 Apache 的解决方案主要包含以下三点：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;利用 Apache 与 LDAP 或其他用户系统集成来验证权限；&lt;/li&gt;
+  &lt;li&gt;利用 Apache 的日志功能来记录所有验权动作以及用户行为；&lt;/li&gt;
+  &lt;li&gt;利用 Apache 的重写模块和代理模块将所有文档集中在一个域名的不同子目录下。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;p&gt;  为了尽可能简单地实现一下上面所提到的基于 Apache 的文档解决方案，这里采用了 Docker 镜像的方式。&lt;/p&gt;
+
+&lt;h3 id=&quot;环境准备&quot;&gt;环境准备&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker 环境（推荐 Linux 或 Mac）&lt;/li&gt;
+  &lt;li&gt;已安装 docker-compose 工具&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;配置文件准备&quot;&gt;配置文件准备&lt;/h3&gt;
+
+&lt;p&gt;  如需自行构建 Docker 镜像，请将以下三个配置文件放置在 conf 子目录中。如直接使用下面笔者构建的 &lt;a href=&quot;https://hub.docker.com/r/zhonger/ldap-apache&quot;&gt;zhonger/ldap-apache&lt;/a&gt; 镜像，可以忽略。&lt;/p&gt;
+
+&lt;h4 id=&quot;ldap-验证定义&quot;&gt;LDAP 验证定义&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# ldap-demo.conf
+
+&amp;lt;AuthnProviderAlias ldap demo&amp;gt;
+  AuthLDAPBindDN ${LDAP_BindDN}
+  AuthLDAPBindPassword ${LDAP_BindPass}
+  AuthLDAPURL ${LDAP_URL}
+  Require ldap-group ${LDAP_BindGroup}
+&amp;lt;/AuthnProviderAlias&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;激活-ldap-验证&quot;&gt;激活 LDAP 验证&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# .htaccess
+
+AuthBasicProvider demo
+AuthType Basic
+AuthName &quot;Protected Area&quot;
+Require valid-user
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;重写-apache-配置文件&quot;&gt;重写 Apache 配置文件&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# apache2.conf
+
+DefaultRuntimeDir ${APACHE_RUN_DIR}
+
+PidFile ${APACHE_PID_FILE}
+
+Timeout 300
+
+KeepAlive On
+
+MaxKeepAliveRequests 100
+
+KeepAliveTimeout 5
+
+User ${APACHE_RUN_USER}
+Group ${APACHE_RUN_GROUP}
+
+HostnameLookups Off
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+
+LogLevel warn
+
+# Include module configuration:
+IncludeOptional mods-enabled/*.load
+IncludeOptional mods-enabled/*.conf
+
+# Include list of ports to listen on
+Include ports.conf
+
+&amp;lt;Directory /&amp;gt;
+    Options FollowSymLinks
+    AllowOverride None
+    Require all denied
+&amp;lt;/Directory&amp;gt;
+
+&amp;lt;Directory /usr/share&amp;gt;
+    AllowOverride None
+    Require all granted
+&amp;lt;/Directory&amp;gt;
+
+&amp;lt;Directory /var/www/&amp;gt;
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+&amp;lt;/Directory&amp;gt;
+
+AccessFileName .htaccess
+
+&amp;lt;FilesMatch &quot;^\.ht&quot;&amp;gt;
+    Require all denied
+&amp;lt;/FilesMatch&amp;gt;
+
+LogFormat &quot;%v:%p %h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot;&quot; vhost_combined
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot;&quot; combined
+LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O&quot; common
+LogFormat &quot;%{Referer}i -&amp;gt; %U&quot; referer
+LogFormat &quot;%{User-agent}i&quot; agent
+
+IncludeOptional conf-enabled/*.conf
+IncludeOptional sites-enabled/*.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;apache-子目录设置&quot;&gt;Apache 子目录设置&lt;/h3&gt;
+
+&lt;p&gt;  之前提到如果有多个文档分别以多个 Git 项目存在，那么最终编译成的静态文件也是分别存放或者分别部署。这里介绍两种子目录的形式：&lt;strong&gt;目录假名（Alias）&lt;/strong&gt;和&lt;strong&gt;代理（Proxy）&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h4 id=&quot;目录假名&quot;&gt;目录假名&lt;/h4&gt;
+
+&lt;p&gt;  目录假名比较简单，我们可以直接使用以下配置实现方案图中的各个文档目录：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;...
+Alias &quot;/dvm/&quot; &quot;/var/www/dvm/&quot;
+Alias &quot;/ds3/&quot; &quot;/var/www/ds3/&quot;
+Alias &quot;/dgit/&quot; &quot;/var/www/dgit/&quot;
+Alias &quot;/dml/&quot; &quot;/var/www/dml/&quot;
+Alias &quot;/dnc/&quot; &quot;/var/www/dnc/&quot;
+...
+&amp;lt;Directory /var/www/&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;  由于下面构建的镜像仍采用了上面的 Apache 配置文件，所以不包含以上目录假名设置。如有需要，可以按照上面给出的顺序将目录假名设置加入到新的 apache2.conf 文件中，并且在 docker-compose.yml 文件中如下所示挂载新的 apache2.conf 文件即可生效。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/var/www/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./logs:/var/log/apache2/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./apache2.conf:/etc/apache2/apache2.conf&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;代理&quot;&gt;代理&lt;/h4&gt;
+
+&lt;p&gt;  下面的构建镜像 Dockerfile 中将会预先启用代理模块，由于可能会代理 HTTPS 端口，所以 HTTP 模块和 SSL 模块也预先启用了。除此之外，如果需要代理 HTTPS 站点，就要像下面一样开启 SSLProxyEngine 配置，否则只能完成 HTTP 代理。代理配置的第二行是“ProxyPass+子目录+代理 URL”。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;需要注意的是应该把&lt;strong&gt;代理配置&lt;/strong&gt;放在&lt;strong&gt;目录配置&lt;/strong&gt;之前。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;...
+SSLProxyEngine On
+ProxyPass /foo https://foo.example.com
+...
+&amp;lt;Directory /var/www/&amp;gt;
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;构建镜像&quot;&gt;构建镜像&lt;/h3&gt;
+
+&lt;p&gt;  Docker 镜像的构建实际上就是要做这么几件事：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;复制三个配置文件到容器镜像中&lt;/li&gt;
+  &lt;li&gt;启用 LDAP 认证模块&lt;/li&gt;
+  &lt;li&gt;准备好日志目录和默认日志文件&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; php:7-apache&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;LABEL&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; maintainer=&quot;zhonger zhonger@live.cn&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Enable ldap for apache2&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/ldap-demo.conf /etc/apache2/conf-available/ldap-demo.conf&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;a2enmod authnz_ldap proxy proxy_http ssl &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /etc/apache2/conf-available/ldap-demo.conf /etc/apache2/conf-enabled/ldap-demo.conf
+
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/.htaccess /var/www/html/&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/apache2.conf /etc/apache2/apache2.conf&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Save logs for apache&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; /var/log/apache2/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/log/apache2/ &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
+&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;access.log error.log
+
+&lt;span class=&quot;c&quot;&gt;# Remove cache&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/lib/apt/lists/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;EXPOSE&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; 80&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  当准备好配置文件和上面的 Dockerfile 文件时，执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker build . -t zhonger/ldap-apache&lt;/code&gt; 命令构建 Docker 镜像。&lt;/p&gt;
+
+&lt;h3 id=&quot;运行验证&quot;&gt;运行验证&lt;/h3&gt;
+
+&lt;p&gt;  构建 Docker 镜像成功后，新建 docker-compose.yml 文件并使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令来运行一个实例。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2&apos;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;apache&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zhonger/ldap-apache:latest&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/var/www/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./logs:/var/log/apache2/&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;LDAP_URL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ldap://ldap.example.com/ou=users,dc=example,dc=com?uid&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;LDAP_BindDN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;cn=admin,dc=example,dc=com&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;LDAP_BindPass&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;xxxxxxxxxx&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;LDAP_BindGroup&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ou=people,dc=example,dc=com&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/log/apache2&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;80:80&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;验证网页&quot;&gt;验证网页&lt;/h4&gt;
+
+&lt;p&gt;  为了验证 LDAP 认证是否有效，这里写了一个简单的 PHP 文件 /var/www/html/p.php。当没有放置 .htaccess 文件时，无须任何认证即可访问。当在 /var/www/html 目录放置 .htaccess 文件时，浏览器再次访问会弹出如下登录弹窗。正确输入 LDAP 允许的用户名和密码后，浏览器会再次正常显示刚才看到的内容。&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- p.php --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;php&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;phpinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/iw6WKt.webp&quot; alt=&quot;正常内容 Normal Page Content&quot; /&gt;
+&lt;img src=&quot;https://i.luish.cc/blog/Px1PiS.webp&quot; alt=&quot;要求验证 Auth Required&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;验证日志&quot;&gt;验证日志&lt;/h4&gt;
+
+&lt;p&gt;  当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/CdxxGU.webp&quot; alt=&quot;日志文件 Log file&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;验证目录假名&quot;&gt;验证目录假名&lt;/h4&gt;
+
+&lt;p&gt;  这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/NDnuLk.webp&quot; alt=&quot;目录假名 Alias&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;验证代理&quot;&gt;验证代理&lt;/h4&gt;
+
+&lt;p&gt;  这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/kdbabl.webp&quot; alt=&quot;代理 Proxy&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/zh-cn/Apache_HTTP_Server&quot;&gt;Apache HTTP 服务器&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://httpd.apache.org/docs/current/ja/mod/mod_alias.html&quot;&gt;Apache Module mod_alias&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension&quot;&gt;How To Use Apache HTTP Server As Reverse-Proxy Using mod_proxy Extension&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 21 Jun 2022 13:24:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-apache.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-apache.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>Apache</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>PWA：可能是成本最低的站点加速方式</title>
@@ -1932,127 +2224,6 @@ storages.numeric_id
         <category>tech</category>
         
         <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>[译文]迭代机器学习：迈向模型准确性的一步</title>
-        <description>&lt;p&gt;&lt;strong&gt;原文标题&lt;/strong&gt;：&lt;a href=&quot;https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/&quot;&gt;Iterative Machine Learning: A step towards Model Accuracy&lt;/a&gt;&lt;br /&gt;
-&lt;strong&gt;原文作者&lt;/strong&gt;：Amarabha Benerjee&lt;/p&gt;
-
-&lt;p&gt;  通过死记硬背来学习一些东西，比如重复多次，通过一遍又一遍地练习来完善一项技能，或者通过逐步对原型进行细微调整来构建某些东西，这些都是我们人类自然而然发生的事情。机器也可以学习这种方式，这被称为“迭代机器学习”。在大多数情况下，迭代是一种有效的学习方法，有助于更快、更准确地达到预期的最终结果，而不会成为资源紧缩的噩梦。&lt;/p&gt;
-
-&lt;p&gt;  现在，你可能会想，迭代本身不就是任何机器学习的一部分吗？换句话说，从基础的回归分析、决策树、贝叶斯网络到高级的神经网络和深度学习算法，现代机器学习技术都内置了一些固有的迭代组件。那么，将迭代学习作为一个独立的主题来讨论的必要性是什么呢？这仅仅是因为将迭代外部引入到算法可以最大限度地减少误差范围，从而有助于准确建模。&lt;/p&gt;
-
-&lt;h2 id=&quot;迭代学习是如何工作的&quot;&gt;迭代学习是如何工作的&lt;/h2&gt;
-
-&lt;p&gt;  让我们仔细观察机器学习算法中单个迭代流期间发生的情况来了解迭代的原理。&lt;/p&gt;
-
-&lt;p&gt;  首先将预处理的训练数据集引入到模型中。在对给定的数据进行处理和构建模型后，对模型进行测试，然后将结果与所期待的输出进行匹配。然后将反馈返回给系统，以便算法那进一步学习和微调其结果。这清楚地表明，这里发生了两个迭代过程：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;数据迭代——算法固有的&lt;/li&gt;
-  &lt;li&gt;模型训练迭代——外部引入&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/19OqPp.webp&quot; alt=&quot;迭代机器学习 Iterative Machine Learning&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？&lt;/p&gt;
-
-&lt;p&gt;  是的，算法肯定会起作用。但是，它产生的结果的质量将会因为许多因素而有很大的差异。训练数据集的质量和数量、所采用的特征定义和特征抽取技术、算法本身的鲁棒性等都是许多因素之一。即使上述所有工作都做得完美，仍然不能保证顺序方法产生的结果将非常准确。简而言之，结果既不准确，也不可重复。因此，迭代学习允许算法提高模型准确性。&lt;/p&gt;
-
-&lt;p&gt;  某些算法在设计中具有迭代核心，可以根据数据量的多少进行缩放。这些算法处于机器学习实现的最前沿，因为它们能够更快更好地执行。在接下来的部分，我们将讨论来自三种主要机器学习方法的不同算法类别的迭代——&lt;strong&gt;有监督机器学习&lt;/strong&gt;、&lt;strong&gt;无监督机器学习&lt;/strong&gt;和&lt;strong&gt;强化学习&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h2 id=&quot;提升算法有监督机器学习中的迭代&quot;&gt;提升算法：有监督机器学习中的迭代&lt;/h2&gt;
-
-&lt;p&gt;  提升算法本质上是迭代的，是通过最小化错误来改善结果的最佳方式。它们主要旨在减少结果中的偏差，并将一组特定的弱学习分类器算法转换为强学习器，从而使它们能够减少错误。以下是一些示例：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AdaBoost（Adaptive Boosting）&lt;/li&gt;
-  &lt;li&gt;梯度提升树（Gradient Tree Boosting）&lt;/li&gt;
-  &lt;li&gt;XGBoost&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;它们是如何工作的&quot;&gt;它们是如何工作的&lt;/h3&gt;
-
-&lt;p&gt;  所有的提升算法都有一个通用的分类器，这些分类器经过迭代修改以达到想要的结果。让我们以“在某篇文章中找抄袭案例”为例。这里的第一个分类器是找到一组单词，这些单词出现在其他地方或者另一篇文章中，这将导致一个红色信号。如果我们创建 10 个单独的单词组，并将它们称为分类器 1 到 10，那么我们将根据这些分类器检查我们的文章，并且任何可能的匹配都将会标记为红色。但是，这 10 个分类器没有任何红色信号并不意味着一个肯定的 100% 原创文章。因此，我们需要更新分类器，创建可能基于第一次通过的更短的组，从而提高分类器发现这篇文章与其他文章的相似性的准确性。Boosting 算法中的这个迭代过程最终使我们获得了相当高的准确率。原因是在每次迭代之后，分类器都会根据其性能进行更新。与其他内容非常相似的内容将进行更新和调整，以便我们可以获得更好的匹配。这种本质上改进算法的过程被称为提升，目前是有监督机器学习中最流行的方法之一。&lt;/p&gt;
-
-&lt;h3 id=&quot;优缺点&quot;&gt;优缺点&lt;/h3&gt;
-
-&lt;p&gt;  这种方法的明显优点是，它允许在最终模型中出现最小的错误，因为迭代模型能够在每次出现错误时自行纠正。缺点是处理时间较长，并且大量迭代对总体内存的要求较高。另一个重要方面是，反馈给训练模型的错误是在外部完成的，这意味着监督者可以控制模型及其修改方式。这反过来又有一个缺点，即模型无法学会自行消除错误。因此，该模型不能用于另一组数据。换句话说，模型不会自己学习如何变得无差错，因此不能移植到另一个数据集上，因为它需要从头开始学习过程。&lt;/p&gt;
-
-&lt;h2 id=&quot;人工神经网络无监督机器学习中的迭代&quot;&gt;人工神经网络：无监督机器学习中的迭代&lt;/h2&gt;
-
-&lt;p&gt;  神经网络已经成为无监督机器学习的典型代表，因为它们在预测数据模型方面的准确性。一些众所周知的神经网络有：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;卷积神经网络（Convolutional Neural Networks，CNNs）&lt;/li&gt;
-  &lt;li&gt;玻尔兹曼机（Boltzman Machines，BMs）&lt;/li&gt;
-  &lt;li&gt;循环神经网络（Recurrent Neural Networks，RNNs）&lt;/li&gt;
-  &lt;li&gt;深度神经网络（Deep Neural Networks，DNNs）&lt;/li&gt;
-  &lt;li&gt;记忆网络（Memory Networks，MNs）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;它们是如何工作的-1&quot;&gt;它们是如何工作的&lt;/h3&gt;
-
-&lt;p&gt;  人工神经网络在模拟数据模型方面非常准确，主要是因为它们的迭代学习过程。但这个过程与我们之前探索的 Boosting 算法的过程不同。在这里，这个过程是无缝和自然的，在某种程度上，它为人工智能系统中的强化学习铺平了道路。&lt;/p&gt;
-
-&lt;p&gt;  神经网络由模拟人脑工作方式的电子网络组成。每个网络都有一个输入和输出节点，以及由算法组成的中间隐藏层。输入节点被赋予初始数据集以执行一系列的操作，并且每次迭代都会创建一个数据字符串输出作为结果。然后，这个输出与实际结果数据集进行匹配，并将错误反馈给输入节点。这样一来，这个错误使得算法能够自行纠正，并越来越接近实际数据集。这个过程称为训练神经网络，每次迭代都会提高准确性。与 Boosting 算法执行迭代的方式相比，执行的迭代之间的关键区别在于，这里我们不必手动更新分类器，算法会根据错误反馈自行更改。&lt;/p&gt;
-
-&lt;h3 id=&quot;优缺点-1&quot;&gt;优缺点&lt;/h3&gt;
-
-&lt;p&gt;  这个过程的主要优点是它可以达到的准确度。该模型也是可重用的，因为它学习了实现准确性的方法，而不仅仅是为你提供直接的结果。这种方法的另一面是，模型可能会严重出错，并完全偏离不同的方向。这是因为归纳迭代有自己的过程，不需要人工监督。“Facebook 聊天机器人偏离了他们最初的目标，并用自己的语言在他们内部进行交流”就是一个很好的例子。但俗话说，聪明的东西有其自身的问题。如果我们想要创建更准确的模型和更智能的系统，我们必须准备好应对这一风险。&lt;/p&gt;
-
-&lt;h2 id=&quot;强化学习&quot;&gt;强化学习&lt;/h2&gt;
-
-&lt;p&gt;  强化学习是机器学习的一个有趣的案例，其中简单的神经网络被连接起来，它们与环境相互作用，从错误和奖励中学习。这里介绍的迭代以复杂的形式发生。迭代以奖励或惩罚的形式发生，分别对应得出正确或错误的结果。在每次这种交互之后，多层神经网络都会合并反馈，然后重新创建模型以提高准确性。典型的奖励和惩罚方法在某种程度上将其置于一个即不是受监督也不是不受监督的空间，但表现出两者的特征，并且还具有产生更准确结果的额外优势。这里的缺点是模型在设计上很复杂。多层神经网络在多次迭代的情况下很难处理，因为每一层可能对某种奖励或惩罚做出不同的反应。因此，它可能产生内部冲突，这些冲突可能导致系统停滞不前——无法决定下一步向哪个方向发展。&lt;/p&gt;
-
-&lt;h2 id=&quot;迭代的一些实际实现&quot;&gt;迭代的一些实际实现&lt;/h2&gt;
-
-&lt;p&gt;  许多现代机器学习平台和框架已经实现了自己的迭代过程，从而创建更好的数据模型，Apache Spark 和 MapReduce 就是两个这样的例子。两者实现迭代的方式在技术上是不同的，它们有其优点和局限性。&lt;/p&gt;
-
-&lt;p&gt;  让我们来看看 MapReduce。它直接在磁盘上存在的 HDFS 文件系统上读取和写入数据。请注意，从磁盘读取和写入的每个迭代都需要大量的时间。这在某种程度上创建了一个更健壮和容错的系统，但在速度上妥协了。另一方面，Apache Spark 将数据存储在内存（弹性分布式数据集），比如 RAM 中。因此，每次迭代花费的时间要少得多，这使得 Spark 能够执行闪电般的快速数据处理。但是，Spark 执行迭代方式的主要问题是，动态内存或者 RAM 在存储迭代数据和执行复杂操作方面的可靠性远低于磁盘存储。因此，它的容错能力远低于 MapReduce。&lt;/p&gt;
-
-&lt;h2 id=&quot;将其整合在一起&quot;&gt;将其整合在一起&lt;/h2&gt;
-
-&lt;p&gt;  为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WMRZBJ.webp&quot; alt=&quot;迭代的不同阶段 Different stages&quot; /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;strong&gt;参数迭代&lt;/strong&gt;：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;数据迭代&lt;/strong&gt;：一旦模型参数最终确定之后，将数据放入系统并模拟模型。将多组数据放入系统中，以检查参数在产生想要的结果方面的有效性。因此，如果数据迭代阶段表明某些参数不适合模型，则将它们带回参数迭代阶段，并添加或修改参数。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;模型迭代&lt;/strong&gt;：在初始参数和数据集最终确定后，进行模型测试/训练。模型测试阶段的迭代是关于使用相同的参数和数据集多次运行相同的模型模拟，然后检查错误量，如果错误在每次迭代中都有很大变化，则数据或参数或两者都有问题。对数据和参数进行迭代，直到模型达到准确性。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;人工迭代&lt;/strong&gt;：此步骤涉及到人工归纳的迭代，其中将不同的模型放在一起以创建功能齐全的智能系统。在这里，多层次的拟合和再拟合恰好可以实现一个连贯的总体目标，比如创建无人驾驶汽车系统或功能完全的人工智能（AI）。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;  迭代对于在不久的将来创建更智能的 AI 系统至关重要。对复杂数据集执行多次迭代的巨大内存需求继续带来重大挑战。但随着人工智能芯片、存储设备和数据传输技术的日益完善，这些挑战变得越来越容易应对。&lt;/p&gt;
-
-&lt;p&gt;  我们相信，迭代机器学习技术将在不久的将来继续引领人工智能领域的转型。&lt;/p&gt;
-
-&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 版权声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;br /&gt;
-  As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-</description>
-        <pubDate>Wed, 05 Jan 2022 20:30:00 +0900</pubDate>
-        <link>https://lisz.me/ac/ml/iterative-learning.html</link>
-        <guid isPermaLink="true">https://lisz.me/ac/ml/iterative-learning.html</guid>
-        
-        <category>迭代学习</category>
-        
-        <category>机器学习</category>
-        
-        <category>iterative learning</category>
-        
-        <category>machine learning</category>
-        
-        
-        <category>ac</category>
-        
-        <category>ml</category>
         
       </item>
     
