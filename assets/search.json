@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "LDAP 集成之 Dokuwiki 篇",
+      "tags"     : "LDAP Dokuwiki",
+      "url"      : "/tech/webmaster/ldap-dokuwiki.html"
+    } ,
+  
+    {
       "title"    : "LDAP 集成之 Apache 篇",
       "tags"     : "LDAP Apache",
       "url"      : "/tech/webmaster/ldap-apache.html"
