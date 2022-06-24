@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "LDAP 集成之 Nextcloud 篇",
+      "tags"     : "LDAP Nextcloud",
+      "url"      : "/tech/webmaster/ldap-nextcloud.html"
+    } ,
+  
+    {
+      "title"    : "LDAP 集成之 Gitlab 篇",
+      "tags"     : "LDAP Gitlab",
+      "url"      : "/tech/webmaster/ldap-gitlab.html"
+    } ,
+  
+    {
       "title"    : "LDAP 集成之 Dokuwiki 篇",
       "tags"     : "LDAP Dokuwiki",
       "url"      : "/tech/webmaster/ldap-dokuwiki.html"

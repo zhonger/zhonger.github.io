@@ -5,9 +5,166 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 23 Jun 2022 00:28:09 +0900</pubDate>
-    <lastBuildDate>Thu, 23 Jun 2022 00:28:09 +0900</lastBuildDate>
+    <pubDate>Fri, 24 Jun 2022 15:17:08 +0900</pubDate>
+    <lastBuildDate>Fri, 24 Jun 2022 15:17:08 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>LDAP 集成之 Nextcloud 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;h3 id=&quot;nextcloud-vs-owncloud&quot;&gt;Nextcloud vs ownCloud&lt;/h3&gt;
+
+&lt;p&gt;  &lt;a href=&quot;https://nextcloud.com&quot;&gt;Nextcloud&lt;/a&gt; 是一款非常适合个人或者团队使用的开源网盘软件，也有一款和其名字非常相似的 &lt;a href=&quot;https://owncloud.com&quot;&gt;ownCloud&lt;/a&gt;。实际上这两款开源网盘是出自一个人之手，只不过在发展的过程中（2016年），ownCloud 团队内部产生了一些意见分歧，造成了核心开发人员出走创建了 Nextcloud。与 ownCloud 相比，Nextcloud 更加在乎宽广的功能多样性以及安全性，比如说视频会议、在线协作、提供对密码暴力破解的保护、限制密码错误登录的次数等。ownCloud 中可能也有这些功能，但并不包含在开源版本中，而是需要企业订阅版本才能享受这些功能。从这些看来，Nextcloud 似乎更加适合个人或团队使用。&lt;/p&gt;
+
+&lt;p&gt;  据笔者所知，国内 F 搜团队所提供的网盘文档-&lt;a href=&quot;https:/fdocs.cn&quot;&gt;F 文档&lt;/a&gt; 实际上就是用 Nextcloud 搭建的。其提供的在线文档编辑采用的是开源的 &lt;a href=&quot;https://www.onlyoffice.com&quot;&gt;OnlyOffice&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;nextcloud-vs-seafile&quot;&gt;Nextcloud vs Seafile&lt;/h3&gt;
+
+&lt;p&gt;  除了 Nextcloud，国内也有一款也比较好用的开源网盘 &lt;a href=&quot;https://www.seafile.com&quot;&gt;Seafile&lt;/a&gt;。Nextcloud 与 Seafile 虽然都是网盘，但是关注点不大一样。正如上面讲到的 Nextcloud 更在乎协作、功能多样化，而 Seafile 则更在乎稳定和安全。举个例子，Nextcloud 如果不设置服务端加密，所有的文件都会直接存在文件系统中。如果可以访问服务器的文件系统，那么意味着无须任何用户自身的许可就可以查看所有文件。Seafile 默认就将所有文件都分成小块存储，这样一来你是无法直接通过服务器的文件系统读取文件内容的。当然，这样分块存储也有一个好处，在客户端设置同步时会分块进行增量同步，提升了同步的速度和可靠性。不至于一个几个 G 的大文件传到一半中断后又要从头开始上传。不过，这样也有一个比较明显的坏处，如果不借助 Seafile 或其支持团队的帮助，无法自行从分块数据恢复原始文件内容。&lt;/p&gt;
+
+&lt;h3 id=&quot;ldap-认证集成&quot;&gt;LDAP 认证集成&lt;/h3&gt;
+
+&lt;p&gt;  从 Nextcloud、ownCloud、Seafile 的官网来看，三者都支持 LDAP/AD 认证集成，但实际上 Seafile 是需要专业版订阅才能有这个功能的，包括 Office 文件预览和编辑、全文检索、断点续传等功能也是需要专业版订阅的。Nextcloud 和 ownCloud 都在开源版本提供了 LDAP 认证集成功能。所以这里也不考虑 Seafile，只以 Nextcloud 为例介绍 LDAP 集成到网盘中。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;p&gt;  由于之前笔者也曾写过&lt;a href=&quot;../docker/nextcloud.html&quot;&gt;《Nextcloud 搭建自己的云盘》&lt;/a&gt;和&lt;a href=&quot;nextcloud-upgrade.html&quot;&gt;《Nextcloud 升级那些事儿》&lt;/a&gt;两篇文章介绍如何安装和升级 Nextcloud ，所以这里就不再对此进行赘述了。当前开始的环境即是已正常运行的 Nextcloud 实例。&lt;/p&gt;
+
+&lt;h3 id=&quot;启用-ldap-插件&quot;&gt;启用 LDAP 插件&lt;/h3&gt;
+
+&lt;p&gt;  在 Nextcloud 的&lt;strong&gt;应用捆绑包&lt;/strong&gt;的&lt;strong&gt;企业捆绑包&lt;/strong&gt;里就有我们想要用的 LDAP 认证集成插件，点击右侧&lt;strong&gt;启用&lt;/strong&gt;按钮即可正常启用。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nFyWzS.webp&quot; alt=&quot;nFyWzS&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;配置-ldap-连接&quot;&gt;配置 LDAP 连接&lt;/h3&gt;
+
+&lt;p&gt;  在启用 LDAP 插件后，我们就可以在管理员的设置中看见相应的选项。如下图所示，点击用户头像弹出菜单中的&lt;strong&gt;设置&lt;/strong&gt;链接。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8FCrL0.webp&quot; alt=&quot;8FCrL0&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  由于这个设置会同时包含个人用户设置和管理员设置，可以将左侧的导航栏往下拉，看到&lt;strong&gt;管理&lt;/strong&gt;中的 &lt;strong&gt;LDAP/AD 集成&lt;/strong&gt; 点击进入。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WiwcTt.webp&quot; alt=&quot;WiwcTt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  下面是 LDAP/AD 集成的基本设置，主要填写四个信息：LDAP 服务器地址、LDAP 管理员 DN、LDAP 管理员密码、查询基础 DN。由于此处填写的是非真实信息，所以下面会显示&lt;strong&gt;配置错误&lt;/strong&gt;的提示。如果填写的 LDAP 信息无误，会自动变成&lt;strong&gt;配置成功&lt;/strong&gt;的提示。然后点击&lt;strong&gt;继续&lt;/strong&gt;按钮，后面的设置可以保留默认选项即可。当然如果 LDAP 服务与一般的设置有些不同，也要根据实际情况对后面的用户、登录属性、群组信息进行调整，这里就不一一介绍了。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Lr00tl.webp&quot; alt=&quot;Lr00tl&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  以上配置均完成之后，即可退出登录即可使用 LDAP 账户和密码登录验证是否配置成功（登录界面不会有任何改变）。&lt;/p&gt;
+
+&lt;h3 id=&quot;其他&quot;&gt;其他&lt;/h3&gt;
+
+&lt;p&gt;  可能和 Gitlab 的情况有点类似，Nextcloud 本身就有用户体系，然后才接入的 LDAP 认证。其实，我们还是希望 LDAP 用户和原有用户能够自动识别成同一用户，无感完成合并。这里 Nextcloud 和 Gitlab 一样都是凭借着邮箱来判断的。当 LDAP 用户邮箱与 Nextcloud 原有用户邮箱一致时，自动合并成一个用户，并且不再拥有修改用户密码的权利。虽然已经集成了 LDAP 认证，但是我们依然可以用 Nextcloud 自身的用户体系去创建新用户，这其实也是两个用户体系、一个软件系统。&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://news.gandi.net/zh-hans/2021/05/nextcloud-vs-owncloud-which-cloud-solution-should-you-choose/&quot;&gt;Nextcloud vs ownCloud? 该选择哪一个云端代管方案呢？&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wzfou.com/nextcloud-seafile/&quot;&gt;NextCloud与Seafile对比使用-NextCloud各项全能 Seafile优势突出&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 24 Jun 2022 14:40:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-nextcloud.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-nextcloud.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>Nextcloud</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
+    
+      <item>
+        <title>LDAP 集成之 Gitlab 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Gitlab 是一款对标 Github 的开源 Git 管理软件，能够为用户提供非常丰富的功能。因为之前写过的&lt;a href=&quot;../tech/docker/gitlab.html&quot;&gt;《私有代码托管平台的搭建与运维》&lt;/a&gt;和&lt;a href=&quot;./gitlab-upgrade.html&quot;&gt;《Gitlab 升级那些事儿》&lt;/a&gt;已经对 Gitlab 作了比较详细的介绍，这里就不多赘述了。&lt;/p&gt;
+
+&lt;h3 id=&quot;国内高校-gitlab&quot;&gt;国内高校 Gitlab&lt;/h3&gt;
+
+&lt;p&gt;  Gitlab 提供了对于多种认证方式的支持，包括自带的用户体系、LDAP、CAS、OAuth 2.0 及其他第三方认证方式。这也为我们实现不同的用户需求提供了可能。国内高校中，中科大和南京大学都为本校生提供了基于 Gitlab 的代码托管服务，访问地址如下。唯一不同的是，中科大采用的社区版本（CE），南京大学采用的是由 Gitlab 在中国的子公司极狐支持的企业版本（EE），据说有一些更先进的功能。当然，考虑到使用 Gitlab 的主要需求是代码托管，而非 Gitlab Pages 功能，两家都没有提供该功能。&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;学校&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Git URL&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;中科大&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;https://git.lug.ustc.edu.cn&quot;&gt;https://git.lug.ustc.edu.cn&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;南京大学&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;a href=&quot;https://git.nju.edu.cn&quot;&gt;https://git.nju.edu.cn&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;  言归正传，中科大和南京大学都可以自助注册，只需要是使用学校邮箱即可。中科大同时也提供了 Github、Gitlab、学校一卡通认证。自助注册的好处是，即使已经离校无法使用学校邮箱，实际上也还是可以保留账户继续使用（除非专门对毕业生进行封禁）。其实，对于内部团队使用的 Gitlab 来说，由管理员手动创建用户也是没有什么问题的，毕竟人数不会太多。但是这样一来，可能会出现维护多个账号和密码的烦恼。因此，采用 LDAP 来接入认证是比较合适的。对于非团队用户不打算放在 LDAP 目录里也可以手动在 Gitlab 创建用户，当用户不再使用时就可以封禁。&lt;/p&gt;
+
+&lt;h3 id=&quot;ldap-用户合并&quot;&gt;LDAP 用户合并&lt;/h3&gt;
+
+&lt;p&gt;  也可能存在先有 Gitlab 账户、然后才有的 LDAP 目录的情况，这也不要紧，因为 Gitlab 支持 LDAP 认证方式的用户与现有用户进行合并。举个例子，如果我已经在 Gitlab 中创建了用户名为 zhonger、邮箱为 zhonger@example.com 的用户，那么我在 LDAP 目录中只需要把 mail 字段也写成 zhonger@example.com 即可被 Gitlab 识别成同一用户。或者说，我们可以在 Gitlab 中增加 LDAP 目录中的 mail 字段的邮箱（Gitlab 支持同一用户绑定多个邮箱），这样在 Gitlab 中使用 LDAP 认证的时候也会被视为同一用户。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 LDAP 用户的账户名和密码不会被 Gitlab 接管，所以当你使用 LDAP 认证登录后，原有的同邮箱的 Gitlab 用户就会自动丧失修改密码的权利。除此之外，一切照旧。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;p&gt;  为了更加简便实践并且容易复现，这里采用的是常用的 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/docker-gitlab&lt;/a&gt; Docker 镜像。可以在镜像 Github 页面下载到提供的对应 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab/blob/master/docker-compose.yml&quot;&gt;docker-compose.yml&lt;/a&gt; 文件。由于 LDAP 并非是默认配置，所以默认是没有 LDAP 配置段的。需要在 docker-compose.yml 文件的 environment 中增加以下环境变量。其中，请根据实际情况更改成相应的信息。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_ENABLED=true&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_LABEL=LDAP&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_HOST=ldap.example.com&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_BIND_DN=cn=admin,dc=example,dc=com&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_PASS=xxxxxxxxxxx&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_UID=uid&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;- LDAP_BASE=ou=people,dc=example,dc=com&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  使用命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 运行一个 Gitlab 实例。由于初始运行需要执行数据库初始化等操作，可能需要几分钟，之后打开指定的端口即可看到如下类似的登录页面。可以看到，这里默认就是使用 LDAP 登录，次要登录方式才是标准登录。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BaWBKa.webp&quot; alt=&quot;登录页面 Login Page&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/docker-gitlab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 23 Jun 2022 15:20:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-gitlab.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-gitlab.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>Gitlab</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>LDAP 集成之 Dokuwiki 篇</title>
@@ -1814,381 +1971,6 @@ gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpg
         <category>ac</category>
         
         <category>ml</category>
-        
-      </item>
-    
-      <item>
-        <title>Gitlab 升级那些事儿</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  Gitlab 的升级策略似乎已经在 &lt;a href=&quot;../docker/gitlab.html&quot;&gt;私有代码托管平台的搭建与运维&lt;/a&gt; 中解释得比较详细了，但实际上忽略了秘钥文件 /home/git/gitlab/config/secrets.yml 和 /home/git/gitlab/config/gitlab.yml 的备份。这两个文件不是在容器内的代码文件里面吗？为什么又需要备份这两个秘钥文件呢？其实为了安全性的考虑，Gitlab 自带的备份工具只会备份包括数据库、数据文件以及基本配置信息，而秘钥作为安全文件不在备份之列。这两个秘钥文件涉及到数据库中某些加密字段的加密和解密过程，如果没有这两个原始文件或者使用了新的文件，那么 Gitlab 将无法对这些数据库中已有的加密字段进行解密，从而影响到某些页面的使用，尤其是管理员界面。&lt;/p&gt;
-
-&lt;h2 id=&quot;升级及修复&quot;&gt;升级及修复&lt;/h2&gt;
-
-&lt;h3 id=&quot;升级&quot;&gt;升级&lt;/h3&gt;
-
-&lt;p&gt;  本次的升级及修复过程以 14.0.6 -&amp;gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&amp;gt; 14.1.Z -&amp;gt; latest 14.Y.Z 以及 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/docker-gitlab&lt;/a&gt; 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&amp;gt; 14.1.3 -&amp;gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&amp;gt; 14.1.3 -&amp;gt; 14.2.5 -&amp;gt; 14.3.3 -&amp;gt; 14.4.4 -&amp;gt; 14.5.2 -&amp;gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 &lt;a href=&quot;https://docs.gitlab.com/ee/update/#1410&quot;&gt;版本更新说明&lt;/a&gt; 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 &lt;a href=&quot;../docker/gitlab.html#边备份边升级&quot;&gt;私有代码托管平台的搭建与运维 - 边备份边升级&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;修复管理员设置-500-错误&quot;&gt;修复管理员设置 500 错误&lt;/h3&gt;
-
-&lt;p&gt;  前面已经提到当两个秘钥文件与加密数据库字段的密钥文件不一致时，加密字段无法被解析，从而导致在管理页面修改任何涉及到加密字段的内容都会弹出 500 错误。官方给出的解决方案是将这些加密字段都置空，加密字段无法置空的记录均删除。&lt;/p&gt;
-
-&lt;h4 id=&quot;验证错误情况&quot;&gt;验证错误情况&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 验证秘钥引发的错误情况&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rake gitlab:doctor:secrets
-
-&lt;span class=&quot;c&quot;&gt;# 打印信息&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:06.976367 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Checking encrypted values in the database&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.207746 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::InstanceVariable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.236285 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::PipelineScheduleVariable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.264758 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Variable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.289639 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::GroupVariable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.311448 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::PipelineVariable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.330957 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::JobVariable failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.364695 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ApplicationSetting failures: 1&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.457574 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - User failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.483107 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Platforms::Kubernetes failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.504624 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Snippet failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.507763 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PersonalSnippet failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.510827 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectSnippet failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.534412 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Applications::Helm failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.552858 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Applications::Prometheus failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.572631 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - AlertManagement::HttpIntegration failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.591745 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectImportData failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.612651 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - RemoteMirror failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.634588 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - GrafanaIntegration failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.657573 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PagesDomainAcmeOrder failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.678924 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - JiraConnectInstallation failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.701446 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - PagesDomain failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.723396 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - WebHook failures: 1&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.728267 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ProjectHook failures: 1&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.732394 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ServiceHook failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.735019 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - SystemHook failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.756876 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::IssueTrackerData failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.775782 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::JiraTrackerData failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.797853 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Integrations::ZentaoTrackerData failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.818263 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - BulkImports::Configuration failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.838087 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::KubernetesNamespace failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.859981 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Atlassian::Identity failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.881123 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - IncidentManagement::ProjectIncidentManagementSetting failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.903973 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - ErrorTracking::ProjectErrorTrackingSetting failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.922100 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Alerting::ProjectAlertingSetting failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.941501 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Serverless::DomainCluster failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.944543 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Integrations::Prometheus failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.965724 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Providers::Gcp failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:14.985521 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::Providers::Aws failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.005871 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Packages::Debian::ProjectDistributionKey failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.025454 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Packages::Debian::GroupDistributionKey failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.029060 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Gitlab::BackgroundMigration::BackfillJiraTrackerDeploymentType2::JiraTrackerDataTemp failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.081215 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Runner failures: 1&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.309755 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Ci::Build failures: 1&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.449126 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Group failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.662949 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Project failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.710390 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - DeployToken failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.740096 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Clusters::AgentToken failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762011 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : - Operations::FeatureFlagsClient failures: 0&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762112 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Total: 5 row(s) affected&lt;/span&gt;
-I, &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2022-01-14T12:11:15.762150 &lt;span class=&quot;c&quot;&gt;#207818]  INFO -- : Done!&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;连接数据库&quot;&gt;连接数据库&lt;/h4&gt;
-
-&lt;p&gt;  以下为官方给定的在不同版本和安装方式下连接数据库的命令。由于容器 sameersbn/docker-gitlab 采用的是源码安装方式，所以采用最后一种连接方式，所以使用命令如最后所示。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# For Omnibus GitLab 14.1 and earlier:&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gitlab-rails dbconsole
-
-&lt;span class=&quot;c&quot;&gt;# For Omnibus GitLab 14.2 and later:&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gitlab-rails dbconsole &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
-
-&lt;span class=&quot;c&quot;&gt;# For installations from source, GitLab 14.1 and earlier:&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production
-
-&lt;span class=&quot;c&quot;&gt;# For installations from source, GitLab 14.2 and later:&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
-
-&lt;span class=&quot;c&quot;&gt;# 容器 sameersbn/docker-gitlab 连接数据库&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails dbconsole &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; production &lt;span class=&quot;nt&quot;&gt;--database&lt;/span&gt; main
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;查询并重置-cicd-数据&quot;&gt;查询并重置 CI/CD 数据&lt;/h4&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;--  查询所有 CI/CD 记录&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;ci_group_variables&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;ci_variables&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;-- 删除所有 CI/CD 记录&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;DELETE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_group_variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;DELETE&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_variables&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;清除加密-token&quot;&gt;清除加密 TOKEN&lt;/h4&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Clear project tokens&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;projects&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- Clear group tokens&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;namespaces&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- Clear instance tokens&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application_settings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;runners_registration_token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- Clear key used for JWT authentication&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- This may break the $CI_JWT_TOKEN job variable:&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- https://gitlab.com/gitlab-org/gitlab/-/issues/325965&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;application_settings&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encrypted_ci_jwt_signing_key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- Clear runner tokens&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_runners&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- Clear build tokens&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;UPDATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ci_builds&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token_encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;-- truncate web_hooks table&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;TRUNCATE&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;web_hooks&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;CASCADE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;重新验证错误&quot;&gt;重新验证错误&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 验证秘钥引发的错误情况&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; git gitlab_gitlab_1 bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rake gitlab:doctor:secrets
-
-&lt;span class=&quot;c&quot;&gt;# 发现所有错误均为 0 表示修复成功。可以访问管理员设置页面进行验证。&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;修复指标和分析-500-错误&quot;&gt;修复指标和分析 500 错误&lt;/h3&gt;
-
-&lt;p&gt;  指标和分析 500 错误是从升级到 14.0.5 版本之后开始出现的，主要是因为在指标和分析中新增了指向 tmpfs 的配置项 prometheus_multiproc_dir。在默认的 sameersbn/docker-gitlab 容器中还未添加这一配置项，从而导致指标和分析页面无法访问。修复方法是，在 docker-compose.yml 中添加该配置项，如下所示。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2.3&apos;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;redis&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis:6.2.6&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;--loglevel warning&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./redis-data:/data&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;postgresql&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sameersbn/postgresql:12-20200524&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./postgresql-data:/var/lib/postgresql&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_USER=gitlab&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_PASS=password&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_NAME=gitlabhq_production&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DB_EXTENSION=pg_trgm,btree_gist&lt;/span&gt;
-
-  &lt;span class=&quot;na&quot;&gt;gitlab&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sameersbn/gitlab:14.6.1&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;redis&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgresql&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;80:80&quot;&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;22:22&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./gitlab-data:/home/git/data&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;healthcheck&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CMD&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/usr/local/sbin/healthcheck&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5m&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10s&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;retries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;start_period&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5m&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DEBUG=false&lt;/span&gt;
-    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;prometheus_multiproc_dir=/dev/shm&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;......&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost&quot;&gt;When the secrets file is lost&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files&quot;&gt;Storing configuration files&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory&quot;&gt;Metrics shared directory&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/weixin_44295157/article/details/119618816&quot;&gt;Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/Shawn_wang_0919/article/details/115895292&quot;&gt;gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://lintian.co/archives/16&quot;&gt;GitLab 备份恢复后 500 错误修复&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/sameersbn/docker-gitlab/issues/2387&quot;&gt;metrics and profiling not working after upgrade to 14.0.5&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 14 Jan 2022 11:13:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/gitlab-upgrade.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/gitlab-upgrade.html</guid>
-        
-        <category>Gitlab</category>
-        
-        <category>Upgrade</category>
-        
-        <category>Fix</category>
-        
-        <category>升级</category>
-        
-        <category>修复</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>Nextcloud 升级那些事儿</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  Nextcloud 的升级根据部署方式的不同也会有所差异。比如源码部署的 Nextcloud 的升级，一般是通过在网页端的管理页面点击升级按钮、经过漫长的等待然后完成。由于这种方式的升级要对本地的源代码同时进行升级，因此存在本地环境与升级所需环境不一致而导致升级失败的可能性。当然，一般来说源码升级总是要先看看环境要求是否相同，如果不同则应该先满足环境要求、再进行后续的升级。&lt;/p&gt;
-
-&lt;p&gt;  而对于 Docker 方式部署的 Nextcloud 来说，源代码、数据文件（包括配置文件和网盘文件）、数据库、缓存数据库四者之间既可独立维护，也可搭配使用。这样一来，每次的升级基本上都只需要升级一下源代码的容器镜像即可。数据文件一般是直接本地持久化的，数据库容器镜像一般不太更新，除非是 Nextcloud 进行数据库大版本升级的大更新。至于缓存数据库（比如 Redis），升不升级都不大会影响 Nextcloud 的正常运行，除非是缓存数据库新旧版本的差异导致源代码无法直接使用新版本的缓存数据库。&lt;/p&gt;
-
-&lt;p&gt;  之前笔者也写过两篇关于 Nextcloud 的文章： &lt;a href=&quot;../webmaster/nextcloud.html&quot;&gt;Nextcloud 搭建自己的云盘&lt;/a&gt; 和 &lt;a href=&quot;../docker/nextcloud-docker.html&quot;&gt;Nextcloud 源码部署迁移到容器部署&lt;/a&gt;。其中前一篇中其实也包括正常的 Docker 部署方式的 Nextcloud 升级，那为什么又要重新写一篇专门关于 Nextcloud 升级的文章呢？主要还是因为在实际升级过程中，发现了一些容易出问题的升级方式，而“如何在此基础上进行修复”是一件非常有意思的事情。那么接下来就来看看 Nextcloud 升级过程中到底能遇到哪些问题呢。&lt;/p&gt;
-
-&lt;h2 id=&quot;问题及修复&quot;&gt;问题及修复&lt;/h2&gt;
-
-&lt;h3 id=&quot;问题一跨版本升级&quot;&gt;问题一：跨版本升级&lt;/h3&gt;
-
-&lt;h4 id=&quot;问题描述&quot;&gt;问题描述&lt;/h4&gt;
-
-&lt;p&gt;  所谓跨版本升级就是指跳过某些重要版本更新而直接升级到另一个大版本。之前在 &lt;a href=&quot;../docker/gitlab.html&quot;&gt;私有代码托管平台的搭建与运维&lt;/a&gt; 一文也提到过 Gitlab 的版本升级中不能直接从一个旧版本直接升级到最新版本，Nextcloud 亦然。比如，从 Nextcloud 22.0 版本升级到 Nextcloud 23.0 版本的话，就属于跨版本升级（在它们之间有一个重要版本更新 Nextcloud 22.2）。&lt;/p&gt;
-
-&lt;h4 id=&quot;修复方案&quot;&gt;修复方案&lt;/h4&gt;
-
-&lt;p&gt;  如果你在更新 Nextcloud 时未对版本更新可行性进行检验而直接跨版本更新，那么你将会在 Docker 容器的日志上看到提示无法跨版本更新。此时，由于容器只修改了 www/version.php 文件（如下所示），未对数据库及其他文件进行修改，还是可以修复回来的。&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- version.php --&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_VersionString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;23.0.0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Edition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;stable&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_VersionCanBeUpgradedFrom&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;22.2&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;23.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;owncloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;10.5&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$vendor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  修复的主要步骤分为以下两步：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;将 version.php 文件修改为以下内容，然后重新使用 nextcloud:22.0 容器启动。&lt;/li&gt;
-  &lt;li&gt;启动后会发现一切恢复正常，然后根据 22.0 -&amp;gt; 22.2 -&amp;gt; 23.0 的规划路线进行正常升级即可。一般来说，升级镜像后镜像内部会自动运行更新命令，并在更新完成后自动关闭维护模式。如果镜像内部为自动运行，可以参考下面命令手动完成相关插件更新。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- modified version.php --&amp;gt;&lt;/span&gt;
-
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Version&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;22&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;   &lt;span class=&quot;c1&quot;&gt;// 修改为升级前版本号&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_VersionString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;22.0.0.12&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;// 修改为升级前版本号&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Edition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Channel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;stable&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_VersionCanBeUpgradedFrom&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;22.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;               &lt;span class=&quot;c1&quot;&gt;// 添加支持从升级前版本号开始升级&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;22.2&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;23.0&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&apos;owncloud&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;array&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;s1&quot;&gt;&apos;10.5&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$OC_Build&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;2021-11-26T20:54:42+00:00 0619207f13792250aea775a2c3133d41ab625980&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$vendor&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;nextcloud&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 手动更新镜像内部插件，并在更新后关闭维护模式。&lt;/span&gt;
-
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ maintenance:mode &lt;span class=&quot;nt&quot;&gt;--on&lt;/span&gt;
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ upgrade
-docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ maintenance:mode &lt;span class=&quot;nt&quot;&gt;--off&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;问题二数据库索引缺失&quot;&gt;问题二：数据库索引缺失&lt;/h3&gt;
-
-&lt;h4 id=&quot;问题描述-1&quot;&gt;问题描述&lt;/h4&gt;
-
-&lt;p&gt;  在完成新版本更新后，打开管理员的概览界面，有的时候会看到如下报错：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;在数据表 “oc_share” 中无法找到索引 “share_with_index”。
-在数据表 “oc_share” 中无法找到索引 “parent_index”。
-在数据表 “oc_share” 中无法找到索引 “owner_index”。
-在数据表 “oc_share” 中无法找到索引 “initiator_index”。
-在数据表 “oc_filecache” 中无法找到索引 “fs_mtime”。
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;修复方案-1&quot;&gt;修复方案&lt;/h4&gt;
-
-&lt;p&gt;  一般我们可以在报错的提示中看到建议执行命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;occ db:add-missing-indices&lt;/code&gt; 来修复丢失的索引。在容器外我们可以采用以下命令执行：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ db:add-missing-indices
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;问题三数据库类型转换失败&quot;&gt;问题三：数据库类型转换失败&lt;/h3&gt;
-
-&lt;h4 id=&quot;问题描述-2&quot;&gt;问题描述&lt;/h4&gt;
-
-&lt;p&gt;  数据库中的一些列由于进行长整型转换而缺失。由于在较大的数据表重改变列类型会耗费一些时间，因此程序没有自动对其更改。以下为可能提示的列：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;activity.activity_id
-activity.object_id
-activity_mq.mail_id
-filecache.fileid
-filecache.storage
-filecache.parent
-filecache.mimetype
-filecache.mimepart
-filecache.mtime
-filecache.storage_mtime
-mimetypes.id
-mounts.storage_id
-mounts.root_id
-mounts.mount_id
-storages.numeric_id
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;修复方案-2&quot;&gt;修复方案&lt;/h4&gt;
-
-&lt;p&gt;  这种问题也比较容易修正，一般会提示执行命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;occ db:convert-filecache-bigint&lt;/code&gt; 来修复。在容器外我们可以采用以下命令执行：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; www-data &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; nextcloud_app_1 php occ db:convert-filecache-bigint
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://nicolasbouliane.com/blog/nextcloud-docker-upgrade-error&quot;&gt;How to fix an accidental Nextcloud docker image update&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.csdn.net/robin_cai/article/details/119530743&quot;&gt;Nextcloud 升级后问题解决&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 13 Jan 2022 11:26:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/nextcloud-upgrade.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/nextcloud-upgrade.html</guid>
-        
-        <category>Nextcloud</category>
-        
-        <category>Upgrade</category>
-        
-        <category>Docker</category>
-        
-        <category>升级</category>
-        
-        <category>修复</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
         
       </item>
     
