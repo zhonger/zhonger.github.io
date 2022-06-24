@@ -86,6 +86,12 @@ cclicense: true
 # CNZZ Analytics
 cnzz: 
 
+# Umami Analytics
+umami:
+  status: true
+  id: a3d9ba4d-c047-4436-b9f2-b5e904e5718b
+  js: https://umami.lisz.top/pwiki.js
+
 # Busuanzi
 busuanzi: true
 
