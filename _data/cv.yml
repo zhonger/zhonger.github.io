@@ -1,0 +1,143 @@
+- lang: "zh"
+  name: "李盛洲"
+  # motivation: "云平台开发工程师"
+  photo: "/assets/img/h3.webp"
+  email: "zhonger@live.cn"
+  github: "zhonger"
+  linkedin: "shengzhouli"
+  website: "https://lisz.me"
+  languages:
+    - idiom: "中文(二乙)"
+    - idiom: "英语(CET-6)"
+    - idiom: "日语(N2)"
+  educations:
+    - degree: "本科-计算机科学与技术"
+      university: "上海大学"
+      time: "2012-2016"
+    - degree: "研究生-计算机科学与技术"
+      university: "上海大学"
+      time: "2016-2019"
+    - degree: "留日预校"
+      university: "东北师范大学"
+      time: "2019-2020"
+    - degree: "博士-计算机科学与技术"
+      university: "筑波大学(日本)"
+      time: "2020-至今"
+  skills:
+    - title: "后端技能"
+      skill: 
+        - PHP
+        - Python
+    - title: "前端技能"
+      skill: 
+        - HTML/CSS/JS
+        - VueJS
+    - title: "运维开发技能"
+      skill: 
+        - Docker
+        - KVM
+  experience:
+    - role: "机器学习验证休谟—罗瑟里定则和预测固溶度"
+      company: "科研方向"
+      time: "2017.10 - 2019.6"
+      details: "二次固溶体的固溶度有助于对合金体系的形成过程进行理解，从而达到控制合金形成的目的，因此构建了基于支持向量机的固溶度类型判断和预测模型。"
+      tech: "技术：Python，常用机器学习算法（SVM，RF，DT，KNN）"
+    - role: "类脑计算平台"
+      company: "架构设计、用户交互开发"
+      time: "2017.10 - 2019.6"
+      details: "主要负责了全平台的功能需求、架构设计、用户交互开发。该平台主要包括了基于 KVM 的虚拟化模块、基于Minio 的对象存储模块、基于Docker 的实时计算和任务调度模块，满足了在类脑计算过程中所需要的数据存储、科学计算等需求。"
+      tech: "技术：Linux，KVM，Docker，PHP，VueJS"
+    - role : "物流管理中的路线规划可视化"
+      company: "架构设计、可视化开发"
+      time: "2018.6 - 2018.10"
+      details: "主要负责了路线规划选取实际物理位置模块的架构设计、使用高德地图对规划好的路线进行可视化。"
+      tech: "技术：HTML/CSS/JS，AMAP，REST API"
+  honors:
+    - 2019 年上海大学优秀毕业生
+    - 2017 年全国数学建模竞赛全国二等奖
+    - 2016~2018 年度上海大学研究生学业奖学金/每年
+    - 2016 年上海市优秀毕业生
+    - 2012~2016 年上海大学二等学业奖学金/每年
+    - 2014~2015 年上海大学学生标兵
+    - 2013~2014 年上海大学优秀学生
+    - 2012~2013 年上海大学优秀学生干部
+  publications:
+    - "<b>Shengzhou Li</b>, Huiran Zhang*, Dongbo Dai, Xiao Wei, Guangtai Ding, Yike Guo. Study on the Factors Affecting Solid Solubility in Binary Alloys: An Exploration by Machine Learning. Journal of Alloys and Compounds, 2019(782):110-118."
+    - "<b>Shengzhou Li</b>, Huiran Zhang*, Dongbo Dai, Xiao Wei, Guangtai Ding, Yike Guo. Study on the Factors Affecting Solid Solubility in Binary Alloys: An Exploration by Machine Learning. Journal of Alloys and Compounds, 2019(782):110-118."
+    - "郑伟达, 张惠然*, 胡红青, 刘尧, <b>李盛洲</b>, 丁广太, 张金仓.基于不同机器学习算法的钙钛矿材料性能预测.《中国有色金属学报》,2019, 29(4):803-809."
+    - "Jichao Zhou, Jiaqi Shu, <b>Shengzhou Li</b>, Dongbo Dai, Guangtai Ding, Quan Qian, Huiran Zhang*. A Machine Learning Approach for Predicting Superconducting Transition Temperature of High-Temperature Superconductor. The 5th asian materials data symposium(AMDS), 2016:246-256."
+  introduction:
+    - title: "研究内容"
+      content: "研究生期间主要从事机器学习与材料科学的交叉学科研究，针对二元合金体系二次固溶体的固溶度有助于对合金体系的形成过程 进行理解从而达到控制合金形成的目的，因此利用支持向量机构建了一个固溶度类别判定和预测真实固溶度的模型，对 Ag/Cu 合金体系的固溶度有效 <sup>[1]</sup>；针对钙钛矿材料钛矿材料的晶体结构有助于判断材料的性能，因此利用随机森林、支持向量机等算法构建了钙钛矿材料性能预测模型，对预测超导转变温度、能带间隙有效<sup>[2-4]</sup>。"
+    - title: "开发平台"
+      content: "平台开发的主要参与人，负责全平台的架构设计、用户交互开发。类脑计算平台主要包括了基于 KVM 的虚拟化模块、基于 Minio 的对象存储模块、基于 Docker 的实时计算和任务调度模块 满足了在类脑计算过程中所需要的数据存储、科学计算等需求。"
+- lang: "en"
+  name: "Li Shengzhou"
+  # motivation: "Cloud Computing Developer"
+  photo: "/assets/img/h3.webp"
+  email: "zhonger@live.cn"
+  github: "zhonger"
+  linkedin: "shengzhouli"
+  website: "https://lisz.me"
+  languages:
+    - idiom: "Chinese"
+    - idiom: "English(CET-6)"
+    - idiom: "Japanese(N2)"
+  educations:
+    - degree: "Bachelor-Computer Science"
+      university: "Shanghai University"
+      time: "2012-2016"
+    - degree: "Master-Computer Science"
+      university: "Shanghai University"
+      time: "2016-2019"
+    - degree: "Japanese"
+      university: "Eastnorth Normal University"
+      time: "2019-2020"
+    - degree: "Doctor-Computer Science"
+      university: "University of Tsukuba(Japan)"
+      time: "2020-Now"
+  skills:
+    - title: "Backend Skills"
+      skill: 
+        - PHP
+        - Python
+    - title: "Frontend Skills"
+      skill: 
+        - HTML/CSS/JS
+        - VueJS
+    - title: "DevOps Skills"
+      skill: 
+        - Docker
+        - KVM
+  experience:
+    - role: "The applications of Machine Learning methods in Material Science"
+      company: "Research"
+      time: "2017.10 - 2019.6"
+      details: "Predicting the solid solubility of binary alloy systems and the crsytal structure of perovskite with ML methods."
+      tech: "Techs: Python, Common ML algorithms (SVM, RF, DT, KNN)"
+    - role: "The computing platform for brain-like science"
+      company: "Architecture Designer, UI Designer"
+      time: "2017.10 - 2019.6"
+      details: "The architecture design and user interface development of the whole platform."
+      tech: "Techs: Linux, KVM, Docker, PHP, VueJS"
+    - role : "The visualization of route planning in logistics management"
+      company: "Architecture Designer, UI Designer"
+      time: "2018.6 - 2018.10"
+      details: "The architecture design of the whole system and the visualization of the planned route with AMAP."
+      tech: "Techs: HTML/CSS/JS, AMAP, REST API"
+  honors:
+    - Award of Shanghai University Outstanding Graduates, 2019
+    - The National Second Prize of National Mathematical Modeling Competition, 2017
+    - Graduate Secondary Scholarship, 2016~2018/every year
+    - Award of Shanghai Outstanding Graduates, 2016
+    - Graduate Secondary Scholarship, 2012~2016/every year
+  publications:
+    - "<b>Shengzhou Li</b>, Huiran Zhang*, Dongbo Dai, Xiao Wei, Guangtai Ding, Yike Guo. Study on the Factors Affecting Solid Solubility in Binary Alloys: An Exploration by Machine Learning. Journal of Alloys and Compounds, 2019(782):110-118."
+    - "<b>Shengzhou Li</b>, Huiran Zhang*, Dongbo Dai, Xiao Wei, Guangtai Ding, Yike Guo. Study on the Factors Affecting Solid Solubility in Binary Alloys: An Exploration by Machine Learning. Journal of Alloys and Compounds, 2019(782):110-118."
+    - "Zheng Weida, Zhang Huiran*, Hu Hongqing, Liu Yao, <b>Li Shengzhou</b>, Ding Guangtai, Zhang Jincang. Perfomance prediction of perovskite materials based on different machine learing algorithms. Transactions of Nonferrous Metals Society of China, 2019, 29(4):803-809."
+    - "Jichao Zhou, Jiaqi Shu, <b>Shengzhou Li</b>, Dongbo Dai, Guangtai Ding, Quan Qian, Huiran Zhang*. A Machine Learning Approach for Predicting Superconducting Transition Temperature of High-Temperature Superconductor. The 5th asian materials data symposium(AMDS), 2016:246-256."
+  introduction:
+    - title: "Researches"
+      content: "In the binary alloy systems, the solid solubility is helpful to understand the formation process of the alloy system, so as to controll alloy forming in the future. Hence, I have utilized SVM method to build a model for judging the solid solubility type and predicting the solid solubility, which is valid in Ag/Cu alloy systems <sup>[1]</sup>. As for the perovskite material, the crystal structure is contribute to judge the performance of the material. Hence, I have built a property predicting model with RF and SVM methods, which is effective for the Tc and the band gap <sup>[2-4]</sup>."
+    - title: "Projects"
+      content: "The main participant of projects. The computing platform contains a virtualization module based on KVM, an object storage module based on Minio, and a real time computing and task schedule module based on Docker, which meets the need of data storage and scientific computing in the brain-like researches."

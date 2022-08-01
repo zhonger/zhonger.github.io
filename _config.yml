@@ -21,9 +21,17 @@ nav:
   home: '/'
   blog: '/blog/index.html'
   archives: '/archives.html'
+  collections: 
+    CONQUEST: '/tags.html#CONQUEST'
+    LDAP: '/tags.html#LDAP'
+    博客: '/tags.html#blog'
   tags: '/tags.html'
-  RSS: '/feed.xml'
-  logs: '/logs.html'
+  about:
+    logs: '/logs.html'
+    tos: '/tos.html'
+    RSS: '/feed.xml'
+    CV: '/cv.html'
+    links: '/links.html'
 
 # Footer
 footer:

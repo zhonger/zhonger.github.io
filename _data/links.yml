@@ -1,0 +1,18 @@
+links:
+  - name: "Github"
+    info: "免费代码托管"
+    img: "https://cdn-icons-png.flaticon.com/512/1051/1051326.png"
+    url: "https://github.com"
+  - name: "Cloudflare"
+    info: "全球加速网络"
+    img: "https://cdn-icons-png.flaticon.com/512/5969/5969044.png"
+    url: "https://cloudflare.com"
+  - name: "个人导航"
+    info: "私人自用导航页"
+    img: "/assets/icons/default.svg"
+    url: "https://nav.lisz.me"
+friends:
+  - name: "Kalasearch（卡拉搜索）"
+    info: "5 分钟打造极致搜索体验"
+    img: "https://kalasearch.cn/icons/icon-512x512.png"
+    url: "https://kalasearch.cn/"
