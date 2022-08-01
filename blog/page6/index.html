@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Li | 6 of 8 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta name="keywords"  content="zhonger，zhonger的博客，nodejs，kvm">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mr Li | 6 of 8 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/blog/page6/index.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <meta name="theme-color" content="#81BBFF" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png" />
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" async>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css">
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+
+
+
+<body class="line-numbers" ontouchstart="">
+
+
+    <!--[if lt IE 10]>
+    <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+    <![endif]-->
+    
+    <div id="all">
+    
+      <input id="nm-switch" type="hidden" value="false">
+      <div class="visible">
+        <header class="g-header">
+    <div class="g-logo">
+      <a href="/" aria-label="logo"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+                
+                <li>
+                    <a href="/" aria-label="home">
+                        home
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/blog/index.html" aria-label="blog">
+                        blog
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/archives.html" aria-label="archives">
+                        archives
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/tags.html" aria-label="tags">
+                        tags
+                    </a>
+                </li>
+                
+            
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> about </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/feed.xml" aria-label="RSS">
+                                RSS
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/logs.html" aria-label="logs">
+                                logs
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tos.html" aria-label="tos">
+                                tos
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/cv.html" aria-label="CV">
+                                CV
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/links.html" aria-label="links">
+                                links
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
+            
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> collections </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/tags.html#CONQUEST" aria-label="CONQUEST">
+                                CONQUEST
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#LDAP" aria-label="LDAP">
+                                LDAP
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#blog" aria-label="博客">
+                                博客
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
+            
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+<div
+    class="g-banner home-banner banner-theme-default"
+    data-theme="default"
+    style=""
+>
+    <h2>Welcome to zhonger's blog!</h2>
+    <h3>Writing, writing, writing ...</h3>
+</div>
+
+<main class="g-container home-content">
+    <div class="article-list">
+        
+
+
+
+
+
+
+
+
+    
+    
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/webmaster/ngx-fancyindex.html" title="Nginx 目录列表美化"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/u4nUxr.webp" href="/tech/webmaster/ngx-fancyindex.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/webmaster/ngx-fancyindex.html" title="Nginx 目录列表美化"></a>
+        <h2 class="post-title">Nginx 目录列表美化</h2>
+        
+        <h3 class="post-subtitle">使用 Ngx-fancyindex 插件一键美化Nginx目录列表</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#nginx class="post-tag">nginx</a>
+                
+                <a href=/tags.html#%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8 class="post-tag">目录列表</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="18-04-12">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2018-04-12 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/docker/onlyoffice.html" title="Onlyoffice 搭建"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/XDpumD.webp" href="/tech/docker/onlyoffice.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/docker/onlyoffice.html" title="Onlyoffice 搭建"></a>
+        <h2 class="post-title">Onlyoffice 搭建</h2>
+        
+        <h3 class="post-subtitle">使用 Docker 搭建 Onlyoffice 如此轻松愉快</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#onlyoffice class="post-tag">onlyoffice</a>
+                
+                <a href=/tags.html#docker class="post-tag">docker</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="18-04-01">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2018-04-01 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/docker/nextcloud.html" title="Nextcloud 搭建自己的云盘"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/gLQGHs.webp" href="/tech/docker/nextcloud.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/docker/nextcloud.html" title="Nextcloud 搭建自己的云盘"></a>
+        <h2 class="post-title">Nextcloud 搭建自己的云盘</h2>
+        
+        <h3 class="post-subtitle">Docker 搭建 or LNMPA 搭建 随你选</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#Nextcloud class="post-tag">Nextcloud</a>
+                
+                <a href=/tags.html#docker class="post-tag">docker</a>
+                
+                <a href=/tags.html#lnmpa class="post-tag">lnmpa</a>
+                
+                <a href=/tags.html#%E4%BA%91%E7%9B%98 class="post-tag">云盘</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="18-03-24">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2018-03-24 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/webmaster/get-free-ssl.html" title="Letsencrypt 泛域名 SSL 证书免费申请"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/3ruY1v.webp" href="/tech/webmaster/get-free-ssl.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/webmaster/get-free-ssl.html" title="Letsencrypt 泛域名 SSL 证书免费申请"></a>
+        <h2 class="post-title">Letsencrypt 泛域名 SSL 证书免费申请</h2>
+        
+        <h3 class="post-subtitle">内网站点也可以轻松 HTTPS 化了</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#Letsencrypt class="post-tag">Letsencrypt</a>
+                
+                <a href=/tags.html#ssl class="post-tag">ssl</a>
+                
+                <a href=/tags.html#%E6%B3%9B%E5%9F%9F%E5%90%8D class="post-tag">泛域名</a>
+                
+                <a href=/tags.html#%E5%85%8D%E8%B4%B9 class="post-tag">免费</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="18-03-14">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2018-03-14 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/linux/unbound-dns.html" title="Unbound + Dnscrypt 搭建无污染 DNS 服务"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/mL0Jdi.webp" href="/tech/linux/unbound-dns.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/linux/unbound-dns.html" title="Unbound + Dnscrypt 搭建无污染 DNS 服务"></a>
+        <h2 class="post-title">Unbound + Dnscrypt 搭建无污染 DNS 服务</h2>
+        
+        <h3 class="post-subtitle">从零开始搭建一个无污染的 DNS 服务</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#DNS class="post-tag">DNS</a>
+                
+                <a href=/tags.html#unbound class="post-tag">unbound</a>
+                
+                <a href=/tags.html#dnscrypt class="post-tag">dnscrypt</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-12-03">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-12-03 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/linux/arch-tutorial.html" title="Archlinux 入门初步"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/zahv58.webp" href="/tech/linux/arch-tutorial.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/linux/arch-tutorial.html" title="Archlinux 入门初步"></a>
+        <h2 class="post-title">Archlinux 入门初步</h2>
+        
+        <h3 class="post-subtitle">Archlinux 从安装操作系统入手</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#archlinux class="post-tag">archlinux</a>
+                
+                <a href=/tags.html#setup class="post-tag">setup</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-07-19">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-07-19 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/linux/linux-lvm.html" title="在 Linux 系统上没有磁盘阵列实现合并磁盘"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/os0b6I.webp" href="/tech/linux/linux-lvm.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/linux/linux-lvm.html" title="在 Linux 系统上没有磁盘阵列实现合并磁盘"></a>
+        <h2 class="post-title">在 Linux 系统上没有磁盘阵列实现合并磁盘</h2>
+        
+        <h3 class="post-subtitle">感受 LVM 的妙用</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#Linux class="post-tag">Linux</a>
+                
+                <a href=/tags.html#LVM class="post-tag">LVM</a>
+                
+                <a href=/tags.html#%E5%90%88%E5%B9%B6%E7%A3%81%E7%9B%98 class="post-tag">合并磁盘</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-07-01">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-07-01 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/php/caddy-apache.html" title="使用 Caddy 和 Apache 搭建 PHP 环境"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/V7dOou.webp" href="/tech/php/caddy-apache.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/php/caddy-apache.html" title="使用 Caddy 和 Apache 搭建 PHP 环境"></a>
+        <h2 class="post-title">使用 Caddy 和 Apache 搭建 PHP 环境</h2>
+        
+        <h3 class="post-subtitle">用 Caddy 来替代 Nginx 效果会怎样？</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#caddy class="post-tag">caddy</a>
+                
+                <a href=/tags.html#apache class="post-tag">apache</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-06-21">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-06-21 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/linux/mirrors-build.html" title="镜像站构建"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/0ndvwZ.webp" href="/tech/linux/mirrors-build.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/linux/mirrors-build.html" title="镜像站构建"></a>
+        <h2 class="post-title">镜像站构建</h2>
+        
+        <h3 class="post-subtitle">一步一步搭建开源镜像站</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#mirror class="post-tag">mirror</a>
+                
+                <a href=/tags.html#build class="post-tag">build</a>
+                
+                <a href=/tags.html#rsync class="post-tag">rsync</a>
+                
+                <a href=/tags.html#cran class="post-tag">cran</a>
+                
+                <a href=/tags.html#wget class="post-tag">wget</a>
+                
+                <a href=/tags.html#bandsnatch class="post-tag">bandsnatch</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-05-10">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-05-10 
+            
+        </time>
+    </footer>
+</article>
+    
+        
+        
+<article class="article-item keep-top">
+
+    
+        <div class="post-cover">
+            <a class="post-link" href="/tech/docker/docker-init.html" title="Docker 入门"></a>
+            <img class="lazyload" src="/assets/img/loading.gif" data-src="https://i.luish.cc/cover/wjFGWW.webp" href="/tech/docker/docker-init.html" alt="">
+        </div>
+    
+    <section class="post-preview">
+        <a class="post-link" href="/tech/docker/docker-init.html" title="Docker 入门"></a>
+        <h2 class="post-title">Docker 入门</h2>
+        
+        <h3 class="post-subtitle">Docker 的常用安装与加速</h3>
+        
+        
+    </section>
+    <footer class="post-meta">
+        <div class="post-tags">
+            
+                
+                <a href=/tags.html#docker class="post-tag">docker</a>
+                
+                <a href=/tags.html#ubuntu class="post-tag">ubuntu</a>
+                
+            
+        </div>
+        <time class="post-date" datetime="17-05-09">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-time2"></use>
+            </svg>
+            
+                2017-05-09 
+            
+        </time>
+    </footer>
+</article>
+    
+
+
+        
+            <nav class="pagination">
+    <input type="hidden" id="total_pages" value="8">
+    <input type="hidden" id="current_pages" value="6">
+    <input type="hidden" id="base_url" value="/blog/">
+    <div class="page-links">
+        
+            
+            <a href="/blog/page5/index.html" class="page-link" title="Previous Page">&laquo;</a>
+            
+        
+        <div id="page-link-container"></div>
+        
+        <a href="/blog/page7/index.html" class="page-link">&raquo;</a>
+        
+    </div>
+</nav>
+
+        
+    </div>
+
+    <aside class="g-sidebar-wrapper">
+        <div class="g-sidebar">
+            <section class="author-card">
+                <div class="avatar">
+                    <img src="/assets/img/profile.webp" alt="">
+                </div>
+                <div class="author-name" rel="author">zhonger</div>
+                <div class="bio">
+                    <p>Developer & Maintainer</p>
+                </div>
+                
+                <ul id="sns-links" class="sns-links">
+                    
+                    <li>
+                        <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-google-scholar"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-researchgate"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-ORCID"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://github.com/zhonger" target="_blank" aria-label="github">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-github"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-linkedin"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-segmentfault"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </section>
+
+            
+            <section class="tags-card">
+                
+                    
+                    <a href="/tags.html#gravatar" class="tag">gravatar</a>
+                
+                    
+                    <a href="/tags.html#wordpress" class="tag">wordpress</a>
+                
+                    
+                    <a href="/tags.html#SSH%E7%99%BB%E5%BD%95" class="tag">SSH登录</a>
+                
+                    
+                    <a href="/tags.html#%E8%BD%AC%E8%BD%BD" class="tag">转载</a>
+                
+                    
+                    <a href="/tags.html#%E5%86%99%E4%BD%9C" class="tag">写作</a>
+                
+                    
+                    <a href="/tags.html#%E9%9A%8F%E7%AC%94" class="tag">随笔</a>
+                
+                    
+                    <a href="/tags.html#%E8%AF%97" class="tag">诗</a>
+                
+                    
+                    <a href="/tags.html#windows" class="tag">windows</a>
+                
+                    
+                    <a href="/tags.html#composer" class="tag">composer</a>
+                
+                    
+                    <a href="/tags.html#laravel" class="tag">laravel</a>
+                
+                    
+                    <a href="/tags.html#ubuntu" class="tag">ubuntu</a>
+                
+                    
+                    <a href="/tags.html#nodejs" class="tag">nodejs</a>
+                
+                    
+                        
+            </section>
+            
+
+            
+            <section class="tags-card">
+                <div class="links" rel="links">Links</div>
+                
+                    <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer"> Kala Search </a>
+                
+                    <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer"> 个人导航 </a>
+                
+            </section>
+            
+
+        </div>
+
+        
+        <div class="search-card">
+            <input id="search_input" type="text" placeholder="Search..." autocomplete="off">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+            </svg>
+            <div class="search_result"></div>
+        </div>
+        
+
+    </aside>
+
+</main>
+
+<footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  
+  </section>
+  
+  <section>
+    <span id="busuanzi_container_site_pv">
+      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+    </span>
+    <span id="busuanzi_container_site_uv">
+      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </section>
+  
+  
+</footer>
+<div class="cookie-tip">
+  
+  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
+  
+  <button id="accept-tos">同意（Accept）</button>
+</div>
+<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
+  <svg class="icon list day" aria-hidden="true">
+    <use xlink:href="#icon-list-day"></use>
+  </svg>
+  <svg class="icon list night" aria-hidden="true">
+    <use xlink:href="#icon-list-night"></use>
+  </svg>
+  <svg class="icon exit day" aria-hidden="true">
+    <use xlink:href="#icon-exit-day"></use>
+  </svg>
+  <svg class="icon exit night" aria-hidden="true">
+    <use xlink:href="#icon-exit-night"></use>
+  </svg>
+</button>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
+  </svg>
+</button>
+
+
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="/assets/js/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+    <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+    
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+    
+<script async defer data-website-id="90ea4822-8012-444e-837a-757ea473e087" src="https://umami.lisz.top/pwiki.js"></script>
+
+    
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <script>
+    if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log("An active service worker found, no need to register");
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/"
+            })
+            .then(function (reg) {
+                console.log("Service worker has been registered for scope: " + reg.scope);
+            });
+        }
+    }
+
+// 检测浏览器是否支持SW
+// if(navigator.serviceWorker != null){
+//     navigator.serviceWorker.register("/sw.js")
+//         .then(function(registartion){
+//             console.log('支持sw:',registartion.scope)
+//         })
+// } else {
+//     console.log('不支持sw')
+// }
+</script>
+    
+    <!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+    
+</body>
+</html>

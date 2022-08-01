@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="zh-cn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,94 +18,65 @@
     <meta property="og:site_name" content="Mr Li">
     <meta property="og:gray" content="false">
     
+    <meta property="og:previous_url" content="/tech/docker/nextcloud-docker.html">
+    
+    
+    <meta property="og:next_url" content="/tech/webmaster/ngx-fancyindex.html">
+    
+    <meta property="post-date-format" content="0">
+    
+    <meta property="post-date" content="2018-05-01 13:38:35 +0900" />
+    
+    
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
+    <meta name="theme-color" content="#81BBFF" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png"/>
     <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/normalize.min.css">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
-    <link rel="stylesheet" href="/assets/css/plugins.min.css">
-    <link rel="preload" href="/assets/fonts/Merriweather-Regular.ttf" as="font" crossorigin="anonymous">
-    <link rel="stylesheet" href="/assets/css/app.min.css">
-    <!-- <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
-    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-	
-	<!--
-Author: Ray-Eldath
-refer to:
- - http://docs.mathjax.org/en/latest/options/index.html
--->
-
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-		jax: ["input/TeX", "output/HTML-CSS"],
-		tex2jax: {
-			inlineMath: [ ["$", "$"] ],
-			displayMath: [ ["$$", "$$"] ],
-			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-		},
-		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-      });
-    </script>
-
-	
-    <!--
-Author: Ray-Eldath
--->
-<style>
-    .markdown-body .anchor{
-        float: left;
-        margin-top: -8px;
-        margin-left: -20px;
-        padding-right: 4px;
-        line-height: 1;
-        opacity: 0;
-    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
     
-    .markdown-body .anchor .anchor-icon{
-        font-size: 15px
-    }
-</style>
-<script>
-    $(document).ready(function() {
-        let nodes = document.querySelector(".markdown-body").querySelectorAll("h1,h2,h3")
-        for(let node of nodes) {
-            var anchor = document.createElement("a")
-            var anchorIcon = document.createElement("i")
-            anchorIcon.setAttribute("class", "fa fa-anchor fa-lg anchor-icon")
-            anchorIcon.setAttribute("aria-hidden", true)
-            anchor.setAttribute("class", "anchor")
-            anchor.setAttribute("href", "#" + node.getAttribute("id"))
-            
-            anchor.onmouseover = function() {
-                this.style.opacity = "0.4"
-            }
-            
-            anchor.onmouseout = function() {
-                this.style.opacity = "0"
-            }
-            
-            anchor.appendChild(anchorIcon)
-            node.appendChild(anchor)
-        }
-    })
-</script>
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
 
 
-<body>
+
+<body class="line-numbers" ontouchstart="">
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all">
+  <div id="all" class="post">
   
+    <div class="alert-tip" id="no-previous">
+      
+      已经是最新一篇文章了！
+      
+    </div>
+    <div class="alert-tip" id="no-next">
+      
+      已经是最后一篇文章了！
+      
+    </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
-      <a href="/"></a>
+      <a href="/" aria-label="logo"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
     <div id="mode-toggle">
@@ -120,21 +93,103 @@ Author: Ray-Eldath
     <nav class="g-nav">
         <ul>
             
-            <li><a href="/">home</a></li>
+                
+                <li>
+                    <a href="/" aria-label="home">
+                        home
+                    </a>
+                </li>
+                
             
-            <li><a href="/blog/index.html">blog</a></li>
+                
+                <li>
+                    <a href="/blog/index.html" aria-label="blog">
+                        blog
+                    </a>
+                </li>
+                
             
-            <li><a href="/archives.html">archives</a></li>
+                
+                <li>
+                    <a href="/archives.html" aria-label="archives">
+                        archives
+                    </a>
+                </li>
+                
             
-            <li><a href="/tags.html">tags</a></li>
+                
+                <li>
+                    <a href="/tags.html" aria-label="tags">
+                        tags
+                    </a>
+                </li>
+                
             
-            <li><a href="/feed.xml">RSS</a></li>
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> about </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/feed.xml" aria-label="RSS">
+                                RSS
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/logs.html" aria-label="logs">
+                                logs
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tos.html" aria-label="tos">
+                                tos
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/cv.html" aria-label="CV">
+                                CV
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/links.html" aria-label="links">
+                                links
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
             
-            <li><a href="/logs.html">logs</a></li>
-            
-            <li><a href="/%7B%22CONQUEST%22=%3E%22/tags.html#CONQUEST%22,%20%22LDAP%22=%3E%22/tags.html%23LDAP%22,%20%22%E5%8D%9A%E5%AE%A2%22=%3E%22/tags.html%23blog%22%7D">collections</a></li>
-            
-            <li><a href="/%7B%22logs%22=%3E%22/logs.html%22,%20%22tos%22=%3E%22/tos.html%22,%20%22RSS%22=%3E%22/feed.xml%22,%20%22CV%22=%3E%22/cv.html%22,%20%22links%22=%3E%22/links.html%22%7D">about</a></li>
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> collections </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/tags.html#CONQUEST" aria-label="CONQUEST">
+                                CONQUEST
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#LDAP" aria-label="LDAP">
+                                LDAP
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#blog" aria-label="博客">
+                                博客
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
             
             <li class="mode">
                 <svg class="icon day" aria-hidden="true">
@@ -166,18 +221,57 @@ Author: Ray-Eldath
         <h1>KVM 虚拟化</h1>
         <div class="post-meta">
           <span class="post-meta-item">
-            <i class="iconfont icon-author"></i>zhonger
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-user"></use>
+            </svg>
+            zhonger
           </span>
           <time class="post-meta-item" datetime="18-05-01">
-            <i class="iconfont icon-date"></i>
-            
-              2018-05-01 13:38:35 +0900 
-            
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-calendar"></use>
+            </svg>
+            <span class="create-at"></span>
           </time>
-        </div>
-        <div class="post-meta">
+          <time class="post-meta-item" datetime="18-05-01">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-update"></use>
+            </svg>
+            <span class="update-at"></span>
+          </time>
           
-          <span>本文总共 3945 字 <b>·</b> 阅读全文大约需要 12 分钟</span>
+            <span class="post-meta-item">
+              <svg class="icon words" aria-hidden="true">
+                <use xlink:href="#icon-words"></use>
+              </svg>
+              
+              本文总共  3.9k  字
+            </span>
+            <span class="post-meta-item">
+              <svg class="icon time" aria-hidden="true">
+                <use xlink:href="#icon-time"></use>
+              </svg>
+              阅读全文大约需要 12 分钟
+            </span>
+            
+              <span class="post-meta-item">
+                <svg class="icon pv" aria-hidden="true">
+                  <use xlink:href="#icon-pv"></use>
+                </svg>
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-image"></use>
+              </svg>
+              
+                
+                  封面图片由 <a href="https://unsplash.com/@joshrh19" target="_blank">Joshua Rawson-Harris</a> 提供
+                
+              
+            </span>
           
         </div>
       </div>
@@ -335,17 +429,23 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
 <span class="c"># 创建 win 虚拟机从模板拷贝文件再度创建即可完成</span>
 </code></pre></div></div>
 
-<blockquote>
-  <p>info “小提示”
-暂未探索使用 Cloud-init 方式来初始化 Windows，后续补充。</p>
-</blockquote>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>暂未探索使用 Cloud-init 方式来初始化 Windows，后续补充。</p>
 
+
+
+ </div> </div>
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
   <li><a href="https://www.redhat.com/zh/topics/virtualization/what-is-KVM">什么是 KVM？</a></li>
 </ul>
 
+            <div class="post-copyright">
+              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">Mr Li</a>&nbsp;所有，转载请注明本文链接。</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p><span>本文标题：</span>《 KVM 虚拟化 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/kvm/kvm.html">https://lisz.me/tech/kvm/kvm.html</a></p>
+            </div>
           </article>
         </div>   
         <div class="table-of-contents">
@@ -375,7 +475,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
         <ul class="sns-links">
           
           <li>
-            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank">
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-google-scholar"></use>
               </svg>
@@ -383,7 +483,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
           </li>
           
           <li>
-            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank">
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-researchgate"></use>
               </svg>
@@ -391,7 +491,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
           </li>
           
           <li>
-            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank">
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-ORCID"></use>
               </svg>
@@ -399,7 +499,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
           </li>
           
           <li>
-            <a href="https://github.com/zhonger" target="_blank">
+            <a href="https://github.com/zhonger" target="_blank" aria-label="github">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-github"></use>
               </svg>
@@ -407,7 +507,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
           </li>
           
           <li>
-            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank">
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-linkedin"></use>
               </svg>
@@ -415,7 +515,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
           </li>
           
           <li>
-            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank">
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-segmentfault"></use>
               </svg>
@@ -428,7 +528,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
       <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-          <a href="/tech/docker/nextcloud-docker.html" class="read-next-link"></a>
+          <a href="/tech/docker/nextcloud-docker.html" class="read-next-link" aria-label="Nextcloud 源码部署迁移到容器部署"></a>
           <section>
             <span>Nextcloud 源码部署迁移到容器部署</span>
             <p>  在以前我们部署 Nextcloud 都是采用 LNMPA 架构和源码来直接部署，到版本升级时一般都需要比较复杂...</p>
@@ -442,7 +542,7 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
 
         
         <div class="read-next-item">
-          <a href="/tech/webmaster/ngx-fancyindex.html" class="read-next-link"></a>
+          <a href="/tech/webmaster/ngx-fancyindex.html" class="read-next-link" aria-label="Nginx 目录列表美化"></a>
             <section>
               <span>Nginx 目录列表美化</span>
               <p>安装 Nginx</p>
@@ -454,6 +554,10 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
         </div>
         
       </section>
+      
+   
+      
+
       
     </section>
 
@@ -469,30 +573,50 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
     <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">Theme H2O-ac</a> (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a>) 
-  
-  <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
-  
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
   
   </section>
+  
+  <section>
+    <span id="busuanzi_container_site_pv">
+      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+    </span>
+    <span id="busuanzi_container_site_uv">
+      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </section>
+  
+  
 </footer>
-<button aria-label="Scroll back to top" class="bttb" type="button">
-  <svg class="icon up" aria-hidden="true">
-    <use xlink:href="#icon-up"></use>
+<div class="cookie-tip">
+  
+  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
+  
+  <button id="accept-tos">同意（Accept）</button>
+</div>
+<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
+  <svg class="icon list day" aria-hidden="true">
+    <use xlink:href="#icon-list-day"></use>
+  </svg>
+  <svg class="icon list night" aria-hidden="true">
+    <use xlink:href="#icon-list-night"></use>
+  </svg>
+  <svg class="icon exit day" aria-hidden="true">
+    <use xlink:href="#icon-exit-day"></use>
+  </svg>
+  <svg class="icon exit night" aria-hidden="true">
+    <use xlink:href="#icon-exit-night"></use>
+  </svg>
+</button>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
   </svg>
 </button>
 
-<script src="//at.alicdn.com/t/font_3046306_1wfow6bxtae.js"></script>
-
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-9E8SEJ5JNY');
-</script>
 
   </div>
 
@@ -520,18 +644,32 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
       wechatQrcodeTitle: "分享到微信朋友圈",
       wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
     });
+    $("a.social-share-icon").each(function() {
+      $(this).attr("aria-label", $(this).attr("class").split(' ')[1])
+    });
   </script>
 
   
 
-  <script src="/assets/js/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
       // 给图片添加链接
       $(document).ready(function() {
+          var baseurl = $("meta[property='og:baseurl']").attr('content');
           $("p img").each(function() {
-              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + this.src + "' data-caption='" + this.alt + "'></a>";
+              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload").attr('src', baseurl + '/assets/img/loading.gif');
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
               $(this).wrapAll(strA);
           });
 
@@ -545,10 +683,101 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
                 }
               }
             }
-          });
+          });   
           
+          
+
+          if($("#comments-switch").length > 0){
+            var comment_status = $("#cmn-toggle-4")[0].checked;
+            if(comment_status){
+              $("#waline").addClass("active");
+            }else {
+              $("#disqus_thread").addClass("active");
+            }
+            $("#cmn-toggle-4").click(function(){
+              $("#disqus_thread").toggleClass("active");
+              $("#waline").toggleClass("active");
+            })
+          }else {
+            if($("#disqus_thread").length > 0) {
+              $("#disqus_thread").addClass("active");
+            }else if($("#waline").length > 0) {
+              $("#waline").addClass("active");
+            }
+          }
+
+          var time_formats = ['YYYY-MM-DD HH:mm:ss ZZ', 'YYYY DD MMM HH:mm:ss ZZ', 'YYYY年MM月DD日 HH:mm:ss ZZ'];
+          function dateFormat(date, format){
+            var date_org = dayjs(date, time_formats[format]);
+            var date     = date_org.format(time_formats[format]);
+            return {"date_org": date_org, "date": date}
+          }
+
+          dayjs.extend(window.dayjs_plugin_customParseFormat);
+          dayjs.extend(window.dayjs_plugin_relativeTime);
+          var post_date = $("meta[property='post-date']").attr('content');
+          var post_date_format = $("meta[property='post-date-format']").attr('content');
+          var local_post_date = dateFormat(post_date, post_date_format);
+
+          $(".post time span.create-at").html(local_post_date["date"]);
+
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2018-05-01-kvm.md")
+          .then((response) => {
+            return response.json();
+          })
+          .then((commits) => {
+            if(commits.length != 0){
+              var update_at = dayjs(commits[0]['commit']['committer']['date']);
+            }else {
+              var update_at = post_date
+            }
+
+            var local_update_at = dateFormat(update_at, post_date_format);
+            $('.post time span.update-at').html(local_update_at["date"]);
+
+            var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            if(relative_time > 365){
+              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+            }
+          });   
+          
+          /*
+          * Keyboard shortcut bind: left and right
+          */
+
+          var previous_url = $("meta[property='og:previous_url']").attr('content');
+          var next_url = $("meta[property='og:next_url']").attr('content');
+
+          hotkeys('left', function(event, handler){
+              // Prevent the default refresh event under WINDOWS system
+              event.preventDefault();
+              if(previous_url){
+                  console.log('you pressed left!');
+                  window.location.href = previous_url;
+              }else {
+                  $("#no-previous").addClass("active");
+                  console.log('已经是最新一篇文章了！');
+                  console.log('Already the latest article！');
+                  setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
+              }
+          });
+
+          hotkeys('right', function(event, handler){
+              // Prevent the default refresh event under WINDOWS system
+              event.preventDefault();
+              if(next_url){
+                  console.log('you pressed right!');
+                  window.location.href = next_url;
+              }else {
+                  $("#no-next").addClass("active");
+                  console.log('已经是最后一篇文章了！');
+                  console.log('Already the last article！');
+                  setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
+              }
+          });
       });
   </script>
+  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -560,6 +789,60 @@ virt-install <span class="nt">--name</span><span class="o">=</span>tpl_win10 <sp
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
+  
+<script async defer data-website-id="90ea4822-8012-444e-837a-757ea473e087" src="https://umami.lisz.top/pwiki.js"></script>
+
+  
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log("An active service worker found, no need to register");
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/"
+            })
+            .then(function (reg) {
+                console.log("Service worker has been registered for scope: " + reg.scope);
+            });
+        }
+    }
+
+// 检测浏览器是否支持SW
+// if(navigator.serviceWorker != null){
+//     navigator.serviceWorker.register("/sw.js")
+//         .then(function(registartion){
+//             console.log('支持sw:',registartion.scope)
+//         })
+// } else {
+//     console.log('不支持sw')
+// }
+</script>
+  
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
 </body>
 
 </html>

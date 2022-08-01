@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 01 Aug 2022 21:57:47 +0900</pubDate>
-    <lastBuildDate>Mon, 01 Aug 2022 21:57:47 +0900</lastBuildDate>
+    <pubDate>Mon, 01 Aug 2022 22:11:28 +0900</pubDate>
+    <lastBuildDate>Mon, 01 Aug 2022 22:11:28 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -114,11 +114,11 @@
 
 &lt;p&gt;  也可能存在先有 Gitlab 账户、然后才有的 LDAP 目录的情况，这也不要紧，因为 Gitlab 支持 LDAP 认证方式的用户与现有用户进行合并。举个例子，如果我已经在 Gitlab 中创建了用户名为 zhonger、邮箱为 zhonger@example.com 的用户，那么我在 LDAP 目录中只需要把 mail 字段也写成 zhonger@example.com 即可被 Gitlab 识别成同一用户。或者说，我们可以在 Gitlab 中增加 LDAP 目录中的 mail 字段的邮箱（Gitlab 支持同一用户绑定多个邮箱），这样在 Gitlab 中使用 LDAP 认证的时候也会被视为同一用户。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-  由于 LDAP 用户的账户名和密码不会被 Gitlab 接管，所以当你使用 LDAP 认证登录后，原有的同邮箱的 Gitlab 用户就会自动丧失修改密码的权利。除此之外，一切照旧。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 LDAP 用户的账户名和密码不会被 Gitlab 接管，所以当你使用 LDAP 认证登录后，原有的同邮箱的 Gitlab 用户就会自动丧失修改密码的权利。除此之外，一切照旧。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
 
 &lt;p&gt;  为了更加简便实践并且容易复现，这里采用的是常用的 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/docker-gitlab&lt;/a&gt; Docker 镜像。可以在镜像 Github 页面下载到提供的对应 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab/blob/master/docker-compose.yml&quot;&gt;docker-compose.yml&lt;/a&gt; 文件。由于 LDAP 并非是默认配置，所以默认是没有 LDAP 配置段的。需要在 docker-compose.yml 文件的 environment 中增加以下环境变量。其中，请根据实际情况更改成相应的信息。&lt;/p&gt;
@@ -140,11 +140,11 @@
 
 &lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BaWBKa.webp&quot; alt=&quot;登录页面 Login Page&quot; /&gt;&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-  这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
 &lt;ul&gt;
@@ -220,11 +220,11 @@
 
 &lt;p&gt;  访问 &lt;a href=&quot;http://localhost/wiki/&quot;&gt;http://localhost/wiki/&lt;/a&gt; 即可看到如下图所示的 Dokuwiki 实例首页。这里其实是已经使用默认的 admin 用户登录之后的页面了。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-  shuosc/dokuwiki 默认管理员 admin 的初始密码为 admin。如果容器实例可被外部网络访问，出于安全性考虑建议在运行后及时修改成强密码。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  shuosc/dokuwiki 默认管理员 admin 的初始密码为 admin。如果容器实例可被外部网络访问，出于安全性考虑建议在运行后及时修改成强密码。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nNCoC5.webp&quot; alt=&quot;首页 Home Page&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;配置-ldap-登录&quot;&gt;配置 LDAP 登录&lt;/h3&gt;
@@ -243,12 +243,12 @@ apt update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt &
 docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-  由于 shuosc/dokuwiki 镜像默认采用的 USTC（中科大）的软件源，笔者在安装 php7-ldap 库时遇到 Not Found 的错误。如果你也遇到了，可以将容器实例的软件源切换到其他软件源，比如执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sed -i &quot;s/ustc/nju/&quot; /etc/apt/sources.list&lt;/code&gt; 即可从 USTC 切换到 NJU（南京大学）软件源。&lt;br /&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 shuosc/dokuwiki 镜像默认采用的 USTC（中科大）的软件源，笔者在安装 php7-ldap 库时遇到 Not Found 的错误。如果你也遇到了，可以将容器实例的软件源切换到其他软件源，比如执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sed -i &quot;s/ustc/nju/&quot; /etc/apt/sources.list&lt;/code&gt; 即可从 USTC 切换到 NJU（南京大学）软件源。&lt;br /&gt;
   另外，这样的安装只是一种临时的解决方案，销毁并重建容器实例后仍然没有 php7-ldap 库。因此后续 shuosc/dokuwki 镜像将会增加这一支持。&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h4 id=&quot;设置-ldap&quot;&gt;设置 LDAP&lt;/h4&gt;
 
 &lt;p&gt;  在登录成功后，可以如上步中图中所示点击右上角&lt;strong&gt;管理&lt;/strong&gt;按钮进入&lt;strong&gt;管理页面&lt;/strong&gt;。&lt;/p&gt;
@@ -308,11 +308,11 @@ docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span 
 
 &lt;p&gt;  上步填写的是 LDAP 相关配置信息，这里还需要将默认的&lt;strong&gt;认证方式&lt;/strong&gt;（authtype）从 authbasic 切换到 authldap，如下图所示。另外，为了保证 LDAP 的管理员用户可以访问 Dokuwiki 的管理页面，这里也需要指定&lt;strong&gt;超级用户&lt;/strong&gt;（superuser）的用户名。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-  由于启用了 LDAP 认证，这里应该要如下图所示停用 Dokuwiki 的&lt;strong&gt;注册&lt;/strong&gt;功能，&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于启用了 LDAP 认证，这里应该要如下图所示停用 Dokuwiki 的&lt;strong&gt;注册&lt;/strong&gt;功能，&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/zW5Fgq.webp&quot; alt=&quot;启用 LDAP Enable LDAP&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;其他&quot;&gt;其他&lt;/h3&gt;
@@ -505,11 +505,11 @@ Alias &quot;/dnc/&quot; &quot;/var/www/dnc/&quot;
 
 &lt;p&gt;  下面的构建镜像 Dockerfile 中将会预先启用代理模块，由于可能会代理 HTTPS 端口，所以 HTTP 模块和 SSL 模块也预先启用了。除此之外，如果需要代理 HTTPS 站点，就要像下面一样开启 SSLProxyEngine 配置，否则只能完成 HTTP 代理。代理配置的第二行是“ProxyPass+子目录+代理 URL”。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “小提示”
-需要注意的是应该把&lt;strong&gt;代理配置&lt;/strong&gt;放在&lt;strong&gt;目录配置&lt;/strong&gt;之前。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;需要注意的是应该把&lt;strong&gt;代理配置&lt;/strong&gt;放在&lt;strong&gt;目录配置&lt;/strong&gt;之前。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;...
 SSLProxyEngine On
 ProxyPass /foo https://foo.example.com
@@ -645,19 +645,19 @@ ProxyPass /foo https://foo.example.com
 
 &lt;p&gt;  相比原生应用开发而言，Web 应用程序的开发和更新维护则显得不要太轻松，真正实现了“一遍更新所有客户端适用”。如果要从性能和可调用设备资源来看，可能以前原生应用要占上风。但是随着 HTML5 和 CSS3 的发展，Web 应用程序在性能和设备资源调用上已经与原生应用差别无二了。所以越来越多的基于 Web 技术的 Hybrid 客户端或者纯 Web 客户端开始涌现，比如非常知名的网易云客户端，无论是 PC 客户端还是移动客户端都已经切换到了 Web 技术栈。还有现在非常流行的代码编辑器 VS Code，是基于 Electron 框架进行二次开发，其简易的操作逻辑和丰富的插件为开发者带来了无限的可能。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;note “代码编辑器小知识”
-  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。&lt;br /&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 代码编辑器小知识 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。&lt;br /&gt;
   “巨无霸”代码编辑器也有其好处，能够提供保姆式的界面交互，可能看着省心一点。但这也是一个缺点，你需要先学习如何使用代码编辑器，才能用它来编写你想要的程序。“简洁”代码编辑器只提供必要的组件，比如文件列表、终端、搜索替换、高亮等。如果需要更多的功能，可以通过安装插件的方式来扩展支持。当然，“简洁”代码编辑器会要求你对“一切皆文件”的 Unix/Linux 哲学有比较好的认识，因为你需要通过手动修改文件配置内容的方式来设置各种各样的东西，而极少有交互界面提供。&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;  当我们把原生应用和 Web 应用放在一起来考虑时，我们就会想是否能有一种方式可以结合两者的优点来为用户提供更好的服务呢？&lt;strong&gt;PWA 于是应运而生&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “其他方案”
-  除了 PWA 之外，其实还是其他的方案出现。比如像 Hybrid 应用、React Native、Flutter 等，具体可以阅读参考资料了解更多。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 其他方案 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  除了 PWA 之外，其实还是其他的方案出现。比如像 Hybrid 应用、React Native、Flutter 等，具体可以阅读参考资料了解更多。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h3 id=&quot;什么是渐进式&quot;&gt;什么是渐进式&lt;/h3&gt;
 
 &lt;p&gt;  所谓的“&lt;strong&gt;渐进式&lt;/strong&gt;”有两个含义：&lt;/p&gt;
@@ -667,11 +667,11 @@ ProxyPass /foo https://foo.example.com
   &lt;li&gt;二是&lt;strong&gt;给支持 PWA 的浏览器用户带来更好的体验&lt;/strong&gt;：由于不同浏览器支持的 HTML/CSS 的情况有所差别，可以利用 PWA 来分步骤、分阶段在不同浏览器上新增特性。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;note “渐进式应用”
-  一个渐进式应用首先是一个网页，通过各种 Web 技术编写出的一个网页应用。之后通过添加应用 Manifest 实现添加到主屏幕，通过 Service Worker 来实现离线缓存和消息推送等功能。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 渐进式应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  一个渐进式应用首先是一个网页，通过各种 Web 技术编写出的一个网页应用。之后通过添加应用 Manifest 实现添加到主屏幕，通过 Service Worker 来实现离线缓存和消息推送等功能。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;  正是由于这些因素，PWA 至少可以给你的站点带来以下好处：&lt;/p&gt;
 
 &lt;ul&gt;
@@ -736,11 +736,11 @@ ProxyPass /foo https://foo.example.com
 
 &lt;p&gt;  这里大部分的元信息都可以通过 Jekyll 的 _config.yml 全局配置文件来动态配置。其中，由于图标需要适用于不同的设备、屏幕分辨率，所以需要准备不同尺寸、分辨率的站点图标。这里可以使用 &lt;a href=&quot;https://cthedot.de&quot;&gt;cthedot&lt;/a&gt; 开发的 &lt;a href=&quot;https://github.com/cthedot/icongen&quot;&gt;cthedot/icongen&lt;/a&gt; 工具来一键生成，非常简单方便。生成后将图标文件放置在上面设置好的位置（可自行对应修改）。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “icongen 镜像站”
-  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 &lt;a href=&quot;https://icongen.pages.dev/&quot;&gt;icongen&lt;/a&gt;，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; icongen 镜像站 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 &lt;a href=&quot;https://icongen.pages.dev/&quot;&gt;icongen&lt;/a&gt;，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h4 id=&quot;模板化&quot;&gt;模板化&lt;/h4&gt;
 
 &lt;p&gt;  由于 manifest.json 文件我们不想要每个用户都来复制一遍，所以可以将这个文件内容模板化，即把 manifest.json 文件放置在 _layouts 文件夹中。这样一来，用户可以非常简单地在源码的主目录下建立一个新的 manifest.json 文件，内容如下所示：&lt;/p&gt;
@@ -905,11 +905,11 @@ ProxyPass /foo https://foo.example.com
 
 &lt;p&gt;  除了 Jekyll 之外，其他的静态生成器比如 Hexo、Next.js 等等或者动态网站都可以 PWA 化，而且和 CDN 加速一起使用也非常合适。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “推荐一款 PWA 应用”
-  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – &lt;a href=&quot;https://squoosh.app/&quot;&gt;Squoosh&lt;/a&gt;。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 &lt;a href=&quot;https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli&quot;&gt;squoosh cli&lt;/a&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 推荐一款 PWA 应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – &lt;a href=&quot;https://squoosh.app/&quot;&gt;Squoosh&lt;/a&gt;。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 &lt;a href=&quot;https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli&quot;&gt;squoosh cli&lt;/a&gt;。&lt;/p&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h2 id=&quot;相关补充&quot;&gt;相关补充&lt;/h2&gt;
 
 &lt;h3 id=&quot;pwa-空间占用及流量消耗&quot;&gt;PWA 空间占用及流量消耗&lt;/h3&gt;
@@ -1155,30 +1155,30 @@ git log &lt;span class=&quot;nt&quot;&gt;--show-signature&lt;/span&gt;
 
 &lt;h2 id=&quot;其他相关问题&quot;&gt;其他相关问题&lt;/h2&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;error “问题一”
-如果想要导出私钥和公钥备份或迁移怎么办？&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题一 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如果想要导出私钥和公钥备份或迁移怎么办？&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “解答”
-  一般来说，GPG 密钥的保管非常重要。如果 GPG 密钥的私钥丢失或者被他人窃取，那么将会很危险，因为别人可以使用该私钥在任何文件或邮件上签上你名字。所以重装电脑之前一定要注意好备份，即使平时也可能需要将 GPG 密钥存在一个非本地且安全可靠的位置。以下命令可以实现公钥和私钥的导出。&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  一般来说，GPG 密钥的保管非常重要。如果 GPG 密钥的私钥丢失或者被他人窃取，那么将会很危险，因为别人可以使用该私钥在任何文件或邮件上签上你名字。所以重装电脑之前一定要注意好备份，即使平时也可能需要将 GPG 密钥存在一个非本地且安全可靠的位置。以下命令可以实现公钥和私钥的导出。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gpg &lt;span class=&quot;nt&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; gpg.pub &lt;span class=&quot;nt&quot;&gt;--export&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt;
 gpg &lt;span class=&quot;nt&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; gpg.key &lt;span class=&quot;nt&quot;&gt;--export-secret-keys&lt;/span&gt; &amp;lt;GPG_SECRET_KEY&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;error “问题二”
-如何吊销已生成或丢失的 GPG 密钥？&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题二 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如何吊销已生成或丢失的 GPG 密钥？&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;info “解答”
-  当 GPG 私钥发生丢失（公钥丢失不影响安全，找回即可）时，我们需要在 Github 删除对应的公钥，这样可以保证 Github 不会再承认丢失私钥签名的代码。当然，为了除 Github 外其他正常的邮件、文件不再信任该丢失的私钥签名，我们需要向 GPG 声明该 GPG 公钥吊销，从而达到吊销私钥的目的（并非是删除密钥本身，而是标记作废）。具体操作如以下命令所示。&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  当 GPG 私钥发生丢失（公钥丢失不影响安全，找回即可）时，我们需要在 Github 删除对应的公钥，这样可以保证 Github 不会再承认丢失私钥签名的代码。当然，为了除 Github 外其他正常的邮件、文件不再信任该丢失的私钥签名，我们需要向 GPG 声明该 GPG 公钥吊销，从而达到吊销私钥的目的（并非是删除密钥本身，而是标记作废）。具体操作如以下命令所示。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 撤销密钥&lt;/span&gt;
 gpg &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; revoke.asc &lt;span class=&quot;nt&quot;&gt;--gen-revoke&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt;
 &lt;span class=&quot;c&quot;&gt;# 将撤销密钥导入本地钥匙环&lt;/span&gt;
@@ -1811,12 +1811,12 @@ gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpg
 
 &lt;p&gt;  机器学习在某些领域中的经验实用性已经远远超出了我们对基础理论的理解：这些模型不合理地非常有效，但我们并不完全确定原因。相反，在其他相对容易理解的研究领域中难以实现或者在实践中的适用性有限。本文试图就机器学习的实用性和理解力绘制不同角度的图，并探讨科学和技术进步如何在这一框架内体现。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;note “声明”&lt;br /&gt;
-  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。&lt;br /&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。&lt;br /&gt;
   本文主要旨在讨论经验效用和理论理解之间的对比，以及它们与科学或者技术进步的关系。在矩阵中精确定位研究领域并不是目标。&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;p&gt;  我所说的&lt;strong&gt;经验效用&lt;/strong&gt;是指一种综合衡量方法，它考虑了一种方法的适用性广度、实施的难易程度，最重要的是：它在现实世界中的有用程度。一些具有高实用性的方法具有更广泛的适用性，而另一些则更强大，但仅限于狭窄的领域。可靠、可预测且没有重大缺陷的方法也被认为具有更高的效用。&lt;/p&gt;
 
 &lt;p&gt;  我所说的&lt;strong&gt;理论理解&lt;/strong&gt;是指一种综合衡量方法（比如，输入和输出之间的关系如何？如何可以获得预期的结果？这种技术的内部机制是什么？），它考虑了直观可解释性（interpretability）和理论可解释性（explainability），以及其文献的深度和完整性。&lt;sup id=&quot;fnref:1&quot; role=&quot;doc-noteref&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;理解程度低的方法通常在实施时采用启发式方法或大量试错。理解程度高的方法往往具有公式化的实现，具有强大的理论基础和可预测的结果。更简单的方法（例如线性回归）具有较低的理论上限，而更复杂的方法（例如深度学习）具有更高的理论上限。当谈到一个领域的文献的深度和完整性时，我已经更具其假设的理论上限来评估该领域——一个来自直觉的想象值。&lt;/p&gt;
@@ -1934,12 +1934,12 @@ gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpg
 
 &lt;p&gt;  举个例子，有一个二次函数 \(y=ax^2+bx+c\)。如果给出这个二次函数对应的图，我们就能很容易地看出这个二次函数是否有最大值或者最小值，且具体的最大值或最小值为多少。这种可解释性就是 interpretability。当我们只知道二次函数的数学表达形式时，如果我们知道二次函数的对称轴和最值的固定公式，我们能够通过代入 \(a、b、c\) 的值计算出来结果。这种可解释性就是 explainability。&lt;/p&gt;
 
-&lt;blockquote&gt;
-  &lt;p&gt;note “版权声明”
-  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;br /&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 版权声明 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。&lt;br /&gt;
   As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.&lt;/p&gt;
-&lt;/blockquote&gt;
 
+
+
+ &lt;/div&gt; &lt;/div&gt;
 &lt;h2 id=&quot;脚注来自原文&quot;&gt;脚注（来自原文）&lt;/h2&gt;
 
 &lt;div class=&quot;footnotes&quot; role=&quot;doc-endnotes&quot;&gt;
