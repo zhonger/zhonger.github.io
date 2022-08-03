@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "内网 HTTPS 可信证书",
+      "tags"     : "CA SSL 证书 内网",
+      "url"      : "/tech/webmaster/ca-ssl.html"
+    } ,
+  
+    {
       "title"    : "LDAP 集成之 Nextcloud 篇",
       "tags"     : "LDAP Nextcloud",
       "url"      : "/tech/webmaster/ldap-nextcloud.html"

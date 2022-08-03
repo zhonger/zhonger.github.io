@@ -5,27 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LDAP 集成之 Nextcloud 篇 - Mr Li</title>
+    <title>内网 HTTPS 可信证书 - Mr Li</title>
     <meta name="author"  content="zhonger">
-    <meta name="description" content="LDAP 集成之 Nextcloud 篇">
-    <meta name="keywords"  content="LDAP, Nextcloud">
+    <meta name="description" content="内网 HTTPS 可信证书">
+    <meta name="keywords"  content="CA, SSL, 证书, 内网">
     <!-- Open Graph -->
-    <meta property="og:title" content="LDAP 集成之 Nextcloud 篇 - Mr Li">
+    <meta property="og:title" content="内网 HTTPS 可信证书 - Mr Li">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lisz.me/tech/webmaster/ldap-nextcloud.html">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/ca-ssl.html">
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="Mr Li">
     <meta property="og:gray" content="false">
     
-    <meta property="og:previous_url" content="/tech/webmaster/ca-ssl.html">
     
-    
-    <meta property="og:next_url" content="/tech/webmaster/ldap-gitlab.html">
+    <meta property="og:next_url" content="/tech/webmaster/ldap-nextcloud.html">
     
     <meta property="post-date-format" content="0">
     
-    <meta property="post-date" content="2022-06-24 14:40:00 +0900" />
+    <meta property="post-date" content="2022-08-03 11:30:00 +0900" />
     
     
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
@@ -212,13 +210,17 @@
         <div class="post-tags">
           
             
-              <a href="/tags.html#LDAP" class="post-tag">LDAP</a>
+              <a href="/tags.html#CA" class="post-tag">CA</a>
             
-              <a href="/tags.html#Nextcloud" class="post-tag">Nextcloud</a>
+              <a href="/tags.html#SSL" class="post-tag">SSL</a>
+            
+              <a href="/tags.html#%E8%AF%81%E4%B9%A6" class="post-tag">证书</a>
+            
+              <a href="/tags.html#%E5%86%85%E7%BD%91" class="post-tag">内网</a>
             
           
         </div>
-        <h1>LDAP 集成之 Nextcloud 篇</h1>
+        <h1>内网 HTTPS 可信证书</h1>
         <div class="post-meta">
           <span class="post-meta-item">
             <svg class="icon" aria-hidden="true">
@@ -226,13 +228,13 @@
             </svg>
             zhonger
           </span>
-          <time class="post-meta-item" datetime="22-06-24">
+          <time class="post-meta-item" datetime="22-08-03">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-calendar"></use>
             </svg>
             <span class="create-at"></span>
           </time>
-          <time class="post-meta-item" datetime="22-06-24">
+          <time class="post-meta-item" datetime="22-08-03">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-update"></use>
             </svg>
@@ -244,13 +246,13 @@
                 <use xlink:href="#icon-words"></use>
               </svg>
               
-              本文总共  1.9k  字
+              本文总共  7.4k  字
             </span>
             <span class="post-meta-item">
               <svg class="icon time" aria-hidden="true">
                 <use xlink:href="#icon-time"></use>
               </svg>
-              阅读全文大约需要 6 分钟
+              阅读全文大约需要 22 分钟
             </span>
             
               <span class="post-meta-item">
@@ -268,7 +270,7 @@
               </svg>
               
                 
-                  封面图片由 <a href="https://unsplash.com/@emilegt" target="_blank">Emile Guillemot</a> 提供
+                  封面图片由 <a href="https://unsplash.com/@seanpollock" target="_blank">Sean Pollock</a> 提供
                 
               
             </span>
@@ -277,12 +279,12 @@
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://i.luish.cc/cover/2OTaQY.webp') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://i.luish.cc/cover/bAgINg.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
       
-      <h2 class="post-subtitle">利用 LDAP 为 Nextcloud 提供用户认证服务</h2>
+      <h2 class="post-subtitle">如何为团队内部提供免费的可信证书解决方案</h2>
       
 
       
@@ -291,68 +293,251 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<h3 id="nextcloud-vs-owncloud">Nextcloud vs ownCloud</h3>
+<h3 id="内网-https-化的必要性">内网 HTTPS 化的必要性</h3>
 
-<p>  <a href="https://nextcloud.com">Nextcloud</a> 是一款非常适合个人或者团队使用的开源网盘软件，也有一款和其名字非常相似的 <a href="https://owncloud.com">ownCloud</a>。实际上这两款开源网盘是出自一个人之手，只不过在发展的过程中（2016年），ownCloud 团队内部产生了一些意见分歧，造成了核心开发人员出走创建了 Nextcloud。与 ownCloud 相比，Nextcloud 更加在乎宽广的功能多样性以及安全性，比如说视频会议、在线协作、提供对密码暴力破解的保护、限制密码错误登录的次数等。ownCloud 中可能也有这些功能，但并不包含在开源版本中，而是需要企业订阅版本才能享受这些功能。从这些看来，Nextcloud 似乎更加适合个人或团队使用。</p>
+<p>  开发团队或者公司内部一般会采用内外网隔离、上网行为过滤等措施，比较可靠地保证了内部设备无法被外部网络所侦测，从而可能认为 HTTP 内网站点是一个相对安全的存在。即使在 HTTPS 证书如此盛行的今天，也还暂时不考虑内部站点的 HTTPS 化。<code class="language-plaintext highlighter-rouge">IP + Port</code> 或者 <code class="language-plaintext highlighter-rouge">http://本地域名</code> 的访问方式依旧是座上宾。当然，如果考虑到购买 HTTPS 证书的成本或者团队内网站点采用 Letsencrypt 等免费证书过于麻烦（只能采用 DNS 验证的方式每三个月申请一次新证书），那么自签名 SSL 证书则成为首选了。不过，如果为每一个内网站点都生成一个 SSL 证书，然后让大家都手动把 HTTPS 标为可信，那么当面临大量内网站点时，大家可能要被搞崩溃。更为可行的办法是，<strong>生成一个内网用的根证书，只标记该根证书可信</strong>。</p>
 
-<p>  据笔者所知，国内 F 搜团队所提供的网盘文档-<a href="https:/fdocs.cn">F 文档</a> 实际上就是用 Nextcloud 搭建的。其提供的在线文档编辑采用的是开源的 <a href="https://www.onlyoffice.com">OnlyOffice</a>。</p>
+<h3 id="根证书">根证书</h3>
 
-<h3 id="nextcloud-vs-seafile">Nextcloud vs Seafile</h3>
+<p>  与其相信别人根证书生成的 SSL 证书，不如相信自己根证书生成的。我们的目的毕竟不是要任何一个人都把我们自签名的证书标为可信，只要在内网内使用内网站点的设备能够信任即可。而且成为一个受到公众信任的根证书是非常困难的一件事，即使经过几十年可能也没有办法做到。如今现有的根证书实际上有限，像我们平常熟悉的 Letsencrypt、ZeroSSL、Cloudflare 等等并不是根证书而是中间证书。有点类似总代理和分代理的感觉，根证书在业界具有广泛的公信力，但是让根证书去给个人或者企业生成证书可能有点忙不过来。于是根证书生成若干个中间证书，再由中间证书来为个人或者企业生成实际的证书。</p>
 
-<p>  除了 Nextcloud，国内也有一款也比较好用的开源网盘 <a href="https://www.seafile.com">Seafile</a>。Nextcloud 与 Seafile 虽然都是网盘，但是关注点不大一样。正如上面讲到的 Nextcloud 更在乎协作、功能多样化，而 Seafile 则更在乎稳定和安全。举个例子，Nextcloud 如果不设置服务端加密，所有的文件都会直接存在文件系统中。如果可以访问服务器的文件系统，那么意味着无须任何用户自身的许可就可以查看所有文件。Seafile 默认就将所有文件都分成小块存储，这样一来你是无法直接通过服务器的文件系统读取文件内容的。当然，这样分块存储也有一个好处，在客户端设置同步时会分块进行增量同步，提升了同步的速度和可靠性。不至于一个几个 G 的大文件传到一半中断后又要从头开始上传。不过，这样也有一个比较明显的坏处，如果不借助 Seafile 或其支持团队的帮助，无法自行从分块数据恢复原始文件内容。</p>
+<p>  一般来说，操作系统或浏览器的产商会预置国际上认可的根证书。如下所示，为 Mac OS 上预置的根证书列表。</p>
 
-<h3 id="ldap-认证集成">LDAP 认证集成</h3>
-
-<p>  从 Nextcloud、ownCloud、Seafile 的官网来看，三者都支持 LDAP/AD 认证集成，但实际上 Seafile 是需要专业版订阅才能有这个功能的，包括 Office 文件预览和编辑、全文检索、断点续传等功能也是需要专业版订阅的。Nextcloud 和 ownCloud 都在开源版本提供了 LDAP 认证集成功能。所以这里也不考虑 Seafile，只以 Nextcloud 为例介绍 LDAP 集成到网盘中。</p>
+<p><img src="https://i.luish.cc/blog/SfWsIJ.webp" alt="Mac OS 预置根证书 Root Certificate" /></p>
 
 <h2 id="实践">实践</h2>
 
-<p>  由于之前笔者也曾写过<a href="../docker/nextcloud.html">《Nextcloud 搭建自己的云盘》</a>和<a href="nextcloud-upgrade.html">《Nextcloud 升级那些事儿》</a>两篇文章介绍如何安装和升级 Nextcloud ，所以这里就不再对此进行赘述了。当前开始的环境即是已正常运行的 Nextcloud 实例。</p>
+<p>  话不多说，让我们来实践一下如何生成自己的根证书和签发 SSL 证书吧。</p>
 
-<h3 id="启用-ldap-插件">启用 LDAP 插件</h3>
+<h3 id="生成根证书">生成根证书</h3>
 
-<p>  在 Nextcloud 的<strong>应用捆绑包</strong>的<strong>企业捆绑包</strong>里就有我们想要用的 LDAP 认证集成插件，点击右侧<strong>启用</strong>按钮即可正常启用。</p>
+<h4 id="安装-openssl-可选">安装 OpenSSL (可选)</h4>
 
-<p><img src="https://i.luish.cc/blog/nFyWzS.webp" alt="nFyWzS" /></p>
+<p>  此处只考虑 Mac OS 和 Ubuntu，其他环境如何安装可以自行搜索。</p>
 
-<h3 id="配置-ldap-连接">配置 LDAP 连接</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Mac OS</span>
+brew <span class="nb">install </span>openssl
 
-<p>  在启用 LDAP 插件后，我们就可以在管理员的设置中看见相应的选项。如下图所示，点击用户头像弹出菜单中的<strong>设置</strong>链接。</p>
+<span class="c"># Ubuntu</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> openssl
+</code></pre></div></div>
 
-<p><img src="https://i.luish.cc/blog/8FCrL0.webp" alt="8FCrL0" /></p>
+<h4 id="创建根密钥">创建根密钥</h4>
 
-<p>  由于这个设置会同时包含个人用户设置和管理员设置，可以将左侧的导航栏往下拉，看到<strong>管理</strong>中的 <strong>LDAP/AD 集成</strong> 点击进入。</p>
+<p>  使用以下命令创建根密钥 <code class="language-plaintext highlighter-rouge">zhonger-key.pem</code>。</p>
 
-<p><img src="https://i.luish.cc/blog/WiwcTt.webp" alt="WiwcTt" /></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl genrsa <span class="nt">-out</span> zhonger-key.pem 4096
+</code></pre></div></div>
 
-<p>  下面是 LDAP/AD 集成的基本设置，主要填写四个信息：LDAP 服务器地址、LDAP 管理员 DN、LDAP 管理员密码、查询基础 DN。由于此处填写的是非真实信息，所以下面会显示<strong>配置错误</strong>的提示。如果填写的 LDAP 信息无误，会自动变成<strong>配置成功</strong>的提示。然后点击<strong>继续</strong>按钮，后面的设置可以保留默认选项即可。当然如果 LDAP 服务与一般的设置有些不同，也要根据实际情况对后面的用户、登录属性、群组信息进行调整，这里就不一一介绍了。</p>
+<h4 id="创建根证书并签名">创建根证书并签名</h4>
 
-<p><img src="https://i.luish.cc/blog/Lr00tl.webp" alt="Lr00tl" /></p>
+<p>  使用刚创建好的根密钥 <code class="language-plaintext highlighter-rouge">zhonger-key.pem</code> 生成根证书，并输入相关信息。</p>
 
-<p>  以上配置均完成之后，即可退出登录即可使用 LDAP 账户和密码登录验证是否配置成功（登录界面不会有任何改变）。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>openssl req <span class="nt">-new</span> <span class="nt">-x509</span> <span class="nt">-days</span> 3600 <span class="nt">-key</span> zhonger-key.pem <span class="nt">-out</span> zhongerca.pem
+</code></pre></div></div>
 
-<h3 id="其他">其他</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>openssl req <span class="nt">-new</span> <span class="nt">-x509</span> <span class="nt">-days</span> 3600 <span class="nt">-key</span> zhonger-key.pem <span class="nt">-out</span> zhongerca.pem 
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter <span class="s1">'.'</span>, the field will be left blank.
+<span class="nt">-----</span>
+Country Name <span class="o">(</span>2 letter code<span class="o">)</span> <span class="o">[</span>AU]:CN
+State or Province Name <span class="o">(</span>full name<span class="o">)</span> <span class="o">[</span>Some-State]:Shanghai
+Locality Name <span class="o">(</span>eg, city<span class="o">)</span> <span class="o">[]</span>:Shanghai
+Organization Name <span class="o">(</span>eg, company<span class="o">)</span> <span class="o">[</span>Internet Widgits Pty Ltd]:zhonger
+Organizational Unit Name <span class="o">(</span>eg, section<span class="o">)</span> <span class="o">[]</span>:zhonger
+Common Name <span class="o">(</span>e.g. server FQDN or YOUR name<span class="o">)</span> <span class="o">[]</span>:lisz.me
+Email Address <span class="o">[]</span>:contact@lisz.me
+</code></pre></div></div>
 
-<p>  可能和 Gitlab 的情况有点类似，Nextcloud 本身就有用户体系，然后才接入的 LDAP 认证。其实，我们还是希望 LDAP 用户和原有用户能够自动识别成同一用户，无感完成合并。这里 Nextcloud 和 Gitlab 一样都是凭借着邮箱来判断的。当 LDAP 用户邮箱与 Nextcloud 原有用户邮箱一致时，自动合并成一个用户，并且不再拥有修改用户密码的权利。虽然已经集成了 LDAP 认证，但是我们依然可以用 Nextcloud 自身的用户体系去创建新用户，这其实也是两个用户体系、一个软件系统。</p>
+<h4 id="验证根证书">验证根证书</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>─<span class="nv">$ </span>openssl x509 <span class="nt">-text</span> <span class="nt">-in</span> zhongerca.pem <span class="nt">-noout</span>
+Certificate:
+    Data:
+        Version: 3 <span class="o">(</span>0x2<span class="o">)</span>
+        Serial Number:
+            44:48:03:56:ff:15:57:03:00:34:1f:85:61:ca:f7:7a:1e:4f:38:8f
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C <span class="o">=</span> CN, ST <span class="o">=</span> Shanghai, L <span class="o">=</span> Shanghai, O <span class="o">=</span> zhonger, OU <span class="o">=</span> zhonger, CN <span class="o">=</span> lisz.me, emailAddress <span class="o">=</span> contact@lisz.me
+        Validity
+            Not Before: Aug  3 05:25:47 2022 GMT
+            Not After : Jun 11 05:25:47 2032 GMT
+        Subject: C <span class="o">=</span> CN, ST <span class="o">=</span> Shanghai, L <span class="o">=</span> Shanghai, O <span class="o">=</span> zhonger, OU <span class="o">=</span> zhonger, CN <span class="o">=</span> lisz.me, emailAddress <span class="o">=</span> contact@lisz.me
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: <span class="o">(</span>4096 bit<span class="o">)</span>
+                Modulus:
+                    00:b2:d1:47:73:8a:83:48:e3:47:1a:41:01:f6:63:
+                    69:43:39:71:eb:2b:74:be:dc:63:f3:df:79:66:ee:
+                    00:30:65:b3:4f:7e:58:88:00:13:09:e6:4f:74:57:
+                    fa:a3:56:24:cd:b6:1f:53:25:77:98:bf:9f:45:64:
+                    7c:6c:04:23:c4:8f:0f:bf:2e:b3:d1:2e:4c:05:4d:
+                    4c:e6:65:54:ad:0c:35:b7:d9:c8:74:97:19:c7:a5:
+                    <span class="nb">cd</span>:9a:a4:73:37:13:71:80:34:7c:bc:b3:41:5a:34:
+                    bb:16:82:44:18:a1:0a:a5:f5:f1:07:ca:8d:b3:9a:
+                    ef:74:fb:a0:6c:72:4a:53:5c:59:74:6f:aa:c7:bc:
+                    48:26:af:1b:70:f3:5f:7f:c7:df:8d:e5:da:e4:f4:
+                    d2:fa:90:d3:e2:67:e1:9a:df:c7:c4:c7:53:6f:62:
+                    25:ed:ff:0a:17:cf:8d:4d:84:6b:38:cb:49:e7:3d:
+                    c5:2b:15:76:e6:eb:cc:17:94:40:20:7d:ee:8c:36:
+                    6d:cf:9c:d7:1f:a6:41:20:9d:45:cd:57:8f:a8:61:
+                    f8:8b:e9:31:6a:a9:96:c1:db:57:64:0b:09:da:ca:
+                    b3:07:d9:55:ed:fe:69:a0:9c:78:5b:59:a5:7b:a1:
+                    2b:4d:68:22:b4:7f:db:c6:c1:12:ee:eb:9b:29:38:
+                    ae:7b:4c:0d:2a:ab:33:3f:af:a8:7b:ca:89:2c:62:
+                    0f:a8:ef:89:60:9e:fd:a2:df:36:6d:70:82:8b:fa:
+                    b3:ee:79:7e:fd:3f:e7:90:84:58:85:7e:7e:69:07:
+                    1e:50:05:0b:87:4d:66:e4:17:6b:c2:97:03:48:e4:
+                    7d:08:b4:81:a6:05:80:60:5c:eb:8d:53:db:7c:62:
+                    a8:6d:a7:75:f1:56:b6:d9:0d:6b:3b:be:8b:72:39:
+                    8d:e7:2d:77:74:e3:4d:a1:fd:8b:44:f9:ee:fd:0d:
+                    04:ec:6a:fc:f3:d2:15:fc:18:ff:7d:33:44:2b:6d:
+                    7f:3c:33:21:e1:d8:5f:08:fa:53:fd:26:fb:6e:74:
+                    d7:4b:51:62:d3:15:1b:3b:44:78:78:9b:91:c7:ba:
+                    82:2b:12:d7:b2:83:0a:39:ec:5e:a9:a9:c1:04:a6:
+                    2e:64:a5:ea:15:c3:85:e9:ac:38:6b:22:eb:3b:08:
+                    b8:0a:31:10:df:45:1d:76:81:e0:0f:88:e4:00:ef:
+                    6e:90:59:8c:d8:36:e9:77:bf:4a:0e:3d:03:02:4d:
+                    5d:a7:90:16:81:11:e0:81:bb:e0:18:a3:bb:dc:8d:
+                    7d:c6:cf:c6:0b:d2:80:53:ea:d0:27:e6:6a:cc:8e:
+                    2b:b3:72:e4:ab:84:88:e2:e9:a5:bb:72:9a:c6:a2:
+                    0e:5a:cb
+                Exponent: 65537 <span class="o">(</span>0x10001<span class="o">)</span>
+        X509v3 extensions:
+            X509v3 Subject Key Identifier:
+                EE:EF:AE:DB:73:45:9A:6E:82:00:3C:A7:05:0D:60:E4:20:81:3B:02
+            X509v3 Authority Key Identifier:
+                keyid:EE:EF:AE:DB:73:45:9A:6E:82:00:3C:A7:05:0D:60:E4:20:81:3B:02
+
+            X509v3 Basic Constraints: critical
+                CA:TRUE
+    Signature Algorithm: sha256WithRSAEncryption
+         98:cf:f4:23:61:d2:2a:64:ce:51:57:1d:fb:61:2f:34:68:86:
+         c9:02:5a:c8:97:80:58:c1:7f:04:e1:97:f5:0b:35:d5:c4:91:
+         fa:98:8c:73:16:43:b3:af:63:af:2c:30:cf:6a:8e:10:99:bc:
+         fd:3d:84:c7:3d:01:e0:8d:8d:d8:76:74:12:69:1a:f5:e5:ec:
+         ef:eb:dc:f8:08:0c:c7:03:19:de:c5:e8:c7:4e:b4:5c:67:39:
+         9f:33:11:6f:29:e1:03:d8:4e:70:09:7a:69:bd:3a:db:96:71:
+         2b:38:c4:46:87:f6:59:34:f9:dc:5c:6d:34:9a:ba:ea:36:13:
+         d8:e3:e3:91:ea:70:3b:ea:39:cb:fc:fd:08:0f:73:e5:16:c3:
+         0d:9a:62:20:3f:5a:28:90:e6:b2:65:23:a1:ba:d0:77:c0:8e:
+         16:51:55:44:f6:4b:16:b9:a1:97:bc:f8:95:70:af:a6:d4:07:
+         27:21:96:78:0b:58:18:51:45:a6:ea:07:c8:09:1b:ad:f3:e1:
+         16:be:64:bf:8f:b7:4c:d1:e6:d0:c6:c1:db:cd:3d:e9:88:ec:
+         e2:87:ff:bd:c3:7b:31:23:00:c3:71:53:90:68:46:99:7d:1d:
+         e1:78:26:76:6a:41:8d:9e:9a:55:97:63:a5:df:86:fc:03:9b:
+         28:13:55:ff:74:f2:56:d9:20:02:e8:c9:90:4f:b1:5d:1b:66:
+         57:4e:f7:c6:50:4f:c9:8b:ff:39:a1:9e:b4:ee:2b:8a:bf:46:
+         b4:3e:65:cb:34:12:73:bc:ae:ba:a5:41:20:d4:b9:c5:c4:da:
+         89:bd:50:83:27:71:7a:9f:2c:3e:cf:de:db:13:b1:39:cf:4a:
+         39:62:68:b3:f5:dc:49:44:3e:c1:cf:0c:a4:9a:4b:cb:5e:ec:
+         aa:33:a5:57:ae:c6:f3:4f:69:01:d1:6a:a7:12:90:88:05:e9:
+         18:d8:3a:a7:89:70:55:ab:18:ba:4f:28:74:5b:5f:21:8e:66:
+         bc:ae:ff:1b:c7:ed:42:73:c1:1c:a4:97:f2:e6:c7:5a:8f:a8:
+         44:a5:ed:b7:76:ac:cf:40:f0:a4:4f:22:03:d0:db:db:6e:18:
+         32:33:4a:79:c2:bb:98:20:71:03:a7:9c:ea:4e:7e:0a:28:79:
+         30:f3:3f:ef:03:b2:e0:00:b0:2b:71:27:8b:fc:f9:a0:e5:b9:
+         a0:9e:6f:93:3a:f3:d3:1c:87:8a:b7:2d:5c:38:ab:f9:ff:39:
+         8b:52:a5:9a:95:2f:a0:82:b9:b6:f8:9a:c3:e3:55:dd:4b:b5:
+         e4:e3:fb:f8:8b:10:50:f8:42:7d:03:fe:72:40:c1:d3:f7:26:
+         a7:f9:de:b9:9d:30:26:94
+</code></pre></div></div>
+
+<h4 id="安装根证书">安装根证书</h4>
+
+<p>  首次打开刚刚生成的根证书 <code class="language-plaintext highlighter-rouge">zhongerca.pem</code> 会像下面这样显示“此根证书不被信任”，我们可以将下面的使用此证书时的<strong>使用系统默认</strong>改成<strong>始终信任</strong>，然后输入操作系统用户密码即可保存修改。改完之后再次打开如下下图所示，显示“此证书已标记为受此账户信任”。这样一来，由该根证书签发的证书就都会被信任了。</p>
+
+<p><img src="https://i.luish.cc/blog/gkni75.webp" alt="打开根证书 Open Root Certificate file" /></p>
+
+<p><img src="https://i.luish.cc/blog/zJ5dNm.webp" alt="始终信任根证书 Always trust Root Certificate file" /></p>
+
+<h3 id="签发证书">签发证书</h3>
+
+<p>  这里我们打算采用 <a href="https://github.com/jsha/minica">jsha/minica</a> 来辅助快速签发证书。</p>
+
+<h4 id="安装-minica">安装 minica</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Mac OS</span>
+brew <span class="nb">install </span>minica
+
+<span class="c"># Other OS</span>
+go <span class="nb">install </span>github.com/jsha/minica@latest
+</code></pre></div></div>
+
+<h4 id="签发-ssl-证书">签发 SSL 证书</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 给域名签发 SSL 证书</span>
+minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</span> zhonger-key.pem <span class="nt">--domains</span> <span class="s2">"sni.lisz.me,zhonger.io,*.zhonger.io"</span>
+
+<span class="c"># 给 IP 签发 SSL 证书</span>
+minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</span> zhonger-key.pem <span class="nt">--ip-addresses</span> <span class="s2">"127.0.0.1"</span>
+</code></pre></div></div>
+
+<p>  minica 提供了非常简单的方式来签发 SSL 证书，比如说指定根证书和根密钥、指定单个或多个域名、通配符域名以及 IP。minica 签发的证书默认时效为 2年30天（相信可能是考虑到 30天 的缓冲期所以多了一个月）。这里，我们模仿了 Cloudflare 的 SSL 证书生成方式，第一个域名是 <code class="language-plaintext highlighter-rouge">sni.根证书域名</code>，第二个开始才是真正想要签发的域名。由于 minica 默认会将第一个域名作为文件夹的名字生成 SSL 证书 <code class="language-plaintext highlighter-rouge">cert.pem</code> 和 <code class="language-plaintext highlighter-rouge">key.pem</code> 文件，如果采取这种方式在同一目录执行以上签发命令势必会使得旧文件被覆盖，因此推荐像 Certonly 或者 acme.sh 那样修改目录名来区分。</p>
+
+<h2 id="其他">其他</h2>
+
+<h3 id="mkcert">mkcert</h3>
+
+<p>  除了 minica 之外，<a href="https://github.com/FiloSottile/mkcert">FiloSottile/mkcert</a> 提供的 mkcert 工具也非常简单方便。mkcert 会自行生成根证书，然后签发证书。个人觉得，相比 minica 而言，mkcert 更适合个人本地开发 HTTPS 化，而非团队内网 HTTPS 化。</p>
+
+<h3 id="根证书被伪造">根证书被伪造</h3>
+
+<p>  自生成根证书比较令人担心的地方可能就是任何人都可以用同样的方法伪造出相似的根证书。实际上，根证书是独一无二的，即使所有的信息都设置成一样，还是两个根证书。我们需要做的是:</p>
+
+<ul>
+  <li>保护好根证书密钥，因为采用同一个密钥是可以生成比较相似的根证书的。当然两个根证书的<strong>序列 ID</strong>、<strong>有效时间</strong>是不会完全一样的。如果密钥不同，自然两个根证书的密钥 ID 也不会相同。</li>
+  <li>告诉用户真的根证书是什么样的（序列 ID、密钥 ID、有效时间等）、应该从哪里下载到。这里需要在内网建立一个用于提供下载根证书的站点，而这个站点的SSL 证书最好采用购买的或申请的证书。也就是说，从可靠站点下载的内网 HTTPS 化根证书也是可靠的。</li>
+</ul>
+
+<p>  如下所示，是上面生成的根证书和签发的 SSL 证书的密钥 ID 对比。可以看到，两者完全一样，即可信任的 SSL 证书。</p>
+
+<p><img src="https://i.luish.cc/blog/9ieYYm.webp" alt="根证书密钥 ID Root Certificate Key ID" /></p>
+
+<p><img src="https://i.luish.cc/blog/sMYzVn.webp" alt="SSL 证书密钥 ID the Key ID in SSL Certificate" /></p>
+
+<h3 id="其他平台安装根证书">其他平台安装根证书</h3>
+
+<p>  上面已经提到了在 Mac OS 中如何安装根证书，其他平台比如 Windows、Linux、Android、IOS 等也是可以按照类似的方式，略微有些差别。考虑到 Windows 和 Linux 桌面版安装根证书的步骤几乎与 Mac OS 一样就不再赘述，这里主要讲一下 Linux Server、Android、IOS 平台的安装方法。</p>
+
+<h4 id="linux-server">Linux Server</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo cp </span>zhongerca.pem /usr/local/share/ca-certificates/zhongerca.pem
+<span class="nb">sudo </span>update-ca-certificates
+</code></pre></div></div>
+
+<h4 id="android-或-harmonyos">Android 或 HarmonyOS</h4>
+
+<p>  以华为鸿蒙系统（HarmonyOS）为例，首先下载根证书到设备上，然后在 <strong>设置 &gt; 安全 &gt; 更多安全设置 &gt; 加密和凭据 &gt; 从存储设备上安装</strong> 中选择已下载的根证书完成安装。安装完成之后可以在同级别的 <strong>受信任的凭据 &gt; 用户</strong> 下面看到安装好的根证书。</p>
+
+<h4 id="ios-或-ipad-os">IOS 或 iPad OS</h4>
+
+<p>  首先下载根证书到设备上，在<strong>文件</strong>中点击打开（会自动跳转到 <strong>设置 &gt; 通用 &gt; VPN与设备管理</strong>）。可以在 <strong>配置描述文件</strong> 列表中看到根证书，点击进去<strong>输入密码并验证</strong>即可。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://news.gandi.net/zh-hans/2021/05/nextcloud-vs-owncloud-which-cloud-solution-should-you-choose/">Nextcloud vs ownCloud? 该选择哪一个云端代管方案呢？</a></li>
-  <li><a href="https://wzfou.com/nextcloud-seafile/">NextCloud与Seafile对比使用-NextCloud各项全能 Seafile优势突出</a></li>
+  <li><a href="https://cloud.tencent.com/developer/article/1458151">根证书和中间证书的区别</a></li>
+  <li><a href="https://docs.microsoft.com/zh-cn/azure/application-gateway/self-signed-certificates">使用自定义根 CA 生成 Azure 应用程序网关自签名证书</a></li>
+  <li><a href="https://qiita.com/k_kind/items/b87777efa3d29dcc4467">開発環境を https 化する mkcert の仕組み</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/379501905">mkcert 使用指南：如何快速创建自签名 SSL 证书</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">Mr Li</a>&nbsp;所有，转载请注明本文链接。</p>
               <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
-              <p><span>本文标题：</span>《 LDAP 集成之 Nextcloud 篇 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-nextcloud.html">https://lisz.me/tech/webmaster/ldap-nextcloud.html</a></p>
+              <p><span>本文标题：</span>《 内网 HTTPS 可信证书 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ca-ssl.html">https://lisz.me/tech/webmaster/ca-ssl.html</a></p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a><ul><li><a href="#nextcloud-vs-owncloud">Nextcloud vs ownCloud</a></li><li><a href="#nextcloud-vs-seafile">Nextcloud vs Seafile</a></li><li><a href="#ldap-认证集成">LDAP 认证集成</a></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#启用-ldap-插件">启用 LDAP 插件</a></li><li><a href="#配置-ldap-连接">配置 LDAP 连接</a></li><li><a href="#其他">其他</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a href="#前言">前言</a><ul><li><a href="#内网-https-化的必要性">内网 HTTPS 化的必要性</a></li><li><a href="#根证书">根证书</a></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#生成根证书">生成根证书</a><ul><li><a href="#安装-openssl-可选">安装 OpenSSL (可选)</a></li><li><a href="#创建根密钥">创建根密钥</a></li><li><a href="#创建根证书并签名">创建根证书并签名</a></li><li><a href="#验证根证书">验证根证书</a></li><li><a href="#安装根证书">安装根证书</a></li></ul></li><li><a href="#签发证书">签发证书</a><ul><li><a href="#安装-minica">安装 minica</a></li><li><a href="#签发-ssl-证书">签发 SSL 证书</a></li></ul></li></ul></li><li><a href="#其他">其他</a><ul><li><a href="#mkcert">mkcert</a></li><li><a href="#根证书被伪造">根证书被伪造</a></li><li><a href="#其他平台安装根证书">其他平台安装根证书</a><ul><li><a href="#linux-server">Linux Server</a></li><li><a href="#android-或-harmonyos">Android 或 HarmonyOS</a></li><li><a href="#ios-或-ipad-os">IOS 或 iPad OS</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -429,29 +614,17 @@
       </section>
       <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-          <a href="/tech/webmaster/ca-ssl.html" class="read-next-link" aria-label="内网 HTTPS 可信证书"></a>
-          <section>
-            <span>内网 HTTPS 可信证书</span>
-            <p>前言</p>
-          </section>
-          
-          <div class="filter"></div>
-          <img src="https://i.luish.cc/cover/bAgINg.webp" alt="">
-          
-      </div>
-        
 
         
         <div class="read-next-item">
-          <a href="/tech/webmaster/ldap-gitlab.html" class="read-next-link" aria-label="LDAP 集成之 Gitlab 篇"></a>
+          <a href="/tech/webmaster/ldap-nextcloud.html" class="read-next-link" aria-label="LDAP 集成之 Nextcloud 篇"></a>
             <section>
-              <span>LDAP 集成之 Gitlab 篇</span>
+              <span>LDAP 集成之 Nextcloud 篇</span>
               <p>前言</p>
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.luish.cc/cover/8XVXW3.webp" alt="">
+            <img src="https://i.luish.cc/cover/2OTaQY.webp" alt="">
             
         </div>
         
@@ -623,7 +796,7 @@
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-06-24-ldap-nextcloud.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-08-03-ca-ssl.md")
           .then((response) => {
             return response.json();
           })
