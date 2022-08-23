@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "内网私有域名解析",
+      "tags"     : "域名解析 DNS 私有域名 内网",
+      "url"      : "/tech/webmaster/internal-dns.html"
+    } ,
+  
+    {
       "title"    : "内网 HTTPS 可信证书",
       "tags"     : "CA SSL 证书 内网",
       "url"      : "/tech/webmaster/ca-ssl.html"

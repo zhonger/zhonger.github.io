@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内网私有域名解析 - Mr Li</title>
+    <meta name="author"  content="zhonger">
+    <meta name="description" content="内网私有域名解析">
+    <meta name="keywords"  content="域名解析, DNS, 私有域名, 内网">
+    <!-- Open Graph -->
+    <meta property="og:title" content="内网私有域名解析 - Mr Li">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/internal-dns.html">
+    <meta property="og:baseurl" content="">
+    <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
+    <meta property="og:site_name" content="Mr Li">
+    <meta property="og:gray" content="false">
+    
+    
+    <meta property="og:next_url" content="/tech/webmaster/ca-ssl.html">
+    
+    <meta property="post-date-format" content="0">
+    
+    <meta property="post-date" content="2022-08-04 11:30:00 +0900" />
+    
+    
+    <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
+    
+    <meta name="theme-color" content="#81BBFF" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png"/>
+    <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
+    <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
+    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
+    <script src="//cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+</head>
+
+
+
+<body class="line-numbers" ontouchstart="">
+
+
+  <!--[if lt IE 10]>
+  <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+  <![endif]-->
+  
+  <div id="all" class="post">
+  
+    <div class="alert-tip" id="no-previous">
+      
+      已经是最新一篇文章了！
+      
+    </div>
+    <div class="alert-tip" id="no-next">
+      
+      已经是最后一篇文章了！
+      
+    </div>
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/" aria-label="logo"></a>
+    </div>
+    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    <div id="mode-toggle">
+        <svg class="icon icon-day" aria-hidden="true">
+            <use xlink:href="#icon-day"></use>
+        </svg>
+        <svg class="icon icon-night" aria-hidden="true">
+            <use xlink:href="#icon-night"></use>
+        </svg>
+    </div>
+    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+        <use xlink:href="#icon-menu"></use>
+    </svg>
+    <nav class="g-nav">
+        <ul>
+            
+                
+                <li>
+                    <a href="/" aria-label="home">
+                        home
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/blog/index.html" aria-label="blog">
+                        blog
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/archives.html" aria-label="archives">
+                        archives
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a href="/tags.html" aria-label="tags">
+                        tags
+                    </a>
+                </li>
+                
+            
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> about </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/feed.xml" aria-label="RSS">
+                                RSS
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/logs.html" aria-label="logs">
+                                logs
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tos.html" aria-label="tos">
+                                tos
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/cv.html" aria-label="CV">
+                                CV
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/links.html" aria-label="links">
+                                links
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
+            
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle"> collections </a>
+                    <ul class="dropdown-menu">
+                    
+                        <li>
+                            <a href="/tags.html#CONQUEST" aria-label="CONQUEST">
+                                CONQUEST
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#LDAP" aria-label="LDAP">
+                                LDAP
+                            </a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags.html#blog" aria-label="博客">
+                                博客
+                            </a>
+                        </li>
+                    
+                    </ul> 
+                </li>
+                
+            
+            <li class="mode">
+                <svg class="icon day" aria-hidden="true">
+                    <use xlink:href="#icon-day"></use>
+                </svg>
+                <svg class="icon night" aria-hidden="true">
+                    <use xlink:href="#icon-night"></use>
+                </svg>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+    <header
+      class="g-banner post-header post-pattern-food bgcolor-default "
+      data-theme="default"
+    >
+      <div class="post-wrapper">
+        <div class="post-tags">
+          
+            
+              <a href="/tags.html#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90" class="post-tag">域名解析</a>
+            
+              <a href="/tags.html#DNS" class="post-tag">DNS</a>
+            
+              <a href="/tags.html#%E7%A7%81%E6%9C%89%E5%9F%9F%E5%90%8D" class="post-tag">私有域名</a>
+            
+              <a href="/tags.html#%E5%86%85%E7%BD%91" class="post-tag">内网</a>
+            
+          
+        </div>
+        <h1>内网私有域名解析</h1>
+        <div class="post-meta">
+          <span class="post-meta-item">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-user"></use>
+            </svg>
+            zhonger
+          </span>
+          <time class="post-meta-item" datetime="22-08-04">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-calendar"></use>
+            </svg>
+            <span class="create-at"></span>
+          </time>
+          <time class="post-meta-item" datetime="22-08-04">
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-update"></use>
+            </svg>
+            <span class="update-at"></span>
+          </time>
+          
+            <span class="post-meta-item">
+              <svg class="icon words" aria-hidden="true">
+                <use xlink:href="#icon-words"></use>
+              </svg>
+              
+              本文总共  9.4k  字
+            </span>
+            <span class="post-meta-item">
+              <svg class="icon time" aria-hidden="true">
+                <use xlink:href="#icon-time"></use>
+              </svg>
+              阅读全文大约需要 27 分钟
+            </span>
+            
+              <span class="post-meta-item">
+                <svg class="icon pv" aria-hidden="true">
+                  <use xlink:href="#icon-pv"></use>
+                </svg>
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+              </span>
+            
+          
+          
+            <span class="post-meta-item">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-image"></use>
+              </svg>
+              
+                
+                  封面图片由 <a href="https://unsplash.com/@brucebmax" target="_blank">Bruce Warrington</a> 提供
+                
+              
+            </span>
+          
+        </div>
+      </div>
+      
+      <div class="filter"></div>
+        <div class="post-cover" style="background: url('https://i.luish.cc/cover/w9mf2P.webp') center no-repeat; background-size: cover;"></div>
+      
+    </header>
+    <div class="post-content visible">
+      
+      <h2 class="post-subtitle">如何为团队内部提供免费、可靠的私有域名解析解决方案</h2>
+      
+
+      
+      <div class="container">  
+        <div class="contents">
+          <article class="markdown-body">
+            <h2 id="前言">前言</h2>
+
+<h3 id="域名和域名解析">域名和域名解析</h3>
+
+<p>  大家可能知道，在网络被发明出来之后一段时间，大家采用 <code class="language-plaintext highlighter-rouge">IP + Port</code> 的方式一起共享资源。后来随着资源越来越多，这样一种方式显得非常不友好。比如说，现在有 254 个 IP，每个 IP 上有 20 个 Web 应用，那么我们就必须记住 5080 个 <code class="language-plaintext highlighter-rouge">IP + Port</code> 的组合，简直太折磨人了。于是在 1983 年，保罗・莫卡派乔斯发明了域名解析服务和域名服务（DNS，Domain Name System）。从此以后，大家开始用域名来访问各种各样的应用服务。显然，相比原来 <code class="language-plaintext highlighter-rouge">IP + Port</code> 的方式，域名的含义更加具象、更容易被人记住。</p>
+
+<p>  域名解析实际上就是把 IP 和一串有意义的字符对应，这是一对多的关系，即一个 IP 可能对应多个域名。域名的管理单位我们称之为域名注册管理机构，他们掌握着顶级域名的管理权利。比如说，.net、.com、.org 就是顶级域名，域名注册管理机构对顶级域名具有完整的权利。就像上次讲到的 SSL 根证书一样，光有域名注册管理机构还是不够的，他们没有办法直接把域名卖给全世界所有的公司或者个人，而是需要域名注册商承担这部分工作。像我们比较熟知的国内的万网（现在阿里云域名）、DNSPod（现在腾讯云域名）等，国外的 Gandi、Godaddy 等，都是域名注册商。顶级域名根据用途不同可以分为，国别域名后缀和通用域名后缀。国别域名后缀就是指定给各个国家或地区使用的，通用域名后缀就是其余的。我们可以在某域名注册商处购买某个域名后缀（也称顶级域名）的子域名（也称二级域名），比如说我们可以购买域名后缀为 .com 的域名 baidu.com（当然 baidu.com 早就被注册了，我们只能购买还未被注册的域名）。由于一些品牌效应，大部分域名后缀都会保留一些子域名，我们一般称之为<strong>溢价域名</strong>。一般来说，溢价域名也会比普通域名价格更贵。当我们购买了域名之后，域名注册商会免费提供域名解析服务。当然，我们也可以要求使用其他厂商提供的免费或收费域名解析服务，甚至也可自行搭建域名解析服务。</p>
+
+<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 小提醒 </div> </div> <div class="content"> <p>  国内需具备一定资质才能在公网上搭建域名解析服务，否则会面临警告和阻断的风险。</p>
+
+
+
+ </div> </div>
+<p>  为了简便，我们一般把域名解析服务称为 DNS 服务。在操作系统中，53 端口被视为 DNS 服务的标准端口（TCP/UDP 服务），853 端口被视为 DNS over TLS 的标准端口（TCP 服务）。除此之外，DNS over HTTPS（TCP 服务）和 DNS over Quic（新协议，UDP 服务）的标准端口是 443。所以现有能够公开使用的 DNS 服务都采用了标准端口，比如国内著名的 114 DNS、阿里云 DNS、腾讯云 DNS、百度云 DNS 都是如此。如果想要了解更多开放可用的 DNS 服务可以查看 <a href="https://adguard-dns.io/kb/general/dns-providers/">这里</a>。</p>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>  DNS 按照功能上的不同可以分为 <strong>权威 DNS</strong> 和 <strong>递归 DNS</strong>。权威 DNS 负责对某个或多个子域名进行管理，注册商提供的域名解析服务就是这一类。递归 DNS 负责接收客户端的请求并将查询到的域名对应记录返回给客户端，也就是说它本身不对任何子域名进行管理，只转述别人告诉它的结果。</p>
+
+
+
+ </div> </div>
+<p>  当我们使用 DNS 时，它（这里指递归 DNS）会如下图所示按照域名系统的构成逐级进行查询。比如说，现在我们想访问 www.baidu.com：</p>
+
+<ol>
+  <li>客户端（我们）向递归 DNS 请求解析 www.baidu.com；</li>
+  <li>递归 DNS 会先去问一下它的上游 DNS，如果不存在上游 DNS，它就只能去问 DNS 根服务器；</li>
+  <li>DNS 根服务器并不知道具体的解析记录，但是会告诉递归 DNS 顶级域名 .com 的 DNS 服务器；</li>
+  <li>递归 DNS 接着向 .com 的 DNS 服务器询问；</li>
+  <li>结果 .com 的 DNS 服务器也不知道具体的解析记录，但是会告诉递归 DNS 二级域名 baidu.com 的 DNS 服务器；</li>
+  <li>这样递归 DNS 才会去问域名 baidu.com 的权威 DNS；</li>
+  <li>然后，baidu.com 权威 DNS 响应 www.baidu.com 对应的 A 记录（或者 AAAA 记录）是什么；</li>
+  <li>最后，递归 DNS 将解析结果告诉客户端（我们）。</li>
+</ol>
+
+<p><img src="https://i.luish.cc/blog/hwyKGH.webp" alt="域名解析过程 DNS Resolution Process" /></p>
+
+<p>  那么问题来了，<strong>一个 DNS 能否同时是权威 DNS 和递归 DNS 呢？</strong>实际上是不可能的，但是可以实现这种效果。如果我们把权威 DNS 隐藏在递归 DNS 的后面，那么对于顶级域名 DNS 来说，你指定的递归 DNS 就是它理解的权威 DNS。这里的隐藏指的是，当有请求询问递归 DNS 的权威解析记录时，递归 DNS 根据规则将请求转发给背后真正的权威 DNS。等待权威 DNS 返回解析记录后，递归 DNS 再把结果返回给请求方（其他递归 DNS 或者客户端）。</p>
+
+<h3 id="私有域名解析">私有域名解析</h3>
+
+<h4 id="必要性">必要性</h4>
+
+<p>  以上谈到的都是公有域名的相关事情，为什么又要考虑私有域名解析呢？首先，公有域名和私有域名本质上可以没有区别，都是在域名注册商处购买的域名，也可以有所区别，即私有域名是未购买的或者是非 ICANN 支持的域名（比如 .lisz 后缀）。这样一来，我们将不再受<strong>域名是否注册</strong>的限制而应用在内部网络中。</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  当然，我们应当避免使用 ICANN 支持的域名后缀且可注册的域名，毕竟可能以后会有人购买这个域名。</p>
+
+
+
+ </div> </div>
+<p>  其次，解析记录的<strong>内外分离</strong>需求。随着基础服务架构和应用架构的不断发展，越来越多像云计算、Kubernetes 这样需要采用域名解析来连通内部服务。如果我们直接采用一个权威 DNS 来解析这些记录，那就意味着所有人都可以通过查询来知道这些解析记录，甚至有些人就能大致猜出服务架构，这并不是很安全。出于安全上的考量，将同一个域名的解析记录进行内外分离能够在一定程度上提升安全。</p>
+
+<p>  如参考资料中《内网域名系统的安全保密风险研究》所说，“随着内网规模的不断扩大，特别是国家电子政务内网的建成、扩展，在电子政务内网中构建国家级可信内网域名体系的需求越来越迫切，内网域名系统会成为内网的核心基础设施，其安全问题将会越来越被关注。”私有域名解析，即内网域名系统在内网安全中发挥着举足轻重的作用。</p>
+
+<h4 id="用途">用途</h4>
+
+<p>  笔者在实际使用 AWS、Azure、Oracle、阿里云、腾讯云、Ucloud 的过程中，也发现了私有域名解析的应用。举个例子，Oracle 云创建的每一台 VPS 都会有一个内部 FQDN（以 oraclecv.com 为后缀的多级域名）。当你在 VPS 上使用 dig 命令查询这个 FQDN 对应的 A 记录时，VPS 的内网 IP 会被返回。当你在自己的设备上使用 dig 命令查询时，返回为空。再举个例子，云计算厂商的 VPS 默认配置的是他们自家的镜像源，比如腾讯云 VPS 的默认镜像源域名为 mirrors.tencentyun.com，而这个域名在公网上是查不到解析记录的。可见，云计算厂商的架构上也在使用私有域名解析。</p>
+
+<p>  当然，云计算厂商们也向用户提供依托于 VPC（私有网络）的私有域名解析服务，即该私有域名解析服务只有在同一 VPC 内的 VPS 可以使用。而我们又知道，VPC 是属于用户个人的，也就是说不同用户之间的私有域名解析服务完全互不干扰。</p>
+
+<p>  在参考资料一中，阿里云列出了实际云服务中私有域名解析的四大应用场景：</p>
+
+<ul>
+  <li><strong>主机名管理</strong>：根据用途、机器信息语义化命名，对运维人员更友好。</li>
+  <li><strong>内部调用 API</strong>：内部 API 用域名来访问，即使对应集群或者 IP 发生变化，也可以无感切换。</li>
+  <li><strong>内部域名隐私保护</strong>：和上面笔者提到的必要性第二点一样，提升隐私保护。</li>
+  <li><strong>私有地址反向解析</strong>：绑定后可以通过 host、traceroute 或其他操作直接识别访问 IP 的来源，便于运维人员排查问题。</li>
+</ul>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>  域名解析分为<strong>正向解析</strong>和<strong>反向解析</strong>，我们一般见过的“域名 → IP”的域名解析就是正向解析，而反向解析则是“IP → 域名”。一般来说，反向解析多用于邮件服务器的可信认证。将 IP 与 邮件服务器域名的正反向解析都绑定后，能够增强邮件服务器的可信度，降低被收信服务器判定为 <strong>垃圾 IP</strong> 发信的概率。</p>
+
+
+
+ </div> </div>
+<h2 id="实践">实践</h2>
+
+<h3 id="方案一">方案一</h3>
+
+<p>  内网私有域名解析实际上就是要在内网中搭建一台权威 DNS 和递归 DNS：权威 DNS 用于管理私有域名，递归 DNS 用于解析权威 DNS 记录以及正常的公网解析记录。当然，在公司网络或者机房集群网络中，一般会搭建权威 DNS 集群和递归 DNS 集群来提升可靠性和可用性。权威 DNS 集群通常是主从架构，主节点作为接受域名解析操作的主要接收方，从节点将实时同步主节点记录。当主节点发现故障时，从节点自动升级为主节点。并非所有的集群都是这样，但是这样更加能避免因主节点宕机后无法进行域名解析的更改操作。由于这与采用架设 DNS 服务的软件相关，这里就不作过多探讨。</p>
+
+<p>  与权威 DNS 集群不同的是，内网递归 DNS 集群实际上一般会有两个节点暴露出来。这一点与公网中提供公网递归 DNS 服务是一样的。比如 114 DNS 会告诉大家要设置两个 DNS IP 地址，即 114.114.114.114 和 114.114.115.115。为什么要这样呢？主要还是因为通过冗余来提高可靠性和可用性。我们可能会简单地以为 114 DNS 就只有这两个 IP，但实际上它们的背后还有很多台递归 DNS 服务器。这两台服务器的作用并不是直接处理解析请求，而是为想要域名解析的客户端提供一个更加快和高效的方式来使用递归 DNS。类似于复杂 Web 系统中首先会在交换机上用网关进行优化，然后在服务器上利用 LVS 来负载均衡，之后再利用多个服务后台来分别处理相同的业务，最后再返回信息给用户。这两台递归 DNS 节点也起到了负载均衡的作用。</p>
+
+<p>  当然，这两个 IP 也不是一般的 IP，而是使用了 Anycast 技术的 IP。也就是说，在互联网上会有多台服务器使用了这两个 IP，而当我们向这两个 IP 发起请求时，BGP 会根据客户端所处的地理位置和网络情况将 IP 定位到离客户端最近的两台服务器上。有一个比较客观的体验就是，当我们在全国不同地方 ping 这两个 IP 时，发现似乎延迟差不多且都很短。但是无论我们的骨干网建得多么好，因地理位置和跨网（电信、联通、移动、教育网）所带来的延迟也是无法避免的。唯一一个延迟都很短的可能解释就是响应请求的机器实际上并非同一位置的同两台，而是位于不同位置的不同两台。</p>
+
+<h3 id="方案二">方案二</h3>
+
+<p>  上面的方案考虑的问题比较多，也比较适合在大规模集群或内网中进行实践，但是在小集群中可能就有点过于庞大了，显得没有必要。其实，小集群或者小团队内网可以采用“合二为一”的方案，即递归 DNS 与权威 DNS 由一台服务器来同时提供。由于小集群内网私有域名解析和公有域名解析不需要接近于零的宕机率，所以完全可以最简化。当前最流行的免费解决方案可能就是 AdGuard Home 了。</p>
+
+<div class="premonition citation"> <div class="header"> <svg class="icon citation" aria-hidden="true"> <use xlink:href="#icon-citation"></use> </svg> </div> <div class="content"> <p>  AdGuard Home 是一款全网广告拦截与反跟踪软件。在您将其安装完毕后，它将保护您所有家用设备，同时您不再需要安装任何客户端软件。随着物联网与连接设备的兴起，掌控您自己的整个网络环境变得越来越重要。</p>
+
+
+
+ </div> <div class="ref"> ------ AdGuard 主页 </div> </div>
+<p>  AdGuard Home 之所以这么受到欢迎，主要是因为其丰富的功能和简单的可视化操作，对于管理员来说非常友好。而且，AdGuard Home 的部署也非常简单，支持多平台架构、多方式一键部署，比如 AdGuard Home 也能在 ARM 芯片上用 Docker 容器的方式一键部署。虽然 AdGuard Home 自带简单的解析记录重写，可以满足大部分常用的内网私有域名解析需求，但是像一些比较高级的解析记录可能就无法做到，比如 TXT 记录。尽管 TXT 记录在 <strong>IP</strong> 和<strong>域名</strong>的相互映射中并不起到作用，但是 TXT 记录可以填写比较长的内容，非常适合用来验证对于域名的管理权限，像 HTTPS 证书的申请一般就是采用新增 TXT 记录的方式验证，还有 Gitlab Page 的自定义域名绑定也是如此。所以为了提供比较完整的域名解析服务，这里还是建议增加一个权威 DNS，可以采用 PowerDNS + PowerDNS Admin（交互界面）或者 Bind9 等。</p>
+
+<p>  考虑到友好的交互界面更容易上手使用，这里只介绍 AdGuard Home + PowerDNS 的方案。需要提前准备的环境有：</p>
+
+<ul>
+  <li>Docker</li>
+  <li>docker-compose</li>
+</ul>
+
+<h3 id="adguard-home">AdGuard Home</h3>
+
+<p>  由于 AdGuard Home 官方已经提供了多平台架构的 Docker 镜像，我们直接使用即可，docker-compose.yml 文件如下所示：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">adgurad</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">adguard/adguardhome</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">53:53/tcp</span>
+      <span class="pi">-</span> <span class="s">53:53/udp</span>
+      <span class="pi">-</span> <span class="s">80:80/tcp</span>
+      <span class="pi">-</span> <span class="s">443:443/tcp</span>
+      <span class="pi">-</span> <span class="s">3000:3000/tcp</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./work:/opt/adguardhome/work</span>
+      <span class="pi">-</span> <span class="s">./conf:/opt/adguardhome/conf</span>
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令启动 AdGuard Home 实例。</p>
+
+<h4 id="初始化">初始化</h4>
+
+<p>  使用浏览器访问 <a href="http://localhost:3000">http://localhost:3000</a> 进行实例初始化设置，如下所示根据页面提示设置好用户名和密码。</p>
+
+<p><img src="https://i.luish.cc/blog/PreFoj.webp" alt="初始化 AdGuard Home Initial" /></p>
+
+<p><img src="https://i.luish.cc/blog/7LHDlg.webp" alt="确认端口 Check ports" /></p>
+
+<p><img src="https://i.luish.cc/blog/qjTNW8.webp" alt="设置管理员 Set Admin" /></p>
+
+<p><img src="https://i.luish.cc/blog/yLkLc4.webp" alt="客户端配置指南 Client setting guideline" /></p>
+
+<p><img src="https://i.luish.cc/blog/buQ6LT.webp" alt="完成初始化 Finish the initialization" /></p>
+
+<p>  初始化成功后，页面会自动跳转到登录界面 <a href="http://localhost">http://localhost</a>（80 端口）。</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  由于在实际环境中，我们不一定是在本机启动该实例，所以可能需要使用服务器的 IP 来替代 localhost 访问。另外，如果原来就有 Nginx 或其他服务占用了 80 端口，我们在配置端口映射的时候可能就会设置到另外一个端口，因此自动跳转到的页面并非是 AdGuard Home 的首页。我们需要使用 IP + 映射 80 的端口来定位到首页。</p>
+
+
+
+ </div> </div>
+<p><img src="https://i.luish.cc/blog/Wwb5At.webp" alt="登录页面 AdGuard Home Login" /></p>
+
+<h4 id="私有域名转发">私有域名转发</h4>
+
+<p>  由于接下来我们将要用 PowerDNS 来管理权威域名解析，所以需要设置私有域名规则，即当 AdGuard Home 收到关于内网自定义权威域名的请求时，就会把请求转给 PowerDNS。这在 AdGuard Home 中也是比较容易就能设置好的，如下图所示，添加一行规则使得匹配的所有二级域名请求转发给 PowerDNS。</p>
+
+<p><img src="https://i.luish.cc/blog/4GMZAO.webp" alt="配置转发 Redirect to Authroized DNS" /></p>
+
+<h3 id="powerdns">PowerDNS</h3>
+
+<p>  虽然 PowerDNS 和 PowerDNS-Admin 官方都提供了 Docker 镜像，但是搭配起来用还是有点莫名其妙的问题。为了更加简单，笔者参考官方自行构建了 <code class="language-plaintext highlighter-rouge">zhonger/pdns</code> 和 <code class="language-plaintext highlighter-rouge">zhonger/powerdns-admin</code> 两个 Docker 镜像，搭配使用更加便捷可用。如果想要了解更多，可以查看 <a href="../docker/powerdns.html">《Docker 镜像构建之 PowerDNS 篇》</a>。
+  </p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">version</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">pdns</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/pdns:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">753:53/tcp"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">753:53/udp"</span>
+      <span class="c1"># - "8081:8081"</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">PDNS_launch=gsqlite3</span>
+      <span class="pi">-</span> <span class="s">PDNS_gsqlite3_database=/var/lib/powerdns/pdns.sqlite3</span>
+      <span class="pi">-</span> <span class="s">PDNS_webserver_address=0.0.0.0</span>
+      <span class="pi">-</span> <span class="s">PDNS_webserver_allow_from=127.0.0.1,10.0.0.0/8,172.0.0.0/8,192.168.0.0/16</span>
+      <span class="pi">-</span> <span class="s">PDNS_api=yes</span>
+      <span class="pi">-</span> <span class="s">PDNS_api_key={Random Long String}</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+      <span class="pi">-</span> <span class="s">./powerdns:/var/lib/powerdns</span>
+  <span class="na">db</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">mysql:latest</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">MYSQL_ALLOW_EMPTY_PASSWORD=yes</span>
+      <span class="pi">-</span> <span class="s">MYSQL_DATABASE=powerdnsadmin</span>
+      <span class="pi">-</span> <span class="s">MYSQL_USER=pdns</span> 
+      <span class="pi">-</span> <span class="s">MYSQL_PASSWORD=mypdns</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+      <span class="pi">-</span> <span class="s">./pda-mysql:/var/lib/mysql</span>
+
+  <span class="na">app</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/powerdns-admin:latest</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">db</span>
+      <span class="pi">-</span> <span class="s">pdns</span>
+    <span class="na">ports</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">8080:80"</span>
+    <span class="na">logging</span><span class="pi">:</span>
+      <span class="na">driver</span><span class="pi">:</span> <span class="s">json-file</span>
+      <span class="na">options</span><span class="pi">:</span>
+        <span class="na">max-size</span><span class="pi">:</span> <span class="s">50m</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">SQLALCHEMY_DATABASE_URI=mysql://pdns:mypdns@db/powerdnsadmin</span>
+      <span class="pi">-</span> <span class="s">GUNICORN_TIMEOUT=60</span>
+      <span class="pi">-</span> <span class="s">GUNICORN_WORKERS=2</span>
+      <span class="pi">-</span> <span class="s">GUNICORN_LOGLEVEL=DEBUG</span>
+      <span class="pi">-</span> <span class="s">OFFLINE_MODE=False</span> <span class="c1"># True for offline, False for external resources </span>
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令启动 PowerDNS 和 PowerDNS-Admin 实例。</p>
+
+<h4 id="初始化用户">初始化用户</h4>
+
+<p>  PowerDNS-Admin 本身不会自动初始化管理员用户，而是将注册的第一个用户认定为管理员用户。使用浏览器访问 PowerDNS-Admin 登录页面 <a href="http://localhost:8080">http://localhost:8080</a>，如下图所示点击 Create an account 链接跳转到注册页。</p>
+
+<p><img src="https://i.luish.cc/blog/9NDNpc.webp" alt="PowerDNS-Admin 登录页 Login page" /></p>
+
+<p>  如下图所示，填写姓名、邮箱、用户名和密码，点击 Register 按钮即可完成注册。这里，PowerDNS-Admin 默认采用邮箱的 Gavatar 头像作为用户头像。</p>
+
+<p><img src="https://i.luish.cc/blog/TJqhDE.webp" alt="PowerDNS-Admin 注册页 Register page" /></p>
+
+<h4 id="初始化配置">初始化配置</h4>
+
+<p>  注册和登录后，会跳转到 PDNS 配置页面。这里由于 PDNS 和 PowerDNS-Admin 实例是在同一个网络中，可以直接使用 pdns 来代替 PDNS 实例的 IP 地址。PDNS API KEY 则是刚才启动时设置的那一长串字符（PDNS_api_key）。PDNS VERSION 最好是与 PDNS 实际使用的一致，不过不一致也不会有什么事。<code class="language-plaintext highlighter-rouge">zhonger/pdns:latest</code> 目前实际是 4.6 版本，这里默认填的 4.1.1 也可以。然后点击 Update 按钮保存配置。</p>
+
+<p><img src="https://i.luish.cc/blog/CJ1Wl1.webp" alt="CJ1Wl1" /></p>
+
+<p>  保存配置成功后，如果填写信息无误，点击侧边导航中的 PDNS 就可以看到 PDNS 的各项配置信息。如果填写有误，则没有任何信息。</p>
+
+<p><img src="https://i.luish.cc/blog/UdkXGi.webp" alt="UdkXGi" /></p>
+
+<h4 id="新增域名">新增域名</h4>
+
+<p>  接下来就可以点击侧边导航栏中的 New Domain 来新增私有域名 home.lisz。如下图所示，我们需要填写的是域名，需要选择的是域名模板，一般 basic_template_1 即可。之后点击 Submit 按钮提交。</p>
+
+<p><img src="https://i.luish.cc/blog/nMyRKR.webp" alt="nMyRKR" /></p>
+
+<h4 id="新增解析记录">新增解析记录</h4>
+
+<p>  新增域名成功后，我们就可以在 Dashboard 里面的域名列表看到 home.lisz 了。点击即可进入域名解析。</p>
+
+<p><img src="https://i.luish.cc/blog/naFe9s.webp" alt="naFe9s" /></p>
+
+<p>  这里我们以一个 CNAME 和 A 记录为例，来尝试新增解析记录。如下图所示，点击左上角的 Add Record 添加记录，完成后点击右上角的 Apply Changes 来提交解析记录到 PDNS。</p>
+
+<p><img src="https://i.luish.cc/blog/SmwtCT.webp" alt="SmwtCT" /></p>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>  实际域名解析时我们一般会采用 CNAME 和 A 记录联合使用的方式，这样相当于在 DNS 解析层面就有负载均衡了。A 记录是域名与 IP 的关系，这就意味着同一个域名可以有多个 A 记录。CNAME 记录是域名与域名的关系，而两个域名分别是为了不同的目的，前一个是为了给大家使用的，后一个是为了运维人员使用的。当存在 CNAME → A 时，客户端会根据网络情况来判断使用哪一条 A 记录对应的 IP，从而提升用户体验。</p>
+
+
+
+ </div> </div>
+<h3 id="验证">验证</h3>
+
+<h4 id="验证权威-dns-是否正常">验证权威 DNS 是否正常</h4>
+
+<p>  如下所示向 AdGuard Home 询问私有域名解析记录，解析正常。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>─<span class="nv">$ </span>dig @127.0.0.1 <span class="nt">-p</span> 53 www.home.lisz
+
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.18.1-1ubuntu1.1-Ubuntu &lt;&lt;<span class="o">&gt;&gt;</span> @127.0.0.1 <span class="nt">-p</span> 53 www.home.lisz
+<span class="p">;</span> <span class="o">(</span>1 server found<span class="o">)</span>
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 47193
+;; flags: qr aa rd; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+;; WARNING: recursion requested but not available
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;www.home.lisz.                 IN      A
+
+;; ANSWER SECTION:
+www.home.lisz.          60      IN      CNAME   www101.home.lisz.
+www101.home.lisz.       60      IN      A       192.168.1.1
+
+;; Query time: 20 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Tue Aug 23 17:05:15 JST 2022
+;; MSG SIZE  rcvd: 79
+</span></code></pre></div></div>
+
+<h4 id="验证递归-dns-是否正常">验证递归 DNS 是否正常</h4>
+
+<p>  如下所示，向 AdGuard Home 询问公有域名解析记录，解析正常。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-<span class="nv">$ </span>dig @127.0.0.1 <span class="nt">-p</span> 53 www.baidu.com
+
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.18.1-1ubuntu1.1-Ubuntu &lt;&lt;<span class="o">&gt;&gt;</span> @127.0.0.1 <span class="nt">-p</span> 53 www.baidu.com
+<span class="p">;</span> <span class="o">(</span>1 server found<span class="o">)</span>
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 8988
+;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;www.baidu.com.                 IN      A
+
+;; ANSWER SECTION:
+www.baidu.com.          831     IN      CNAME   www.a.shifen.com.
+www.a.shifen.com.       28      IN      CNAME   www.wshifen.com.
+www.wshifen.com.        192     IN      A       45.113.192.102
+www.wshifen.com.        192     IN      A       45.113.192.101
+
+;; Query time: 244 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1) (UDP)
+;; WHEN: Tue Aug 23 17:06:03 JST 2022
+;; MSG SIZE  rcvd: 127
+</span></code></pre></div></div>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://help.aliyun.com/document_detail/64623.html">阿里云帮助中心 - 云解析 - 应用场景</a></li>
+  <li><a href="https://cloud.tencent.com/document/product/1338/50547">腾讯云文档中心 - 子域名递归解析说明</a></li>
+  <li><a href="https://support.huaweicloud.com/dns_faq/dns_faq_040.html">华为云文档 - 如何设置内网域名既支持内网解析，也支持公网解析？</a></li>
+  <li><a href="https://cloud.tencent.com/developer/article/1123748">公司内网搭建代理 DNS 使用内网域名代替 ip 地址</a></li>
+  <li><a href="https://cloud.tencent.com/developer/article/1821030">一文搞懂 DNS 基础知识，收藏起来有备无患~</a></li>
+  <li><a href="https://cloud.tencent.com/developer/article/1691018">搞它！！！深入了解DNS域名解析服务，教你搭建一个属于自己的DNS服务器（正向解析、反向解析、泛域名解析、邮件交换解析、别名解析、分离解析，主从结构解析）</a></li>
+  <li><a href="https://www.modb.pro/db/433331">推荐一款 Private DNS 服务</a></li>
+  <li><a href="https://sspai.com/post/63088">AdGuard Home 安装及使用指北</a></li>
+  <li><a href="http://www.gjbmj.gov.cn/n1/2021/0722/c411145-32166624.html">内网域名系统的安全保密风险研究</a></li>
+  <li><a href="https://computingforgeeks.com/running-powerdns-and-powerdns-admin-in-docker-containers/">Running PowerDNS and PowerDNS Admin in Docker Containers</a></li>
+</ul>
+
+            <div class="post-copyright">
+              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">Mr Li</a>&nbsp;所有，转载请注明本文链接。</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p><span>本文标题：</span>《 内网私有域名解析 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/internal-dns.html">https://lisz.me/tech/webmaster/internal-dns.html</a></p>
+            </div>
+          </article>
+        </div>   
+        <div class="table-of-contents">
+          <h2>Contents</h2>
+          <ul><li><a href="#前言">前言</a><ul><li><a href="#域名和域名解析">域名和域名解析</a></li><li><a href="#私有域名解析">私有域名解析</a><ul><li><a href="#必要性">必要性</a></li><li><a href="#用途">用途</a></li></ul></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#方案一">方案一</a></li><li><a href="#方案二">方案二</a></li><li><a href="#adguard-home">AdGuard Home</a><ul><li><a href="#初始化">初始化</a></li><li><a href="#私有域名转发">私有域名转发</a></li></ul></li><li><a href="#powerdns">PowerDNS</a><ul><li><a href="#初始化用户">初始化用户</a></li><li><a href="#初始化配置">初始化配置</a></li><li><a href="#新增域名">新增域名</a></li><li><a href="#新增解析记录">新增解析记录</a></li></ul></li><li><a href="#验证">验证</a><ul><li><a href="#验证权威-dns-是否正常">验证权威 DNS 是否正常</a></li><li><a href="#验证递归-dns-是否正常">验证递归 DNS 是否正常</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+        </div>
+      </div>
+      
+
+      
+      <div class="social-share-wrapper">
+        <div class="social-share"></div>
+      </div>
+      
+    </div>
+
+    <section class="author-detail">
+      <section class="post-footer-item author-card">
+        <div class="avatar">
+          <img src="/assets/img/profile.webp" alt="">
+        </div>
+        <div class="author-name" rel="author">zhonger</div>
+        <div class="bio">
+          <p>Developer & Maintainer</p>
+        </div>
+        
+        <ul class="sns-links">
+          
+          <li>
+            <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-google-scholar"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-researchgate"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-ORCID"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://github.com/zhonger" target="_blank" aria-label="github">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-github"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-linkedin"></use>
+              </svg>
+            </a>
+          </li>
+          
+          <li>
+            <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-segmentfault"></use>
+              </svg>
+            </a>
+          </li>
+          
+        </ul>
+        
+      </section>
+      <section class="post-footer-item read-next">
+        
+
+        
+        <div class="read-next-item">
+          <a href="/tech/webmaster/ca-ssl.html" class="read-next-link" aria-label="内网 HTTPS 可信证书"></a>
+            <section>
+              <span>内网 HTTPS 可信证书</span>
+              <p>前言</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="https://i.luish.cc/cover/bAgINg.webp" alt="">
+            
+        </div>
+        
+      </section>
+      
+   
+      
+
+      
+    </section>
+
+    <footer class="g-footer">
+  <section>Mr Li ©
+  
+  
+    2015
+    -
+  
+  2022
+  
+    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+  
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  
+  </section>
+  
+  <section>
+    <span id="busuanzi_container_site_pv">
+      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+    </span>
+    <span id="busuanzi_container_site_uv">
+      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+    </span>
+  </section>
+  
+  
+</footer>
+<div class="cookie-tip">
+  
+  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
+  
+  <button id="accept-tos">同意（Accept）</button>
+</div>
+<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
+  <svg class="icon list day" aria-hidden="true">
+    <use xlink:href="#icon-list-day"></use>
+  </svg>
+  <svg class="icon list night" aria-hidden="true">
+    <use xlink:href="#icon-list-night"></use>
+  </svg>
+  <svg class="icon exit day" aria-hidden="true">
+    <use xlink:href="#icon-exit-day"></use>
+  </svg>
+  <svg class="icon exit night" aria-hidden="true">
+    <use xlink:href="#icon-exit-night"></use>
+  </svg>
+</button>
+<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
+  <svg class="icon up day" aria-hidden="true">
+    <use xlink:href="#icon-up-day"></use>
+  </svg>
+  <svg class="icon up night" aria-hidden="true">
+    <use xlink:href="#icon-up-night"></use>
+  </svg>
+</button>
+
+
+  </div>
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+    $("a.social-share-icon").each(function() {
+      $(this).attr("aria-label", $(this).attr("class").split(' ')[1])
+    });
+  </script>
+
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
+  <script>
+      // 给图片添加链接
+      $(document).ready(function() {
+          var baseurl = $("meta[property='og:baseurl']").attr('content');
+          $("p img").each(function() {
+              $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload").attr('src', baseurl + '/assets/img/loading.gif');
+              var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
+              $(this).wrapAll(strA);
+          });
+
+          Fancybox.bind('[data-fancybox]', {
+            on: {
+              load: (fancybox, slide) => {
+                var gray = $("meta[property='og:gray']").attr('content');
+                if(gray == "true"){
+                    $(".fancybox__content img").addClass("gray");
+                    $(".carousel__track .fancybox__thumb").addClass("gray");
+                }
+              }
+            }
+          });   
+          
+          
+
+          if($("#comments-switch").length > 0){
+            var comment_status = $("#cmn-toggle-4")[0].checked;
+            if(comment_status){
+              $("#waline").addClass("active");
+            }else {
+              $("#disqus_thread").addClass("active");
+            }
+            $("#cmn-toggle-4").click(function(){
+              $("#disqus_thread").toggleClass("active");
+              $("#waline").toggleClass("active");
+            })
+          }else {
+            if($("#disqus_thread").length > 0) {
+              $("#disqus_thread").addClass("active");
+            }else if($("#waline").length > 0) {
+              $("#waline").addClass("active");
+            }
+          }
+
+          var time_formats = ['YYYY-MM-DD HH:mm:ss ZZ', 'YYYY DD MMM HH:mm:ss ZZ', 'YYYY年MM月DD日 HH:mm:ss ZZ'];
+          function dateFormat(date, format){
+            var date_org = dayjs(date, time_formats[format]);
+            var date     = date_org.format(time_formats[format]);
+            return {"date_org": date_org, "date": date}
+          }
+
+          dayjs.extend(window.dayjs_plugin_customParseFormat);
+          dayjs.extend(window.dayjs_plugin_relativeTime);
+          var post_date = $("meta[property='post-date']").attr('content');
+          var post_date_format = $("meta[property='post-date-format']").attr('content');
+          var local_post_date = dateFormat(post_date, post_date_format);
+
+          $(".post time span.create-at").html(local_post_date["date"]);
+
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-08-04-internal-dns.md")
+          .then((response) => {
+            return response.json();
+          })
+          .then((commits) => {
+            if(commits.length != 0){
+              var update_at = dayjs(commits[0]['commit']['committer']['date']);
+            }else {
+              var update_at = post_date
+            }
+
+            var local_update_at = dateFormat(update_at, post_date_format);
+            $('.post time span.update-at').html(local_update_at["date"]);
+
+            var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            if(relative_time > 365){
+              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+            }
+          });   
+          
+          /*
+          * Keyboard shortcut bind: left and right
+          */
+
+          var previous_url = $("meta[property='og:previous_url']").attr('content');
+          var next_url = $("meta[property='og:next_url']").attr('content');
+
+          hotkeys('left', function(event, handler){
+              // Prevent the default refresh event under WINDOWS system
+              event.preventDefault();
+              if(previous_url){
+                  console.log('you pressed left!');
+                  window.location.href = previous_url;
+              }else {
+                  $("#no-previous").addClass("active");
+                  console.log('已经是最新一篇文章了！');
+                  console.log('Already the latest article！');
+                  setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
+              }
+          });
+
+          hotkeys('right', function(event, handler){
+              // Prevent the default refresh event under WINDOWS system
+              event.preventDefault();
+              if(next_url){
+                  console.log('you pressed right!');
+                  window.location.href = next_url;
+              }else {
+                  $("#no-next").addClass("active");
+                  console.log('已经是最后一篇文章了！');
+                  console.log('Already the last article！');
+                  setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
+              }
+          });
+      });
+  </script>
+  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+  
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-9E8SEJ5JNY');
+</script>
+
+  
+<script async defer data-website-id="90ea4822-8012-444e-837a-757ea473e087" src="https://umami.lisz.top/pwiki.js"></script>
+
+  
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+            console.log("An active service worker found, no need to register");
+        } else {
+            // Register the service worker
+            navigator.serviceWorker
+            .register("/sw.js", {
+                scope: "/"
+            })
+            .then(function (reg) {
+                console.log("Service worker has been registered for scope: " + reg.scope);
+            });
+        }
+    }
+
+// 检测浏览器是否支持SW
+// if(navigator.serviceWorker != null){
+//     navigator.serviceWorker.register("/sw.js")
+//         .then(function(registartion){
+//             console.log('支持sw:',registartion.scope)
+//         })
+// } else {
+//     console.log('不支持sw')
+// }
+</script>
+  
+	<!--
+Author: Ray-Eldath
+refer to:
+ - http://docs.mathjax.org/en/latest/options/index.html
+-->
+
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [ ["$", "$"] ],
+			displayMath: [ ["$$", "$$"] ],
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+	
+</body>
+
+</html>
