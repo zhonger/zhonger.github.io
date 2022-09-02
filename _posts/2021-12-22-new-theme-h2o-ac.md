@@ -288,6 +288,78 @@ pwa:
   short_name: 'lisz'
 ```
 
+#### 支持 Mermaid
+
+(2022年8月29日更新)
+
+&emsp;&emsp;不少同学可能会有在文章中放置流程图的需求，为了满足这一需求，现添加了 [Mermaid](https://mermaid-js.github.io/mermaid/#/) 来支持像写代码一样画图。
+
+&emsp;&emsp;为了兼容 Markdown 语法，这里采用了自定义的代码类型。当代码类型为 `mermaid` 时，PrismJS 会自动以代码的形式美化展示；当代码类型为 `mermaid2` 时，页面会自动使用 Mermaid 画成图展示出来，如下所示。
+
+&emsp;&emsp;考虑到页面宽度有限，Mermaid 所画出的甘特图等其他比较大一点的图不太好看，也增加了**放大重绘**的功能。如下所示，点击图的右上角的按钮即可全屏查看大图。
+
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```mermaid2
+    graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+```mermaid2
+    gantt
+      title A Gantt Diagram
+      dateFormat x
+      axisFormat %L
+      section Section
+      A task           :a1, 0, 30ms
+      Another task     :after a1, 20ms
+      section Another
+      Another another task      :b1, 20, 12ms
+      Another another another task     :after b1, 24ms
+```
+
+```mermaid2
+    gantt
+    dateFormat  YYYY-MM-DD
+    title       Adding GANTT diagram functionality to mermaid
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section A section
+    Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Active task               :active,  des2, 2014-01-09, 3d
+    Future task               :         des3, after des2, 5d
+    Future task2              :         des4, after des3, 5d
+
+    section Critical tasks
+    Completed task in the critical line :crit, done, 2014-01-06,24h
+    Implement parser and jison          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid                      :1d
+    Functionality added                 :milestone, 2014-01-25, 0d
+
+    section Documentation
+    Describe gantt syntax               :active, a1, after des1, 3d
+    Add gantt diagram to demo page      :after a1  , 20h
+    Add another diagram to demo page    :doc1, after a1  , 48h
+
+    section Last section
+    Describe gantt syntax               :after doc1, 3d
+    Add gantt diagram to demo page      :20h
+    Add another diagram to demo page    :48h
+```
+
 #### 配置项
 
 &emsp;&emsp;配置项中新增了**友情链接**和**备案号**功能，可以直接在 _config.yml 文件的对应配置项下设置即可，如下所示。友情链接主要是方便跟其他博主交换友链，备案号主要是为了方便部署在国内需备案的 vps 或虚拟主机上。此处，二者都可以置空。

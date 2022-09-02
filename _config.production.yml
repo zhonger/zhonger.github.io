@@ -138,6 +138,15 @@ prism:
 
 RSS: true
 
+# Extlinks
+extlinks:
+  attributes: {rel: nofollow, target: _blank, class: extlinks}
+  # rel_exclude: ['host1.com', 'host2.net']
+  class_exclude: ['lisz.me', 'lisz.ink', 'lep.ink', 'lui.site', 'blog.lui8.cn', 'luish.cc', 'u.tsukuba.ac.jp', 'zhonger.vercel.app']
+
+# Mermaid
+mermaid: true
+
 # Plugins
 # plugins: [jekyll-paginate-v2, jekyll-feed, jekyll-sitemap, premonition]
 
