@@ -296,23 +296,26 @@
         <div class="contents">
           <article class="markdown-body">
             <ul id="markdown-toc">
-  <li><a href="#前言" id="markdown-toc-前言">前言</a>    <ul>
-      <li><a href="#jekyll-生成目录的方案" id="markdown-toc-jekyll-生成目录的方案">Jekyll 生成目录的方案</a>        <ul>
-          <li><a href="#第一种方案" id="markdown-toc-第一种方案">第一种方案</a></li>
-          <li><a href="#第二种方案" id="markdown-toc-第二种方案">第二种方案</a></li>
-          <li><a href="#第三种方案" id="markdown-toc-第三种方案">第三种方案</a></li>
+  <li>
+<a href="#%E5%89%8D%E8%A8%80" id="markdown-toc-前言">前言</a>    <ul>
+      <li>
+<a href="#jekyll-%E7%94%9F%E6%88%90%E7%9B%AE%E5%BD%95%E7%9A%84%E6%96%B9%E6%A1%88" id="markdown-toc-jekyll-生成目录的方案">Jekyll 生成目录的方案</a>        <ul>
+          <li><a href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%A1%88" id="markdown-toc-第一种方案">第一种方案</a></li>
+          <li><a href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%A1%88" id="markdown-toc-第二种方案">第二种方案</a></li>
+          <li><a href="#%E7%AC%AC%E4%B8%89%E7%A7%8D%E6%96%B9%E6%A1%88" id="markdown-toc-第三种方案">第三种方案</a></li>
         </ul>
       </li>
     </ul>
   </li>
-  <li><a href="#实践" id="markdown-toc-实践">实践</a>    <ul>
-      <li><a href="#布局" id="markdown-toc-布局">布局</a></li>
-      <li><a href="#目录生成" id="markdown-toc-目录生成">目录生成</a></li>
-      <li><a href="#自适应" id="markdown-toc-自适应">自适应</a></li>
-      <li><a href="#最终代码" id="markdown-toc-最终代码">最终代码</a></li>
+  <li>
+<a href="#%E5%AE%9E%E8%B7%B5" id="markdown-toc-实践">实践</a>    <ul>
+      <li><a href="#%E5%B8%83%E5%B1%80" id="markdown-toc-布局">布局</a></li>
+      <li><a href="#%E7%9B%AE%E5%BD%95%E7%94%9F%E6%88%90" id="markdown-toc-目录生成">目录生成</a></li>
+      <li><a href="#%E8%87%AA%E9%80%82%E5%BA%94" id="markdown-toc-自适应">自适应</a></li>
+      <li><a href="#%E6%9C%80%E7%BB%88%E4%BB%A3%E7%A0%81" id="markdown-toc-最终代码">最终代码</a></li>
     </ul>
   </li>
-  <li><a href="#参考资料" id="markdown-toc-参考资料">参考资料</a></li>
+  <li><a href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" id="markdown-toc-参考资料">参考资料</a></li>
 </ul>
 
 <h2 id="前言">前言</h2>
@@ -333,7 +336,7 @@
 
 <h4 id="第二种方案">第二种方案</h4>
 
-<p>  利用第三方插件 <a href="https://github.com/toshimaru/jekyll-toc">jekyll-toc</a>。这种方式在实现上比上一种要更加优雅一些，不需要自己修改或编写代码，只需要执行以下步骤即可。缺点在于 Github Pages 不支持这类自定义插件，你可能需要使用自定义的 workflow.yml 文件来指导 Github Action 来编译生成静态文件。如果不怎么了解 Github Action，恐怕这种方式部署在 Github Pages 上也不是很省心。</p>
+<p>  利用第三方插件 <a href="https://github.com/toshimaru/jekyll-toc" rel="nofollow" target="_blank" class="extlinks">jekyll-toc</a>。这种方式在实现上比上一种要更加优雅一些，不需要自己修改或编写代码，只需要执行以下步骤即可。缺点在于 Github Pages 不支持这类自定义插件，你可能需要使用自定义的 workflow.yml 文件来指导 Github Action 来编译生成静态文件。如果不怎么了解 Github Action，恐怕这种方式部署在 Github Pages 上也不是很省心。</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gemfile</span>
 
@@ -360,7 +363,7 @@
 <p>  采用新增 jekyll 模板的方式来支持自动生成目录。这种方式也可以直接运行在 Github Pages 下。主要的步骤是：</p>
 
 <ul>
-  <li>将 <a href="https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html">toc.html</a> 文件下载到 _includes 目录下；</li>
+  <li>将 <a href="https://github.com/allejo/jekyll-toc/releases/download/v1.2.0/toc.html" rel="nofollow" target="_blank" class="extlinks">toc.html</a> 文件下载到 _includes 目录下；</li>
   <li>在 _layouts 需要使用 toc 功能的页面模板的 content 前面加上 <code class="language-plaintext highlighter-rouge">% include toc.html html=content %</code>。</li>
 </ul>
 
@@ -369,13 +372,15 @@
 <p>  从上述三种方案综合来看，第三种方案能够同时支持自动生成目录和 Github Pages，比较适合预期的需求。另外，采用模板的方式还有一个好处，可以在全局配置文件 _config.yml 中一键设置“开启”或“关闭”，配置上比较简单。但如果仅仅照搬上述的第三种方案，还是不能完全满足实际的需求。因为第三种方案的结果是自动生成目录的内容，并不涉及到具体的布局，也就是说只能放在某一个固定的位置。总结的来说，实际的目标起码需要满足以下两点：</p>
 
 <ul>
-  <li><strong>目标一</strong>：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。</li>
-  <li><strong>目标二</strong>：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。</li>
+  <li>
+<strong>目标一</strong>：目录位于正文右侧（或左侧），且当内容滑动时目录位置固定不变。</li>
+  <li>
+<strong>目标二</strong>：目录在宽屏时自动显示，在窄屏或移动端分辨率不足时自动隐藏。</li>
 </ul>
 
 <h3 id="布局">布局</h3>
 
-<p>  从目标一来看，其实在大部分的静态博客主题中都是有这样的功能的（PS：可能 Jekyll 是个例外，原生只支持静态目录）。我们可以先来看两个例子 <a href="https://github.com/ahonn/hexo-theme-even">hexo-theme-even</a> 和 <a href="https://www.markdownguide.org/getting-started/">markdownguide</a>。前面的例子是 Hexo 主题，其中采用的是 js 控制 toc 的 div 层在 <code class="language-plaintext highlighter-rouge">position: absolute</code> 和 <code class="language-plaintext highlighter-rouge">position: fixed</code> 之间变换：当页面初始时，处于 absolute 位置；当页面在向下滑动时，处于 fixed 位置。这种方式需要有 js 代码的介入，增加了运算的成本（虽然其实很小）和维护成本（占比更大）。后面的例子是采用了 Bootstrap 框架中的 toc js 插件，能够满足目标一，且能跟踪内容位置来切换显示的二级目录，相对来说功能更加强大。唯一的缺点是，拖着 Bootstrap 这个大拖油瓶，如果本身的主题是基于 Bootstrap 框架的，那么就非常合适了。</p>
+<p>  从目标一来看，其实在大部分的静态博客主题中都是有这样的功能的（PS：可能 Jekyll 是个例外，原生只支持静态目录）。我们可以先来看两个例子 <a href="https://github.com/ahonn/hexo-theme-even" rel="nofollow" target="_blank" class="extlinks">hexo-theme-even</a> 和 <a href="https://www.markdownguide.org/getting-started/" rel="nofollow" target="_blank" class="extlinks">markdownguide</a>。前面的例子是 Hexo 主题，其中采用的是 js 控制 toc 的 div 层在 <code class="language-plaintext highlighter-rouge">position: absolute</code> 和 <code class="language-plaintext highlighter-rouge">position: fixed</code> 之间变换：当页面初始时，处于 absolute 位置；当页面在向下滑动时，处于 fixed 位置。这种方式需要有 js 代码的介入，增加了运算的成本（虽然其实很小）和维护成本（占比更大）。后面的例子是采用了 Bootstrap 框架中的 toc js 插件，能够满足目标一，且能跟踪内容位置来切换显示的二级目录，相对来说功能更加强大。唯一的缺点是，拖着 Bootstrap 这个大拖油瓶，如果本身的主题是基于 Bootstrap 框架的，那么就非常合适了。</p>
 
 <p>  这里我们想要实践的是在未使用 Bootstrap 框架的 Jekyll 主题中增加目标一的功能，因此这两个例子的做法都不是很合适。实际上，从需要维护的代码量来说，第一个例子的做法所需的 js 代码应该是算少的，但是不是存在完全不使用 js 代码也能实现这样的功能的方案呢？实际上是存在的。据我们所知，现在已有的页面布局的方法大致有三种：<strong>Table 布局</strong>、<strong>Div 布局</strong>和 <strong>Flex 布局</strong>。Table 布局算是最原始的布局方式了，主要利用 Table 的横列来组织页面中的各个元素的位置，特点是容易上手且不易出问题。缺点也比较明显，不大符合语义化 HTML 的规范，即 HTML 标签只做与它含义相同的事情。Table 标签作为表格布局标签，应该专注于展示表格数据，而非为整个页面布局操心。于是，Div 布局开始流行起来。Div 层的概念和布局的含义完全吻合，也容易理解。Div 布局比较让人头疼的地方是，页面中有很多浮动元素出现时，可能会出现各种各样想象不到的问题，某些布局之后被迫要清除浮动。Flex 布局的出现为 Div 布局提出了改善，使得页面布局不再被浮动元素和 Div 层浮动时内容大小为零所困恼。</p>
 
@@ -476,15 +481,15 @@
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://plutotree.me/jekyll/2019/01/30/jekyll-toc-solution.html">jekyll自动生成目录的几种方案</a></li>
-  <li><a href="https://www.runoob.com/css/css-positioning.html">Runoob - CSS Position 定位</a></li>
-  <li><a href="https://segmentfault.com/a/1190000039858711">position:sticky 粘性定位的几种巧妙应用</a></li>
-  <li><a href="https://www.php.cn/css-tutorial-466057.html">css3 sticky不生效怎么办</a></li>
+  <li><a href="https://plutotree.me/jekyll/2019/01/30/jekyll-toc-solution.html" rel="nofollow" target="_blank" class="extlinks">jekyll自动生成目录的几种方案</a></li>
+  <li><a href="https://www.runoob.com/css/css-positioning.html" rel="nofollow" target="_blank" class="extlinks">Runoob - CSS Position 定位</a></li>
+  <li><a href="https://segmentfault.com/a/1190000039858711" rel="nofollow" target="_blank" class="extlinks">position:sticky 粘性定位的几种巧妙应用</a></li>
+  <li><a href="https://www.php.cn/css-tutorial-466057.html" rel="nofollow" target="_blank" class="extlinks">css3 sticky不生效怎么办</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Jekyll 文章侧边索引导航 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/jekyll-toc.html">https://lisz.me/tech/webmaster/jekyll-toc.html</a></p>
             </div>
@@ -612,10 +617,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -660,6 +665,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -693,9 +708,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -863,7 +878,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -884,7 +898,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

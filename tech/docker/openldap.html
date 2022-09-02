@@ -293,7 +293,7 @@
           <article class="markdown-body">
             <h2 id="ldap-协议入门">LDAP 协议入门</h2>
 
-<p>  LDAP 是一种通讯协议，支持 TCP/IP 。在这套标准下，有多种的实现方式，比如 <a href="https://www.openldap.org">OpenLDAP</a>、微软大佬的 AD (Active Directory)。拿 AD 来举例子，LDAP 有点像是数据库一样，但是又不完全是，读起来非常快、写起来慢一点。同时它也有 Server 端和 Client 端，其中 Server 端用来存放资源，Client 端用来操作增删改查等操作，即 AD = LDAP服务器 + LDAP 应用。</p>
+<p>  LDAP 是一种通讯协议，支持 TCP/IP 。在这套标准下，有多种的实现方式，比如 <a href="https://www.openldap.org" rel="nofollow" target="_blank" class="extlinks">OpenLDAP</a>、微软大佬的 AD (Active Directory)。拿 AD 来举例子，LDAP 有点像是数据库一样，但是又不完全是，读起来非常快、写起来慢一点。同时它也有 Server 端和 Client 端，其中 Server 端用来存放资源，Client 端用来操作增删改查等操作，即 AD = LDAP服务器 + LDAP 应用。</p>
 
 <p>  与数据库不同的地方是，数据库是按照记录一条条存放在表中，而 LDAP 数据库是<strong>树结构</strong>的，数据存储在叶子节点上。下面举个例子来说明一下<strong>树结构</strong>上的一条记录是如何定义的。</p>
 
@@ -316,8 +316,8 @@ cn/uid: 一条记录的名字/ID <span class="o">(</span>即哪一个苹果名�
 LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准 DN"</span>
 </code></pre></div></div>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？<br />
-  用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。<br />
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>为什么要用 LDAP 目录树来存储数据，用 MySQL 不行吗？<br>
+  用树形结构存储数据，查询效率更高。在某些特定的场景下，使用树形数据库更理想。比如，需要存储大量的数据，而且数据不是经常更改的，需要很快速的查找。<br>
   把 LDAP 与传统的数据库相比，LDAP 除了快速查找的特点，它还有很多的运用场景，比如域验证等。</p>
 
 
@@ -365,13 +365,13 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://www.jianshu.com/p/7e4d99f6baaf">LDAP入门</a></li>
-  <li><a href="https://lostfocus.de/2018/03/openldap-and-phpldapadmin-running-in-docker-containers/">OpenLDAP and phpLDAPadmin running in Docker containers</a></li>
+  <li><a href="https://www.jianshu.com/p/7e4d99f6baaf" rel="nofollow" target="_blank" class="extlinks">LDAP入门</a></li>
+  <li><a href="https://lostfocus.de/2018/03/openldap-and-phpldapadmin-running-in-docker-containers/" rel="nofollow" target="_blank" class="extlinks">OpenLDAP and phpLDAPadmin running in Docker containers</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 OpenLDAP 安装初体验 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/openldap.html">https://lisz.me/tech/docker/openldap.html</a></p>
             </div>
@@ -499,10 +499,10 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -547,6 +547,16 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -580,9 +590,9 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -750,7 +760,6 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -771,7 +780,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

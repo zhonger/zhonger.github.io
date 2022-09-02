@@ -294,12 +294,18 @@
             <h2 id="基本概念">基本概念</h2>
 
 <ul>
-  <li><strong>物理存储</strong>:指的是物理的硬盘，在 /dev 目录下的 sda、sdb 等。</li>
-  <li><strong>物理卷</strong>:指的是物理硬盘上的分区或逻辑上与磁盘分区具有相同功能的设备，是 LVM 的基本存储块，但和分区相比，却包含了与LVM管理相关的参数。</li>
-  <li><strong>卷组</strong>: LVM 的卷组类似于物理硬盘，卷组上边可以建立多个虚拟的分区，LVM 卷组由一个或多个物理卷组成。</li>
-  <li><strong>逻辑卷</strong>: LVM 的逻辑卷类似于非 LVM 系统中的硬盘分区，在逻辑卷上边可以建立文件系统，用于 mount 到不同的挂载点，提升分区空间——<code class="language-plaintext highlighter-rouge">真正跟用户打交道的部分</code>。</li>
-  <li><strong>Physcial Extent</strong>:每一个物理卷被划分为一个个的基本存储单元，每一个 PE 都具有唯一的编址（类似于物理磁盘上的磁盘地址），PE 的大小默认为 4MB。</li>
-  <li><strong>Logical Extent</strong>:每一个逻辑卷也被划分为一个个的基本存储单元，每一个 LE 也具有唯一的编址，在同一个卷组中，LE 和 PE 的大小是相等的。</li>
+  <li>
+<strong>物理存储</strong>:指的是物理的硬盘，在 /dev 目录下的 sda、sdb 等。</li>
+  <li>
+<strong>物理卷</strong>:指的是物理硬盘上的分区或逻辑上与磁盘分区具有相同功能的设备，是 LVM 的基本存储块，但和分区相比，却包含了与LVM管理相关的参数。</li>
+  <li>
+<strong>卷组</strong>: LVM 的卷组类似于物理硬盘，卷组上边可以建立多个虚拟的分区，LVM 卷组由一个或多个物理卷组成。</li>
+  <li>
+<strong>逻辑卷</strong>: LVM 的逻辑卷类似于非 LVM 系统中的硬盘分区，在逻辑卷上边可以建立文件系统，用于 mount 到不同的挂载点，提升分区空间——<code class="language-plaintext highlighter-rouge">真正跟用户打交道的部分</code>。</li>
+  <li>
+<strong>Physcial Extent</strong>:每一个物理卷被划分为一个个的基本存储单元，每一个 PE 都具有唯一的编址（类似于物理磁盘上的磁盘地址），PE 的大小默认为 4MB。</li>
+  <li>
+<strong>Logical Extent</strong>:每一个逻辑卷也被划分为一个个的基本存储单元，每一个 LE 也具有唯一的编址，在同一个卷组中，LE 和 PE 的大小是相等的。</li>
 </ul>
 
 <h2 id="实验环境">实验环境</h2>
@@ -393,7 +399,7 @@ resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 在 Linux 系统上没有磁盘阵列实现合并磁盘 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/linux-lvm.html">https://lisz.me/tech/linux/linux-lvm.html</a></p>
             </div>
@@ -521,10 +527,10 @@ resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -569,6 +575,16 @@ resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -602,9 +618,9 @@ resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -772,7 +788,6 @@ resize2fs <span class="nt">-p</span> <span class="nt">-F</span> /dev/mapper/asc-
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -793,7 +808,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

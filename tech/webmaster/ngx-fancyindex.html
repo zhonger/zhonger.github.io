@@ -392,7 +392,7 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Nginx 目录列表美化 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ngx-fancyindex.html">https://lisz.me/tech/webmaster/ngx-fancyindex.html</a></p>
             </div>
@@ -520,10 +520,10 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -568,6 +568,16 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -601,9 +611,9 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -771,7 +781,6 @@ git clone https://github.com/lanffy/Nginx-Fancyindex-Theme.git
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -792,7 +801,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

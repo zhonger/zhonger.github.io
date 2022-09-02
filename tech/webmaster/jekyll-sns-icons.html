@@ -321,9 +321,9 @@
 
 <p>  当然，字体图标在后期的维护、更新过程中也会有些问题。比如说，对于一个大型项目的迭代开发，每个子系统可能都会弄一套需要的字体图标，然后在代码分支合并时就会出现问题。因此，有些项目团队可能会为此而设定一位管理员来专门管理字体图标的更新。每个子系统只能向图标管理员提交他们的更新，最终更新由图标管理员来完成。虽然这样也能在某种程度上解决问题，但是对于图标管理员来说还是会很苦恼。</p>
 
-<p>  说到这里，有人可能会想起 Bootstrap 等 UI 框架中自带的字体图标集合。那我们直接使用某个框架提供的字体图标集合不就万事大吉了吗？可事实并非如此，框架所包含的字体图标集合虽然看起来还是比较全面，但是还是有可能缺少某些我们想要的字体图标。想到这里，可能会想不如把多个字体图标集合整合在一起使用不就好了吗？这样随之而来的问题是，很大可能存在大量冗余。对于前端界面来说，除了大量的 HTTP 请求是无法接受的，大量冗余代码也是无法接受的。当我们用 <a href="https://web.dev/measure/">Lighthouse</a> 类似的工具来测试网页的性能时，就可以很容易地发现请求代码的使用率情况。如果我们采用多个字体图标集合并用的方案，那么代码实际使用率可能就会很低。也就是说，请求的代码基本上不会在网页中被使用到，这对于优化页面性能来说简直就是噩梦。</p>
+<p>  说到这里，有人可能会想起 Bootstrap 等 UI 框架中自带的字体图标集合。那我们直接使用某个框架提供的字体图标集合不就万事大吉了吗？可事实并非如此，框架所包含的字体图标集合虽然看起来还是比较全面，但是还是有可能缺少某些我们想要的字体图标。想到这里，可能会想不如把多个字体图标集合整合在一起使用不就好了吗？这样随之而来的问题是，很大可能存在大量冗余。对于前端界面来说，除了大量的 HTTP 请求是无法接受的，大量冗余代码也是无法接受的。当我们用 <a href="https://web.dev/measure/" rel="nofollow" target="_blank" class="extlinks">Lighthouse</a> 类似的工具来测试网页的性能时，就可以很容易地发现请求代码的使用率情况。如果我们采用多个字体图标集合并用的方案，那么代码实际使用率可能就会很低。也就是说，请求的代码基本上不会在网页中被使用到，这对于优化页面性能来说简直就是噩梦。</p>
 
-<p>  如果我们觉得自己来手动管理、手动更新字体图标文件太麻烦了，其实也可以用阿里的 <a href="https://www.iconfont.cn">Iconfont</a> 或者其他类似工具来在线管理字体图标集合。Iconfont 会提供一个阿里 CDN 上的链接地址来直接使用你建立好的字体图标集合，这样一来基本上就解决了上面所说的维护难题。我们在 Iconfont 上更新好字体图标集合后，Iconfont 会生成一个新的链接地址。然后，我们只需要修改页面代码的对应地址就可以非常方便地应用更新。</p>
+<p>  如果我们觉得自己来手动管理、手动更新字体图标文件太麻烦了，其实也可以用阿里的 <a href="https://www.iconfont.cn" rel="nofollow" target="_blank" class="extlinks">Iconfont</a> 或者其他类似工具来在线管理字体图标集合。Iconfont 会提供一个阿里 CDN 上的链接地址来直接使用你建立好的字体图标集合，这样一来基本上就解决了上面所说的维护难题。我们在 Iconfont 上更新好字体图标集合后，Iconfont 会生成一个新的链接地址。然后，我们只需要修改页面代码的对应地址就可以非常方便地应用更新。</p>
 
 <p>  这么看来，字体图标的方案好像很完美了，但事实上还是存在其他的问题。Iconfont 这类平台比较适合个人开发者或者开源项目，而对于企业开发者或者非开源项目来说可能依然不大适合。另外，字体图标因为像字体一样被操纵，所以只能支持一种颜色，无法同时支持多种颜色。除此之外，如果我们想要预览所有的图标，但是抱歉的是脱离了 Iconfont 这类平台我们可能就没有办法做到。</p>
 
@@ -416,37 +416,37 @@
 
 <p>效果如下所示：</p>
 
-<p><img src="https://i.luish.cc/blog/rZFS4U.webp" alt="svg 效果图" /></p>
+<p><img src="https://i.luish.cc/blog/rZFS4U.webp" alt="svg 效果图"></p>
 
 <h2 id="创建自定义社交图标集合">创建自定义社交图标集合</h2>
 
-<p>  现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 <a href="https://www.iconfont.cn">Iconfont 首页</a> 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。</p>
+<p>  现在让我们来尝试一下借助 Iconfont 来创建自定义的社交图标集合吧。首先访问 <a href="https://www.iconfont.cn" rel="nofollow" target="_blank" class="extlinks">Iconfont 首页</a> 并使用 Github 账户或者其他方式登录好。然后在搜索框中输入 github 查询平台所有开放的相关图标，点击即可加入购物车。</p>
 
-<p><img src="https://i.luish.cc/blog/FgfB74.webp" alt="搜索图标 Search icons" /></p>
+<p><img src="https://i.luish.cc/blog/FgfB74.webp" alt="搜索图标 Search icons"></p>
 
 <p>  接着点击右上角的购物车按钮如下所示可以查看已加入到购物车的所有图标，并点击<strong>添加到项目</strong>。</p>
 
-<p><img src="https://i.luish.cc/blog/1EhfE8.webp" alt="添加到项目 Add icons to project" /></p>
+<p><img src="https://i.luish.cc/blog/1EhfE8.webp" alt="添加到项目 Add icons to project"></p>
 
 <p>  然后给项目取名（这里的名字随便起），点击<strong>确认</strong>按钮完成项目添加，自动跳转到项目页。</p>
 
-<p><img src="https://i.luish.cc/blog/TCoJ2r.webp" alt="新建项目 New project" /></p>
+<p><img src="https://i.luish.cc/blog/TCoJ2r.webp" alt="新建项目 New project"></p>
 
 <p>  点击生成代码即可生成专属链接，并出现<strong>点击复制代码</strong>按钮。</p>
 
-<p><img src="https://i.luish.cc/blog/e2na7v.webp" alt="生成链接 Generate unique link" /></p>
+<p><img src="https://i.luish.cc/blog/e2na7v.webp" alt="生成链接 Generate unique link"></p>
 
 <p>  点击<strong>收起在线链接</strong>旁边的下箭头可以看到<strong>预览字体</strong>，点击<strong>预览字体</strong>即跳转到在线预览页面，如下所示。</p>
 
-<p><img src="https://i.luish.cc/blog/dHfIAq.webp" alt="预览图标 Preview" /></p>
+<p><img src="https://i.luish.cc/blog/dHfIAq.webp" alt="预览图标 Preview"></p>
 
 <p>  这里提供了三种方式来使用创建好的社交图标集合，目前平台推荐的是<strong>Symbol 引用</strong>方式。接着即可按照以下三个步骤在你的网页上轻松使用自定义好的社交图标集合了。</p>
 
-<p><img src="https://i.luish.cc/blog/QsBEoq.webp" alt="Symbol 引用" /></p>
+<p><img src="https://i.luish.cc/blog/QsBEoq.webp" alt="Symbol 引用"></p>
 
 <h3 id="小提示">小提示</h3>
 
-<p>  如果想要实现鼠标悬停图标高亮的效果，还需要自己修改一下 CSS 样式，如下所示。这里采用了灰度遮罩滤镜的方式，给原来彩色的图标灰度化了。当鼠标悬停时，灰度化效果被移除，并且有 0.2 s 的缓慢过渡。不过如果原来的图标是黑色的话，灰度化的效果可能就比较差，悬停前后的差异不大明显，所以推荐使用彩色社交图标。Iconfont 平台实际上提供了在线编辑修改颜色的功能，如果想要知道某个图标或者品牌的主题颜色可以访问 <a href="https://www.schemecolor.com/">Schemecolor</a> 来查询。</p>
+<p>  如果想要实现鼠标悬停图标高亮的效果，还需要自己修改一下 CSS 样式，如下所示。这里采用了灰度遮罩滤镜的方式，给原来彩色的图标灰度化了。当鼠标悬停时，灰度化效果被移除，并且有 0.2 s 的缓慢过渡。不过如果原来的图标是黑色的话，灰度化的效果可能就比较差，悬停前后的差异不大明显，所以推荐使用彩色社交图标。Iconfont 平台实际上提供了在线编辑修改颜色的功能，如果想要知道某个图标或者品牌的主题颜色可以访问 <a href="https://www.schemecolor.com/" rel="nofollow" target="_blank" class="extlinks">Schemecolor</a> 来查询。</p>
 
 <div class="language-css highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">.icon</span> <span class="p">{</span>
     <span class="nl">width</span><span class="p">:</span> <span class="m">1em</span><span class="p">;</span>
@@ -474,14 +474,14 @@
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/symbol">symbol - SVG | MDN</a></li>
-  <li><a href="https://blog.csdn.net/jys1216/article/details/8852158">使网站首页变灰色，遮罩滤镜</a></li>
-  <li><a href="https://juejin.cn/post/6844904162442870792">还在用字体图标吗，试试svg图标吧(内附vuecli-svg-sprite-loader插件)</a></li>
+  <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG/Element/symbol" rel="nofollow" target="_blank" class="extlinks">symbol - SVG | MDN</a></li>
+  <li><a href="https://blog.csdn.net/jys1216/article/details/8852158" rel="nofollow" target="_blank" class="extlinks">使网站首页变灰色，遮罩滤镜</a></li>
+  <li><a href="https://juejin.cn/post/6844904162442870792" rel="nofollow" target="_blank" class="extlinks">还在用字体图标吗，试试svg图标吧(内附vuecli-svg-sprite-loader插件)</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Jekyll 社交图标集合创建 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/jekyll-sns-icons.html">https://lisz.me/tech/webmaster/jekyll-sns-icons.html</a></p>
             </div>
@@ -609,10 +609,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -657,6 +657,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -690,9 +700,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -860,7 +870,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -881,7 +890,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

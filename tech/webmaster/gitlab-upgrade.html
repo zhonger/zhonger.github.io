@@ -303,7 +303,7 @@
 
 <h3 id="升级">升级</h3>
 
-<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#边备份边升级">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
+<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410" rel="nofollow" target="_blank" class="extlinks">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#%E8%BE%B9%E5%A4%87%E4%BB%BD%E8%BE%B9%E5%8D%87%E7%BA%A7">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
 
 <h3 id="修复管理员设置-500-错误">修复管理员设置 500 错误</h3>
 
@@ -479,18 +479,18 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost">When the secrets file is lost</a></li>
-  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files">Storing configuration files</a></li>
-  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory">Metrics shared directory</a></li>
-  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
-  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
-  <li><a href="https://lintian.co/archives/16">GitLab 备份恢复后 500 错误修复</a></li>
-  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387">metrics and profiling not working after upgrade to 14.0.5</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost" rel="nofollow" target="_blank" class="extlinks">When the secrets file is lost</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files" rel="nofollow" target="_blank" class="extlinks">Storing configuration files</a></li>
+  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory" rel="nofollow" target="_blank" class="extlinks">Metrics shared directory</a></li>
+  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816" rel="nofollow" target="_blank" class="extlinks">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
+  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292" rel="nofollow" target="_blank" class="extlinks">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
+  <li><a href="https://lintian.co/archives/16" rel="nofollow" target="_blank" class="extlinks">GitLab 备份恢复后 500 错误修复</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387" rel="nofollow" target="_blank" class="extlinks">metrics and profiling not working after upgrade to 14.0.5</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Gitlab 升级那些事儿 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/gitlab-upgrade.html">https://lisz.me/tech/webmaster/gitlab-upgrade.html</a></p>
             </div>
@@ -618,10 +618,10 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -666,6 +666,16 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -699,9 +709,9 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -869,7 +879,6 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -890,7 +899,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

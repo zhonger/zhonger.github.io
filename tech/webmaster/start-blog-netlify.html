@@ -306,7 +306,7 @@
 
 
  </div> <div class="ref"> ------ Wikipedia </div> </div>
-<p>  <a href="https://www.netlify.com/">Netlify</a> 是什么？从维基百科上可以很容易找到以上答案。Netlify 所提供的服务既有免费的，也有收费的，一般来说免费服务对于部署 Jekyll 博客就已经绰绰有余了。Netlify 与 Github 的联系非常紧密，拥有 Github 账户就可以直接登录 Netlify，Netlify 需要从 Github 拉取代码来编译、生成、部署静态站点。Netlify的每月免费套餐包含了 100GB 的免费流量、300 分钟的编译时长，1 个同时编译队列。通常一个静态网站生成器所需的编译时长可能不超过一分钟，因此只要不是一个月提交的变更次数超过 300 次编译时长完全足够。而全球访问流量因为 Netlify 本身就带流量清洗的能力，即使有人对站点发起攻击也不会有什么疯狂增加的可能，所以正常一个站点一个月可能最多只能用到 1GB 不到的流量。如果文章遵循了图片使用图库托管的策略，那么所耗流量会大大降低、访问速度也会大大提升。</p>
+<p>  <a href="https://www.netlify.com/" rel="nofollow" target="_blank" class="extlinks">Netlify</a> 是什么？从维基百科上可以很容易找到以上答案。Netlify 所提供的服务既有免费的，也有收费的，一般来说免费服务对于部署 Jekyll 博客就已经绰绰有余了。Netlify 与 Github 的联系非常紧密，拥有 Github 账户就可以直接登录 Netlify，Netlify 需要从 Github 拉取代码来编译、生成、部署静态站点。Netlify的每月免费套餐包含了 100GB 的免费流量、300 分钟的编译时长，1 个同时编译队列。通常一个静态网站生成器所需的编译时长可能不超过一分钟，因此只要不是一个月提交的变更次数超过 300 次编译时长完全足够。而全球访问流量因为 Netlify 本身就带流量清洗的能力，即使有人对站点发起攻击也不会有什么疯狂增加的可能，所以正常一个站点一个月可能最多只能用到 1GB 不到的流量。如果文章遵循了图片使用图库托管的策略，那么所耗流量会大大降低、访问速度也会大大提升。</p>
 
 <h2 id="部署">部署</h2>
 
@@ -314,44 +314,44 @@
 
 <p>  正常使用 Github 账号一键登录之后，在 Teams 主页面点击 New site from Git 按钮。</p>
 
-<p><img src="https://i.luish.cc/blog/4dTnLf.webp" alt="登录 Login" /></p>
+<p><img src="https://i.luish.cc/blog/4dTnLf.webp" alt="登录 Login"></p>
 
 <h3 id="新建项目">新建项目</h3>
 
 <p>  点击 Github 按钮登录并授予 Netlify 访问项目权限。</p>
 
-<p><img src="https://i.luish.cc/blog/p4vWTR.webp" alt="新建项目 Create project from Github" /></p>
+<p><img src="https://i.luish.cc/blog/p4vWTR.webp" alt="新建项目 Create project from Github"></p>
 
 <h3 id="选择项目">选择项目</h3>
 
 <p>  在搜索框中搜索想要部署的项目，比如 zhonger/zhonger.github.io，并点击右侧箭头选中完成创建。</p>
 
-<p><img src="https://i.luish.cc/blog/RClRWo.webp" alt="选择项目 Select project" /></p>
+<p><img src="https://i.luish.cc/blog/RClRWo.webp" alt="选择项目 Select project"></p>
 
 <h3 id="自定义域名">自定义域名</h3>
 
 <p>  在创建好的项目的 Site settings 的 Domain management 中可以对已有的 *.netlify.app 域名进行修改，或添加自定义域名。</p>
 
-<p><img src="https://i.luish.cc/blog/wpkz2p.webp" alt="自定义域名 Custom domain" /></p>
+<p><img src="https://i.luish.cc/blog/wpkz2p.webp" alt="自定义域名 Custom domain"></p>
 
 <h3 id="启用-https">启用 HTTPS</h3>
 
 <p>  拉到页面下方 HTTPS 对已有域名生成 SSL 免费证书，只要第一次设置后，以后会自动更新。</p>
 
-<p><img src="https://i.luish.cc/blog/74HffD.webp" alt="启用 HTTPS Enable HTTPS" /></p>
+<p><img src="https://i.luish.cc/blog/74HffD.webp" alt="启用 HTTPS Enable HTTPS"></p>
 
 <h3 id="配置变量可选">配置变量（可选）</h3>
 
 <p>  另外，对于编译命令和变量的设置一般在项目创建之初完成，也可以在 Site settings 的 Build &amp; deploy 中进行修改。默认的 Jekyll 设置如下所示：</p>
 
-<p><img src="https://i.luish.cc/blog/gDt22R.webp" alt="vgy.me" /></p>
+<p><img src="https://i.luish.cc/blog/gDt22R.webp" alt="vgy.me"></p>
 
 <h3 id="查看编译日志可选">查看编译日志（可选）</h3>
 
 <p>  关于编译过程可以在 Deploys 里面查看所有的日志，并且可以预览每一次编译的结果。</p>
 
-<p><img src="https://i.luish.cc/blog/UMVUaz.webp" alt="vgy.me" />
-<img src="https://i.luish.cc/blog/cfMYpw.webp" alt="vgy.me" /></p>
+<p><img src="https://i.luish.cc/blog/UMVUaz.webp" alt="vgy.me">
+<img src="https://i.luish.cc/blog/cfMYpw.webp" alt="vgy.me"></p>
 
 <h2 id="验证">验证</h2>
 
@@ -359,7 +359,7 @@
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 个人免费博客花式搭建指南 Netlify 篇 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog-netlify.html">https://lisz.me/tech/webmaster/start-blog-netlify.html</a></p>
             </div>
@@ -487,10 +487,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -535,6 +535,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -568,9 +578,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -738,7 +748,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -759,7 +768,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

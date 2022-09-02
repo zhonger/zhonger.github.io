@@ -291,34 +291,34 @@
           <article class="markdown-body">
             <h2 id="我的女儿">我的女儿</h2>
 
-<p>我的女儿是一个从小没有母亲的孩子<br />
-她的母亲在战火中牺牲<br />
-我却无能为力<br />
+<p>我的女儿是一个从小没有母亲的孩子<br>
+她的母亲在战火中牺牲<br>
+我却无能为力<br>
 所以我既是父亲也是母亲</p>
 
-<p>我的女儿是一个有很多姑姑的孩子<br />
-她的姑姑们教会她知识和美德<br />
-我却什么都没教她<br />
+<p>我的女儿是一个有很多姑姑的孩子<br>
+她的姑姑们教会她知识和美德<br>
+我却什么都没教她<br>
 所以我不是一个好父亲</p>
 
-<p>我的女儿是一个热衷于求知的孩子<br />
-一馆子的书是她最好的朋友<br />
-我却成不了她的朋友<br />
+<p>我的女儿是一个热衷于求知的孩子<br>
+一馆子的书是她最好的朋友<br>
+我却成不了她的朋友<br>
 所以她有超越我的智慧</p>
 
-<p>我的女儿是一个心怀天下的孩子<br />
-周游世界收获世间的真<br />
-我却不能伴着她、照顾她<br />
+<p>我的女儿是一个心怀天下的孩子<br>
+周游世界收获世间的真<br>
+我却不能伴着她、照顾她<br>
 所以她走得比我更远</p>
 
-<p>她是我的女儿<br />
-我是她的父亲<br />
-然而，她以我为榜样<br />
+<p>她是我的女儿<br>
+我是她的父亲<br>
+然而，她以我为榜样<br>
 我因她而骄傲</p>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 我的女儿 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/others/my-daughter.html">https://lisz.me/others/my-daughter.html</a></p>
             </div>
@@ -446,10 +446,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -494,6 +494,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -527,9 +537,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -697,7 +707,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -718,7 +727,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

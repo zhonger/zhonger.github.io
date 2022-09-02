@@ -291,9 +291,9 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<p>  随着计算机的计算能力和运行规模的不断提升，基于第一性原理计算理论的计算材料学科越来越得到重视。但是一般来说这样的模拟需要对一个包含成千上万的原子、电子而言，所需的计算框架是非常复杂的，计算代价是相当昂贵的。比如为人所熟知的商用类型<a href="https://www.vasp.at/">第一性原理计算框架 VASP</a> 授权通常需要五六万人民币以上，而且在一个普通超算集群上计算一个完整的体系结构可能需要几周，甚至几个月。无论是软件授权成本，还是时间成本，都比较高昂。对于想学习和实践第一性原理计算的小伙伴而言，当然也有比较节省的方式。首先软件可以选用免费的开源第一性原理计算框架，比如说本文中即将介绍到的 <a href="http://order-n.org/">CONQUEST</a>，以及 <a href="http://www.abinit.org/">ABINT</a>，<a href="http://smash-qc.sourceforge.net/">SMASH</a> 和 <a href="http://www.quantum-espresso.org/">QUANTUM ESPRESSO</a> 等。</p>
+<p>  随着计算机的计算能力和运行规模的不断提升，基于第一性原理计算理论的计算材料学科越来越得到重视。但是一般来说这样的模拟需要对一个包含成千上万的原子、电子而言，所需的计算框架是非常复杂的，计算代价是相当昂贵的。比如为人所熟知的商用类型<a href="https://www.vasp.at/" rel="nofollow" target="_blank" class="extlinks">第一性原理计算框架 VASP</a> 授权通常需要五六万人民币以上，而且在一个普通超算集群上计算一个完整的体系结构可能需要几周，甚至几个月。无论是软件授权成本，还是时间成本，都比较高昂。对于想学习和实践第一性原理计算的小伙伴而言，当然也有比较节省的方式。首先软件可以选用免费的开源第一性原理计算框架，比如说本文中即将介绍到的 <a href="http://order-n.org/" rel="nofollow" target="_blank" class="extlinks">CONQUEST</a>，以及 <a href="http://www.abinit.org/" rel="nofollow" target="_blank" class="extlinks">ABINT</a>，<a href="http://smash-qc.sourceforge.net/" rel="nofollow" target="_blank" class="extlinks">SMASH</a> 和 <a href="http://www.quantum-espresso.org/" rel="nofollow" target="_blank" class="extlinks">QUANTUM ESPRESSO</a> 等。</p>
 
-<p>  对于普通材料专业的学生来说，可能安装任意一个开源第一性原理计算框架都不是一件容易的事，毕竟有些软件所涉及到的依赖库配置确实比较麻烦。另外，大部分这种软件也只能在 Linux 平台下运行，对于 Linux 比较陌生的人使用起来也有一定的困难。东京大学物质科学团队为此将很多第一性原理计算软件安装在一个同一个虚拟机中，并在网上公开允许下载该虚拟机镜像。用户可以在 <a href="https://ma.issp.u-tokyo.ac.jp/">官网</a> 获知有关下载信息，所支持的软件列表可以查看 <a href="https://ma.issp.u-tokyo.ac.jp/app/">这里</a>。</p>
+<p>  对于普通材料专业的学生来说，可能安装任意一个开源第一性原理计算框架都不是一件容易的事，毕竟有些软件所涉及到的依赖库配置确实比较麻烦。另外，大部分这种软件也只能在 Linux 平台下运行，对于 Linux 比较陌生的人使用起来也有一定的困难。东京大学物质科学团队为此将很多第一性原理计算软件安装在一个同一个虚拟机中，并在网上公开允许下载该虚拟机镜像。用户可以在 <a href="https://ma.issp.u-tokyo.ac.jp/" rel="nofollow" target="_blank" class="extlinks">官网</a> 获知有关下载信息，所支持的软件列表可以查看 <a href="https://ma.issp.u-tokyo.ac.jp/app/" rel="nofollow" target="_blank" class="extlinks">这里</a>。</p>
 
 <h2 id="conquest">CONQUEST</h2>
 
@@ -321,16 +321,19 @@
 
 <p>  CONQUEST 用称为支持函数的局部轨道表示 Kohn-Sham 本征态或密度矩阵（等效）。这些支持函数由两个基本集合之一构成：伪原子轨道（PAO）或 blip 函数（B 样条曲线）；在 CONQUEST 中使用的主要基础函数是 PAO。PAO 生成代码包含在CONQUEST 发行版中，其中大多数元素具有定义明确且可靠的默认基础集。</p>
 
-<p>  最简单的选择是为每个支持功能使用一个 PAO（通常这最多可以计算 1,000 个原子）。对于超出此系统大小的对角化，将使用复合基础，其中将多个 PAO 组合为较小的一组支持功能（多站点支持功能或 MSSF）。使用 MSSF，可以在 HPC 平台上计算 3,000 多个原子。对于线性缩放，需要更注意基集（更多详细信息，请参见 <a href="https://conquest.readthedocs.io/en/latest/groundstate.html#gs-on">此处</a>）。</p>
+<p>  最简单的选择是为每个支持功能使用一个 PAO（通常这最多可以计算 1,000 个原子）。对于超出此系统大小的对角化，将使用复合基础，其中将多个 PAO 组合为较小的一组支持功能（多站点支持功能或 MSSF）。使用 MSSF，可以在 HPC 平台上计算 3,000 多个原子。对于线性缩放，需要更注意基集（更多详细信息，请参见 <a href="https://conquest.readthedocs.io/en/latest/groundstate.html#gs-on" rel="nofollow" target="_blank" class="extlinks">此处</a>）。</p>
 
 <h2 id="编译安装指南">编译安装指南</h2>
 
 <p>  为了更好地符合可能存在的多种环境需求，笔者就自己所有的一些平台进行了测试和实践，主要分为以下几类，并以独立文章的形式分别介绍：</p>
 
 <ul>
-  <li><a href="conquest-arm">ARM 篇</a>：该类主要包含 Mac M1，树莓派以及 ARM 服务器。</li>
-  <li><a href="conquest-intel">Intel 篇</a>：该类主要包括普通 PC 和 x86 服务器。</li>
-  <li><a href="conquest-slurm">Slurm 篇</a>：该类主要是应用于 HPC 环境下，当然也适合个人在高性能服务器上运行。</li>
+  <li>
+<a href="conquest-arm">ARM 篇</a>：该类主要包含 Mac M1，树莓派以及 ARM 服务器。</li>
+  <li>
+<a href="conquest-intel">Intel 篇</a>：该类主要包括普通 PC 和 x86 服务器。</li>
+  <li>
+<a href="conquest-slurm">Slurm 篇</a>：该类主要是应用于 HPC 环境下，当然也适合个人在高性能服务器上运行。</li>
 </ul>
 
 <h2 id="使用指南">使用指南</h2>
@@ -356,7 +359,7 @@
 
 <h4 id="编写-conquest_input">编写 Conquest_input</h4>
 
-<p>  Conquest_input 中完整的参数相当复杂，可以参考 <a href="https://conquest.readthedocs.io/en/latest/input_tags.html">官网</a>，这里仅对以下文件中出现的参数做出简要解释。</p>
+<p>  Conquest_input 中完整的参数相当复杂，可以参考 <a href="https://conquest.readthedocs.io/en/latest/input_tags.html" rel="nofollow" target="_blank" class="extlinks">官网</a>，这里仅对以下文件中出现的参数做出简要解释。</p>
 
 <p>  IO 开头的配置是对输入输出的定义，Iprint 是指输出文件的打印类型，Title 是任务的名字，Coordinates 是坐标文件的文件名。General 开头的配置是对基础集、支持函数类型等的定义，FunctionalType 101 是指 PBE，Pseudopotential hamann 是 CONQUEST 最新支持的基础集类型，NumberOfSpecies 指的是原子的类型数。AtomMove 开头的配置是对更新迭代过程的方法的定义，TypeOfRun 是运动方式，通常有 static、cg、md 等。minE 开头的配置是收敛方法的定义，SelfConsistent 是否采用自洽方式，SCTolerance 是精确度，MaxIters 是最多迭代次数。GridCutoff 是一个关键性的参数，定义在空间中网格化的大小，随着值的变化所计算的结果也会不一样。Diag.MeshX(MeshY, MeshZ) 定义的是 k-points 的值，也就是单位晶胞 xyz 轴的相对比值。ChemicalSpeciesLabel 中定义了原子具体有什么种类，以及它们的编号和原子质量大小。此处的原子质量大小可以从 Li.ion 文件中查到。</p>
 
@@ -405,7 +408,7 @@ Diag.MPMeshZ 15
 
 <h4 id="编写-liin">编写 Li.in</h4>
 
-<p>  前三行为 Li 的晶格参数 a，b 和 c 的值，因为 Li 是标准的体心立方结构，这三个值相等。具体的值可以从 <a href="https://periodictable.com/Elements/003/data.html">网站</a> 中查到。注意此处使用的晶格参数的单位是 波尔，与 pm 的换算为 <code class="language-plaintext highlighter-rouge">0.5291772 pm = 1 bohr</code>。第四行代表在一个单位晶胞中有 2 个 Li 原子（中心 1 个 + 八个角 8 个 1/8），它们的位置一个在原点位置，一个在体心立方结构的中心位置，坐标如第五、六行前三个数字所示。后面的 1 表示这个位置有一个原子，T 表示原子可以运动，三个 T 表示 xyz 三个方向。</p>
+<p>  前三行为 Li 的晶格参数 a，b 和 c 的值，因为 Li 是标准的体心立方结构，这三个值相等。具体的值可以从 <a href="https://periodictable.com/Elements/003/data.html" rel="nofollow" target="_blank" class="extlinks">网站</a> 中查到。注意此处使用的晶格参数的单位是 波尔，与 pm 的换算为 <code class="language-plaintext highlighter-rouge">0.5291772 pm = 1 bohr</code>。第四行代表在一个单位晶胞中有 2 个 Li 原子（中心 1 个 + 八个角 8 个 1/8），它们的位置一个在原点位置，一个在体心立方结构的中心位置，坐标如第五、六行前三个数字所示。后面的 1 表示这个位置有一个原子，T 表示原子可以运动，三个 T 表示 xyz 三个方向。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>6.633 0.00  0.00
 0.00  6.633 0.00
@@ -433,7 +436,7 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 CONQUEST 第一性原理计算框架 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/conquest/conquest-introduction.html">https://lisz.me/tech/conquest/conquest-introduction.html</a></p>
             </div>
@@ -561,10 +564,10 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -609,6 +612,16 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -642,9 +655,9 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -812,7 +825,6 @@ mpirun <span class="nt">-np</span> 2 ~/conquest/bin/Conquest &lt; Conquest_input
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -833,7 +845,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

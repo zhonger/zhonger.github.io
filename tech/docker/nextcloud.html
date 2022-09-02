@@ -295,7 +295,7 @@
           <article class="markdown-body">
             <h2 id="nextcloud-简介">Nextcloud 简介</h2>
 
-<p>  今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 <a href="https://mgea.nz">Mega</a> （由于核心人员出走最近好像也不行了）、微软的 <a href="https://onedrive.live.com">OneDrive</a>、老牌网盘 <a href="https://www.dropbox.com">Dropbox</a>、<a href="https://box.com">Box</a>、谷家的 <a href="https://drive.google.com">Google drive</a>（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。</p>
+<p>  今年来，国内众多免费网盘相继倒下，于是大家都转投了百度网盘门下，然而这只独角兽限速倒逼开通会员下载速度依旧很难改善，还能维持多久也一直都是一个未知数。也有部分人开始涌向国外的有免费额度的网盘，比如以前以数据安全保障出名的 <a href="https://mgea.nz" rel="nofollow" target="_blank" class="extlinks">Mega</a> （由于核心人员出走最近好像也不行了）、微软的 <a href="https://onedrive.live.com" rel="nofollow" target="_blank" class="extlinks">OneDrive</a>、老牌网盘 <a href="https://www.dropbox.com" rel="nofollow" target="_blank" class="extlinks">Dropbox</a>、<a href="https://box.com" rel="nofollow" target="_blank" class="extlinks">Box</a>、谷家的 <a href="https://drive.google.com" rel="nofollow" target="_blank" class="extlinks">Google drive</a>（除了微软的网盘其他几个网速都不怎么好）。在这么多产品中，一个计算机技术人员却难以选择一款合适的网盘，于是用 VPS 和对象存储搭建自托管的方案开始成为一种可行的方案。Nextcloud 就是这样一款网盘，来源于 Owncloud 却较之更加强大、安全（集成 Office 文档、图片相册、日历、RSS 阅读，几乎等同于一个私有的 Dropbox），搭建也是非常简单，适合大部分技术栈的技术人员。当然，此处先谈如何搭建 Nextcloud，至于结合对象存储下回再说。</p>
 
 <p>  Docker 部署软件的好处我就不多提了：简单、高效，极其适合运维人员的应用管理工具。下面就先谈使用 Docker 一键搭建 Nextcloud。</p>
 
@@ -361,7 +361,7 @@
 
 <p>  自行设置管理员用户名和密码，数据目录默认即可，数据库信息填写如 docker-composer.yml 中所示，数据库主机名填 db （配置文件中的数据库应用名）。</p>
 
-<p><img src="https://i.luish.cc/blog/aG3Ax6.webp" alt="初始化示意图 Initialize" /></p>
+<p><img src="https://i.luish.cc/blog/aG3Ax6.webp" alt="初始化示意图 Initialize"></p>
 
 <p>  所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见 nextcloud 的主目录页面。到此处，Docker 搭建 Nextcloud 应用就大功告成了（也可在 80 端口安装 Nginx 服务代理到 7009 端口，此处不加赘述）。</p>
 
@@ -376,18 +376,23 @@
 <p>  LNMPA 的含义：</p>
 
 <ul>
-  <li><code class="language-plaintext highlighter-rouge">L</code>： Linux操作系统</li>
-  <li><code class="language-plaintext highlighter-rouge">N</code>： Nginx web服务器软件</li>
-  <li><code class="language-plaintext highlighter-rouge">M</code>： MySQL、Mariadb等类MySQL数据库软件</li>
-  <li><code class="language-plaintext highlighter-rouge">P</code>： PHP编译环境</li>
-  <li><code class="language-plaintext highlighter-rouge">A</code>： Apache服务</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">L</code>： Linux操作系统</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">N</code>： Nginx web服务器软件</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">M</code>： MySQL、Mariadb等类MySQL数据库软件</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">P</code>： PHP编译环境</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">A</code>： Apache服务</li>
 </ul>
 
 <p>  LNMPA 相比其他两种架构的优势在于充分发挥了 Nginx 和 Apache 的功能优势，即 Nginx 擅长提供静态文件服务、代理 HTTP 请求服务、Apache 擅长对于动态编程语言的结合接管编译工作。</p>
 
 <h4 id="安装">安装</h4>
 
-<p>  <a href="https://lnmp.org">LNMP.org</a> 提供一键式的环境安装脚本，所有软件均从各种软件官方下载源码编译安装，软件升级也相当方便。如果你的CPU 核数不够的话，那么第一次安装的时候编译可能需要花很长一段时间。</p>
+<p>  <a href="https://lnmp.org" rel="nofollow" target="_blank" class="extlinks">LNMP.org</a> 提供一键式的环境安装脚本，所有软件均从各种软件官方下载源码编译安装，软件升级也相当方便。如果你的CPU 核数不够的话，那么第一次安装的时候编译可能需要花很长一段时间。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 建议使用 tmux 来管理后台任务</span>
 <span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> tmux
@@ -521,7 +526,7 @@ CustomLog "/home/wwwlogs/nextcloud-access_log" combined
 
 <p>  自行设置管理员用户名和密码，数据目录可任意选择一处有权限的目录即可（默认的应为 /home/wwwroot/nextcloud/data，建议填一个非源代码的目录便于版本更新，比如 /home/data/nextcloud，要求所属用户和用户组为 www-data），数据库信息均填写 nextcloud，数据库主机名默认填 localhost。</p>
 
-<p><img src="https://i.luish.cc/blog/aG3Ax6.webp" alt="初始化示意图" /></p>
+<p><img src="https://i.luish.cc/blog/aG3Ax6.webp" alt="初始化示意图"></p>
 
 <p>  所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， <code class="language-plaintext highlighter-rouge">LNMPA</code> 搭建 <code class="language-plaintext highlighter-rouge">Nextcloud</code> 应用就完成了，不过更新应用版本的话就更麻烦一点了。</p>
 
@@ -551,7 +556,7 @@ unzip latest.zip
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Nextcloud 搭建自己的云盘 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/nextcloud.html">https://lisz.me/tech/docker/nextcloud.html</a></p>
             </div>
@@ -679,10 +684,10 @@ unzip latest.zip
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -727,6 +732,16 @@ unzip latest.zip
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -760,9 +775,9 @@ unzip latest.zip
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -930,7 +945,6 @@ unzip latest.zip
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -951,7 +965,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

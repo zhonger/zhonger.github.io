@@ -305,7 +305,7 @@
 
 <p>  现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：</p>
 
-<p><img src="https://i.luish.cc/blog/4hsLnz.webp" alt="基于 Apache 的文档方案 Solutions based on Apache" /></p>
+<p><img src="https://i.luish.cc/blog/4hsLnz.webp" alt="基于 Apache 的文档方案 Solutions based on Apache"></p>
 
 <p>  如上图所示，基于 Apache 的解决方案主要包含以下三点：</p>
 
@@ -328,7 +328,7 @@
 
 <h3 id="配置文件准备">配置文件准备</h3>
 
-<p>  如需自行构建 Docker 镜像，请将以下三个配置文件放置在 conf 子目录中。如直接使用下面笔者构建的 <a href="https://hub.docker.com/r/zhonger/ldap-apache">zhonger/ldap-apache</a> 镜像，可以忽略。</p>
+<p>  如需自行构建 Docker 镜像，请将以下三个配置文件放置在 conf 子目录中。如直接使用下面笔者构建的 <a href="https://hub.docker.com/r/zhonger/ldap-apache" rel="nofollow" target="_blank" class="extlinks">zhonger/ldap-apache</a> 镜像，可以忽略。</p>
 
 <h4 id="ldap-验证定义">LDAP 验证定义</h4>
 
@@ -535,38 +535,38 @@ ProxyPass /foo https://foo.example.com
     <span class="k">echo</span> <span class="nb">phpinfo</span><span class="p">();</span>
 </code></pre></div></div>
 
-<p><img src="https://i.luish.cc/blog/iw6WKt.webp" alt="正常内容 Normal Page Content" />
-<img src="https://i.luish.cc/blog/Px1PiS.webp" alt="要求验证 Auth Required" /></p>
+<p><img src="https://i.luish.cc/blog/iw6WKt.webp" alt="正常内容 Normal Page Content">
+<img src="https://i.luish.cc/blog/Px1PiS.webp" alt="要求验证 Auth Required"></p>
 
 <h4 id="验证日志">验证日志</h4>
 
 <p>  当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。</p>
 
-<p><img src="https://i.luish.cc/blog/CdxxGU.webp" alt="日志文件 Log file" /></p>
+<p><img src="https://i.luish.cc/blog/CdxxGU.webp" alt="日志文件 Log file"></p>
 
 <h4 id="验证目录假名">验证目录假名</h4>
 
 <p>  这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。</p>
 
-<p><img src="https://i.luish.cc/blog/NDnuLk.webp" alt="目录假名 Alias" /></p>
+<p><img src="https://i.luish.cc/blog/NDnuLk.webp" alt="目录假名 Alias"></p>
 
 <h4 id="验证代理">验证代理</h4>
 
 <p>  这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。</p>
 
-<p><img src="https://i.luish.cc/blog/kdbabl.webp" alt="代理 Proxy" /></p>
+<p><img src="https://i.luish.cc/blog/kdbabl.webp" alt="代理 Proxy"></p>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://zh.wikipedia.org/zh-cn/Apache_HTTP_Server">Apache HTTP 服务器</a></li>
-  <li><a href="https://httpd.apache.org/docs/current/ja/mod/mod_alias.html">Apache Module mod_alias</a></li>
-  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension">How To Use Apache HTTP Server As Reverse-Proxy Using mod_proxy Extension</a></li>
+  <li><a href="https://zh.wikipedia.org/zh-cn/Apache_HTTP_Server" rel="nofollow" target="_blank" class="extlinks">Apache HTTP 服务器</a></li>
+  <li><a href="https://httpd.apache.org/docs/current/ja/mod/mod_alias.html" rel="nofollow" target="_blank" class="extlinks">Apache Module mod_alias</a></li>
+  <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension" rel="nofollow" target="_blank" class="extlinks">How To Use Apache HTTP Server As Reverse-Proxy Using mod_proxy Extension</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 LDAP 集成之 Apache 篇 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-apache.html">https://lisz.me/tech/webmaster/ldap-apache.html</a></p>
             </div>
@@ -694,10 +694,10 @@ ProxyPass /foo https://foo.example.com
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -742,6 +742,16 @@ ProxyPass /foo https://foo.example.com
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -775,9 +785,9 @@ ProxyPass /foo https://foo.example.com
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -945,7 +955,6 @@ ProxyPass /foo https://foo.example.com
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -966,7 +975,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

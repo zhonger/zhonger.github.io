@@ -307,11 +307,11 @@
   <tbody>
     <tr>
       <td style="text-align: center">中科大</td>
-      <td style="text-align: center"><a href="https://git.lug.ustc.edu.cn">https://git.lug.ustc.edu.cn</a></td>
+      <td style="text-align: center"><a href="https://git.lug.ustc.edu.cn" rel="nofollow" target="_blank" class="extlinks">https://git.lug.ustc.edu.cn</a></td>
     </tr>
     <tr>
       <td style="text-align: center">南京大学</td>
-      <td style="text-align: center"><a href="https://git.nju.edu.cn">https://git.nju.edu.cn</a></td>
+      <td style="text-align: center"><a href="https://git.nju.edu.cn" rel="nofollow" target="_blank" class="extlinks">https://git.nju.edu.cn</a></td>
     </tr>
   </tbody>
 </table>
@@ -329,7 +329,7 @@
  </div> </div>
 <h2 id="实践">实践</h2>
 
-<p>  为了更加简便实践并且容易复现，这里采用的是常用的 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> Docker 镜像。可以在镜像 Github 页面下载到提供的对应 <a href="https://github.com/sameersbn/docker-gitlab/blob/master/docker-compose.yml">docker-compose.yml</a> 文件。由于 LDAP 并非是默认配置，所以默认是没有 LDAP 配置段的。需要在 docker-compose.yml 文件的 environment 中增加以下环境变量。其中，请根据实际情况更改成相应的信息。</p>
+<p>  为了更加简便实践并且容易复现，这里采用的是常用的 <a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> Docker 镜像。可以在镜像 Github 页面下载到提供的对应 <a href="https://github.com/sameersbn/docker-gitlab/blob/master/docker-compose.yml" rel="nofollow" target="_blank" class="extlinks">docker-compose.yml</a> 文件。由于 LDAP 并非是默认配置，所以默认是没有 LDAP 配置段的。需要在 docker-compose.yml 文件的 environment 中增加以下环境变量。其中，请根据实际情况更改成相应的信息。</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">...</span>
     <span class="na">environment</span><span class="pi">:</span>
@@ -346,7 +346,7 @@
 
 <p>  使用命令 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 运行一个 Gitlab 实例。由于初始运行需要执行数据库初始化等操作，可能需要几分钟，之后打开指定的端口即可看到如下类似的登录页面。可以看到，这里默认就是使用 LDAP 登录，次要登录方式才是标准登录。</p>
 
-<p><img src="https://i.luish.cc/blog/BaWBKa.webp" alt="登录页面 Login Page" /></p>
+<p><img src="https://i.luish.cc/blog/BaWBKa.webp" alt="登录页面 Login Page"></p>
 
 <div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。</p>
 
@@ -356,12 +356,12 @@
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 LDAP 集成之 Gitlab 篇 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-gitlab.html">https://lisz.me/tech/webmaster/ldap-gitlab.html</a></p>
             </div>
@@ -489,10 +489,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -537,6 +537,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -570,9 +580,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -740,7 +750,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -761,7 +770,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

@@ -305,7 +305,7 @@
 
 <p>  一般来说，操作系统或浏览器的产商会预置国际上认可的根证书。如下所示，为 Mac OS 上预置的根证书列表。</p>
 
-<p><img src="https://i.luish.cc/blog/SfWsIJ.webp" alt="Mac OS 预置根证书 Root Certificate" /></p>
+<p><img src="https://i.luish.cc/blog/SfWsIJ.webp" alt="Mac OS 预置根证书 Root Certificate"></p>
 
 <h2 id="实践">实践</h2>
 
@@ -453,13 +453,13 @@ Certificate:
 
 <p>  首次打开刚刚生成的根证书 <code class="language-plaintext highlighter-rouge">zhongerca.pem</code> 会像下面这样显示“此根证书不被信任”，我们可以将下面的使用此证书时的<strong>使用系统默认</strong>改成<strong>始终信任</strong>，然后输入操作系统用户密码即可保存修改。改完之后再次打开如下下图所示，显示“此证书已标记为受此账户信任”。这样一来，由该根证书签发的证书就都会被信任了。</p>
 
-<p><img src="https://i.luish.cc/blog/gkni75.webp" alt="打开根证书 Open Root Certificate file" /></p>
+<p><img src="https://i.luish.cc/blog/gkni75.webp" alt="打开根证书 Open Root Certificate file"></p>
 
-<p><img src="https://i.luish.cc/blog/zJ5dNm.webp" alt="始终信任根证书 Always trust Root Certificate file" /></p>
+<p><img src="https://i.luish.cc/blog/zJ5dNm.webp" alt="始终信任根证书 Always trust Root Certificate file"></p>
 
 <h3 id="签发证书">签发证书</h3>
 
-<p>  这里我们打算采用 <a href="https://github.com/jsha/minica">jsha/minica</a> 来辅助快速签发证书。</p>
+<p>  这里我们打算采用 <a href="https://github.com/jsha/minica" rel="nofollow" target="_blank" class="extlinks">jsha/minica</a> 来辅助快速签发证书。</p>
 
 <h4 id="安装-minica">安装 minica</h4>
 
@@ -485,7 +485,7 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 
 <h3 id="mkcert">mkcert</h3>
 
-<p>  除了 minica 之外，<a href="https://github.com/FiloSottile/mkcert">FiloSottile/mkcert</a> 提供的 mkcert 工具也非常简单方便。mkcert 会自行生成根证书，然后签发证书。个人觉得，相比 minica 而言，mkcert 更适合个人本地开发 HTTPS 化，而非团队内网 HTTPS 化。</p>
+<p>  除了 minica 之外，<a href="https://github.com/FiloSottile/mkcert" rel="nofollow" target="_blank" class="extlinks">FiloSottile/mkcert</a> 提供的 mkcert 工具也非常简单方便。mkcert 会自行生成根证书，然后签发证书。个人觉得，相比 minica 而言，mkcert 更适合个人本地开发 HTTPS 化，而非团队内网 HTTPS 化。</p>
 
 <h3 id="根证书被伪造">根证书被伪造</h3>
 
@@ -498,9 +498,9 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 
 <p>  如下所示，是上面生成的根证书和签发的 SSL 证书的密钥 ID 对比。可以看到，两者完全一样，即可信任的 SSL 证书。</p>
 
-<p><img src="https://i.luish.cc/blog/9ieYYm.webp" alt="根证书密钥 ID Root Certificate Key ID" /></p>
+<p><img src="https://i.luish.cc/blog/9ieYYm.webp" alt="根证书密钥 ID Root Certificate Key ID"></p>
 
-<p><img src="https://i.luish.cc/blog/sMYzVn.webp" alt="SSL 证书密钥 ID the Key ID in SSL Certificate" /></p>
+<p><img src="https://i.luish.cc/blog/sMYzVn.webp" alt="SSL 证书密钥 ID the Key ID in SSL Certificate"></p>
 
 <h3 id="其他平台安装根证书">其他平台安装根证书</h3>
 
@@ -523,15 +523,15 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://cloud.tencent.com/developer/article/1458151">根证书和中间证书的区别</a></li>
-  <li><a href="https://docs.microsoft.com/zh-cn/azure/application-gateway/self-signed-certificates">使用自定义根 CA 生成 Azure 应用程序网关自签名证书</a></li>
-  <li><a href="https://qiita.com/k_kind/items/b87777efa3d29dcc4467">開発環境を https 化する mkcert の仕組み</a></li>
-  <li><a href="https://zhuanlan.zhihu.com/p/379501905">mkcert 使用指南：如何快速创建自签名 SSL 证书</a></li>
+  <li><a href="https://cloud.tencent.com/developer/article/1458151" rel="nofollow" target="_blank" class="extlinks">根证书和中间证书的区别</a></li>
+  <li><a href="https://docs.microsoft.com/zh-cn/azure/application-gateway/self-signed-certificates" rel="nofollow" target="_blank" class="extlinks">使用自定义根 CA 生成 Azure 应用程序网关自签名证书</a></li>
+  <li><a href="https://qiita.com/k_kind/items/b87777efa3d29dcc4467" rel="nofollow" target="_blank" class="extlinks">開発環境を https 化する mkcert の仕組み</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/379501905" rel="nofollow" target="_blank" class="extlinks">mkcert 使用指南：如何快速创建自签名 SSL 证书</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 内网 HTTPS 可信证书 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ca-ssl.html">https://lisz.me/tech/webmaster/ca-ssl.html</a></p>
             </div>
@@ -659,10 +659,10 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -707,6 +707,16 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -740,9 +750,9 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -910,7 +920,6 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -931,7 +940,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

@@ -301,7 +301,7 @@
 
 <p>  近年来，随着云计算技术的大力发展和 VPS 成本降低，越来越多的人开始用上了 VPS。与虚拟主机空间相比，VPS 具有更大的自由度。用户可以在 VPS 上安装各式各样的环境，也可以使用各种方式提供对外服务。对于 Jekyll 等静态网页来说，虚拟主机和 VPS 的使用体验差异可能在一般情况下感受不出来，如果网站流量变大、并发访问人数增多，VPS 就能展现出比虚拟主机的优越之处。其实，一般的虚拟主机也是在 VPS 上搭建的，只不过转换为一种服务提供给用户，用户能使用比较容易接受的网页进行环境的配置和其他操作。而在 VPS 上，往往需要自己从零开始动手，涉及到的专业知识要求也相对多一些。</p>
 
-<p>  笔者使用的第一款 VPS 是 <a href="https://cn.aliyun.com">阿里云</a> 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 <a href="https://cloud.tencent.com">腾讯云</a>、<a href="https://aws.amazon.com">AWS</a>、<a href="https://www.digitalocean.com/">Digital Ocean</a>、<a href="https://bandwagonhost.com/">Bandwagon Host</a>、<a href="https://www.vultr.com/">Vultr</a>、<a href="https://azure.microsoft.com/">Azure</a>、<a href="https://cloud.google.com/">GCP</a>、<a href="https://www.scaleway.com/">Scaleway</a>、<a href="https://cloudcone.com/">CLOUDCONE</a> 、<a href="https://www.hostinger.com/">Hostinger</a> 等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。</p>
+<p>  笔者使用的第一款 VPS 是 <a href="https://cn.aliyun.com" rel="nofollow" target="_blank" class="extlinks">阿里云</a> 的 1C1G 的早期学生云服务器（现在的学生云服务器都是 1C2G 配置），后来也相继用过 <a href="https://cloud.tencent.com" rel="nofollow" target="_blank" class="extlinks">腾讯云</a>、<a href="https://aws.amazon.com" rel="nofollow" target="_blank" class="extlinks">AWS</a>、<a href="https://www.digitalocean.com/" rel="nofollow" target="_blank" class="extlinks">Digital Ocean</a>、<a href="https://bandwagonhost.com/" rel="nofollow" target="_blank" class="extlinks">Bandwagon Host</a>、<a href="https://www.vultr.com/" rel="nofollow" target="_blank" class="extlinks">Vultr</a>、<a href="https://azure.microsoft.com/" rel="nofollow" target="_blank" class="extlinks">Azure</a>、<a href="https://cloud.google.com/" rel="nofollow" target="_blank" class="extlinks">GCP</a>、<a href="https://www.scaleway.com/" rel="nofollow" target="_blank" class="extlinks">Scaleway</a>、<a href="https://cloudcone.com/" rel="nofollow" target="_blank" class="extlinks">CLOUDCONE</a> 、<a href="https://www.hostinger.com/" rel="nofollow" target="_blank" class="extlinks">Hostinger</a> 等等。不过，现在还在一直使用的就剩下阿里云、腾讯云、AWS 和 Azure 了。相比较而言，国内的 VPS 服务器提供商中阿里云和腾讯云的服务和反馈是最好的了。尤其是在备案上的服务，从以前的申请免费邮寄备案幕布自己拍照上传，到现在的面部识别和活体验证即可，越来越人性化、便捷化。AWS 和 Azure 因为使用的是国外的服务器，所以没有备案的要求。当然，AWS 和 Azure 都很重视在中国的发展，两家公司都相继在国内成立了合资公司运营中国区的服务器。</p>
 
 <p>  如果想要自己购买一台 VPS 的话，个人建议国内可以在阿里云和腾讯云中选择。腾讯云的价格相比阿里云便宜一点，不过据说阿里云比腾讯云稳定一点（可能没有什么根据，只要不是自己的 VPS 数据丢失了其实稳定性都很好）。如果想要购买国外的 VPS 的话，推荐 AWS、Azure、Digital Ocean。这三家都是可以随时删除、随时创建的，根据实际使用的时间计费，也可以随时更换 IP 地址，非常方便。当然前两者价格上的确有点高，Digital Ocean 相对来说更便宜一点，而且几乎没有流量上的限制。不过，AWS 提供的 <a href="lightsail.aws.amazon.com">Lightsail</a> 也是一款低配高流量的 VPS，适合博客建站。</p>
 
@@ -395,23 +395,23 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 
 <p>  VPS 的自动部署与 FTP 的自动部署非常类似，只是使用的模板不一样。如下图所示使用 SSH 筛选出 SFTP 模板，并点击选中创建。</p>
 
-<p><img src="https://i.luish.cc/blog/EBFlZd.webp" alt="新建 SFTP 部署 New SFTP deploy" /></p>
+<p><img src="https://i.luish.cc/blog/EBFlZd.webp" alt="新建 SFTP 部署 New SFTP deploy"></p>
 
 <p>  填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。</p>
 
-<p><img src="https://i.luish.cc/blog/eeplHr.webp" alt="输入信息 Input vps information" /></p>
+<p><img src="https://i.luish.cc/blog/eeplHr.webp" alt="输入信息 Input vps information"></p>
 
 <p>  复制命令将 Buddy key 添加到 VPS ，同时设置远程目录，其他配置默认即可，点击 Add this action 按钮完成创建。</p>
 
-<p><img src="https://i.luish.cc/blog/MPvmSO.webp" alt="添加秘钥 Add Buddy key to vps" /></p>
+<p><img src="https://i.luish.cc/blog/MPvmSO.webp" alt="添加秘钥 Add Buddy key to vps"></p>
 
 <p>  执行流水线，如下图所示开始 Jekyll 编译动作。</p>
 
-<p><img src="https://i.luish.cc/blog/FAtP0C.webp" alt="运行流水线 Run pipeline" /></p>
+<p><img src="https://i.luish.cc/blog/FAtP0C.webp" alt="运行流水线 Run pipeline"></p>
 
 <p>  如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。</p>
 
-<p><img src="https://i.luish.cc/blog/fB9tVg.webp" alt="查看部署 Check status" /></p>
+<p><img src="https://i.luish.cc/blog/fB9tVg.webp" alt="查看部署 Check status"></p>
 
 <h3 id="评价">评价</h3>
 
@@ -419,7 +419,7 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 个人免费博客花式搭建指南 VPS 篇 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog-vps.html">https://lisz.me/tech/webmaster/start-blog-vps.html</a></p>
             </div>
@@ -547,10 +547,10 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -595,6 +595,16 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -628,9 +638,9 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -798,7 +808,6 @@ scp <span class="nt">-r</span> _site/<span class="k">*</span> /var/www/lisz.me/
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -819,7 +828,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

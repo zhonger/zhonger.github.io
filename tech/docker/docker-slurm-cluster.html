@@ -302,7 +302,7 @@
   <li>第二种是：在 Docker 集群上使用 Docker 部署。</li>
 </ul>
 
-<p>  考虑到应用环境的部署应尽可能与物理机环境隔离开，所以个人偏向于采用 Docker 的方式部署 Slurm 集群。再者说，无论是部署、管理上的便捷性，还是未来的可扩展性，这种方式都是更有优势的。在网上经过一番搜索后，本人发现了一个类似的“使用 Docker 部署 Slurm 集群”的开源项目 <a href="https://github.com/SciDAS/slurm-in-docker">SciDAS/slurm-in-docker</a>。总的来说，这个项目在设计上的确是很完整的，设计的架构图也非常好，但是在对这个项目的学习和实践过程中也发现一个问题。不知道是不是经过了版本迭代的缘故，有一些代码的目录组织有些出入，在构建基础镜像的时候就失败了。加之，这个项目采用了数据库，而且只适用于单机上部署 Slurm 集群，和本人的诉求有些不一致。所以也排除了这种方法。</p>
+<p>  考虑到应用环境的部署应尽可能与物理机环境隔离开，所以个人偏向于采用 Docker 的方式部署 Slurm 集群。再者说，无论是部署、管理上的便捷性，还是未来的可扩展性，这种方式都是更有优势的。在网上经过一番搜索后，本人发现了一个类似的“使用 Docker 部署 Slurm 集群”的开源项目 <a href="https://github.com/SciDAS/slurm-in-docker" rel="nofollow" target="_blank" class="extlinks">SciDAS/slurm-in-docker</a>。总的来说，这个项目在设计上的确是很完整的，设计的架构图也非常好，但是在对这个项目的学习和实践过程中也发现一个问题。不知道是不是经过了版本迭代的缘故，有一些代码的目录组织有些出入，在构建基础镜像的时候就失败了。加之，这个项目采用了数据库，而且只适用于单机上部署 Slurm 集群，和本人的诉求有些不一致。所以也排除了这种方法。</p>
 
 <p>  本人目前的条件和需求如下：</p>
 
@@ -314,7 +314,7 @@
 
 <p>  根据往常的经验，觉得可能还是需要先 Docker 集群化，然后在 Docker 集群上运行 Slurm 集群。而目前比较熟知的流行的 Docker 集群化方法主要有 swarm，kubernetes 以及 rancher 等，但是这些基本上都需要 root 权限，并需要安装某些软件在物理机系统上，这与现有的条件和想法还是有点冲突。所以产生了一个大胆的想法——如果没有 Docker 集群，能不能部署可用的高性能 Slurm 集群呢？这个想法其实在上面提到的开源项目的架构图（下图）中就找到了答案。如图所示，对于 Slurm 集群来说最重要的其实是 6817 和 6818 两个端口的通信。图中的数据库的目的是为了保证 Slurm 节点的用户名一致，事实上可以想到别的办法来替代它。所以，即使把数据库去掉，也不建立集群节点之间的相互无密码登录，只要保证 Slurm 节点的这两个端口能够互相访问到，就可以成功部署 Slurm 集群。</p>
 
-<p><img src="https://i.luish.cc/blog/PjpwI6.webp" alt="架构图 Architecture" />
+<p><img src="https://i.luish.cc/blog/PjpwI6.webp" alt="架构图 Architecture">
 (上图引用自 https://github.com/SciDAS/slurm-in-docker )</p>
 
 <h2 id="安装配置">安装配置</h2>
@@ -495,13 +495,13 @@ ff02::2 ip6-allrouters
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://github.com/SciDAS/slurm-in-docker">SciDAS/slurm-in-docker</a></li>
-  <li><a href="https://github.com/smith1511/hpc/issues/3">srun fails after node reboot</a></li>
+  <li><a href="https://github.com/SciDAS/slurm-in-docker" rel="nofollow" target="_blank" class="extlinks">SciDAS/slurm-in-docker</a></li>
+  <li><a href="https://github.com/smith1511/hpc/issues/3" rel="nofollow" target="_blank" class="extlinks">srun fails after node reboot</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 Docker 快速部署 Slurm 集群 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/docker-slurm-cluster.html">https://lisz.me/tech/docker/docker-slurm-cluster.html</a></p>
             </div>
@@ -629,10 +629,10 @@ ff02::2 ip6-allrouters
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -677,6 +677,16 @@ ff02::2 ip6-allrouters
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -710,9 +720,9 @@ ff02::2 ip6-allrouters
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -880,7 +890,6 @@ ff02::2 ip6-allrouters
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -901,7 +910,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

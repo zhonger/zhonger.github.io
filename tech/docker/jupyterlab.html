@@ -293,9 +293,9 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<p>  <a href="https://jupyter.org/">Jupyter</a>， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>。不过笔者还是比较喜欢 <a href="https://code.visualstudio.com/">VS Code</a>，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。</p>
+<p>  <a href="https://jupyter.org/" rel="nofollow" target="_blank" class="extlinks">Jupyter</a>， 想必大家对这个项目都耳熟能详吧。因为能够实时交互、支持异构计算、部署简单、几乎无运维成本，所以得到了很多人的青睐。笔者的身边也有很多从事科学研究的人选择了 Jupyter 作为编写 Python 的工具，当然也有一部分人选择了 <a href="https://www.jetbrains.com/pycharm/" rel="nofollow" target="_blank" class="extlinks">PyCharm</a>。不过笔者还是比较喜欢 <a href="https://code.visualstudio.com/" rel="nofollow" target="_blank" class="extlinks">VS Code</a>，简单的纯文本编辑功能，利用丰富的插件市场来添加各种想要的功能，无缝支持远程开发，简直就是理想中的编辑器了。但是，今天还是要来考虑一下 Jupyter，毕竟 JupyterLab 的服务功能也是非常强大的。</p>
 
-<p>  在 Jupyter 出现之前，也有可以替代 Python 自带的 Python Shell 的 <a href="https://ipython.org/">IPython</a>。笔者在早期也曾使用过，体验还不错。其实，Jupyter 就是2014 年从 IPython 中衍生出来的，所以从 IPython 过渡到 Jupyter 毫无困难。如果说 IPython 是为了 Python 而量身定制的话，那么 Jupyter 则是为包括 Julia、Python、R 在内的几十种编程语言（<a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels">详情连接</a>）的交互式数据科学和科学计算而生的。</p>
+<p>  在 Jupyter 出现之前，也有可以替代 Python 自带的 Python Shell 的 <a href="https://ipython.org/" rel="nofollow" target="_blank" class="extlinks">IPython</a>。笔者在早期也曾使用过，体验还不错。其实，Jupyter 就是2014 年从 IPython 中衍生出来的，所以从 IPython 过渡到 Jupyter 毫无困难。如果说 IPython 是为了 Python 而量身定制的话，那么 Jupyter 则是为包括 Julia、Python、R 在内的几十种编程语言（<a href="https://github.com/jupyter/jupyter/wiki/Jupyter-kernels" rel="nofollow" target="_blank" class="extlinks">详情连接</a>）的交互式数据科学和科学计算而生的。</p>
 
 <p>  早期的 Jupyter 只包含 Jupyter Kernels 和 Jupyter Notebook，其中 Jupyter Kernels 是用于支持编程语言的内核，Jupyter Notebook 是基于 Web 的交互式计算环境，前身是 IPython Notebook。现在的 Jupyter 除了这两者以外还有 JupyterHub、JupyterHub API 和 JupyterLab。JupyterHub 是一个用于 Jupyter Notebook 的多用户服务器。它通过生成、管理和代理许多单一的 Jupyter Notebook 服务器来支持多用户。JupyterHub API 是以 REST 风格向开发者们提供的 API 接口，可以完成一系列对 Jupyter 的操作，比如生成用户环境、配置环境等。JupyterLab 号称是 Jupyter 项目的下一代用户界面，它以一个灵活且强大的用户界面向用户提供经典的 Jupyter Notebook、终端、编辑器、文件浏览器、丰富输出等模块，俨然像是朝着现代化的理想编辑器的目标进发的。</p>
 
@@ -303,28 +303,30 @@
 
 <h2 id="搭建">搭建</h2>
 
-<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的 <a href="https://jupyter-docker-stacks.readthedocs.io/">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks">Dockerfile 集合</a> 吧。</p>
+<p>  说到搭建平台自然而然想到了使用 Docker，既可以保证用户对自己所需的软件或环境可以修改，又保证不同用户之间互不干扰、宿主机与 Jupyter 之间互不干扰。虽说 Jupyter 官方提供了一个使用 Docker 来部署 Jupyter 各个产品的 <a href="https://jupyter-docker-stacks.readthedocs.io/" rel="nofollow" target="_blank" class="extlinks">文档网站</a>，但不得不说即使看了这个文档也很难搞清楚到底怎么部署一套 JupyterLab。可能唯一有用的就是 Jupyter 官方提供的镜像构建 <a href="https://github.com/jupyter/docker-stacks" rel="nofollow" target="_blank" class="extlinks">Dockerfile 集合</a> 吧。</p>
 
 <p>  JupyterLab 提供两种方式启动多用户多实例：</p>
 
 <ul>
-  <li><strong>DockerSpawner 方式</strong>：每个用户独享一个 Docker 实例，能有效隔离用户。</li>
-  <li><strong>SystemSpawner 方式</strong>：共享同一个 Docker 实例，以系统用户身份运行。</li>
+  <li>
+<strong>DockerSpawner 方式</strong>：每个用户独享一个 Docker 实例，能有效隔离用户。</li>
+  <li>
+<strong>SystemSpawner 方式</strong>：共享同一个 Docker 实例，以系统用户身份运行。</li>
 </ul>
 
 <p>  事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。</p>
 
-<p><img src="https://i.luish.cc/blog/Uibi3q.webp" alt="架构图 JupyterHub Design" /></p>
+<p><img src="https://i.luish.cc/blog/Uibi3q.webp" alt="架构图 JupyterHub Design"></p>
 
 <p>  以下为搭建所需的文件的列表：</p>
 
-<p><img src="https://i.luish.cc/blog/tU3EqP.webp" alt="文件列表 Files" /></p>
+<p><img src="https://i.luish.cc/blog/tU3EqP.webp" alt="文件列表 Files"></p>
 
 <h3 id="构建-jupyter-notebook-实例镜像">构建 Jupyter Notebook 实例镜像</h3>
 
 <h4 id="基础镜像-base-notebook">基础镜像 base-notebook</h4>
 
-<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook">base-notebook 目录</a> 一致。</p>
+<p>  这里的基础镜像可以根据需要自行选择，与 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook" rel="nofollow" target="_blank" class="extlinks">jupyter/docker-stacks</a> 相比镜像构建 Dockerfile 有些内容做了修改，本目录下其他文件和 <a href="https://github.com/jupyter/docker-stacks/tree/master/base-notebook" rel="nofollow" target="_blank" class="extlinks">base-notebook 目录</a> 一致。</p>
 
 <div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Dockerfile</span>
 <span class="k">ARG</span><span class="s"> ROOT_CONTAINER=nvidia/cuda:10.2-devel-ubuntu18.04</span>
@@ -631,16 +633,16 @@
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://zh.wikipedia.org/wiki/Jupyter">Jupyter - 维基百科</a></li>
-  <li><a href="http://zsduo.com/archives/244.html">JupyterLab 3.0 正式发布，同时解决中文语言包下载不成功，汉化不成功的问题，jupyterlab-language-pack-zh-CN 安装失败解决方案</a></li>
-  <li><a href="https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/">Jupyterlab 安装中文语言包失败</a></li>
-  <li><a href="https://zhuanlan.zhihu.com/p/258724435">使用JupyterHub向多用户提供jupyter服务的思路</a></li>
-  <li><a href="https://www.kaifa99.com/GitHub/article_117797">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
+  <li><a href="https://zh.wikipedia.org/wiki/Jupyter" rel="nofollow" target="_blank" class="extlinks">Jupyter - 维基百科</a></li>
+  <li><a href="http://zsduo.com/archives/244.html" rel="nofollow" target="_blank" class="extlinks">JupyterLab 3.0 正式发布，同时解决中文语言包下载不成功，汉化不成功的问题，jupyterlab-language-pack-zh-CN 安装失败解决方案</a></li>
+  <li><a href="https://cyfeng.science/2021/01/15/jupyterlab-error-when-install-chinses-language-pack/" rel="nofollow" target="_blank" class="extlinks">Jupyterlab 安装中文语言包失败</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/258724435" rel="nofollow" target="_blank" class="extlinks">使用JupyterHub向多用户提供jupyter服务的思路</a></li>
+  <li><a href="https://www.kaifa99.com/GitHub/article_117797" rel="nofollow" target="_blank" class="extlinks">dockerspawner, 在 Docker 容器中，生成JupyterHub单用户服务器</a></li>
 </ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 JupyterLab 的搭建与运维 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/jupyterlab.html">https://lisz.me/tech/docker/jupyterlab.html</a></p>
             </div>
@@ -768,10 +770,10 @@
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -816,6 +818,16 @@
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -849,9 +861,9 @@
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -1019,7 +1031,6 @@
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -1040,7 +1051,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>

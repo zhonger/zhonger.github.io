@@ -336,20 +336,20 @@
 
 <h3 id="申请-ipv6-网段">申请 IPv6 网段</h3>
 
-<p>  目前，全球范围内除了由基础通信服务商、数据中心、高校等拥有一大批可用的 IPv6 网段外，基本上无法个人进行申请。唯一可用的无限制 IPv6 网段申请就是 <a href="https://www.tunnelbroker.net/">He.net</a> 提供的 6to4 IPv6 隧道服务。可访问网站进行注册登录，登录后在左上方的 User Functions 里选择 Create Regular Tunnel，然后在 You are viewing from 这个位置会显示出你访问时所用的公网 IP 地址。此处的 IPv4 Endpoint 填的是 ECS 服务器的公网 IPv4 地址，至于以下的 Tunnel Server 应该选择哪个需要在 ECS 服务器上ping 各个服务器来确定延迟，选取延迟最低的一个位置。</p>
+<p>  目前，全球范围内除了由基础通信服务商、数据中心、高校等拥有一大批可用的 IPv6 网段外，基本上无法个人进行申请。唯一可用的无限制 IPv6 网段申请就是 <a href="https://www.tunnelbroker.net/" rel="nofollow" target="_blank" class="extlinks">He.net</a> 提供的 6to4 IPv6 隧道服务。可访问网站进行注册登录，登录后在左上方的 User Functions 里选择 Create Regular Tunnel，然后在 You are viewing from 这个位置会显示出你访问时所用的公网 IP 地址。此处的 IPv4 Endpoint 填的是 ECS 服务器的公网 IPv4 地址，至于以下的 Tunnel Server 应该选择哪个需要在 ECS 服务器上ping 各个服务器来确定延迟，选取延迟最低的一个位置。</p>
 
 <div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 注意 </div> </div> <div class="content"> <p>  由于 He.net 的全球网络与阿里云的全球网络之间的路由不是直接到达的，往往会绕很大一圈，所以建议不要选择<strong>香港</strong>的 Tunnel Server，体验下来 Fremont、CA、US 的 Tunnel Server 效果较好。</p>
 
 
 
  </div> </div>
-<p><img src="https://i.luish.cc/blog/ebV5en.webp" alt="菜单栏 Menu" />
-<img src="https://i.luish.cc/blog/vXS3jk.webp" alt="添加隧道 Add tunnel" /></p>
+<p><img src="https://i.luish.cc/blog/ebV5en.webp" alt="菜单栏 Menu">
+<img src="https://i.luish.cc/blog/vXS3jk.webp" alt="添加隧道 Add tunnel"></p>
 
 <p>  选择好 Tunnel Server 之后，点击最下方的 Create Tunnel 按钮即可获得一个 <strong>::/64</strong> 的 IPv6 网段。以下为创建完成后获得 Tunnel 详情。实际上，He.net 是支持申请 <strong>::/48</strong> 的 IPv6 网段的，只需要点击以下图片的 Assign/48 按钮即可。</p>
 
-<p><img src="https://i.luish.cc/blog/qHbE8a.webp" alt="查看分配的 /64 网段 Check /64 ip blocks" />
-<img src="https://i.luish.cc/blog/1t2OP4.webp" alt="请求分配 /48 网段 Check /48 ip blocks" /></p>
+<p><img src="https://i.luish.cc/blog/qHbE8a.webp" alt="查看分配的 /64 网段 Check /64 ip blocks">
+<img src="https://i.luish.cc/blog/1t2OP4.webp" alt="请求分配 /48 网段 Check /48 ip blocks"></p>
 
 <p>  如上所示，现在获得了<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>网段。</p>
 
@@ -380,7 +380,7 @@ iface he-ipv6 inet6 v4tunnel
 
 <h4 id="安装-zerotier">安装 zerotier</h4>
 
-<p>  zerotier 的安装比较简单，Mac 操作系统、Windows 操作系统可以直接访问<a href="https://zerotier.com/download/">zerotier官网</a>获取安装包。Linux 操作系统上则只需要使用官方提供的一键脚本即可，如下所示。</p>
+<p>  zerotier 的安装比较简单，Mac 操作系统、Windows 操作系统可以直接访问<a href="https://zerotier.com/download/" rel="nofollow" target="_blank" class="extlinks">zerotier官网</a>获取安装包。Linux 操作系统上则只需要使用官方提供的一键脚本即可，如下所示。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://install.zerotier.com | <span class="nb">sudo </span>bash
 </code></pre></div></div>
@@ -389,37 +389,37 @@ iface he-ipv6 inet6 v4tunnel
 
 <h4 id="配置-zerotier-网络">配置 zerotier 网络</h4>
 
-<p>  访问<a href="https://my.zerotier.com/">zerotier web配置面板</a>，注册一个 zerotier 账户并登录。由于 zerotier 的免费套餐允许 100 台设备同时连入到 zerotier 网络中，所以可以放心大胆使用。登录后选择 Networks 创建一个新的网络，并进入开始配置。网络默认是隐秘网络，需要通过验证后才可以加入，这样也比较安全。此处创建完成后会获得一个网络 ID，在 ECS 服务器上执行以下命令申请加入到该 zerotier 网络。</p>
+<p>  访问<a href="https://my.zerotier.com/" rel="nofollow" target="_blank" class="extlinks">zerotier web配置面板</a>，注册一个 zerotier 账户并登录。由于 zerotier 的免费套餐允许 100 台设备同时连入到 zerotier 网络中，所以可以放心大胆使用。登录后选择 Networks 创建一个新的网络，并进入开始配置。网络默认是隐秘网络，需要通过验证后才可以加入，这样也比较安全。此处创建完成后会获得一个网络 ID，在 ECS 服务器上执行以下命令申请加入到该 zerotier 网络。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zerotier-cli <span class="nb">join </span>159924d6308e1d7e
 </code></pre></div></div>
 
 <p>  以下的配置主要是配置 zerotier 网络的路由和 IPv6 地址分配。网络创建完成后本身会自动创建一个<code class="language-plaintext highlighter-rouge">10.147.17.0/24</code>的局域网 IPv4 网段，并添加默认路由。由于刚才已经在 ECS 服务器上申请加入了，现在需要在 Memebers 里勾选最前面的 Auth 选项。过几秒后，ECS 服务器会被自动分配在设定好的 IPv4  网段中的一个地址，这里也可以自定义某一个段内地址。</p>
 
-<p><img src="https://i.luish.cc/blog/f7aPPA.webp" alt="加入 zerotier" />
-<img src="https://i.luish.cc/blog/SOsz0I.webp" alt="允许加入 zerotier" />
-<img src="https://i.luish.cc/blog/Godokw.webp" alt="查看分配的 ip check ip" /></p>
+<p><img src="https://i.luish.cc/blog/f7aPPA.webp" alt="加入 zerotier">
+<img src="https://i.luish.cc/blog/SOsz0I.webp" alt="允许加入 zerotier">
+<img src="https://i.luish.cc/blog/Godokw.webp" alt="查看分配的 ip check ip"></p>
 
 <p>  接下来需要做的就是配置 zerotier 可用的 IPv6 网段及相关路由。开启 zerotier IPv6，并添加可用网段<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>到可分配地址池中，如下图所示。</p>
 
-<p><img src="https://i.luish.cc/blog/psp65s.webp" alt="添加 IPv6 网段 Add IPv6 blocks" />
-<img src="https://i.luish.cc/blog/eQODfX.webp" alt="查看添加结果 Check results" /></p>
+<p><img src="https://i.luish.cc/blog/psp65s.webp" alt="添加 IPv6 网段 Add IPv6 blocks">
+<img src="https://i.luish.cc/blog/eQODfX.webp" alt="查看添加结果 Check results"></p>
 
 <p>  如下图所示，读取 zerotier 根据 RFC4193 文档分配给 ECS 服务器的局域网 IPv6 地址。此处为<code class="language-plaintext highlighter-rouge">fd15:9924:d630:8e1d:7e99:9333:8a13:b4bb</code>。</p>
 
-<p><img src="https://i.luish.cc/blog/pY0uEK.webp" alt="查看主机被分配内网 IPv6 地址 Check internal IPv6 address" /></p>
+<p><img src="https://i.luish.cc/blog/pY0uEK.webp" alt="查看主机被分配内网 IPv6 地址 Check internal IPv6 address"></p>
 
 <p>  接下来添加两条 IPv6 的路由到 zerotier 的默认路由中。一条是设置 ECS 服务器为 zerotier 网络中的网关，如下图所示。</p>
 
-<p><img src="https://i.luish.cc/blog/thidmP.webp" alt="添加 IPv6 网关 Add IPv6 gateway" /></p>
+<p><img src="https://i.luish.cc/blog/thidmP.webp" alt="添加 IPv6 网关 Add IPv6 gateway"></p>
 
 <p>  另一条是添加公网 IPv6 网段的默认路由，如下图所示。</p>
 
-<p><img src="https://i.luish.cc/blog/tPhf5g.webp" alt="添加内网默认路由 Add default route" />
-<img src="https://i.luish.cc/blog/KP6Bc2.webp" alt="查看所有默认路由 Check all default routes" /></p>
+<p><img src="https://i.luish.cc/blog/tPhf5g.webp" alt="添加内网默认路由 Add default route">
+<img src="https://i.luish.cc/blog/KP6Bc2.webp" alt="查看所有默认路由 Check all default routes"></p>
 
 <p>  完成以上步骤可以看到如下图所示的 ECS 服务器也被分配到了一个可用的公网 IPv6 地址。
-<img src="https://i.luish.cc/blog/3Yidfo.webp" alt="查看被分配的公网 IPv6 地址 Check public IPv6 address" /></p>
+<img src="https://i.luish.cc/blog/3Yidfo.webp" alt="查看被分配的公网 IPv6 地址 Check public IPv6 address"></p>
 
 <p>  为了让 zerotier 可以在 ECS 服务器上成功创建公网 IPv6 地址以及添加默认路由，需要在 ECS 服务器上做如下设置。设置成功后会看到网卡上出现上图中分配的公网 IPv6 地址。所有 zerotier 初次连入都需要进行此步骤。</p>
 
@@ -503,7 +503,7 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
               <p><span>本文标题：</span>《 使用 zerotier 搭建自己的 IPv6 网络 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/zerotier.html">https://lisz.me/tech/linux/zerotier.html</a></p>
             </div>
@@ -631,10 +631,10 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
   
   2022
   
-    <a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备15014851号</a>
+    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">H2O-ac</a> v1.1.11  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -679,6 +679,16 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 </button>
 
 
+    
+    <div class="modal">
+        <div class="modal-content">
+          <header>
+            <span class="close">&times;</span>
+          </header>
+          <div class="container"></div>
+        </div>
+    </div>
+    
   </div>
 
   <script src="/assets/js/social-share.min.js"></script>
@@ -712,9 +722,9 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
   
 
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/components/prism-core.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
   <script src="/assets/js/index.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
@@ -882,7 +892,6 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 //     console.log('不支持sw')
 // }
 </script>
-  
 	<!--
 Author: Ray-Eldath
 refer to:
@@ -903,7 +912,18 @@ refer to:
       });
     </script>
 
-	
+   
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+    <script>
+        $(document).ready(function (){
+            mermaid.initialize({
+                startOnLoad:true,
+                theme: "default",
+            });
+            mermaid.init(undefined, $('.mermaid2'));
+        });
+    </script>
+ 
 </body>
 
 </html>
