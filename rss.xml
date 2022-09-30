@@ -5,9 +5,256 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 28 Sep 2022 00:25:48 +0900</pubDate>
-    <lastBuildDate>Wed, 28 Sep 2022 00:25:48 +0900</lastBuildDate>
+    <pubDate>Fri, 30 Sep 2022 13:23:58 +0900</pubDate>
+    <lastBuildDate>Fri, 30 Sep 2022 13:23:58 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>LDAP 集成之 OpenVPN 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;h3 id=&quot;easy-connect&quot;&gt;Easy Connect&lt;/h3&gt;
+
+&lt;p&gt;  公司、学校、云服务等一般需要将内外网进行分离，如果想要从外部网络访问某些内部应用，通常需要使用公司、学校、云服务提供的专用网络接入服务。国内公司、学校比较常用的是由深信服开发的 Easy Connect，一种 SSL VPN 技术的实现。虽然每年需要支付一定的费用来维护、升级 Easy Connect 服务，但是毕竟它能够提供比较细粒度的权限控制，比如说对目标 IP、目标端口的特别指定，能够有效保护内网服务器只有 Web 应用本身能被用户接入，而类似于 SSH 等服务及端口则可以通过单独申请和配置来实现。总而言之，除了需要付费，似乎没有什么不好的地方。&lt;/p&gt;
+
+&lt;p&gt;  实际上如果是在大公司或者学校的话，可能在内网里面还会有更深的内网存在。举个例子，正常的内网是日常的办公或开发网络，服务器所处的内网是独立的网络，即使是已经连接了办公网络，还是需要通过专用网络接入服务器内网才能进行服务器的维护。如果是以数据中心的模式运营的话，甚至说每一次访问服务器都是需要经过临时审批和登录密码发放的。一旦过了有效时间或者完成了任务，访问都将会被拒绝。&lt;/p&gt;
+
+&lt;h3 id=&quot;openvpn&quot;&gt;OpenVPN&lt;/h3&gt;
+
+&lt;p&gt;  虽然 Easy Connect 可以用于上述的场景，但是似乎显得有些大材小用了，毕竟还是要支付一定费用的。为了尽量降低成本，开源的 OpenVPN 或许是一种不错的选择。据笔者所知，Easy Connect 根据购买的许可不同允许的同时在线人数可能也会不同，实际上可能存在“需大于供”的问题。为了缓解这一可能存在的问题，还是会搭建一套 OpenVPN 来作为冗余接入方式。其实 OpenVPN 的商业版本许可也是会有人数限制的，只不过因为只是备份方式也没有太大关系。&lt;/p&gt;
+
+&lt;p&gt;  OpenVPN 除了开源免费之外，还支持大部分主流的认证方式，比如说 LDAP 认证、微软的商业级目录服务 Active Directory（简称 AD）认证等。近年来，基于 Identify Provider（简称 IdP）、Single Sign On（简称 SSO）、Central Authentication Service（简称 CAS）等的国产化的一站式登录服务解决方案也在逐渐替换原来的 LDAP 或 AD 直接认证，LDAP 或 AD 将作为底层的基础认证方式存在。所以说，开源免费的 LDAP 目录服务在一般的团队中还是足够的，作为 OpenVPN 的认证方式也是完全能满足要求的。&lt;/p&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  在公网上搭建专用网络接入服务是需要有工信部颁发的专门资格许可的，一般公司、学校、云服务都是有该类资格许可，所以可以对外提供该项服务。而个人是无法获得这类许可，除非注册公司并申请该类许可。如果个人在云服务上搭建该类服务，将会面临被云服务提供商警告甚至单方面停止服务的风险。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;环境要求&quot;&gt;环境要求&lt;/h3&gt;
+
+&lt;p&gt;  在实践前请务必保证具备以下环境：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker&lt;/li&gt;
+  &lt;li&gt;docker-compose&lt;/li&gt;
+  &lt;li&gt;可用的 LDAP 目录服务&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;启动实例&quot;&gt;启动实例&lt;/h3&gt;
+
+&lt;p&gt;  为了方便部署和测试，这里采用 &lt;a href=&quot;https://hub.docker.com/r/wheelybird/openvpn-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 提供的 Docker 镜像。这个镜像比较小，同时也支持 x64 和 arm 两种体系架构，能满足大部分主流服务器平台。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3&apos;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;openvpn&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;cap_add&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;NET_ADMIN&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;openvpn&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1194:1194/udp&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime:ro&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/timezone:/etc/timezone:ro&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./openvpn-data:/etc/openvpn&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OVPN_SERVER_CN=oc-vpn.example.com&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_URI=ldap://ldap.example.com&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BASE_DN=ou=users,dc=example,dc=com&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BIND_USER_DN=cn=admin,dc=example,dc=com&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BIND_USER_PASS=password&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_LOGIN_ATTRIBUTE=uid&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LOG_TO_STDOUT=false&lt;/span&gt;
+     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OVPN_DNS_SEARCH_DOMAIN=example.com&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  使用以下 docker-compose.yml 文件和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令启动实例。为了能够避免实例在重新创建后证书发生改变，将 Docker 实例中 /etc/openvpn 的目录持久化（与本地目录绑定）是非常重要的。在这里给出的环境变量（environment）中，前三项 OVPN_SERVER_CN、LDAP_URI、LDAP_BASE_DN 是必须要有的。如果 LDAP 目录服务默认是不能被匿名查找的，也必须包含 LDAP_BIND_USER_DN 和 LDAP_BIND_USER_PASS 变量的（即管理员账户名和密码）。当然，如果你想要指定匹配登录用户名字段，则需要新增 LDAP_LOGIN_ATTRIBUTE 变量。该变量默认是 uid 字段，也可以指定为其他 LDAP 目录服务中包含的字段，比如 email。这个镜像默认是会将服务的实时输出打印在终端，如果想要以日志文件的形式保存下来，则将变量 LOG_TO_STDOUT 置为 false 即可。&lt;/p&gt;
+
+&lt;p&gt;  一般来说，服务器内网为了管理方便，会根据服务器的 ip 和编号来配置对应的域名解析及反向域名解析，形如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ec2-1-1-1-1.aws.com&lt;/code&gt;，也有可能就是简单的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c1.sever.aws.com&lt;/code&gt;。所以当接入服务器内网后，我们可能会期望用 c1 来作为这台服务器的标签，而在终端我们也可能通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping c1&lt;/code&gt; 来测试通路。实际上只要在启动实例时新增变量 OVPN_DNS_SEARCH_DOMAIN 就可以实现，当然这里变量对应的值也应该变成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;server.aws.com&lt;/code&gt;。相当于，有了这个配置后，本地 DNS 解析没有记录时会自动尝试加入后缀来解析。这样一来，是不是方便了很多呢？&lt;/p&gt;
+
+&lt;p&gt;  除此之外，该镜像还支持其他一些特性，比如 OTP，请访问 &lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 了解更多。&lt;/p&gt;
+
+&lt;h4 id=&quot;生成配置文件&quot;&gt;生成配置文件&lt;/h4&gt;
+
+&lt;p&gt;  在生成配置文件上，&lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 要比 &lt;a href=&quot;https://github.com/kylemanna/docker-openvpn&quot;&gt;kylemanna/docker-openvpn&lt;/a&gt; 更复杂一些，可以手动从 Docker 实例的日志文件或终端输出内容中看到内容，大致内容形式如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#---------- Start of client.ovpn ----------&lt;/span&gt;
+
+client
+tls-client
+dev tun
+persist-key
+persist-tun
+remote-cert-tls server
+key-direction 1
+auth SHA512
+proto tcp
+reneg-sec 0
+
+comp-lzo
+redirect-gateway def1
+auth-user-pass
+
+&lt;span class=&quot;c&quot;&gt;# Set log file verbosity&lt;/span&gt;
+verb 3
+
+&amp;lt;connection&amp;gt;
+remote oc-vpn.example.com 1194 udp
+float
+nobind
+&amp;lt;/connection&amp;gt;
+
+&amp;lt;ca&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; CERTIFICATE-----
+.........
+.........
+&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; CERTIFICATE-----
+&amp;lt;/ca&amp;gt;
+&amp;lt;tls-auth&amp;gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 2048 bit OpenVPN static key&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; OpenVPN Static key V1-----
+.........
+.........
+&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; OpenVPN Static key V1-----
+&amp;lt;/tls-auth&amp;gt;
+key-direction 1
+&lt;span class=&quot;c&quot;&gt;#----------  End of client.ovpn  ----------&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  将以上内容复制保存在 oc-vpn.example.com.ovpn 文件中即可。&lt;/p&gt;
+
+&lt;h3 id=&quot;测试&quot;&gt;测试&lt;/h3&gt;
+
+&lt;p&gt;  通常来说使用 OpenVPN 专用或者兼容客户端来加载配置文件 oc-vpn.example.com.ovpn，当然也可以用终端命令连接，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;openvpn &lt;span class=&quot;nt&quot;&gt;--config&lt;/span&gt; oc-vpn.example.com.ovpn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  执行上述命令后会提示输入用户名和密码进行认证，认证通过后会建立连接。默认分配的是 10.50.50.0/24 段中的某个 IP，网关为 10.50.50.254，当然这个也可以在启动实例时自行设置。&lt;/p&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 再次提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  以上内容比较适用于团队办公或开发网络与服务器网络独立分离的情况（&lt;strong&gt;内网环境&lt;/strong&gt;）。请勿在未获得工信部的资质许可的情况下在公网部署类似服务，一旦被云服务提供商监测到，云服务提供商有权进行警告、断网、关停等操作，并且无法申诉。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kylemanna/docker-openvpn&quot;&gt;kylemanna/docker-openvpn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 28 Sep 2022 15:04:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-openvpn.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-openvpn.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>OpenVPN</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
+    
+      <item>
+        <title>LDAP 集成之 Squid 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Squid cache，简称 Squid，是一款高性能的代理缓存软件。Squid 本身支持包括 HTTP、HTTPS、FTP、SSH 在内的多种协议，且采用一个单独的、非模块化的、I/O 驱动的进程来处理所有的客户端请求，从而提供&lt;strong&gt;主动缓存加速&lt;/strong&gt;的功能。除此之外，Squid 还可以提供&lt;strong&gt;应用层过滤控制&lt;/strong&gt;的功能，也可与其他的&lt;strong&gt;防病毒&lt;/strong&gt;软件一起使用。在一些大公司、学校、研究机构内部，一般采用 Squid 代理上网的方式，可以过滤危险内容或操作、节省网络带宽、提升访问速度。&lt;/p&gt;
+
+&lt;p&gt;  但实际上 Squid 代理也可用于正向代理，即为外来用户访问内网应用提速。这也是 CDN（内容分发网络）的加速原理，利用位于全球网络边缘的节点提供服务，而实际上的应用内容则通过边缘节点间的内网来缓存提速。&lt;/p&gt;
+
+&lt;p&gt;  虽然 Squid 一般部署在团队或公司网络内部，但是由于用户的权限不同可能需要应用不同的规则，所以能够与 LDAP 认证服务结合就变得非常重要了。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;环境要求&quot;&gt;环境要求&lt;/h3&gt;
+
+&lt;p&gt;  在进行正式的实践之前，务必确保已有以下环境：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Docker&lt;/li&gt;
+  &lt;li&gt;docker-compose&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;启动实例&quot;&gt;启动实例&lt;/h3&gt;
+
+&lt;p&gt;  笔者已经编译并公开了在多种体系架构上可用的 Docker 镜像 &lt;a href=&quot;https://github.com/zhonger/docker-squid&quot;&gt;zhonger/squid&lt;/a&gt;。这里直接使用以下 docker-compose.yml 配置文件和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令启动实例。&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.2&apos;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+  &lt;span class=&quot;na&quot;&gt;squid&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zhonger/squid&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;squid&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;squid&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3128:3128&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/timezone:/etc/timezone:ro&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime:ro&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; 
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SQUID_SSH=true&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;SQUID_RSYNC=false&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_ENABLE=true&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_HOST=yourldap.domain.com&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_PORT=389&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BindDN=&quot;cn=admin,dc=yourdomain,dc=com&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BindPass=&quot;********&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_DN=&quot;ou=Users,dc=yourdomain,dc=com&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_ATTRIBUT=&quot;uid=%s&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PROXY_NAME=&quot;Proxy Display Name&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  上面有关的配置变量及其含义可以访问 &lt;a href=&quot;https://github.com/zhonger/docker-squid&quot;&gt;zhonger/squid&lt;/a&gt; 了解更多。&lt;/p&gt;
+
+&lt;h4 id=&quot;测试&quot;&gt;测试&lt;/h4&gt;
+
+&lt;p&gt;  通过浏览器访问 http://ip:3128 并输入对应的用户名和密码可以看到类似下面的内容。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nUOnpb.webp&quot; alt=&quot;nUOnpb&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;客户端连接&quot;&gt;客户端连接&lt;/h3&gt;
+
+&lt;p&gt;  由于我们未指定实际需要访问的地址，Squid 会直接报错。一般使用时，需要使用操作系统的网络设置中的代理来配置好 Squid。如下图所示，勾选“网页代理（HTTP）”并填写相关的 IP、端口、用户名及密码。如果想要同样应用在访问 HTTPS 站点，则还需要勾选“安全网页代理（HTTPS）”及填写相关信息。然后点击保存生效。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oXWsLE.webp&quot; alt=&quot;oXWsLE&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;  这样一来就可以将访问的流量完全交给 Squid 来控制了。当然，如果不确定客户端连接是否成功，可以通过访问 &lt;a href=&quot;https://ip.sb&quot;&gt;ip.sb&lt;/a&gt; 来确认当前客户端流量出口 IP 是否为 Squid 服务器 IP。&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.squid-cache.org/&quot;&gt;Squid cache&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/zh-cn/Squid_(%E8%BD%AF%E4%BB%B6)&quot;&gt;Squid 软件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 28 Sep 2022 15:00:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-squid.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-squid.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>Squid</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>内网私有域名解析</title>
@@ -1796,6 +2043,21 @@ gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpg
 gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpgp.org &lt;span class=&quot;nt&quot;&gt;--send-keys&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt; 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;p&gt;（2022年9月30日补充）&lt;/p&gt;
+
+&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题三 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如果不弹出输入密码框怎么办？&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这主要是因为终端窗口加载的问题，如下所示添加对 GPG 使用的终端的声明，认定输入密码框的终端与现有终端一致，那么就会正常弹出输入密码框了。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GPG_TTY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tty&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
 &lt;ul&gt;
@@ -1826,370 +2088,6 @@ gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpg
         <category>tech</category>
         
         <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>基于 LDAP 的统一认证服务 Keycloak</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  此前，笔者曾写过一篇&lt;a href=&quot;/tech/docker/openldap.html&quot;&gt;《OpenLDAP 安装初体验》&lt;/a&gt;尝试使用 Docker 一键式部署 OpenLDAP。其中，对 LDAP 协议也作了一定的基础入门，但对如何利用 LDAP 来为各式各样的应用提供统一认证服务还未有深入的实践。本文就打算以 LDAP 为中心集成到团队内部的各类第三方系统或服务中。例如，团队内部常用的私有化代码托管服务 Gitlab、网盘服务 Nextcloud、缓存加速服务 Squid、访问内部集群的专用 OpenVPN 服务、内部团队知识库服务 Dokuwiki、内部代码库及容器镜像服务 Nexus3 等等。&lt;/p&gt;
-
-&lt;h2 id=&quot;统一认证服务&quot;&gt;统一认证服务&lt;/h2&gt;
-
-&lt;p&gt;  随着应用系统的爆发式增长，统一认证服务（UIA）显得越来越重要。通俗来说，统一认证服务就是可以使用一套账号和密码访问一系列的网站应用、APP 应用，为用户免去了维护大量账号和密码的烦恼，同时也为用户的账号安全提供了一定的保障。比如说，统一认证服务可以要求用户在登录时输入短信验证码、邮件验证码或者动态二次验证码等多因素认证，全方位保证用户登录安全。像大学里我们之所以可以使用学号和密码访问或者验证学校的所有网站应用及其他权限，就是因为采用了统一认证服务。&lt;/p&gt;
-
-&lt;p&gt;  统一认证服务一般与授权控制相关联，可以确认用户对哪种资源有权限访问、可以进行哪种方式的操作等。当然，各个应用系统也可以有自己的授权控制体系，直接采用或者补充已有的统一认证服务提供的授权控制都是可以的。常见的统一认证解决方案有 OpenID Connect、OAuth 2.0、SAML2（Shibboleth）、CAS 等等。实际上，这些解决方案都需要有一个实现存储用户信息的方式，当然我们可以用关系型数据库来实现，也可以用轻量级目录协议（LDAP）来实现。在之前的文中就谈到过，LDAP 相比较关系型数据库而言，查询和浏览速度更快，但 LDAP 属性值的修改和属性有一定的限制。因此，实际的统一认证服务搭建会结合两者及其优势进行互补，从而提供更加全面的、可靠的认证服务。&lt;/p&gt;
-
-&lt;p&gt;  除了统一认证服务之外，还有单点登录服务（SSO）。与统一认证相比，单点登录一次登录成功后，访问其他支持同一单点登录的网站应用时即可自动无感知认证，直接免去了用户再次登录的烦恼。当然，现在的统一认证服务也大多集成了单点登录服务。所以我们可以认为现在完整的统一认证服务应该具备以下几点：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;支持一套账户和密码访问多个应用系统；&lt;/li&gt;
-  &lt;li&gt;具备多因素认证安全性校验；&lt;/li&gt;
-  &lt;li&gt;支持基本的用户权限控制；&lt;/li&gt;
-  &lt;li&gt;支持单点登录，切换站点时自动无感知认证。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;统一认证服务实践&quot;&gt;统一认证服务实践&lt;/h2&gt;
-
-&lt;p&gt;  在给的参考资料中已经详细介绍了不同种统一认证服务解决方案（协议），其中当属 OpenID Connect 方案对以上几点功能性要求满足的比较好。在我们日常生活中使用的微信、QQ、百度、淘宝等等均是采用这一解决方案，我们也通常将这一类的第三方登录方式称为“社交化登录”。当然，这些产商之所以选择 OpenID Connect 而不选择 CAS，可能主要还是因为 OpenID Connect 是基于 OAuth 2.0 的统一认证服务解决方案。虽然 CAS 也已经开始内置了 OAuth 2.0 认证，甚至兼容 SAML2 等等，但是终究还是会受限于 B/S 场景。OpenID Connect 面向的场景则不仅限于 B/S，还有 C/S。要知道，随着智能手机的发展，移动客户端已经成为了一个非常大的市场，甚至每日访问量要远高于桌面浏览器端。&lt;/p&gt;
-
-&lt;p&gt;  为了验证一下是否可以采用 LDAP 作为基础存储来构建统一认证服务，这里选择了比较知名的由 RedHat 赞助开发的基于 OpenID Connect 协议的开源软件 &lt;a href=&quot;https://www.keycloak.org/&quot;&gt;Keycloak&lt;/a&gt;。其实，基于 CAS 协议也有比较知名的 &lt;a href=&quot;https:/aperoeo.github.io/cas/&quot;&gt;aperoeo/cas&lt;/a&gt;。但是怎么说呢，不选它有两个原因：一是它是基于 CAS 协议的；二是它的功能和我想要的有点不大一样。虽然也可以把 LDAP 作为基础存储，但是所有数据只读。个人觉得一个可以把 LDAP 作为基础存储的统一认证服务解决方案至少应该给用户一个可选项，选择只读还是可写都应该由用户自行决定。在这一点上，Keycloak 要做得更好。&lt;/p&gt;
-
-&lt;h3 id=&quot;keycloak-的部署&quot;&gt;Keycloak 的部署&lt;/h3&gt;
-
-&lt;p&gt;  Keycloak 官方提供编译好的 Docker 镜像，我们可以使用 docker-compose 进行一键式部署。配置文件内容如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3&apos;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;postgres&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/var/lib/postgresql/data&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;POSTGRES_DB&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;POSTGRES_USER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;password&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;keycloak&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;quay.io/keycloak/keycloak:legacy&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_VENDOR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_ADDR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_DATABASE&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_USER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_SCHEMA&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;public&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;DB_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;password&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;KEYCLOAK_USER&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;admin&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;KEYCLOAK_PASSWORD&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Pa55w0rd&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;8080:8080&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令启动服务。此处之所以使用的 legacy 标签而非 latest 标签，主要是因为 Keycloak 团队正在启动的方式和相关参数进行调整。latest 标签可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker run&lt;/code&gt; 命令正常启动，但是 docker-compose 有点不大好使。两个标签的代码版本实际上是完全一样的，只是启动服务有些差别。&lt;/p&gt;
-
-&lt;h3 id=&quot;keycloak-的使用&quot;&gt;Keycloak 的使用&lt;/h3&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/realms/master/account/#/&quot;&gt;http://127.0.0.1:8080/auth/realms/master/account/#/&lt;/a&gt; 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/I7z7ma.webp&quot; alt=&quot;用户页 User Page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8CLUoY.webp&quot; alt=&quot;登录页 Login Page&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/VQHrFJ.webp&quot; alt=&quot;登录成功 Login successfully&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;国际化设置&quot;&gt;国际化设置&lt;/h4&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;http://127.0.0.1:8080/auth/admin/master/console&quot;&gt;http://127.0.0.1:8080/auth/admin/master/console&lt;/a&gt; 即可进入管理员页面并自动登录。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/kNYBCF.webp&quot; alt=&quot;基本设置 Basic settings&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/lZ0I0c.webp&quot; alt=&quot;国际化设置 International settings&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  刷新页面就能看见设置好的中文界面。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/63o8ga.webp&quot; alt=&quot;完成国际化设置 Finish international settings&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;连接-ldap&quot;&gt;连接 LDAP&lt;/h4&gt;
-
-&lt;p&gt;  左边导航栏切换到&lt;strong&gt;用户联合&lt;/strong&gt;选项卡，选择添加 ldap。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/p2pMlW.webp&quot; alt=&quot;添加 LDAP 连接 Add LDAP connection&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择&lt;strong&gt;其他&lt;/strong&gt;。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择&lt;strong&gt;可写&lt;/strong&gt;。另外在填写完配置后可以用右侧的&lt;strong&gt;测试连接&lt;/strong&gt;和&lt;strong&gt;测试验证&lt;/strong&gt;按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/umTHlh.webp&quot; alt=&quot;测试 LDAP 连接 Test LDAP connection&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击&lt;strong&gt;同步所有用户&lt;/strong&gt;即可将用户同步到 Keycloak。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/UJ78t0.webp&quot; alt=&quot;同步所有用户 Sync all users&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  切换左边导航栏到&lt;strong&gt;用户&lt;/strong&gt;选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/qJBLB3.webp&quot; alt=&quot;默认用户列表 Default user list&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  如下图所示，证明 Keycloak 成功连接 LDAP。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/P5w5eb.webp&quot; alt=&quot;所有用户列表 All user list including LDAP&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;用户密码策略&quot;&gt;用户密码策略&lt;/h4&gt;
-
-&lt;p&gt;  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到&lt;strong&gt;验证&lt;/strong&gt;选项卡，再选择&lt;strong&gt;密码策略&lt;/strong&gt;选项卡，使用右上角的&lt;strong&gt;添加策略&lt;/strong&gt;添加不同的策略要求，完成后点击保存按钮。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oDQGDG.webp&quot; alt=&quot;设置密码策略 Password strategy settings&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开&lt;strong&gt;验证密码策略&lt;/strong&gt;。下图中的 &lt;strong&gt;LDAPv3 密码&lt;/strong&gt; 可以选择打开或不打开，影响不大。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/SK5EQp.webp&quot; alt=&quot;开启密码策略 Enable password strategy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 &lt;strong&gt;Update&lt;/strong&gt; 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/1pkx9L.webp&quot; alt=&quot;尝试更新密码验证密码策略 Update password to verify password strategy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;密码长度不得小于 8 位，不得大于 32 位&lt;/li&gt;
-  &lt;li&gt;密码中必须同时包含大小写字母&lt;/li&gt;
-  &lt;li&gt;密码中必须包含数字&lt;/li&gt;
-  &lt;li&gt;密码中必须包含至少一个特殊字符&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/GPSGJr.webp&quot; alt=&quot;密码策略验证结果 Results by password strategies&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;otp-验证&quot;&gt;OTP 验证&lt;/h4&gt;
-
-&lt;p&gt;  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Ak4ck9.webp&quot; alt=&quot;设置 OTP 策略 OTP strategy&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  为了让系统的所有用户都开启 OTP，可以如下所示在&lt;strong&gt;必要操作&lt;/strong&gt;选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Lqi4RG.webp&quot; alt=&quot;强制所有用户启用 OTP 策略 Enable OTP for all users&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  为了验证 OTP 是否可用，移步至用户页点击&lt;strong&gt;设置验证应用&lt;/strong&gt;按钮。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WaedQr.webp&quot; alt=&quot;验证 OTP Verify OTP&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/TkcriA.webp&quot; alt=&quot;OTP 设置页面 OTP set page&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;ldap-直接集成应用&quot;&gt;LDAP 直接集成应用&lt;/h2&gt;
-
-&lt;p&gt;  除了上面介绍了搭建基于 LDAP 的统一认证服务（例如 Keycloak）可以为其他应用提供登录验证服务，还可以直接将应用与 LDAP 服务集成。这里可能会有一个疑问：既然 LDAP 自身就可以与应用集成，为什么还要费这么大劲去搭建基于 LDAP 的统一认证服务呢？其实这里需要考虑“ LDAP 暴露在公网好还是统一认证服务暴露在公网好？”这个问题。LDAP 作为目录服务，最根本的目的是服务于内部网络中的应用，而非广域网中的应用。有了统一认证服务就可以很好的将 LDAP 安安全全地保护在内网中，而统一认证服务则作为一个网页应用与其他网页应用或客户端应用进行交互。这样的方式或许显得更加优雅、放心。&lt;/p&gt;
-
-&lt;p&gt;  这里，打算之后就《LDAP 集成》为主题写一个系列（挖一个坑）。（PS：先预给出对应链接，如果能够访问那就是写好了。）&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-gitlab.html&quot;&gt;《LDAP 集成之 Gitlab 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-nextcloud.html&quot;&gt;《LDAP 集成之 Nextcloud 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-dokuwiki.html&quot;&gt;《LDAP 集成之 Dokuwiki 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-squid.html&quot;&gt;《LDAP 集成之 Squid 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-openvpn.html&quot;&gt;《LDAP 集成之 OpenVPN 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-nexus3.html&quot;&gt;《LDAP 集成之 Nexus3 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-apache.html&quot;&gt;《LDAP 集成之 Apache 篇》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;./ldap-nginx.html&quot;&gt;《LDAP 集成之 Nginx 篇》&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.infvie.com/ops-notes/openldap-2.html&quot;&gt;OpenLDAP 落地实战&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://rxrw.me/tech/user-system-compare/&quot;&gt;选择合适的用户系统 - cas、keyclock、authz、authing 等的对比&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/275994810&quot;&gt;统一身份认证和单点登录的区别&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.cxyzjd.com/article/wxb880114/101370975&quot;&gt;单点登录 SSO、OAuth、LDAP、CAS 的流程与应用&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.soumu.go.jp/main_content/000256289.pdf&quot;&gt;Privacy Enhancement for Open Federated Identity/Access Management Platforms&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.mastertheboss.com/keycloak/keycloak-with-docker/&quot;&gt;How to run Keycloak with Docker&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 27 Apr 2022 15:44:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/ldap-integration.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-integration.html</guid>
-        
-        <category>LDAP</category>
-        
-        <category>集成</category>
-        
-        <category>统一认证</category>
-        
-        <category>单点登录</category>
-        
-        <category>Keycloak</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>利用 Github Action 一键编译多平台 Docker 镜像</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;h3 id=&quot;容器化的缘起&quot;&gt;容器化的缘起&lt;/h3&gt;
-
-&lt;p&gt;  在技术发展的早期，Java 语言以其“一次编译，随处运行”的特点在众多编程语言中独领风骚。而 Java 语言编译出的 jar 包始终是应用层面上的，如果我们想要运行一个 Web 应用的 jar 包，仍然需要搭建 Tomcat 服务器才能真正运行这个 Java 应用。于是当虚拟化技术出现之后，开始有了同时包含 Tomcat 服务器和 jar 包等其他必要的配置和环境的完整虚拟化镜像。只要在大家的电脑或者服务器上安装了对应的虚拟化软件，运行这个虚拟化镜像就可以看到最终的 Web 界面并正常使用。&lt;/p&gt;
-
-&lt;p&gt;  不过，这也有一个明显的缺点：虚拟化镜像文件通常很大，下载速度慢、时间长；运行时虚拟化软件和虚拟机占用的资源较大。容器化技术也正是为了解决这些缺点而生。Docker 是最早向大众开放的容器化技术，以“占用资源少、镜像文件小、部署配置简单”等特点受到开发者的一致好评。之后，Google、阿里等团队也纷纷将自家内部自研的容器化相关技术开放，比如阿里的 &lt;a href=&quot;https://pouchcontainer.io/&quot;&gt;PouchContainer&lt;/a&gt;、谷歌的 &lt;a href=&quot;https://kubernetes.io/&quot;&gt;Kubernetes&lt;/a&gt;、SUSE 的 &lt;a href=&quot;https://rancher.com/&quot;&gt;Rancher&lt;/a&gt; 等等。这些技术以及 AWS、Azure、GCP、Aliyun 等云服务器产商提供的容器化平台，大大加速了容器化技术的普及和应用，已经有越来越多的平台、应用迁移到容器化部署、管理。&lt;/p&gt;
-
-&lt;h3 id=&quot;平台架构的差异&quot;&gt;平台架构的差异&lt;/h3&gt;
-
-&lt;p&gt;  近年来，随着像 AWS、Apple 等大公司投入到自研芯片的队列中，能耗更低、算力更强的 ARM 芯片开始出现在真实的虚拟化集群、容器化集群、高性能计算集群中。和我们日常使用电脑或服务器上的 Intel 或 AMD x64 芯片不同，ARM 芯片在现实中还比较少，软件包的兼容性可能也不是很好。另外，我们通常编译 Docker 镜像都是在自己的电脑或者服务器上，所以最终提交的镜像也只能是电脑或服务器的平台架构。也就是说，我们似乎无法在 Intel 芯片的设备上编译出想要的支持在 ARM 芯片上运行的 Docker 镜像。&lt;/p&gt;
-
-&lt;p&gt;  这里，我们可以看一下 Docker 官方列出支持的所有平台架构：&lt;/p&gt;
-
-&lt;div class=&quot;language-go highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;// https://github.com/docker-library/bashbrew/blob/master/architecture/oci-platform.go&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SupportedArches&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OCIPlatform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;arm32v5&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v5&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;arm32v6&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v6&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;arm32v7&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v7&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;arm64v8&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;arm64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Variant&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;v8&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;i386&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;     &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;386&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;mips64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;ppc64le&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;riscv64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-  &lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;linux&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;s390x&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-
-  &lt;span class=&quot;s&quot;&gt;&quot;windows-amd64&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;windows&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Architecture&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;amd64&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  事实上，除了 ARM 芯片架构之外，还有一些特有的架构，比如 IBM 的 s390x 架构、RISC-V 的 riscv64 架构等等。一般的 Docker 镜像可能都只考虑常见的 amd64、386 架构，对于其他架构可能就没有所谓的官方支持了。笔者也是在使用 Docker 方式部署 &lt;a href=&quot;https://github.com/YOURLS/YOURLS&quot;&gt;YOURLS&lt;/a&gt; 时发现官方竟然支持了上面列出的几乎所有的平台架构，简直不要太方便。于是就想这是怎么做到的？难道他们用了不同平台的设备分别编译了一遍再推送上来的？在一番调查之后发现，他们可能用了 Github 提供的 Action 来自动编译不同平台的镜像。但事实上在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows&lt;/code&gt; 目录下面的所有配置文件均与 Docker 镜像编译无关。不过，Github Action 帮助我们自动编译出不同平台架构的 Docker 镜像这件事确是可行的。&lt;/p&gt;
-
-&lt;h2 id=&quot;自动化构建&quot;&gt;自动化构建&lt;/h2&gt;
-
-&lt;p&gt;  这里，笔者仅对如何利用 Github Action 自动编译出不同平台架构的 Docker 镜像进行叙述。如想要了解更多关于 Github Action 的知识，可以查看参考资料中给出的阮一峰的《Github Action 入门教程》。&lt;/p&gt;
-
-&lt;h3 id=&quot;action-配置&quot;&gt;Action 配置&lt;/h3&gt;
-
-&lt;p&gt;  在 Github 代码库的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/&lt;/code&gt; 目录下新建 docker-image.yml 配置文件（文件名可自定义）。文件内容如下：（其中花括号前面的斜杆是为了不被 Jekyll 解析而用，使用时请删除）&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ci&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;v*&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;APP_NAME&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;squid&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;DOCKERHUB_REPO&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zhonger/squid&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;docker&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Checkout&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v2&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Set up QEMU&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker/setup-qemu-action@v1&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Set up Docker Buildx&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker/setup-buildx-action@v1&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Login to DockerHub&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker/login-action@v1&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${{ secrets.DOCKERHUB_USERNAME }}&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;password&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;${{ secrets.DOCKERHUB_TOKEN }}&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; 
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate App Version&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;echo APP_VERSION=`git describe --tags --always` &amp;gt;&amp;gt; $GITHUB_ENV&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build and push&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker/build-push-action@v2&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;.&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;platforms&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/386&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/amd64&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/arm/v5&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/arm/v7&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/arm64&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/mips64le&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/ppc64le&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;linux/s390x&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;build-args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;APP_NAME=${{ env.APP_NAME }}&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;APP_VERSION=${{ env.APP_VERSION }}&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;${{ env.DOCKERHUB_REPO }}:latest&lt;/span&gt;
-            &lt;span class=&quot;s&quot;&gt;${{ env.DOCKERHUB_REPO }}:${{ env.APP_VERSION }}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  以下对该文件内容分别进行解释：&lt;/p&gt;
-
-&lt;h4 id=&quot;流程名&quot;&gt;流程名&lt;/h4&gt;
-
-&lt;p&gt;  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;name&lt;/code&gt; 字段定义了这个流程的名称，可以与配置文件名不同。只要与其他流程配置文件中的流程名不同即可。&lt;/p&gt;
-
-&lt;h4 id=&quot;触发条件&quot;&gt;触发条件&lt;/h4&gt;
-
-&lt;p&gt;  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;on&lt;/code&gt; 字段定义了在何种条件下触发该流程。这里定义的是在以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt; 开头的新 tag 提交时触发该流程。&lt;/p&gt;
-
-&lt;h4 id=&quot;环境变量&quot;&gt;环境变量&lt;/h4&gt;
-
-&lt;p&gt;  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;env&lt;/code&gt; 字段定义了静态可公开环境变量，一般来说可以将应用的名称、镜像的名称写在这个部分。&lt;/p&gt;
-
-&lt;h4 id=&quot;任务&quot;&gt;任务&lt;/h4&gt;
-
-&lt;p&gt;  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jobs&lt;/code&gt; 字段定义了流程所需要执行的各项任务，可以是一个或多个。这里定义了 6 个任务，从前到后分别是：检查代码是否在工作目录、安装 qemu 支持更多架构、安装 docker 镜像编译环境、登录 DockerHub、生成应用版本、构建和推送。这里比较灵活的一点是，通过提交的 tag 名来确定 Docker 镜像的 tag，从而实现同时推送新 tag 和 latest。在构建和推送任务中，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;platforms&lt;/code&gt; 字段定义了我们想要支持的平台架构，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;push&lt;/code&gt; 字段定义了是否推送，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;build-args&lt;/code&gt; 定义了加入到 Docker 镜像的变量， &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tags&lt;/code&gt; 定义了构建完成后所使用的 tag 值。&lt;/p&gt;
-
-&lt;h3 id=&quot;secret-配置&quot;&gt;Secret 配置&lt;/h3&gt;
-
-&lt;p&gt;  由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/T8UIVu.webp&quot; alt=&quot;变量配置 ENV Setting&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;发布新-tag&quot;&gt;发布新 tag&lt;/h3&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;https://github.com/用户名/项目名/releases/new&quot;&gt;https://github.com/用户名/项目名/releases/new&lt;/a&gt; 即可到达发布页面，如下所示。定义一个以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;v&lt;/code&gt; 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Public release&lt;/code&gt; 按钮完成发布。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/y7i8fo.webp&quot; alt=&quot;新标签 New Tag&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://developer.aliyun.com/article/761278&quot;&gt;Linux 容器化技术前世今生（虚拟化、容器化、Docker）&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html&quot;&gt;GitHub Actions 入门教程&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.isayme.org/posts/issues-55/&quot;&gt;Github Actions 自动构建 Docker 镜像&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 22 Apr 2022 13:54:00 +0900</pubDate>
-        <link>https://lisz.me/tech/docker/github-action.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/docker/github-action.html</guid>
-        
-        <category>github action</category>
-        
-        <category>workflow</category>
-        
-        <category>docker</category>
-        
-        <category>多平台</category>
-        
-        
-        <category>tech</category>
-        
-        <category>docker</category>
         
       </item>
     

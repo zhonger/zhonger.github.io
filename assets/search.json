@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "LDAP 集成之 OpenVPN 篇",
+      "tags"     : "LDAP OpenVPN",
+      "url"      : "/tech/webmaster/ldap-openvpn.html"
+    } ,
+  
+    {
+      "title"    : "LDAP 集成之 Squid 篇",
+      "tags"     : "LDAP Squid",
+      "url"      : "/tech/webmaster/ldap-squid.html"
+    } ,
+  
+    {
       "title"    : "内网私有域名解析",
       "tags"     : "域名解析 DNS 私有域名 内网",
       "url"      : "/tech/webmaster/internal-dns.html"

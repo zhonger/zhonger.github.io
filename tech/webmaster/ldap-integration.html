@@ -250,13 +250,13 @@
                 <use xlink:href="#icon-words"></use>
               </svg>
               
-              本文总共  4.6k  字
+              本文总共  4.9k  字
             </span>
             <span class="post-meta-item">
               <svg class="icon time" aria-hidden="true">
                 <use xlink:href="#icon-time"></use>
               </svg>
-              阅读全文大约需要 14 分钟
+              阅读全文大约需要 15 分钟
             </span>
             
               <span class="post-meta-item">
@@ -459,11 +459,37 @@
   <li><a href="./ldap-dokuwiki.html">《LDAP 集成之 Dokuwiki 篇》</a></li>
   <li><a href="./ldap-squid.html">《LDAP 集成之 Squid 篇》</a></li>
   <li><a href="./ldap-openvpn.html">《LDAP 集成之 OpenVPN 篇》</a></li>
-  <li><a href="./ldap-nexus3.html">《LDAP 集成之 Nexus3 篇》</a></li>
+  <li>
+<a href="./ldap-nexus3.html">《LDAP 集成之 Nexus3 篇》</a>(待完成)</li>
   <li><a href="./ldap-apache.html">《LDAP 集成之 Apache 篇》</a></li>
-  <li><a href="./ldap-nginx.html">《LDAP 集成之 Nginx 篇》</a></li>
+  <li>
+<a href="./ldap-nginx.html">《LDAP 集成之 Nginx 篇》</a>(待完成)</li>
 </ul>
 
+<h2 id="问题解决">问题解决</h2>
+
+<p>(2022年9月28日补充)</p>
+
+<div class="premonition error"> <div class="header"> <svg class="icon error" aria-hidden="true"> <use xlink:href="#icon-error"></use> </svg> <div class="title"> 问题 </div> </div> <div class="content"> <p><strong>问题描述</strong>：使用 Nginx 代理 Keycloak 时访问登录页面一直加载中怎么办？</p>
+
+
+
+ </div> </div>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 解决办法 </div> </div> <div class="content"> <p><strong>解决办法</strong>：这主要是因为 Keycoak 默认配置是无代理模式。如果使用 Nginx 代理，需要在 docker-compose.yml 的 environment 里面加上配置 <code class="language-plaintext highlighter-rouge">PROXY_ADDRESS_FORWARDING: "true"</code> 后重启服务。</p>
+
+
+
+ </div> </div>
+<div class="premonition error"> <div class="header"> <svg class="icon error" aria-hidden="true"> <use xlink:href="#icon-error"></use> </svg> <div class="title"> 问题 </div> </div> <div class="content"> <p><strong>问题描述</strong>：为什么部署的 Keycloak 没有 User Profile 功能呢？</p>
+
+
+
+ </div> </div>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 解决办法 </div> </div> <div class="content"> <p><strong>解决办法</strong>：Keycloak 默认只开启稳定的特性，像 User Profile 之类的都是预览特性。如果想要开启预览特性，需要加上配置 <code class="language-plaintext highlighter-rouge">JAVA_OPTS_APPEND: "-Dkeycloak.profile=preview"</code> 后重启服务。</p>
+
+
+
+ </div> </div>
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
@@ -485,7 +511,7 @@
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#统一认证服务">统一认证服务</a></li><li><a href="#统一认证服务实践">统一认证服务实践</a><ul><li><a href="#keycloak-的部署">Keycloak 的部署</a></li><li><a href="#keycloak-的使用">Keycloak 的使用</a><ul><li><a href="#国际化设置">国际化设置</a></li><li><a href="#连接-ldap">连接 LDAP</a></li><li><a href="#用户密码策略">用户密码策略</a></li><li><a href="#otp-验证">OTP 验证</a></li></ul></li></ul></li><li><a href="#ldap-直接集成应用">LDAP 直接集成应用</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#统一认证服务">统一认证服务</a></li><li><a href="#统一认证服务实践">统一认证服务实践</a><ul><li><a href="#keycloak-的部署">Keycloak 的部署</a></li><li><a href="#keycloak-的使用">Keycloak 的使用</a><ul><li><a href="#国际化设置">国际化设置</a></li><li><a href="#连接-ldap">连接 LDAP</a></li><li><a href="#用户密码策略">用户密码策略</a></li><li><a href="#otp-验证">OTP 验证</a></li></ul></li></ul></li><li><a href="#ldap-直接集成应用">LDAP 直接集成应用</a></li><li><a href="#问题解决">问题解决</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       
