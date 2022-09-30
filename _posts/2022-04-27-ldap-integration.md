@@ -176,9 +176,25 @@ services:
 - [《LDAP 集成之 Dokuwiki 篇》](./ldap-dokuwiki.html)
 - [《LDAP 集成之 Squid 篇》](./ldap-squid.html)
 - [《LDAP 集成之 OpenVPN 篇》](./ldap-openvpn.html)
-- [《LDAP 集成之 Nexus3 篇》](./ldap-nexus3.html)
+- [《LDAP 集成之 Nexus3 篇》](./ldap-nexus3.html)(待完成)
 - [《LDAP 集成之 Apache 篇》](./ldap-apache.html)
-- [《LDAP 集成之 Nginx 篇》](./ldap-nginx.html)
+- [《LDAP 集成之 Nginx 篇》](./ldap-nginx.html)(待完成)
+
+## 问题解决
+
+(2022年9月28日补充)
+
+> error "问题"
+> **问题描述**：使用 Nginx 代理 Keycloak 时访问登录页面一直加载中怎么办？
+
+> info "解决办法"
+> **解决办法**：这主要是因为 Keycoak 默认配置是无代理模式。如果使用 Nginx 代理，需要在 docker-compose.yml 的 environment 里面加上配置 `PROXY_ADDRESS_FORWARDING: "true"` 后重启服务。
+
+> error "问题"
+> **问题描述**：为什么部署的 Keycloak 没有 User Profile 功能呢？
+
+> info "解决办法"
+> **解决办法**：Keycloak 默认只开启稳定的特性，像 User Profile 之类的都是预览特性。如果想要开启预览特性，需要加上配置 `JAVA_OPTS_APPEND: "-Dkeycloak.profile=preview"` 后重启服务。
 
 ## 参考资料
 
