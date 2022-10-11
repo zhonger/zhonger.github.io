@@ -147,3 +147,6 @@ sudo openvpn --config oc-vpn.example.com.ovpn
 
 - [wheelybird/openvpn-ldap-otp](https://github.com/wheelybird/openvpn-server-ldap-otp)
 - [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn)
+
+> note "提示"
+> 我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：[加入链接](https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn)。
