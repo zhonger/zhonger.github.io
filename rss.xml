@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Fri, 30 Sep 2022 13:23:58 +0900</pubDate>
-    <lastBuildDate>Fri, 30 Sep 2022 13:23:58 +0900</lastBuildDate>
+    <pubDate>Tue, 11 Oct 2022 19:44:42 +0900</pubDate>
+    <lastBuildDate>Tue, 11 Oct 2022 19:44:42 +0900</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -150,6 +150,12 @@ key-direction 1
   &lt;li&gt;&lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/kylemanna/docker-openvpn&quot;&gt;kylemanna/docker-openvpn&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：&lt;a href=&quot;https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn&quot;&gt;加入链接&lt;/a&gt;。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
 </description>
         <pubDate>Wed, 28 Sep 2022 15:04:00 +0900</pubDate>
         <link>https://lisz.me/tech/webmaster/ldap-openvpn.html</link>
