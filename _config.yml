@@ -145,6 +145,19 @@ extlinks:
 # Mermaid
 mermaid: true
 
+# Webpusher
+webpusher: BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc
+
+# Foreverblog
+foreverblog: true
+
+# Wormhole
+wormhole: true
+
+# Alive time
+alivetime: true
+alivestart: "08/08/2015"
+
 # Plugins
 # plugins: [jekyll-paginate-v2, jekyll-feed, jekyll-sitemap, premonition]
 

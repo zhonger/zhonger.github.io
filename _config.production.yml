@@ -62,6 +62,8 @@ comments:
   disqus_url: 'https://zhonger.disqus.com/embed.js'
   waline: true
   waline_url: 'https://lisz-waline.deta.dev/'
+  waline_reaction: true
+  waline_locale: "{reaction0: '赞一个', reaction1: '踩一下', reaction2: '有点酷', reaction3: '看不懂', reaction4: '啥玩意', reaction5: '想睡觉'}"
 
 # Share
 social-share: true
@@ -146,6 +148,19 @@ extlinks:
 
 # Mermaid
 mermaid: true
+
+# Webpusher
+webpusher: BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc
+
+# Foreverblog
+foreverblog: true
+
+# Wormhole
+wormhole: true
+
+# Alive time
+alivetime: true
+alivestart: "08/08/2015"
 
 # Plugins
 # plugins: [jekyll-paginate-v2, jekyll-feed, jekyll-sitemap, premonition]
