@@ -28,6 +28,9 @@
     <meta property="post-date" content="2022-09-28 15:00:00 +0900" />
     
     
+    <meta name="alivestart" content="08/08/2015">
+    
+    
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
     <meta name="theme-color" content="#81BBFF" />
@@ -495,7 +498,7 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.13  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -509,6 +512,24 @@
   </section>
   
   
+  <section>
+    
+    本站已运行 <span class="alivetime"></span>
+    
+    
+    <br/>
+    
+    
+    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+    </a>
+    
+    
+    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+    </a>
+    
+  </section>
 </footer>
 <div class="cookie-tip">
   
@@ -603,6 +624,8 @@
               $(this).attr('data-src', $(this).attr('src')).removeAttr('src').addClass("lazyload").attr('src', baseurl + '/assets/img/loading.gif');
               var strA = "<a data-fancybox='gallery' ref='gallery' href='" + $(this).attr('data-src') + "' data-caption='" + $(this).attr('alt') + "'></a>";
               $(this).wrapAll(strA);
+              var caption = $(this)[0].alt;
+              $(this).parent().after('<span class="caption">' + caption + '</span>');
           });
 
           Fancybox.bind('[data-fancybox]', {
@@ -784,6 +807,9 @@ refer to:
             mermaid.init(undefined, $('.mermaid2'));
         });
     </script>
+ 
+  
+<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
  
 </body>
 

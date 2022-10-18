@@ -16,6 +16,9 @@
     <meta property="og:site_name" content="仲儿的自留地">
     <meta property="og:gray" content="false">
     
+    <meta name="alivestart" content="08/08/2015">
+    
+    
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
     <meta name="theme-color" content="#81BBFF" />
@@ -35,6 +38,7 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
@@ -651,158 +655,2455 @@
     </div>
 
     <aside class="g-sidebar-wrapper">
-        <div class="g-sidebar">
-            <section class="author-card">
-                <div class="avatar">
-                    <img src="/assets/img/profile.webp" alt="">
+    <div class="g-sidebar">
+        <section class="author-card">
+            <div class="avatar">
+                <img src="/assets/img/profile.webp" alt="">
+            </div>
+            <div class="author-name" rel="author">zhonger</div>
+            <div class="bio">
+                <p>Developer & Maintainer</p>
+            </div>
+            <div class="level">
+                <div class="level-item">
+                    <p class="heading">Posts</p>
+                    <a href="/archives.html">
+                        <p class="title">76</p>
+                    </a>
                 </div>
-                <div class="author-name" rel="author">zhonger</div>
-                <div class="bio">
-                    <p>Developer & Maintainer</p>
+                <div class="level-item">
+                    <p class="heading">Categories</p>
+                    <a href="/categories.html">
+                        <p class="title">16</p>
+                    </a>
                 </div>
-                <div class="level">
-                    <div class="level-item">
-                        <p class="heading">Posts</p>
-                        <a href="/archives.html">
-                            <p class="title">76</p>
-                        </a>
-                    </div>
-                    <div class="level-item">
-                        <p class="heading">Categories</p>
-                        <a href="/categories.html">
-                            <p class="title">16</p>
-                        </a>
-                    </div>
-                    <div class="level-item">
-                        <p class="heading">Tags</p>
-                        <a href="/tags.html">
-                            <p class="title">172</p>
-                        </a>
-                    </div>
+                <div class="level-item">
+                    <p class="heading">Tags</p>
+                    <a href="/tags.html">
+                        <p class="title">172</p>
+                    </a>
                 </div>
-                
-                <ul id="sns-links" class="sns-links">
-                    
-                    <li>
-                        <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-google-scholar"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-researchgate"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-ORCID"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="https://github.com/zhonger" target="_blank" aria-label="github">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-github"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-linkedin"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                    <li>
-                        <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-segmentfault"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    
-                </ul>
-                
-            </section>
-
+            </div>
             
-            <section class="tags-card">
+            <ul id="sns-links" class="sns-links">
+                
+                <li>
+                    <a href="https://scholar.google.com/citations?user=AUupIooAAAAJ" target="_blank" aria-label="google-scholar">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-google-scholar"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.researchgate.net/profile/Shengzhou-Li" target="_blank" aria-label="researchgate">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-researchgate"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://orcid.org/0000-0001-6973-3825" target="_blank" aria-label="ORCID">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-ORCID"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/zhonger" target="_blank" aria-label="github">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-github"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://www.linkedin.com/in/shengzhouli/" target="_blank" aria-label="linkedin">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-linkedin"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://segmentfault.com/u/wuwozhonger" target="_blank" aria-label="segmentfault">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-segmentfault"></use>
+                        </svg>
+                    </a>
+                </li>
+                
+            </ul>
+            
+        </section>
+
+        
+        
+        
+        <section class="tags-card">
+            <div class="links" rel="links">热门标签</div>
+            
+            
                 
                     
-                    <a href="/tags.html#gravatar" class="tag">gravatar</a>
                 
                     
-                    <a href="/tags.html#wordpress" class="tag">wordpress</a>
                 
                     
-                    <a href="/tags.html#SSH%E7%99%BB%E5%BD%95" class="tag">SSH登录</a>
                 
                     
-                    <a href="/tags.html#%E8%BD%AC%E8%BD%BD" class="tag">转载</a>
                 
                     
-                    <a href="/tags.html#%E5%86%99%E4%BD%9C" class="tag">写作</a>
                 
                     
-                    <a href="/tags.html#%E9%9A%8F%E7%AC%94" class="tag">随笔</a>
                 
                     
-                    <a href="/tags.html#%E8%AF%97" class="tag">诗</a>
                 
                     
-                    <a href="/tags.html#windows" class="tag">windows</a>
                 
                     
-                    <a href="/tags.html#composer" class="tag">composer</a>
                 
                     
-                    <a href="/tags.html#laravel" class="tag">laravel</a>
                 
                     
-                    <a href="/tags.html#ubuntu" class="tag">ubuntu</a>
                 
                     
-                    <a href="/tags.html#nodejs" class="tag">nodejs</a>
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
                 
                     
                         
-            </section>
-            
-
-            
-            <section class="tags-card">
-                <div class="links" rel="links">Links</div>
+                        
+                        <a href="/tags.html#Ubuntu" class="tag">Ubuntu<sup>10</sup></a>
+                    
                 
-                    <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer"> Kala Search </a>
+                    
                 
-                    <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer"> 个人导航 </a>
+                    
                 
-            </section>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
             
-
-        </div>
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#blog" class="tag">blog<sup>8</sup></a>
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#jekyll" class="tag">jekyll<sup>8</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#Docker" class="tag">Docker<sup>7</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#free" class="tag">free<sup>7</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#LDAP" class="tag">LDAP<sup>7</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#docker" class="tag">docker<sup>6</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#github" class="tag">github<sup>6</sup></a>
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#static" class="tag">static<sup>6</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#ubuntu" class="tag">ubuntu<sup>5</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#Nextcloud" class="tag">Nextcloud<sup>4</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                        <a href="/tags.html#%E4%B8%BB%E9%A2%98" class="tag">主题<sup>4</sup></a>
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                        
+                        
+                            
+                
+                    
+        </section>
+        
 
         
-        <div class="search-card">
-            <input id="search_input" type="text" placeholder="Search..." autocomplete="off">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-search"></use>
-            </svg>
-            <div class="search_result"></div>
-        </div>
+        <section class="tags-card">
+            <div class="links" rel="links">Links</div>
+            
+                <a href="https://kalasearch.cn" target="_blank" class="tag" rel="noreferrer"> Kala Search </a>
+            
+                <a href="https://nav.lisz.me" target="_blank" class="tag" rel="noreferrer"> 个人导航 </a>
+            
+        </section>
         
 
-    </aside>
+        <section class="tags-card">
+            
+            <div class="links">最近更新</div>
+            <ul class="latest-articles">
+                
+                    <li>
+                        <p class="latest-title">
+                            <a href="/tech/webmaster/ldap-openvpn.html"> LDAP 集成之 OpenVPN 篇 </a>
+                        </p>
+                        <span class="latest-date">
+                            
+                              2022-09-28 
+                            
+                        </span>
+                    </li>   
+                
+                    <li>
+                        <p class="latest-title">
+                            <a href="/tech/webmaster/ldap-squid.html"> LDAP 集成之 Squid 篇 </a>
+                        </p>
+                        <span class="latest-date">
+                            
+                              2022-09-28 
+                            
+                        </span>
+                    </li>   
+                
+                    <li>
+                        <p class="latest-title">
+                            <a href="/tech/webmaster/internal-dns.html"> 内网私有域名解析 </a>
+                        </p>
+                        <span class="latest-date">
+                            
+                              2022-08-04 
+                            
+                        </span>
+                    </li>   
+                
+            </ul>
+
+        </section>
+
+    </div>
+
+    
+    <div class="search-card">
+        <input id="search_input" type="text" placeholder="Search..." autocomplete="off">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-search"></use>
+        </svg>
+        <div class="search_result"></div>
+    </div>
+    
+
+</aside>
 
 </main>
 
@@ -818,7 +3119,7 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.13  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -832,6 +3133,24 @@
   </section>
   
   
+  <section>
+    
+    本站已运行 <span class="alivetime"></span>
+    
+    
+    <br/>
+    
+    
+    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+    </a>
+    
+    
+    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+    </a>
+    
+  </section>
 </footer>
 <div class="cookie-tip">
   
@@ -885,6 +3204,7 @@
     <script src="/assets/js/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
     <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+    
     
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -960,5 +3280,34 @@ refer to:
         });
     </script>
 
+    
+<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
+ 
+    
+
+<script>
+    $(document).ready(function(){
+    
+
+    if($("#comments-switch").length > 0){
+        var comment_status = $("#cmn-toggle-4")[0].checked;
+        if(comment_status){
+        $("#waline").addClass("active");
+        }else {
+        $("#disqus_thread").addClass("active");
+        }
+        $("#cmn-toggle-4").click(function(){
+        $("#disqus_thread").toggleClass("active");
+        $("#waline").toggleClass("active");
+        })
+    }else {
+        if($("#disqus_thread").length > 0) {
+        $("#disqus_thread").addClass("active");
+        }else if($("#waline").length > 0) {
+        $("#waline").addClass("active");
+        }
+    }
+    })
+</script>     
 </body>
 </html>

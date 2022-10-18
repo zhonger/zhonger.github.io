@@ -16,6 +16,9 @@
     <meta property="og:site_name" content="仲儿的自留地">
     <meta property="og:gray" content="false">
     
+    <meta name="alivestart" content="08/08/2015">
+    
+    
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
     <meta name="theme-color" content="#81BBFF" />
@@ -35,6 +38,7 @@
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
@@ -9253,7 +9257,7 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.12  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.13  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
@@ -9267,6 +9271,24 @@
   </section>
   
   
+  <section>
+    
+    本站已运行 <span class="alivetime"></span>
+    
+    
+    <br/>
+    
+    
+    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+    </a>
+    
+    
+    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+    </a>
+    
+  </section>
 </footer>
 <div class="cookie-tip">
   
@@ -9320,6 +9342,7 @@
     <script src="/assets/js/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
     <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+    
     
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -9395,5 +9418,34 @@ refer to:
         });
     </script>
 
+    
+<!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
+ 
+    
+
+<script>
+    $(document).ready(function(){
+    
+
+    if($("#comments-switch").length > 0){
+        var comment_status = $("#cmn-toggle-4")[0].checked;
+        if(comment_status){
+        $("#waline").addClass("active");
+        }else {
+        $("#disqus_thread").addClass("active");
+        }
+        $("#cmn-toggle-4").click(function(){
+        $("#disqus_thread").toggleClass("active");
+        $("#waline").toggleClass("active");
+        })
+    }else {
+        if($("#disqus_thread").length > 0) {
+        $("#disqus_thread").addClass("active");
+        }else if($("#waline").length > 0) {
+        $("#waline").addClass("active");
+        }
+    }
+    })
+</script>     
 </body>
 </html>
