@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "集群动态环境管理神器 Modules",
+      "tags"     : "Linux 集群 Cluster Modules 软件环境",
+      "url"      : "/tech/webmaster/modules.html"
+    } ,
+  
+    {
       "title"    : "LDAP 集成之 OpenVPN 篇",
       "tags"     : "LDAP OpenVPN",
       "url"      : "/tech/webmaster/ldap-openvpn.html"

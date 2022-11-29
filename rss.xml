@@ -5,9 +5,220 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 18 Oct 2022 14:05:47 +0900</pubDate>
-    <lastBuildDate>Tue, 18 Oct 2022 14:05:47 +0900</lastBuildDate>
-    <generator>Jekyll v4.2.2</generator>
+    <pubDate>Tue, 29 Nov 2022 18:02:37 +0900</pubDate>
+    <lastBuildDate>Tue, 29 Nov 2022 18:02:37 +0900</lastBuildDate>
+    <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>集群动态环境管理神器 Modules</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;div class=&quot;premonition citation&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon citation&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-citation&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  Modules 包是一款简化 shell 初始化的工具，允许用户在会话期间使用模块文件轻松切换环境。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;div class=&quot;ref&quot;&gt; ------ Environment Modules 官网 &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;  在高性能集群或者超算中，我们可以经常看到 Modules 的身影。它可以帮助我们轻松加载运行程序所需的各类环境，比如说笔者之前写过的第一性原理计算软件 CONQUEST 的运行，就需要包括 Intel OneAPI HPCKit、FFTW3、LibXC 在内的多种环境；又比如说运行大规模的机器学习模型时，可能需要 Python、GPU 环境和 PyTorch 等依赖库。&lt;/p&gt;
+
+&lt;p&gt;  由于集群往往是面向很多人服务的，如果管理员将软件安装到全局环境，则只能安装某个软件的某个特定版本，而不能同时为不同的用户提供所需的同款软件的不同版本。举个例子，笔者编写的代码只能在 Python 3.10 环境下运行，而其他用户编写的代码所支持的 Python 版本是 3.0，那么可能最简单的解决方法是笔者自行编译一个 Python 3.10 的环境，然后利用 PATH 等变量的配置来提升优先级。或许之后有一天，另外一个用户也要使用 Python 3.10 环境，那么是不是让他再自行编译配置一遍呢？哈哈哈，听起来有点无奈，但是&lt;strong&gt;千万不要高估集群的使用用户&lt;/strong&gt;，可能自行编译并配置 Python 3.10 对他们来说也有点困难。因此，Modules 成为了集群动态管理软件环境的最佳选择。集群管理员可以预先编译和配置好各种环境的各种版本，用户使用时只需要执行类似 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module load py/3.10.6&lt;/code&gt; 的命令就可以轻松加载 Python 3.10.6 环境。&lt;/p&gt;
+
+&lt;p&gt;  Modules 所支持的模块不仅仅可以是编程语言的多版本，还可以是其他任意的基础环境，比如说 gcc、openmpi 等编译环境。这样一来，不仅可以为用户提供足够的编程环境直接使用，还可以为一些想要自行编译运行环境的用户提供了便利。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;源码编译安装-modules&quot;&gt;源码编译安装 Modules&lt;/h3&gt;
+
+&lt;p&gt;  Modules 可以在 Linux、Windows、MacOS 任一操作系统上安装运行，这里仅介绍类 Unix 操作系统下的编译安装过程。由于 Modules 需要使用 tcl 工具来解析 modulefiles，所以系统必须预先安装 tcl 及其开发者库。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 根据实际情况三者选其一&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Debian/Ubuntu 等 APT 系列操作系统上安装 tcl&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; tcl tcl-dev
+&lt;span class=&quot;c&quot;&gt;# CentOS 等 YUM 系列操作系统上安装 tcl&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; tcl tcl-devel
+&lt;span class=&quot;c&quot;&gt;# MacOS 操作系统上安装 tcl （需有 brew 工具）&lt;/span&gt;
+brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;tcl-tk
+
+&lt;span class=&quot;c&quot;&gt;# 下载源代码并解压&lt;/span&gt;
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://github.com/cea-hpc/modules/releases/download/v5.1.1/modules-5.1.1.tar.gz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xfz modules-5.1.1.tar.gz
+
+&lt;span class=&quot;c&quot;&gt;# 创建安装目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /opt/modules
+
+&lt;span class=&quot;c&quot;&gt;# 进入目录并配置安装目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;modules-5.1.1
+./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/modules
+&lt;span class=&quot;c&quot;&gt;# MacOS 可能需要如下另外指定 tclConfig.sh 文件所在的位置&lt;/span&gt;
+./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/modules &lt;span class=&quot;nt&quot;&gt;--with-tcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/homebrew/opt/tcl-tk/lib
+
+&lt;span class=&quot;c&quot;&gt;# 编译并安装到 /opt/modules 目录&lt;/span&gt;
+make &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;使-modules-生效&quot;&gt;使 Modules 生效&lt;/h3&gt;
+
+&lt;p&gt;  并非是编译完了之后就可以直接使用 Modules，还有至关重要的一步–&lt;strong&gt;添加生效命令&lt;/strong&gt;。首先需要确认当前使用的 Shell 是什么，一般来说默认是 Bash，当然也有 Zsh 等等。然后，在对应的 Shell 配置文件中增加一行生效命令。操作如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 确认当前使用的 Shell&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$SHELL&lt;/span&gt;
+/bin/zsh
+
+&lt;span class=&quot;c&quot;&gt;# 查看 Modules 支持的 Shell&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/modules/init
+bash            cmake           fish            ksh             lisp            profile.csh     python.py       ruby.rb         tcl             tcsh_completion zsh-functions
+bash_completion csh             fish_completion ksh-functions   perl.pm         profile.sh      r.R             sh              tcsh            zsh
+&lt;span class=&quot;c&quot;&gt;# 如上所示，大部分流行的 Shell 都在支持列表中&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 使 Modules 生效&lt;/span&gt;
+vim ~/.zshrc
+&lt;span class=&quot;c&quot;&gt;# 添加以下内容&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /opt/modules/init/zsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;源码编译安装-tcl&quot;&gt;源码编译安装 tcl&lt;/h3&gt;
+
+&lt;p&gt;  Modules 的编译安装是不是很简单？不过如果 tcl 工具无法使用命令安装的话，就只能从源码编译安装，也比较方便，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载源码并解压&lt;/span&gt;
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://prdownloads.sourceforge.net/tcl/tcl8.6.12-src.tar.gz
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xfz tcl8.6.12-src.tar.gz
+
+&lt;span class=&quot;c&quot;&gt;# 创建安装目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; /opt/tcl
+
+&lt;span class=&quot;c&quot;&gt;# 进入目录并配置安装目录&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;tcl8.6.12/unix
+./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/tcl
+
+&lt;span class=&quot;c&quot;&gt;# 编译并安装&lt;/span&gt;
+make &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;modules-相关命令&quot;&gt;Modules 相关命令&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看所有可用模块&lt;/span&gt;
+module avail / module ava
+
+&lt;span class=&quot;c&quot;&gt;# 加载指定模块（支持同时加载多个模块）&lt;/span&gt;
+module load py/3.10.6 mpi
+
+&lt;span class=&quot;c&quot;&gt;# 查看已加载模块&lt;/span&gt;
+module list
+
+&lt;span class=&quot;c&quot;&gt;# 查看指定模块&lt;/span&gt;
+module show py/3.10.6
+
+&lt;span class=&quot;c&quot;&gt;# 添加自定义模块配置目录&lt;/span&gt;
+module use &lt;span class=&quot;nt&quot;&gt;--apend&lt;/span&gt; ~/opt/modulefiles
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;添加软件环境&quot;&gt;添加软件环境&lt;/h2&gt;
+
+&lt;h3 id=&quot;modulefiles-库&quot;&gt;Modulefiles 库&lt;/h3&gt;
+
+&lt;p&gt;  Modules 编译安装后默认会有一些环境，它们的配置文件都被存储在安装目录的 modulefiles 文件夹中，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;module ava
+&lt;span class=&quot;nt&quot;&gt;---------------------------&lt;/span&gt; /opt/modules/modulefiles &lt;span class=&quot;nt&quot;&gt;---------------------------&lt;/span&gt;
+dot  module-git  module-info  modules  null  use.own
+
+Key:
+modulepath
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/modules/modulefiles
+dot         module-git  module-info modules     null        use.own
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  一般来说，打算提供给所有用户的环境配置都可以放在这个目录里，这样任何用户都可以查看到。&lt;/p&gt;
+
+&lt;h3 id=&quot;modulefiles-模板&quot;&gt;Modulefiles 模板&lt;/h3&gt;
+
+&lt;p&gt;  这里我们可以把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use.own&lt;/code&gt; 文件作为模板来学习一下如何编写 Modulefiles 文件。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#%Module1.0#####################################################################&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;## use.own modulefile&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;##&lt;/span&gt;
+proc ModulesHelp &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module file will add &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;HOME/privatemodules to the&quot;&lt;/span&gt;
+    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;list of directories that the module command will search&quot;&lt;/span&gt;
+    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;for modules.  Place your own module files here.&quot;&lt;/span&gt;
+    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module, when loaded, will create this directory&quot;&lt;/span&gt;
+    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;if necessary.&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+module-whatis   &lt;span class=&quot;s2&quot;&gt;&quot;adds your own modulefiles directory to MODULEPATH&quot;&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;eval set&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; array get &lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;HOME &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;ownmoddir   &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/privatemodules
+
+&lt;span class=&quot;c&quot;&gt;# create directory if necessary&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; module-info mode load &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; file exists &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        file &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;null &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;open &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;/null w]
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;#%Module########################################################################&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;## null modulefile&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;proc ModulesHelp { } {&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module does absolutely nothing.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;It&apos;s meant simply as a place holder in your&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;dot file initialization.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;}&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
+        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;module-whatis   &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;does absolutely nothing&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+module use &lt;span class=&quot;nt&quot;&gt;--append&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  Modulefiles 文件一般符合以下规则：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Modulefiles 文件必须以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#%Module1.0&lt;/code&gt; 开头；&lt;/li&gt;
+  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proc ModulesHelp {}&lt;/code&gt; 函数来添加模块详细描述；&lt;/li&gt;
+  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-whatis&lt;/code&gt; 字段来添加一句话简短描述；&lt;/li&gt;
+  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eval set [ array get env HOME]&lt;/code&gt; 来获取系统变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$HOME&lt;/code&gt;；&lt;/li&gt;
+  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set ownmoddir&lt;/code&gt; 来定义变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ownmoddir&lt;/code&gt;；&lt;/li&gt;
+  &lt;li&gt;后续脚本可以根据需求进行添加内容。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;  这里先开个坑，后续打算补充 Modules 配置系列文章：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;modules-python.html&quot;&gt;《Modules 配置之 Python》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;modules-conda.html&quot;&gt;《Modules 配置之 Anaconda》&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;modules-intel.html&quot;&gt;《Modules 配置之 Intel OneAPI》&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://modules.readthedocs.io/en/latest/index.html&quot;&gt;Environment Modules 官方文档&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 26 Oct 2022 15:48:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/modules.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/modules.html</guid>
+        
+        <category>Linux</category>
+        
+        <category>集群</category>
+        
+        <category>Cluster</category>
+        
+        <category>Modules</category>
+        
+        <category>软件环境</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>LDAP 集成之 OpenVPN 篇</title>
@@ -1820,275 +2031,6 @@ ProxyPass /foo https://foo.example.com
         <category>加速</category>
         
         <category>Accelerate</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>GPG：为你的 Git 提交记录加一把锁</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  GPG，全称 GNU Privacy Guard，也可以写成 GnuPG。它是一款免费开源的加密软件，也是不开源不免费的 PGP（Pretty Good Privacy）的替代品，有关详情可以查看参考资料。由于 GPG 可以用于签名或者加密，所以在文件加密、邮件加密、代码签名等方面应用较多。&lt;/p&gt;
-
-&lt;h3 id=&quot;邮件加密&quot;&gt;邮件加密&lt;/h3&gt;
-
-&lt;p&gt;  用过 Gmail 的同学可能看到过像下面这样不同的安全性信息。第一幅图是在没有以 SSL 方式与邮件服务器连接发送的时候，Gmail 会将邮件的安全性等级认定为最低的&lt;strong&gt;未加密&lt;/strong&gt;级别。第二幅图是正常以 SSL 方式与邮件服务器连接发送时，Gmail 验证了 SSL 证书与邮送域一致并认定为&lt;strong&gt;标准加密&lt;/strong&gt;的安全性等级。第三幅图是当我们使用 GPG 给邮件进行加密时，Gmail 会同时收到一个签名公钥的附件。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oKV4nd.webp&quot; alt=&quot;未加密邮件 Uncertified mail&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/T4UqNm.webp&quot; alt=&quot;标准加密邮件 Normal certified mail&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/Ocaj6f.webp&quot; alt=&quot;GPG 加密邮件 GPG certified mail&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  这里看起来可能有点奇怪，为什么 GPG 加密的邮件和一般的标准加密邮件除了附件没有别的差别？实际上，我们如果想要给对方发一份 GPG 加密的邮件是需要用对方的 GPG 公钥来加密邮件内容的。当对方收到发送的 GPG 加密邮件时会用自己的私钥进行解密，从而获知加密邮件的内容。也就是说，上面的第三幅图并非是真正的 GPG 加密的邮件。第三幅图是作者用私钥签名的邮件，收件人可以用 keyserver 上查询到的公钥来验证邮件内容是否真的来自于发件人。&lt;/p&gt;
-
-&lt;h3 id=&quot;代码签名&quot;&gt;代码签名&lt;/h3&gt;
-
-&lt;p&gt;  相比邮件加密而言，GPG 用于代码签名则正好相反。在代码签名中，我们也像上面第三幅图那样使用私钥为每一次 commit 签名。而代码的使用者可以根据作者公布的公钥对代码内容进行验证，从而确保代码是来自作者本人。苹果开发者证书、Google Play 开发者证书实际上也是起到了这样一个核验代码作者身份的作用。&lt;/p&gt;
-
-&lt;h3 id=&quot;git-的漏洞&quot;&gt;Git 的“漏洞”&lt;/h3&gt;
-
-&lt;p&gt;  在 Git 提交 commit 之前，Git 会要求我们设定好 username 和 email（类似下面）。但是如果我们不设置成自己的 github username 和 email 会怎么样呢？其实不会怎么样，只是 Github 不会把这些 commit 算在你头上，而是算在了你伪造的用户头上。如果我们想要伪装成某位业界大咖的 github 账户为项目提交代码，似乎在理论上也没有什么不可以的。在参考资料四中，作者做了一些示例的尝试，发现“只要知道邮箱，就可以用他人的名义提交 commit”。但说到底，这种方式是不道德的，且没有任何实质意义的。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; user.name &lt;span class=&quot;s2&quot;&gt;&quot;zhonger&quot;&lt;/span&gt;
-git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; user.email &lt;span class=&quot;s2&quot;&gt;&quot;zhonger@live.cn&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  因此，为了使代码更加可信、确保是由作者本人提交的，Github 等代码托管平台纷纷支持了 GPG 签名。因为 GPG 公钥和私钥是 RSA 非对称加密生成的，所以理论上是不存在被伪造或反编码风险的。和从 GPG 密钥服务器中的公钥查询验证不同，Github 等代码托管平台只信任由作者本人在设置中配置的 GPG 公钥，与只信任配置的 SSH 公钥访问代码类似。&lt;/p&gt;
-
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;h3 id=&quot;安装-gpg&quot;&gt;安装 GPG&lt;/h3&gt;
-
-&lt;p&gt;  在不同的平台上都已经提供了 GPG，大部分只需要一条命令即可完成安装。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# MacOS&lt;/span&gt;
-brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;gpg
-
-&lt;span class=&quot;c&quot;&gt;# Debian, Ubuntu&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; gnupg
-
-&lt;span class=&quot;c&quot;&gt;# CentOS&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; gnupg
-
-&lt;span class=&quot;c&quot;&gt;# Windows&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 推荐使用 WinGPG，下载地址为 https://scand.com/products/wingpg/&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Archlinux&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; gnupg
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;验证安装&quot;&gt;验证安装&lt;/h3&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gpg &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;                                                        
-gpg &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GnuPG&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2.3.6
-libgcrypt 1.10.1
-Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2021 Free Software Foundation, Inc.
-License GNU GPL-3.0-or-later &amp;lt;https://gnu.org/licenses/gpl.html&amp;gt;
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-Home: /Users/zhonger/.gnupg
-支持的算法：
-公钥： RSA, ELG, DSA, ECDH, ECDSA, EDDSA
-密文： IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
-    CAMELLIA128, CAMELLIA192, CAMELLIA256
-AEAD: EAX, OCB
-散列： SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
-压缩：  不压缩, ZIP, ZLIB, BZIP2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;生成密钥&quot;&gt;生成密钥&lt;/h3&gt;
-
-&lt;p&gt;  验证安装成功后，即可使用以下命令生成字母的密钥。如下所示，我们可以很简单地得到一对 GPG 密钥。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;gpg &lt;span class=&quot;nt&quot;&gt;--full-generate-key&lt;/span&gt;                                                       
-gpg &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GnuPG&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2.3.6&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Copyright &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 2021 Free Software Foundation, Inc.
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-请选择您要使用的密钥类型：
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; RSA 和 RSA
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; DSA 和 Elgamal
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; DSA（仅用于签名）
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; RSA（仅用于签名）
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;9&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ECC（签名和加密） &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;默认&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ECC（仅用于签名）
- （14）卡中现有密钥
-您的选择是？
-请选择您想要使用的椭圆曲线：
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Curve 25519 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;默认&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; NIST P-384
-   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Brainpool P-256
-您的选择是？
-请设定这个密钥的有效期限。
-         0 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 密钥永不过期
-      &amp;lt;n&amp;gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 密钥在 n 天后过期
-      &amp;lt;n&amp;gt;w &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 密钥在 n 周后过期
-      &amp;lt;n&amp;gt;m &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 密钥在 n 月后过期
-      &amp;lt;n&amp;gt;y &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 密钥在 n 年后过期
-密钥的有效期限是？&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-密钥永远不会过期
-这些内容正确吗？ &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;y/N&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; y
-
-GnuPG 需要构建用户标识以辨认您的密钥。
-
-真实姓名： zhonger
-电子邮件地址： zhonger@lisz.me
-注释： zhonger
-您选定了此用户标识：
-    “zhonger &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;zhonger&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;zhonger@lisz.me&amp;gt;”
-
-更改姓名（N）、注释（C）、电子邮件地址（E）或确定（O）/退出（Q）？ O
-我们需要生成大量的随机字节。在质数生成期间做些其他操作（敲打键盘
-、移动鼠标、读写硬盘之类的）将会是一个不错的主意；这会让随机数
-发生器有更好的机会获得足够的熵。
-gpg: 警告：服务器 ‘gpg-agent’ 比我们的版本更老 （2.2.34 &amp;lt; 2.3.6）
-gpg: 注意： 过时的服务器可能缺少重要的安全修复。
-gpg: 注意： 使用 “gpgconf &lt;span class=&quot;nt&quot;&gt;--kill&lt;/span&gt; all” 来重启他们。
-我们需要生成大量的随机字节。在质数生成期间做些其他操作（敲打键盘
-、移动鼠标、读写硬盘之类的）将会是一个不错的主意；这会让随机数
-发生器有更好的机会获得足够的熵。
-gpg: 吊销证书已被存储为‘/Users/zhonger/.gnupg/openpgp-revocs.d/612E7E8200528FEC0B8AC3C715F73C3703B9796C.rev’
-公钥和私钥已经生成并被签名。
-
-pub   ed25519 2022-06-01 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;SC]
-      612E7E8200528FEC0B8AC3C715F73C3703B9796C
-uid                      zhonger &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;zhonger&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;lt;zhonger@lisz.me&amp;gt;
-sub   cv25519 2022-06-01 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;E]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  这里生成密钥过程中要求选择的密钥类型、椭圆曲线、密钥有效期都采用了默认的选择（按 Enter 键即可），可根据个人需要自行选择。接下来的用户标识根据个人的 真实姓名（英文）、Github 邮件和用户名（注释），最后输入大写字母 O 结束设置。这一步骤结束后系统会提醒输入对私钥的密码，通常需要两次验证输入。至此成功生成了一对 GPG 密钥。&lt;/p&gt;
-
-&lt;h3 id=&quot;github-配置密钥&quot;&gt;Github 配置密钥&lt;/h3&gt;
-
-&lt;p&gt;  生成密钥之后我们就要将公钥添加到 Github上，并尝试使用私钥给代码签名并提交，验证是否被 Github 成功验证。&lt;/p&gt;
-
-&lt;h4 id=&quot;打印公钥&quot;&gt;打印公钥&lt;/h4&gt;
-
-&lt;p&gt;  如下命令所示，可以查询刚才生成密钥的公钥内容，并复制。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 列举本地所有密钥&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--list-keys&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 查询指定 id 密钥的公钥内容&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--export&lt;/span&gt; &amp;lt;GPG_KEY_ID》
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/RNvfUg.webp&quot; alt=&quot;列举密钥 List gpg keys&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/jFalNR.webp&quot; alt=&quot;查询公钥内容 Check public key content&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;添加-gpg-公钥&quot;&gt;添加 GPG 公钥&lt;/h4&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;https://github.com/settings/gpg/new&quot;&gt;https://github.com/settings/gpg/new&lt;/a&gt; 添加刚复制的 GPG 公钥内容，此处的 Title 可以任意命名，只要与已有的 Title 不重复即可。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/KSdbdY.webp&quot; alt=&quot;添加公钥 Add public key&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;查询已添加公钥&quot;&gt;查询已添加公钥&lt;/h4&gt;
-
-&lt;p&gt;  访问 &lt;a href=&quot;https://github.com/settings/keys&quot;&gt;https://github.com/settings/keys&lt;/a&gt; 即可看到刚才新添加的 GPG 公钥。这里可以看到，邮箱地址后面多了个 Unverified。这是因为这个邮箱是一个没有绑定 Github 账户的假邮箱，如果邮箱是验证过的，这里就不会有这个标识了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/wEchBn.webp&quot; alt=&quot;查询公钥 List all keys&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;为代码签名并提交&quot;&gt;为代码签名并提交&lt;/h3&gt;
-
-&lt;p&gt;  为了不用每次提交 commit 的时候都要手动声明使用某个 GPG 私钥进行签名，这里在 git 的全局配置中添加两个配置项：user.signingkey（签名密钥 ID）和 commit.gpgsign（全部提交使用 GPG 签名）。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; user.signingkey 612E7E8200528FEC0B8AC3C715F73C3703B9796C
-git config &lt;span class=&quot;nt&quot;&gt;--global&lt;/span&gt; commit.gpgsign &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  当我们设置好全局 Git 配置后，再次像平常那样执行 commit 提交时，就会弹出输入私钥密码的窗口，正常输入即可。&lt;/p&gt;
-
-&lt;h3 id=&quot;验证提交签名&quot;&gt;验证提交签名&lt;/h3&gt;
-
-&lt;p&gt;  虽然以上步骤已经完成了 GPG 为 commit 加一把锁，但是可能还不敢确认这把锁是否存在。这里有两种方法可以验证：一种是通过查询本地 git 来查看，另一种是通过 Github 在线查看。下面是使用个人的私钥（非本文示例密钥）分别采用两种方法在日常 git 项目中验证的效果图。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 本地验证提交签名&lt;/span&gt;
-git log &lt;span class=&quot;nt&quot;&gt;--show-signature&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/VelGL4.webp&quot; alt=&quot;本地验证提交签名 Verify the signature on local git&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/W6q65U.webp&quot; alt=&quot;Github 验证提交签名 Verify the signature on github&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;其他相关问题&quot;&gt;其他相关问题&lt;/h2&gt;
-
-&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题一 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如果想要导出私钥和公钥备份或迁移怎么办？&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  一般来说，GPG 密钥的保管非常重要。如果 GPG 密钥的私钥丢失或者被他人窃取，那么将会很危险，因为别人可以使用该私钥在任何文件或邮件上签上你名字。所以重装电脑之前一定要注意好备份，即使平时也可能需要将 GPG 密钥存在一个非本地且安全可靠的位置。以下命令可以实现公钥和私钥的导出。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gpg &lt;span class=&quot;nt&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; gpg.pub &lt;span class=&quot;nt&quot;&gt;--export&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--armor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; gpg.key &lt;span class=&quot;nt&quot;&gt;--export-secret-keys&lt;/span&gt; &amp;lt;GPG_SECRET_KEY&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题二 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如何吊销已生成或丢失的 GPG 密钥？&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  当 GPG 私钥发生丢失（公钥丢失不影响安全，找回即可）时，我们需要在 Github 删除对应的公钥，这样可以保证 Github 不会再承认丢失私钥签名的代码。当然，为了除 Github 外其他正常的邮件、文件不再信任该丢失的私钥签名，我们需要向 GPG 声明该 GPG 公钥吊销，从而达到吊销私钥的目的（并非是删除密钥本身，而是标记作废）。具体操作如以下命令所示。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 撤销密钥&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--output&lt;/span&gt; revoke.asc &lt;span class=&quot;nt&quot;&gt;--gen-revoke&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt;
-&lt;span class=&quot;c&quot;&gt;# 将撤销密钥导入本地钥匙环&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--import&lt;/span&gt; revoke.asc
-&lt;span class=&quot;c&quot;&gt;# 搜索 GPG 密钥服务器中的密钥&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpgp.org &lt;span class=&quot;nt&quot;&gt;--search-keys&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt; 
-&lt;span class=&quot;c&quot;&gt;# 撤销 GPG 密钥服务器上的密钥&lt;/span&gt;
-gpg &lt;span class=&quot;nt&quot;&gt;--keyserver&lt;/span&gt; hkps://keys.openpgp.org &lt;span class=&quot;nt&quot;&gt;--send-keys&lt;/span&gt; &amp;lt;GPG_KEY_ID&amp;gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;（2022年9月30日补充）&lt;/p&gt;
-
-&lt;div class=&quot;premonition error&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon error&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-error&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 问题三 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;如果不弹出输入密码框怎么办？&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 解答 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这主要是因为终端窗口加载的问题，如下所示添加对 GPG 使用的终端的声明，认定输入密码框的终端与现有终端一致，那么就会正常弹出输入密码框了。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GPG_TTY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tty&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ruanyifeng.com/blog/2013/07/gpg.html&quot;&gt;GPG 入门教程&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://hedzr.com/security/gpg/gpg-short-guide/&quot;&gt;GPG Short Guide&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://bynss.com/apple/587437.html&quot;&gt;怎样在 macOS 上加密您的电子邮件&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://medium.com/starbugs/how-to-fake-the-author-of-git-commit-f44453b70afc&quot;&gt;用 Git 這麼久了，你知道 commit 是可以偽造的嗎&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://tourcoder.com/gpg-on-macos/&quot;&gt;macOS 下使用 GPG&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 31 May 2022 16:44:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/gpg.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/gpg.html</guid>
-        
-        <category>GPG</category>
-        
-        <category>签名</category>
-        
-        <category>Git</category>
-        
-        <category>Signin</category>
-        
-        <category>代码安全</category>
-        
-        <category>Code security</category>
         
         
         <category>tech</category>

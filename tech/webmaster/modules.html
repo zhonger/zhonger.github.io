@@ -5,27 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>个人免费博客花式搭建指南 Cloudflare 篇 - 仲儿的自留地</title>
+    <title>集群动态环境管理神器 Modules - 仲儿的自留地</title>
     <meta name="author"  content="zhonger">
-    <meta name="description" content="个人免费博客花式搭建指南 Cloudflare 篇">
-    <meta name="keywords"  content="blog, free, static, hexo, jekyll, cloudflare, netlify, github">
+    <meta name="description" content="集群动态环境管理神器 Modules">
+    <meta name="keywords"  content="Linux, 集群, Cluster, Modules, 软件环境">
     <!-- Open Graph -->
-    <meta property="og:title" content="个人免费博客花式搭建指南 Cloudflare 篇 - 仲儿的自留地">
+    <meta property="og:title" content="集群动态环境管理神器 Modules - 仲儿的自留地">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lisz.me/tech/webmaster/start-blog-cloudflare.html">
+    <meta property="og:url" content="https://lisz.me/tech/webmaster/modules.html">
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="仲儿的自留地">
     <meta property="og:gray" content="false">
     
-    <meta property="og:previous_url" content="/tech/webmaster/start-blog-ftp.html">
     
-    
-    <meta property="og:next_url" content="/tech/webmaster/start-blog-netlify.html">
+    <meta property="og:next_url" content="/tech/webmaster/ldap-openvpn.html">
     
     <meta property="post-date-format" content="0">
     
-    <meta property="post-date" content="2021-04-08 17:18:00 +0900" />
+    <meta property="post-date" content="2022-10-26 15:48:00 +0900" />
     
     
     <meta name="alivestart" content="08/08/2015">
@@ -215,25 +213,19 @@
         <div class="post-tags">
           
             
-              <a href="/tags.html#blog" class="post-tag">blog</a>
+              <a href="/tags.html#Linux" class="post-tag">Linux</a>
             
-              <a href="/tags.html#free" class="post-tag">free</a>
+              <a href="/tags.html#%E9%9B%86%E7%BE%A4" class="post-tag">集群</a>
             
-              <a href="/tags.html#static" class="post-tag">static</a>
+              <a href="/tags.html#Cluster" class="post-tag">Cluster</a>
             
-              <a href="/tags.html#hexo" class="post-tag">hexo</a>
+              <a href="/tags.html#Modules" class="post-tag">Modules</a>
             
-              <a href="/tags.html#jekyll" class="post-tag">jekyll</a>
-            
-              <a href="/tags.html#cloudflare" class="post-tag">cloudflare</a>
-            
-              <a href="/tags.html#netlify" class="post-tag">netlify</a>
-            
-              <a href="/tags.html#github" class="post-tag">github</a>
+              <a href="/tags.html#%E8%BD%AF%E4%BB%B6%E7%8E%AF%E5%A2%83" class="post-tag">软件环境</a>
             
           
         </div>
-        <h1>个人免费博客花式搭建指南 Cloudflare 篇</h1>
+        <h1>集群动态环境管理神器 Modules</h1>
         <div class="post-meta">
           <span class="post-meta-item">
             <svg class="icon" aria-hidden="true">
@@ -241,13 +233,13 @@
             </svg>
             zhonger
           </span>
-          <time class="post-meta-item" datetime="21-04-08">
+          <time class="post-meta-item" datetime="22-10-26">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-calendar"></use>
             </svg>
             <span class="create-at"></span>
           </time>
-          <time class="post-meta-item" datetime="21-04-08">
+          <time class="post-meta-item" datetime="22-10-26">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-update"></use>
             </svg>
@@ -259,13 +251,13 @@
                 <use xlink:href="#icon-words"></use>
               </svg>
               
-              本文总共  730  字
+              本文总共  4.1k  字
             </span>
             <span class="post-meta-item">
               <svg class="icon time" aria-hidden="true">
                 <use xlink:href="#icon-time"></use>
               </svg>
-              阅读全文大约需要 3 分钟
+              阅读全文大约需要 12 分钟
             </span>
             
               <span class="post-meta-item">
@@ -283,7 +275,7 @@
               </svg>
               
                 
-                  封面图片由 <a href="https://unsplash.com/@malikskyds" target="_blank">Malik Skydsgaard</a> 提供
+                  封面图片由 <a href="https://unsplash.com/@adamrhodes" target="_blank">Adam Rhodes</a> 提供
                 
               
             </span>
@@ -292,12 +284,12 @@
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://i.luish.cc/cover/XMDCxb.webp') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://i.luish.cc/cover/OwRclX.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
       
-      <h2 class="post-subtitle">搭建一个属于自己的免费个人博客</h2>
+      <h2 class="post-subtitle">利用 Modules 动态管理集群中的基础软件环境</h2>
       
 
       
@@ -306,53 +298,203 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<p>  众所周知，Cloudflare 是一家世界知名的 CDN 网络提供商，其在 DDoS 保护、网页应用程序防火墙、域名服务器、内容分发网络等服务上都有非常优秀。2018 年 4 月 1 日，Cloudflare 与 ASNIC 联合推出了声称“隐私第一”的域名系统解析服务。之后的 11 月 11 日又推出了 1.1.1.1 解析器的手机应用程序、电脑应用程序。并且，Cloudflare 也一直在为 HTTP 协议规范、IPv6 推广部署等方面作出了贡献。Cloudflare 提供了基础的免费服务给广大用户，同时也带来了最新的 Web 服务体验，Cloudflare Pages 就是这样的一款产品。</p>
+<div class="premonition citation"> <div class="header"> <svg class="icon citation" aria-hidden="true"> <use xlink:href="#icon-citation"></use> </svg> </div> <div class="content"> <p>  Modules 包是一款简化 shell 初始化的工具，允许用户在会话期间使用模块文件轻松切换环境。</p>
 
-<h2 id="实现与评价">实现与评价</h2>
 
-<h3 id="cloudflare">Cloudflare</h3>
 
-<h4 id="登录">登录</h4>
+ </div> <div class="ref"> ------ Environment Modules 官网 </div> </div>
+<p>  在高性能集群或者超算中，我们可以经常看到 Modules 的身影。它可以帮助我们轻松加载运行程序所需的各类环境，比如说笔者之前写过的第一性原理计算软件 CONQUEST 的运行，就需要包括 Intel OneAPI HPCKit、FFTW3、LibXC 在内的多种环境；又比如说运行大规模的机器学习模型时，可能需要 Python、GPU 环境和 PyTorch 等依赖库。</p>
 
-<p>  访问 <a href="https://pages.cloudflare.com/" rel="nofollow" target="_blank" class="extlinks">Cloudflare Pages 官网</a>，点击 Sign Up 按钮使用 Cloudflare 账户登录。</p>
+<p>  由于集群往往是面向很多人服务的，如果管理员将软件安装到全局环境，则只能安装某个软件的某个特定版本，而不能同时为不同的用户提供所需的同款软件的不同版本。举个例子，笔者编写的代码只能在 Python 3.10 环境下运行，而其他用户编写的代码所支持的 Python 版本是 3.0，那么可能最简单的解决方法是笔者自行编译一个 Python 3.10 的环境，然后利用 PATH 等变量的配置来提升优先级。或许之后有一天，另外一个用户也要使用 Python 3.10 环境，那么是不是让他再自行编译配置一遍呢？哈哈哈，听起来有点无奈，但是<strong>千万不要高估集群的使用用户</strong>，可能自行编译并配置 Python 3.10 对他们来说也有点困难。因此，Modules 成为了集群动态管理软件环境的最佳选择。集群管理员可以预先编译和配置好各种环境的各种版本，用户使用时只需要执行类似 <code class="language-plaintext highlighter-rouge">module load py/3.10.6</code> 的命令就可以轻松加载 Python 3.10.6 环境。</p>
 
-<p><img src="https://i.luish.cc/blog/a0C23w.webp" alt="登录 Login"></p>
+<p>  Modules 所支持的模块不仅仅可以是编程语言的多版本，还可以是其他任意的基础环境，比如说 gcc、openmpi 等编译环境。这样一来，不仅可以为用户提供足够的编程环境直接使用，还可以为一些想要自行编译运行环境的用户提供了便利。</p>
 
-<h4 id="创建项目">创建项目</h4>
+<h2 id="实践">实践</h2>
 
-<p>  登录后点击<strong>创建项目</strong>按钮开始创建。</p>
+<h3 id="源码编译安装-modules">源码编译安装 Modules</h3>
 
-<p><img src="https://i.luish.cc/blog/s12Jkr.webp" alt="创建项目 Create project"></p>
+<p>  Modules 可以在 Linux、Windows、MacOS 任一操作系统上安装运行，这里仅介绍类 Unix 操作系统下的编译安装过程。由于 Modules 需要使用 tcl 工具来解析 modulefiles，所以系统必须预先安装 tcl 及其开发者库。</p>
 
-<p>  选择一个 Github 的项目，比如 zhonger/zhonger.github.io。</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 根据实际情况三者选其一</span>
+<span class="c"># Debian/Ubuntu 等 APT 系列操作系统上安装 tcl</span>
+<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> tcl tcl-dev
+<span class="c"># CentOS 等 YUM 系列操作系统上安装 tcl</span>
+<span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> tcl tcl-devel
+<span class="c"># MacOS 操作系统上安装 tcl （需有 brew 工具）</span>
+brew <span class="nb">install </span>tcl-tk
 
-<p><img src="https://i.luish.cc/blog/YwXaml.webp" alt="选择项目 Select project"></p>
+<span class="c"># 下载源代码并解压</span>
+wget <span class="nt">-c</span> https://github.com/cea-hpc/modules/releases/download/v5.1.1/modules-5.1.1.tar.gz
+<span class="nb">tar </span>xfz modules-5.1.1.tar.gz
 
-<p>  设置永久访问域名前缀，部署分支，以及所用的静态生成框架，然后点击<strong>保存并部署</strong>。</p>
+<span class="c"># 创建安装目录</span>
+<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/modules
 
-<p><img src="https://i.luish.cc/blog/Q3uTjI.webp" alt="设置域名前缀 Set domain prefix"></p>
+<span class="c"># 进入目录并配置安装目录</span>
+<span class="nb">cd </span>modules-5.1.1
+./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/modules
+<span class="c"># MacOS 可能需要如下另外指定 tclConfig.sh 文件所在的位置</span>
+./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/modules <span class="nt">--with-tcl</span><span class="o">=</span>/opt/homebrew/opt/tcl-tk/lib
 
-<h4 id="预览">预览</h4>
+<span class="c"># 编译并安装到 /opt/modules 目录</span>
+make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
+</code></pre></div></div>
 
-<p>  添加完成后等待完成构建与部署，可以看到目前绑定的域名。点击访问站点即可跳转预览</p>
+<h3 id="使-modules-生效">使 Modules 生效</h3>
 
-<p><img src="https://i.luish.cc/blog/t8ZdUt.webp" alt="预览 Preview"></p>
+<p>  并非是编译完了之后就可以直接使用 Modules，还有至关重要的一步–<strong>添加生效命令</strong>。首先需要确认当前使用的 Shell 是什么，一般来说默认是 Bash，当然也有 Zsh 等等。然后，在对应的 Shell 配置文件中增加一行生效命令。操作如下所示：</p>
 
-<h3 id="评价">评价</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 确认当前使用的 Shell</span>
+╰─<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$SHELL</span>
+/bin/zsh
 
-<p>  Cloudflare Pages 的部署步骤其实与 Netlify 大致上一致。从支持的功能上来讲，Cloudflare Pages 还是比较侧重于提供持续部署的能力，没有 Netlify 铺的面那么宽，但是也是只要是静态生成器都能完全支持。由于 Cloudflare 本身就是做 CDN 的，所以和 Netlify 在实现全球性部署的时候还是有不一样的地方的。由于 Cloudflare 的节点数量较多、网络线路较优，访问速度上可能会比 Netlify 好那么一点。不过，是否存在这样的差异还不得而知。</p>
+<span class="c"># 查看 Modules 支持的 Shell</span>
+╰─<span class="nv">$ </span><span class="nb">ls</span> /opt/modules/init
+bash            cmake           fish            ksh             lisp            profile.csh     python.py       ruby.rb         tcl             tcsh_completion zsh-functions
+bash_completion csh             fish_completion ksh-functions   perl.pm         profile.sh      r.R             sh              tcsh            zsh
+<span class="c"># 如上所示，大部分流行的 Shell 都在支持列表中</span>
+
+<span class="c"># 使 Modules 生效</span>
+vim ~/.zshrc
+<span class="c"># 添加以下内容</span>
+<span class="nb">source</span> /opt/modules/init/zsh
+</code></pre></div></div>
+
+<h3 id="源码编译安装-tcl">源码编译安装 tcl</h3>
+
+<p>  Modules 的编译安装是不是很简单？不过如果 tcl 工具无法使用命令安装的话，就只能从源码编译安装，也比较方便，如下所示：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载源码并解压</span>
+wget <span class="nt">-c</span> https://prdownloads.sourceforge.net/tcl/tcl8.6.12-src.tar.gz
+<span class="nb">tar </span>xfz tcl8.6.12-src.tar.gz
+
+<span class="c"># 创建安装目录</span>
+<span class="nb">sudo mkdir</span> /opt/tcl
+
+<span class="c"># 进入目录并配置安装目录</span>
+<span class="nb">cd </span>tcl8.6.12/unix
+./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/tcl
+
+<span class="c"># 编译并安装</span>
+make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
+</code></pre></div></div>
+
+<h3 id="modules-相关命令">Modules 相关命令</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看所有可用模块</span>
+module avail / module ava
+
+<span class="c"># 加载指定模块（支持同时加载多个模块）</span>
+module load py/3.10.6 mpi
+
+<span class="c"># 查看已加载模块</span>
+module list
+
+<span class="c"># 查看指定模块</span>
+module show py/3.10.6
+
+<span class="c"># 添加自定义模块配置目录</span>
+module use <span class="nt">--apend</span> ~/opt/modulefiles
+</code></pre></div></div>
+
+<h2 id="添加软件环境">添加软件环境</h2>
+
+<h3 id="modulefiles-库">Modulefiles 库</h3>
+
+<p>  Modules 编译安装后默认会有一些环境，它们的配置文件都被存储在安装目录的 modulefiles 文件夹中，如下所示：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>module ava
+<span class="nt">---------------------------</span> /opt/modules/modulefiles <span class="nt">---------------------------</span>
+dot  module-git  module-info  modules  null  use.own
+
+Key:
+modulepath
+
+╰─<span class="nv">$ </span><span class="nb">ls</span> /opt/modules/modulefiles
+dot         module-git  module-info modules     null        use.own
+</code></pre></div></div>
+
+<p>  一般来说，打算提供给所有用户的环境配置都可以放在这个目录里，这样任何用户都可以查看到。</p>
+
+<h3 id="modulefiles-模板">Modulefiles 模板</h3>
+
+<p>  这里我们可以把 <code class="language-plaintext highlighter-rouge">use.own</code> 文件作为模板来学习一下如何编写 Modulefiles 文件。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#%Module1.0#####################################################################</span>
+<span class="c">##</span>
+<span class="c">## use.own modulefile</span>
+<span class="c">##</span>
+proc ModulesHelp <span class="o">{</span> <span class="o">}</span> <span class="o">{</span>
+    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">This module file will add </span><span class="se">\$</span><span class="s2">HOME/privatemodules to the"</span>
+    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">list of directories that the module command will search"</span>
+    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">for modules.  Place your own module files here."</span>
+    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">This module, when loaded, will create this directory"</span>
+    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">if necessary."</span>
+<span class="o">}</span>
+
+module-whatis   <span class="s2">"adds your own modulefiles directory to MODULEPATH"</span>
+
+<span class="nb">eval set</span>  <span class="o">[</span> array get <span class="nb">env </span>HOME <span class="o">]</span>
+<span class="nb">set </span>ownmoddir   <span class="nv">$HOME</span>/privatemodules
+
+<span class="c"># create directory if necessary</span>
+<span class="k">if</span> <span class="o">[</span> module-info mode load <span class="o">]</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">{</span> <span class="o">!</span> <span class="o">[</span> file exists <span class="nv">$ownmoddir</span> <span class="o">]</span> <span class="o">}</span> <span class="o">{</span>
+        file <span class="nb">mkdir</span> <span class="nv">$ownmoddir</span>
+        <span class="nb">set </span>null <span class="o">[</span>open <span class="nv">$ownmoddir</span>/null w]
+        puts <span class="nv">$null</span> <span class="s2">"#%Module########################################################################"</span>
+        puts <span class="nv">$null</span> <span class="s2">"##"</span>
+        puts <span class="nv">$null</span> <span class="s2">"## null modulefile"</span>
+        puts <span class="nv">$null</span> <span class="s2">"##"</span>
+        puts <span class="nv">$null</span> <span class="s2">"proc ModulesHelp { } {"</span>
+        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">This module does absolutely nothing.</span><span class="se">\"</span><span class="s2">"</span>
+        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">It's meant simply as a place holder in your</span><span class="se">\"</span><span class="s2">"</span>
+        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">dot file initialization.</span><span class="se">\"</span><span class="s2">"</span>
+        puts <span class="nv">$null</span> <span class="s2">"}"</span>
+        puts <span class="nv">$null</span> <span class="s2">""</span>
+        puts <span class="nv">$null</span> <span class="s2">"module-whatis   </span><span class="se">\"</span><span class="s2">does absolutely nothing</span><span class="se">\"</span><span class="s2">"</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+module use <span class="nt">--append</span> <span class="nv">$ownmoddir</span>
+</code></pre></div></div>
+
+<p>  Modulefiles 文件一般符合以下规则：</p>
+
+<ul>
+  <li>Modulefiles 文件必须以 <code class="language-plaintext highlighter-rouge">#%Module1.0</code> 开头；</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">proc ModulesHelp {}</code> 函数来添加模块详细描述；</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">module-whatis</code> 字段来添加一句话简短描述；</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">eval set [ array get env HOME]</code> 来获取系统变量 <code class="language-plaintext highlighter-rouge">$HOME</code>；</li>
+  <li>使用 <code class="language-plaintext highlighter-rouge">set ownmoddir</code> 来定义变量 <code class="language-plaintext highlighter-rouge">ownmoddir</code>；</li>
+  <li>后续脚本可以根据需求进行添加内容。</li>
+</ul>
+
+<p>  这里先开个坑，后续打算补充 Modules 配置系列文章：</p>
+
+<ul>
+  <li><a href="modules-python.html">《Modules 配置之 Python》</a></li>
+  <li><a href="modules-conda.html">《Modules 配置之 Anaconda》</a></li>
+  <li><a href="modules-intel.html">《Modules 配置之 Intel OneAPI》</a></li>
+</ul>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://modules.readthedocs.io/en/latest/index.html" rel="nofollow" target="_blank" class="extlinks">Environment Modules 官方文档</a></li>
+</ul>
 
             <div class="post-copyright">
               <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
               <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
-              <p><span>本文标题：</span>《 个人免费博客花式搭建指南 Cloudflare 篇 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog-cloudflare.html">https://lisz.me/tech/webmaster/start-blog-cloudflare.html</a></p>
+              <p><span>本文标题：</span>《 集群动态环境管理神器 Modules 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/modules.html">https://lisz.me/tech/webmaster/modules.html</a></p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>Contents</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#cloudflare">Cloudflare</a><ul><li><a href="#登录">登录</a></li><li><a href="#创建项目">创建项目</a></li><li><a href="#预览">预览</a></li></ul></li><li><a href="#评价">评价</a></li></ul></li></ul>
+          <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#源码编译安装-modules">源码编译安装 Modules</a></li><li><a href="#使-modules-生效">使 Modules 生效</a></li><li><a href="#源码编译安装-tcl">源码编译安装 tcl</a></li><li><a href="#modules-相关命令">Modules 相关命令</a></li></ul></li><li><a href="#添加软件环境">添加软件环境</a><ul><li><a href="#modulefiles-库">Modulefiles 库</a></li><li><a href="#modulefiles-模板">Modulefiles 模板</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -429,29 +571,17 @@
       </section>
       <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-          <a href="/tech/webmaster/start-blog-ftp.html" class="read-next-link" aria-label="个人免费博客花式搭建指南 FTP 篇"></a>
-          <section>
-            <span>个人免费博客花式搭建指南 FTP 篇</span>
-            <p>前言</p>
-          </section>
-          
-          <div class="filter"></div>
-          <img src="https://i.luish.cc/cover/LagmRA.webp" alt="">
-          
-      </div>
-        
 
         
         <div class="read-next-item">
-          <a href="/tech/webmaster/start-blog-netlify.html" class="read-next-link" aria-label="个人免费博客花式搭建指南 Netlify 篇"></a>
+          <a href="/tech/webmaster/ldap-openvpn.html" class="read-next-link" aria-label="LDAP 集成之 OpenVPN 篇"></a>
             <section>
-              <span>个人免费博客花式搭建指南 Netlify 篇</span>
+              <span>LDAP 集成之 OpenVPN 篇</span>
               <p>前言</p>
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.luish.cc/cover/JUFXBQ.webp" alt="">
+            <img src="https://i.luish.cc/cover/tUQYGW.webp" alt="">
             
         </div>
         
@@ -653,7 +783,7 @@
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2021-04-08-start-blog-cloudflare.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-10-26-modules.md")
           .then((response) => {
             return response.json();
           })
