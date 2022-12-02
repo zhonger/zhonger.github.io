@@ -288,7 +288,7 @@
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://i.luish.cc/cover/skxyHS.webp') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://i.lisz.top/cover/skxyHS.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
@@ -308,9 +308,9 @@
 
 <p>  用过 Gmail 的同学可能看到过像下面这样不同的安全性信息。第一幅图是在没有以 SSL 方式与邮件服务器连接发送的时候，Gmail 会将邮件的安全性等级认定为最低的<strong>未加密</strong>级别。第二幅图是正常以 SSL 方式与邮件服务器连接发送时，Gmail 验证了 SSL 证书与邮送域一致并认定为<strong>标准加密</strong>的安全性等级。第三幅图是当我们使用 GPG 给邮件进行加密时，Gmail 会同时收到一个签名公钥的附件。</p>
 
-<p><img src="https://i.luish.cc/blog/oKV4nd.webp" alt="未加密邮件 Uncertified mail">
-<img src="https://i.luish.cc/blog/T4UqNm.webp" alt="标准加密邮件 Normal certified mail">
-<img src="https://i.luish.cc/blog/Ocaj6f.webp" alt="GPG 加密邮件 GPG certified mail"></p>
+<p><img src="https://i.lisz.top/blog/oKV4nd.webp" alt="未加密邮件 Uncertified mail">
+<img src="https://i.lisz.top/blog/T4UqNm.webp" alt="标准加密邮件 Normal certified mail">
+<img src="https://i.lisz.top/blog/Ocaj6f.webp" alt="GPG 加密邮件 GPG certified mail"></p>
 
 <p>  这里看起来可能有点奇怪，为什么 GPG 加密的邮件和一般的标准加密邮件除了附件没有别的差别？实际上，我们如果想要给对方发一份 GPG 加密的邮件是需要用对方的 GPG 公钥来加密邮件内容的。当对方收到发送的 GPG 加密邮件时会用自己的私钥进行解密，从而获知加密邮件的内容。也就是说，上面的第三幅图并非是真正的 GPG 加密的邮件。第三幅图是作者用私钥签名的邮件，收件人可以用 keyserver 上查询到的公钥来验证邮件内容是否真的来自于发件人。</p>
 
@@ -447,20 +447,20 @@ gpg <span class="nt">--list-keys</span>
 gpg <span class="nt">--armor</span> <span class="nt">--export</span> &lt;GPG_KEY_ID》
 </code></pre></div></div>
 
-<p><img src="https://i.luish.cc/blog/RNvfUg.webp" alt="列举密钥 List gpg keys">
-<img src="https://i.luish.cc/blog/jFalNR.webp" alt="查询公钥内容 Check public key content"></p>
+<p><img src="https://i.lisz.top/blog/RNvfUg.webp" alt="列举密钥 List gpg keys">
+<img src="https://i.lisz.top/blog/jFalNR.webp" alt="查询公钥内容 Check public key content"></p>
 
 <h4 id="添加-gpg-公钥">添加 GPG 公钥</h4>
 
 <p>  访问 <a href="https://github.com/settings/gpg/new" rel="nofollow" target="_blank" class="extlinks">https://github.com/settings/gpg/new</a> 添加刚复制的 GPG 公钥内容，此处的 Title 可以任意命名，只要与已有的 Title 不重复即可。</p>
 
-<p><img src="https://i.luish.cc/blog/KSdbdY.webp" alt="添加公钥 Add public key"></p>
+<p><img src="https://i.lisz.top/blog/KSdbdY.webp" alt="添加公钥 Add public key"></p>
 
 <h4 id="查询已添加公钥">查询已添加公钥</h4>
 
 <p>  访问 <a href="https://github.com/settings/keys" rel="nofollow" target="_blank" class="extlinks">https://github.com/settings/keys</a> 即可看到刚才新添加的 GPG 公钥。这里可以看到，邮箱地址后面多了个 Unverified。这是因为这个邮箱是一个没有绑定 Github 账户的假邮箱，如果邮箱是验证过的，这里就不会有这个标识了。</p>
 
-<p><img src="https://i.luish.cc/blog/wEchBn.webp" alt="查询公钥 List all keys"></p>
+<p><img src="https://i.lisz.top/blog/wEchBn.webp" alt="查询公钥 List all keys"></p>
 
 <h3 id="为代码签名并提交">为代码签名并提交</h3>
 
@@ -480,8 +480,8 @@ git config <span class="nt">--global</span> commit.gpgsign <span class="nb">true
 git log <span class="nt">--show-signature</span>
 </code></pre></div></div>
 
-<p><img src="https://i.luish.cc/blog/VelGL4.webp" alt="本地验证提交签名 Verify the signature on local git">
-<img src="https://i.luish.cc/blog/W6q65U.webp" alt="Github 验证提交签名 Verify the signature on github"></p>
+<p><img src="https://i.lisz.top/blog/VelGL4.webp" alt="本地验证提交签名 Verify the signature on local git">
+<img src="https://i.lisz.top/blog/W6q65U.webp" alt="Github 验证提交签名 Verify the signature on github"></p>
 
 <h2 id="其他相关问题">其他相关问题</h2>
 
@@ -639,7 +639,7 @@ gpg <span class="nt">--keyserver</span> hkps://keys.openpgp.org <span class="nt"
           </section>
           
           <div class="filter"></div>
-          <img src="https://i.luish.cc/cover/EBXSnv.webp" alt="">
+          <img src="https://i.lisz.top/cover/EBXSnv.webp" alt="">
           
       </div>
         
@@ -653,7 +653,7 @@ gpg <span class="nt">--keyserver</span> hkps://keys.openpgp.org <span class="nt"
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.luish.cc/cover/ugNxzD.webp" alt="">
+            <img src="https://i.lisz.top/cover/ugNxzD.webp" alt="">
             
         </div>
         

@@ -286,7 +286,7 @@
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://i.luish.cc/cover/ugNxzD.webp') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://i.lisz.top/cover/ugNxzD.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
@@ -363,63 +363,63 @@
 
 <p>  访问 <a href="http://127.0.0.1:8080/auth/realms/master/account/#/" rel="nofollow" target="_blank" class="extlinks">http://127.0.0.1:8080/auth/realms/master/account/#/</a> 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。</p>
 
-<p><img src="https://i.luish.cc/blog/I7z7ma.webp" alt="用户页 User Page"></p>
+<p><img src="https://i.lisz.top/blog/I7z7ma.webp" alt="用户页 User Page"></p>
 
-<p><img src="https://i.luish.cc/blog/8CLUoY.webp" alt="登录页 Login Page"></p>
+<p><img src="https://i.lisz.top/blog/8CLUoY.webp" alt="登录页 Login Page"></p>
 
 <p>  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。</p>
 
-<p><img src="https://i.luish.cc/blog/VQHrFJ.webp" alt="登录成功 Login successfully"></p>
+<p><img src="https://i.lisz.top/blog/VQHrFJ.webp" alt="登录成功 Login successfully"></p>
 
 <h4 id="国际化设置">国际化设置</h4>
 
 <p>  访问 <a href="http://127.0.0.1:8080/auth/admin/master/console" rel="nofollow" target="_blank" class="extlinks">http://127.0.0.1:8080/auth/admin/master/console</a> 即可进入管理员页面并自动登录。</p>
 
-<p><img src="https://i.luish.cc/blog/kNYBCF.webp" alt="基本设置 Basic settings"></p>
+<p><img src="https://i.lisz.top/blog/kNYBCF.webp" alt="基本设置 Basic settings"></p>
 
 <p>  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。</p>
 
-<p><img src="https://i.luish.cc/blog/lZ0I0c.webp" alt="国际化设置 International settings"></p>
+<p><img src="https://i.lisz.top/blog/lZ0I0c.webp" alt="国际化设置 International settings"></p>
 
 <p>  刷新页面就能看见设置好的中文界面。</p>
 
-<p><img src="https://i.luish.cc/blog/63o8ga.webp" alt="完成国际化设置 Finish international settings"></p>
+<p><img src="https://i.lisz.top/blog/63o8ga.webp" alt="完成国际化设置 Finish international settings"></p>
 
 <h4 id="连接-ldap">连接 LDAP</h4>
 
 <p>  左边导航栏切换到<strong>用户联合</strong>选项卡，选择添加 ldap。</p>
 
-<p><img src="https://i.luish.cc/blog/p2pMlW.webp" alt="添加 LDAP 连接 Add LDAP connection"></p>
+<p><img src="https://i.lisz.top/blog/p2pMlW.webp" alt="添加 LDAP 连接 Add LDAP connection"></p>
 
 <p>  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择<strong>其他</strong>。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择<strong>可写</strong>。另外在填写完配置后可以用右侧的<strong>测试连接</strong>和<strong>测试验证</strong>按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。</p>
 
-<p><img src="https://i.luish.cc/blog/umTHlh.webp" alt="测试 LDAP 连接 Test LDAP connection"></p>
+<p><img src="https://i.lisz.top/blog/umTHlh.webp" alt="测试 LDAP 连接 Test LDAP connection"></p>
 
 <p>  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击<strong>同步所有用户</strong>即可将用户同步到 Keycloak。</p>
 
-<p><img src="https://i.luish.cc/blog/UJ78t0.webp" alt="同步所有用户 Sync all users"></p>
+<p><img src="https://i.lisz.top/blog/UJ78t0.webp" alt="同步所有用户 Sync all users"></p>
 
 <p>  切换左边导航栏到<strong>用户</strong>选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。</p>
 
-<p><img src="https://i.luish.cc/blog/qJBLB3.webp" alt="默认用户列表 Default user list"></p>
+<p><img src="https://i.lisz.top/blog/qJBLB3.webp" alt="默认用户列表 Default user list"></p>
 
 <p>  如下图所示，证明 Keycloak 成功连接 LDAP。</p>
 
-<p><img src="https://i.luish.cc/blog/P5w5eb.webp" alt="所有用户列表 All user list including LDAP"></p>
+<p><img src="https://i.lisz.top/blog/P5w5eb.webp" alt="所有用户列表 All user list including LDAP"></p>
 
 <h4 id="用户密码策略">用户密码策略</h4>
 
 <p>  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到<strong>验证</strong>选项卡，再选择<strong>密码策略</strong>选项卡，使用右上角的<strong>添加策略</strong>添加不同的策略要求，完成后点击保存按钮。</p>
 
-<p><img src="https://i.luish.cc/blog/oDQGDG.webp" alt="设置密码策略 Password strategy settings"></p>
+<p><img src="https://i.lisz.top/blog/oDQGDG.webp" alt="设置密码策略 Password strategy settings"></p>
 
 <p>  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开<strong>验证密码策略</strong>。下图中的 <strong>LDAPv3 密码</strong> 可以选择打开或不打开，影响不大。</p>
 
-<p><img src="https://i.luish.cc/blog/SK5EQp.webp" alt="开启密码策略 Enable password strategy"></p>
+<p><img src="https://i.lisz.top/blog/SK5EQp.webp" alt="开启密码策略 Enable password strategy"></p>
 
 <p>  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 <strong>Update</strong> 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。</p>
 
-<p><img src="https://i.luish.cc/blog/1pkx9L.webp" alt="尝试更新密码验证密码策略 Update password to verify password strategy"></p>
+<p><img src="https://i.lisz.top/blog/1pkx9L.webp" alt="尝试更新密码验证密码策略 Update password to verify password strategy"></p>
 
 <p>  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：</p>
 
@@ -430,25 +430,25 @@
   <li>密码中必须包含至少一个特殊字符</li>
 </ul>
 
-<p><img src="https://i.luish.cc/blog/GPSGJr.webp" alt="密码策略验证结果 Results by password strategies"></p>
+<p><img src="https://i.lisz.top/blog/GPSGJr.webp" alt="密码策略验证结果 Results by password strategies"></p>
 
 <h4 id="otp-验证">OTP 验证</h4>
 
 <p>  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。</p>
 
-<p><img src="https://i.luish.cc/blog/Ak4ck9.webp" alt="设置 OTP 策略 OTP strategy"></p>
+<p><img src="https://i.lisz.top/blog/Ak4ck9.webp" alt="设置 OTP 策略 OTP strategy"></p>
 
 <p>  为了让系统的所有用户都开启 OTP，可以如下所示在<strong>必要操作</strong>选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）</p>
 
-<p><img src="https://i.luish.cc/blog/Lqi4RG.webp" alt="强制所有用户启用 OTP 策略 Enable OTP for all users"></p>
+<p><img src="https://i.lisz.top/blog/Lqi4RG.webp" alt="强制所有用户启用 OTP 策略 Enable OTP for all users"></p>
 
 <p>  为了验证 OTP 是否可用，移步至用户页点击<strong>设置验证应用</strong>按钮。</p>
 
-<p><img src="https://i.luish.cc/blog/WaedQr.webp" alt="验证 OTP Verify OTP"></p>
+<p><img src="https://i.lisz.top/blog/WaedQr.webp" alt="验证 OTP Verify OTP"></p>
 
 <p>  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。</p>
 
-<p><img src="https://i.luish.cc/blog/TkcriA.webp" alt="OTP 设置页面 OTP set page"></p>
+<p><img src="https://i.lisz.top/blog/TkcriA.webp" alt="OTP 设置页面 OTP set page"></p>
 
 <h2 id="ldap-直接集成应用">LDAP 直接集成应用</h2>
 
@@ -599,7 +599,7 @@
           </section>
           
           <div class="filter"></div>
-          <img src="https://i.luish.cc/cover/skxyHS.webp" alt="">
+          <img src="https://i.lisz.top/cover/skxyHS.webp" alt="">
           
       </div>
         
@@ -613,7 +613,7 @@
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.luish.cc/cover/Isx0hj.webp" alt="">
+            <img src="https://i.lisz.top/cover/Isx0hj.webp" alt="">
             
         </div>
         

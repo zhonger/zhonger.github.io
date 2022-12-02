@@ -5,8 +5,8 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Thu, 01 Dec 2022 10:54:27 +0900</pubDate>
-    <lastBuildDate>Thu, 01 Dec 2022 10:54:27 +0900</lastBuildDate>
+    <pubDate>Fri, 02 Dec 2022 16:51:50 +0900</pubDate>
+    <lastBuildDate>Fri, 02 Dec 2022 16:51:50 +0900</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
     
       <item>
@@ -441,13 +441,13 @@ key-direction 1
 
 &lt;p&gt;  通过浏览器访问 http://ip:3128 并输入对应的用户名和密码可以看到类似下面的内容。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nUOnpb.webp&quot; alt=&quot;nUOnpb&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/nUOnpb.webp&quot; alt=&quot;nUOnpb&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;客户端连接&quot;&gt;客户端连接&lt;/h3&gt;
 
 &lt;p&gt;  由于我们未指定实际需要访问的地址，Squid 会直接报错。一般使用时，需要使用操作系统的网络设置中的代理来配置好 Squid。如下图所示，勾选“网页代理（HTTP）”并填写相关的 IP、端口、用户名及密码。如果想要同样应用在访问 HTTPS 站点，则还需要勾选“安全网页代理（HTTPS）”及填写相关信息。然后点击保存生效。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/oXWsLE.webp&quot; alt=&quot;oXWsLE&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/oXWsLE.webp&quot; alt=&quot;oXWsLE&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  这样一来就可以将访问的流量完全交给 Squid 来控制了。当然，如果不确定客户端连接是否成功，可以通过访问 &lt;a href=&quot;https://ip.sb&quot;&gt;ip.sb&lt;/a&gt; 来确认当前客户端流量出口 IP 是否为 Squid 服务器 IP。&lt;/p&gt;
 
@@ -508,7 +508,7 @@ key-direction 1
   &lt;li&gt;最后，递归 DNS 将解析结果告诉客户端（我们）。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/hwyKGH.webp&quot; alt=&quot;域名解析过程 DNS Resolution Process&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/hwyKGH.webp&quot; alt=&quot;域名解析过程 DNS Resolution Process&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  那么问题来了，&lt;strong&gt;一个 DNS 能否同时是权威 DNS 和递归 DNS 呢？&lt;/strong&gt;实际上是不可能的，但是可以实现这种效果。如果我们把权威 DNS 隐藏在递归 DNS 的后面，那么对于顶级域名 DNS 来说，你指定的递归 DNS 就是它理解的权威 DNS。这里的隐藏指的是，当有请求询问递归 DNS 的权威解析记录时，递归 DNS 根据规则将请求转发给背后真正的权威 DNS。等待权威 DNS 返回解析记录后，递归 DNS 再把结果返回给请求方（其他递归 DNS 或者客户端）。&lt;/p&gt;
 
@@ -601,15 +601,15 @@ key-direction 1
 
 &lt;p&gt;  使用浏览器访问 &lt;a href=&quot;http://localhost:3000&quot;&gt;http://localhost:3000&lt;/a&gt; 进行实例初始化设置，如下所示根据页面提示设置好用户名和密码。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/PreFoj.webp&quot; alt=&quot;初始化 AdGuard Home Initial&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/PreFoj.webp&quot; alt=&quot;初始化 AdGuard Home Initial&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/7LHDlg.webp&quot; alt=&quot;确认端口 Check ports&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/7LHDlg.webp&quot; alt=&quot;确认端口 Check ports&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/qjTNW8.webp&quot; alt=&quot;设置管理员 Set Admin&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/qjTNW8.webp&quot; alt=&quot;设置管理员 Set Admin&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/yLkLc4.webp&quot; alt=&quot;客户端配置指南 Client setting guideline&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/yLkLc4.webp&quot; alt=&quot;客户端配置指南 Client setting guideline&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/buQ6LT.webp&quot; alt=&quot;完成初始化 Finish the initialization&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/buQ6LT.webp&quot; alt=&quot;完成初始化 Finish the initialization&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  初始化成功后，页面会自动跳转到登录界面 &lt;a href=&quot;http://localhost&quot;&gt;http://localhost&lt;/a&gt;（80 端口）。&lt;/p&gt;
 
@@ -618,13 +618,13 @@ key-direction 1
 
 
  &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Wwb5At.webp&quot; alt=&quot;登录页面 AdGuard Home Login&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Wwb5At.webp&quot; alt=&quot;登录页面 AdGuard Home Login&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;私有域名转发&quot;&gt;私有域名转发&lt;/h4&gt;
 
 &lt;p&gt;  由于接下来我们将要用 PowerDNS 来管理权威域名解析，所以需要设置私有域名规则，即当 AdGuard Home 收到关于内网自定义权威域名的请求时，就会把请求转给 PowerDNS。这在 AdGuard Home 中也是比较容易就能设置好的，如下图所示，添加一行规则使得匹配的所有二级域名请求转发给 PowerDNS。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/4GMZAO.webp&quot; alt=&quot;配置转发 Redirect to Authroized DNS&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/4GMZAO.webp&quot; alt=&quot;配置转发 Redirect to Authroized DNS&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;powerdns&quot;&gt;PowerDNS&lt;/h3&gt;
 
@@ -691,37 +691,37 @@ key-direction 1
 
 &lt;p&gt;  PowerDNS-Admin 本身不会自动初始化管理员用户，而是将注册的第一个用户认定为管理员用户。使用浏览器访问 PowerDNS-Admin 登录页面 &lt;a href=&quot;http://localhost:8080&quot;&gt;http://localhost:8080&lt;/a&gt;，如下图所示点击 Create an account 链接跳转到注册页。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/9NDNpc.webp&quot; alt=&quot;PowerDNS-Admin 登录页 Login page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/9NDNpc.webp&quot; alt=&quot;PowerDNS-Admin 登录页 Login page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如下图所示，填写姓名、邮箱、用户名和密码，点击 Register 按钮即可完成注册。这里，PowerDNS-Admin 默认采用邮箱的 Gavatar 头像作为用户头像。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/TJqhDE.webp&quot; alt=&quot;PowerDNS-Admin 注册页 Register page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/TJqhDE.webp&quot; alt=&quot;PowerDNS-Admin 注册页 Register page&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;初始化配置&quot;&gt;初始化配置&lt;/h4&gt;
 
 &lt;p&gt;  注册和登录后，会跳转到 PDNS 配置页面。这里由于 PDNS 和 PowerDNS-Admin 实例是在同一个网络中，可以直接使用 pdns 来代替 PDNS 实例的 IP 地址。PDNS API KEY 则是刚才启动时设置的那一长串字符（PDNS_api_key）。PDNS VERSION 最好是与 PDNS 实际使用的一致，不过不一致也不会有什么事。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zhonger/pdns:latest&lt;/code&gt; 目前实际是 4.6 版本，这里默认填的 4.1.1 也可以。然后点击 Update 按钮保存配置。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/CJ1Wl1.webp&quot; alt=&quot;CJ1Wl1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/CJ1Wl1.webp&quot; alt=&quot;CJ1Wl1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  保存配置成功后，如果填写信息无误，点击侧边导航中的 PDNS 就可以看到 PDNS 的各项配置信息。如果填写有误，则没有任何信息。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/UdkXGi.webp&quot; alt=&quot;UdkXGi&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/UdkXGi.webp&quot; alt=&quot;UdkXGi&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;新增域名&quot;&gt;新增域名&lt;/h4&gt;
 
 &lt;p&gt;  接下来就可以点击侧边导航栏中的 New Domain 来新增私有域名 home.lisz。如下图所示，我们需要填写的是域名，需要选择的是域名模板，一般 basic_template_1 即可。之后点击 Submit 按钮提交。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nMyRKR.webp&quot; alt=&quot;nMyRKR&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/nMyRKR.webp&quot; alt=&quot;nMyRKR&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;新增解析记录&quot;&gt;新增解析记录&lt;/h4&gt;
 
 &lt;p&gt;  新增域名成功后，我们就可以在 Dashboard 里面的域名列表看到 home.lisz 了。点击即可进入域名解析。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/naFe9s.webp&quot; alt=&quot;naFe9s&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/naFe9s.webp&quot; alt=&quot;naFe9s&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  这里我们以一个 CNAME 和 A 记录为例，来尝试新增解析记录。如下图所示，点击左上角的 Add Record 添加记录，完成后点击右上角的 Apply Changes 来提交解析记录到 PDNS。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/SmwtCT.webp&quot; alt=&quot;SmwtCT&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/SmwtCT.webp&quot; alt=&quot;SmwtCT&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小知识 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  实际域名解析时我们一般会采用 CNAME 和 A 记录联合使用的方式，这样相当于在 DNS 解析层面就有负载均衡了。A 记录是域名与 IP 的关系，这就意味着同一个域名可以有多个 A 记录。CNAME 记录是域名与域名的关系，而两个域名分别是为了不同的目的，前一个是为了给大家使用的，后一个是为了运维人员使用的。当存在 CNAME → A 时，客户端会根据网络情况来判断使用哪一条 A 记录对应的 IP，从而提升用户体验。&lt;/p&gt;
 
@@ -837,7 +837,7 @@ www.wshifen.com.        192     IN      A       45.113.192.101
 
 &lt;p&gt;  一般来说，操作系统或浏览器的产商会预置国际上认可的根证书。如下所示，为 Mac OS 上预置的根证书列表。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/SfWsIJ.webp&quot; alt=&quot;Mac OS 预置根证书 Root Certificate&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/SfWsIJ.webp&quot; alt=&quot;Mac OS 预置根证书 Root Certificate&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
 
@@ -985,9 +985,9 @@ Certificate:
 
 &lt;p&gt;  首次打开刚刚生成的根证书 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zhongerca.pem&lt;/code&gt; 会像下面这样显示“此根证书不被信任”，我们可以将下面的使用此证书时的&lt;strong&gt;使用系统默认&lt;/strong&gt;改成&lt;strong&gt;始终信任&lt;/strong&gt;，然后输入操作系统用户密码即可保存修改。改完之后再次打开如下下图所示，显示“此证书已标记为受此账户信任”。这样一来，由该根证书签发的证书就都会被信任了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/gkni75.webp&quot; alt=&quot;打开根证书 Open Root Certificate file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/gkni75.webp&quot; alt=&quot;打开根证书 Open Root Certificate file&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/zJ5dNm.webp&quot; alt=&quot;始终信任根证书 Always trust Root Certificate file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/zJ5dNm.webp&quot; alt=&quot;始终信任根证书 Always trust Root Certificate file&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;签发证书&quot;&gt;签发证书&lt;/h3&gt;
 
@@ -1030,9 +1030,9 @@ minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;
 
 &lt;p&gt;  如下所示，是上面生成的根证书和签发的 SSL 证书的密钥 ID 对比。可以看到，两者完全一样，即可信任的 SSL 证书。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/9ieYYm.webp&quot; alt=&quot;根证书密钥 ID Root Certificate Key ID&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/9ieYYm.webp&quot; alt=&quot;根证书密钥 ID Root Certificate Key ID&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/sMYzVn.webp&quot; alt=&quot;SSL 证书密钥 ID the Key ID in SSL Certificate&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/sMYzVn.webp&quot; alt=&quot;SSL 证书密钥 ID the Key ID in SSL Certificate&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;其他平台安装根证书&quot;&gt;其他平台安装根证书&lt;/h3&gt;
 
@@ -1106,21 +1106,21 @@ minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;
 
 &lt;p&gt;  在 Nextcloud 的&lt;strong&gt;应用捆绑包&lt;/strong&gt;的&lt;strong&gt;企业捆绑包&lt;/strong&gt;里就有我们想要用的 LDAP 认证集成插件，点击右侧&lt;strong&gt;启用&lt;/strong&gt;按钮即可正常启用。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nFyWzS.webp&quot; alt=&quot;nFyWzS&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/nFyWzS.webp&quot; alt=&quot;nFyWzS&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;配置-ldap-连接&quot;&gt;配置 LDAP 连接&lt;/h3&gt;
 
 &lt;p&gt;  在启用 LDAP 插件后，我们就可以在管理员的设置中看见相应的选项。如下图所示，点击用户头像弹出菜单中的&lt;strong&gt;设置&lt;/strong&gt;链接。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8FCrL0.webp&quot; alt=&quot;8FCrL0&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/8FCrL0.webp&quot; alt=&quot;8FCrL0&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  由于这个设置会同时包含个人用户设置和管理员设置，可以将左侧的导航栏往下拉，看到&lt;strong&gt;管理&lt;/strong&gt;中的 &lt;strong&gt;LDAP/AD 集成&lt;/strong&gt; 点击进入。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/WiwcTt.webp&quot; alt=&quot;WiwcTt&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/WiwcTt.webp&quot; alt=&quot;WiwcTt&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  下面是 LDAP/AD 集成的基本设置，主要填写四个信息：LDAP 服务器地址、LDAP 管理员 DN、LDAP 管理员密码、查询基础 DN。由于此处填写的是非真实信息，所以下面会显示&lt;strong&gt;配置错误&lt;/strong&gt;的提示。如果填写的 LDAP 信息无误，会自动变成&lt;strong&gt;配置成功&lt;/strong&gt;的提示。然后点击&lt;strong&gt;继续&lt;/strong&gt;按钮，后面的设置可以保留默认选项即可。当然如果 LDAP 服务与一般的设置有些不同，也要根据实际情况对后面的用户、登录属性、群组信息进行调整，这里就不一一介绍了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/Lr00tl.webp&quot; alt=&quot;Lr00tl&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Lr00tl.webp&quot; alt=&quot;Lr00tl&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  以上配置均完成之后，即可退出登录即可使用 LDAP 账户和密码登录验证是否配置成功（登录界面不会有任何改变）。&lt;/p&gt;
 
@@ -1209,7 +1209,7 @@ minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;
 
 &lt;p&gt;  使用命令 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 运行一个 Gitlab 实例。由于初始运行需要执行数据库初始化等操作，可能需要几分钟，之后打开指定的端口即可看到如下类似的登录页面。可以看到，这里默认就是使用 LDAP 登录，次要登录方式才是标准登录。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/BaWBKa.webp&quot; alt=&quot;登录页面 Login Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BaWBKa.webp&quot; alt=&quot;登录页面 Login Page&quot; /&gt;&lt;/p&gt;
 
 &lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。&lt;/p&gt;
 
@@ -1296,7 +1296,7 @@ minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;
 
 
  &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/nNCoC5.webp&quot; alt=&quot;首页 Home Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/nNCoC5.webp&quot; alt=&quot;首页 Home Page&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;配置-ldap-登录&quot;&gt;配置 LDAP 登录&lt;/h3&gt;
 
@@ -1324,15 +1324,15 @@ docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span 
 
 &lt;p&gt;  在登录成功后，可以如上步中图中所示点击右上角&lt;strong&gt;管理&lt;/strong&gt;按钮进入&lt;strong&gt;管理页面&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/ABVW2W.webp&quot; alt=&quot;管理界面 Admin Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/ABVW2W.webp&quot; alt=&quot;管理界面 Admin Page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  这里可以先点击&lt;strong&gt;扩展管理器&lt;/strong&gt;确认一下 &lt;strong&gt;LDAP Auth Plugin&lt;/strong&gt; 插件是否已预安装。这里由于是启用后的截图，所以右边没有&lt;strong&gt;卸载&lt;/strong&gt;和&lt;strong&gt;关闭&lt;/strong&gt;按钮以及启用的提示。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/ysQEBr.webp&quot; alt=&quot;扩展管理器 Plugins Manage Page&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/ysQEBr.webp&quot; alt=&quot;扩展管理器 Plugins Manage Page&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  返回刚才的&lt;strong&gt;管理页面&lt;/strong&gt;，点击&lt;strong&gt;配置设置&lt;/strong&gt;按钮即可进入完整的配置设置。如下图所示是 LDAP 认证部分的配置，在实际页面的比较靠后的位置可以找到。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/hnMxkY.webp&quot; alt=&quot;LDAP 设置 LDAP Settings&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/hnMxkY.webp&quot; alt=&quot;LDAP 设置 LDAP Settings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  上图是默认的配置，我们需要填一下其中的一些条目，内容如下（其他保持默认即可）：&lt;/p&gt;
 
@@ -1384,7 +1384,7 @@ docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span 
 
 
  &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/zW5Fgq.webp&quot; alt=&quot;启用 LDAP Enable LDAP&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/zW5Fgq.webp&quot; alt=&quot;启用 LDAP Enable LDAP&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;其他&quot;&gt;其他&lt;/h3&gt;
 
@@ -1430,7 +1430,7 @@ docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span 
 
 &lt;p&gt;  现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/4hsLnz.webp&quot; alt=&quot;基于 Apache 的文档方案 Solutions based on Apache&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/4hsLnz.webp&quot; alt=&quot;基于 Apache 的文档方案 Solutions based on Apache&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  如上图所示，基于 Apache 的解决方案主要包含以下三点：&lt;/p&gt;
 
@@ -1660,26 +1660,26 @@ ProxyPass /foo https://foo.example.com
     &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;phpinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/iw6WKt.webp&quot; alt=&quot;正常内容 Normal Page Content&quot; /&gt;
-&lt;img src=&quot;https://i.luish.cc/blog/Px1PiS.webp&quot; alt=&quot;要求验证 Auth Required&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/iw6WKt.webp&quot; alt=&quot;正常内容 Normal Page Content&quot; /&gt;
+&lt;img src=&quot;https://i.lisz.top/blog/Px1PiS.webp&quot; alt=&quot;要求验证 Auth Required&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;验证日志&quot;&gt;验证日志&lt;/h4&gt;
 
 &lt;p&gt;  当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/CdxxGU.webp&quot; alt=&quot;日志文件 Log file&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/CdxxGU.webp&quot; alt=&quot;日志文件 Log file&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;验证目录假名&quot;&gt;验证目录假名&lt;/h4&gt;
 
 &lt;p&gt;  这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/NDnuLk.webp&quot; alt=&quot;目录假名 Alias&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/NDnuLk.webp&quot; alt=&quot;目录假名 Alias&quot; /&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;验证代理&quot;&gt;验证代理&lt;/h4&gt;
 
 &lt;p&gt;  这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/kdbabl.webp&quot; alt=&quot;代理 Proxy&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/kdbabl.webp&quot; alt=&quot;代理 Proxy&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
 
@@ -1960,15 +1960,15 @@ ProxyPass /foo https://foo.example.com
 
 &lt;p&gt;  当我们设置好 Manifest 和 Service Worker，并且再次生成 Jekyll 静态页面并托管到服务器之后，用 Chrome 浏览器访问主页就会发现地址栏的右边会出现一个新的图标，如下图所示。这个图标就是在提示你所访问的页面是 PWA 应用，支持安装快捷方式。点击该图标，会有一个像下面这样的小弹窗提示，点击安装即可安装到主屏幕，PC 端、移动端均可。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/8nPgKk.webp&quot; alt=&quot;安装提示 Install tips&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/8nPgKk.webp&quot; alt=&quot;安装提示 Install tips&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  除此之外，我们还可以在 PC 端打开浏览器的控制台。如下图所示，我们可以发现一些来自 sw.js 的打印信息。这些信息告诉我们 Service Worker 已经注册成功了，并且有哪些文件已经离线缓存了。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/OnrGr1.webp&quot; alt=&quot;控制台提示 Command line tips&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/OnrGr1.webp&quot; alt=&quot;控制台提示 Command line tips&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  在浏览器开发工具中，我们还可以通过查看&lt;strong&gt;应用&lt;/strong&gt;的 &lt;strong&gt;Service Workers&lt;/strong&gt; 来再次确认 PWA 的情况。如下图所示，我们可以看到 sw.js 从 Initial 到 Wait 到 Activate 的过程，&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/mXdqdH.webp&quot; alt=&quot;应用提示 App tips&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/mXdqdH.webp&quot; alt=&quot;应用提示 App tips&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
 
@@ -1991,7 +1991,7 @@ ProxyPass /foo https://foo.example.com
 
 &lt;p&gt;  虽然从我自身的安卓手机 PWA 应用空间占用查询来看，Chrome 的空间设置中的空间占用量有点大（最高 4.9 GB，首次访问 480 MB，如下图所示），但查询手机系统中的空间管理却没有发现 PWA 应用或者 Chrome 占用了所谓的“4.9 GB”空间（PWA 应用 230K 左右，Chrome 1.4 GB 左右）。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://i.luish.cc/blog/IYuKyo.webp&quot; alt=&quot;Chrome 显示存储用量 Storage&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/IYuKyo.webp&quot; alt=&quot;Chrome 显示存储用量 Storage&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;  正如 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 所说，Chrome 显示的空间占用量存在水分，毕竟不可能只访问一个页面就需要下载 400 MB 的东西吧。而且，根本就没有那么多文件让 PWA 应用下载。据个人不完全统计，本站目前所有代码加上所有图床托管图片的总体大小在 15 MB 左右。即使全站都缓存下来，也不可能用到 400 MB。&lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 用在 Stack Overflows 上查到的命令在 Chrome 的控制台中输出了类似 “Using 23K out of 270M”的结果，因此他猜测可能是预申请了过百兆的空间，而实际使用量只有几十 K 左右。对此，我表示赞同。从实际的源站流量监控来看，与所谓的 400 MB 也不匹配。从上月 26 日到今天（共 14 天）为止消耗了 323.2 MB 流量，本月截止到今天（共 8 天）图床托管消耗了 131 MB 流量。&lt;/p&gt;
 
