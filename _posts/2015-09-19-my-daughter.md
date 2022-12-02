@@ -5,7 +5,7 @@ subtitle: '一首随笔诗，百无聊赖'
 date: 2015-09-19 22:20:12 +0800
 categories: others
 author: zhonger
-cover: 'https://i.luish.cc/cover/mV9ZZr.webp'
+cover: 'https://i.lisz.top/cover/mV9ZZr.webp'
 cover_author: 'John Matychuk'
 cover_author_link: 'https://unsplash.com/@john_matychuk'
 tags: 

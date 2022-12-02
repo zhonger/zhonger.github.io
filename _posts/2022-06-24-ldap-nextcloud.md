@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 Nextcloud 提供用户认证服务'
 date: 2022-06-24 14:40:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/2OTaQY.webp'
+cover: 'https://i.lisz.top/cover/2OTaQY.webp'
 cover_author: 'Emile Guillemot'
 cover_author_link: 'https://unsplash.com/@emilegt'
 tags:  
@@ -37,21 +37,21 @@ tags:
 
 &emsp;&emsp;在 Nextcloud 的**应用捆绑包**的**企业捆绑包**里就有我们想要用的 LDAP 认证集成插件，点击右侧**启用**按钮即可正常启用。
 
-![nFyWzS](https://i.luish.cc/blog/nFyWzS.webp)
+![nFyWzS](https://i.lisz.top/blog/nFyWzS.webp)
 
 ### 配置 LDAP 连接
 
 &emsp;&emsp;在启用 LDAP 插件后，我们就可以在管理员的设置中看见相应的选项。如下图所示，点击用户头像弹出菜单中的**设置**链接。
 
-![8FCrL0](https://i.luish.cc/blog/8FCrL0.webp)
+![8FCrL0](https://i.lisz.top/blog/8FCrL0.webp)
 
 &emsp;&emsp;由于这个设置会同时包含个人用户设置和管理员设置，可以将左侧的导航栏往下拉，看到**管理**中的 **LDAP/AD 集成** 点击进入。
 
-![WiwcTt](https://i.luish.cc/blog/WiwcTt.webp)
+![WiwcTt](https://i.lisz.top/blog/WiwcTt.webp)
 
 &emsp;&emsp;下面是 LDAP/AD 集成的基本设置，主要填写四个信息：LDAP 服务器地址、LDAP 管理员 DN、LDAP 管理员密码、查询基础 DN。由于此处填写的是非真实信息，所以下面会显示**配置错误**的提示。如果填写的 LDAP 信息无误，会自动变成**配置成功**的提示。然后点击**继续**按钮，后面的设置可以保留默认选项即可。当然如果 LDAP 服务与一般的设置有些不同，也要根据实际情况对后面的用户、登录属性、群组信息进行调整，这里就不一一介绍了。
 
-![Lr00tl](https://i.luish.cc/blog/Lr00tl.webp)
+![Lr00tl](https://i.lisz.top/blog/Lr00tl.webp)
 
 &emsp;&emsp;以上配置均完成之后，即可退出登录即可使用 LDAP 账户和密码登录验证是否配置成功（登录界面不会有任何改变）。
 

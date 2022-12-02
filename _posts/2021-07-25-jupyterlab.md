@@ -5,7 +5,7 @@ subtitle: '多实例多用户的 Jupyterhub'
 date: 2021-07-25 07:20:00 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/AdbpNJ.webp'
+cover: 'https://i.lisz.top/cover/AdbpNJ.webp'
 cover_author: 'Annie Spratt'
 cover_author_link: 'https://unsplash.com/@anniespratt'
 tags: 
@@ -35,11 +35,11 @@ tags:
 
 &emsp;&emsp;事实上，既然我们选择了用 Docker 来部署，自然而然应该选择 DockerSpawner 方式了。JupyterLab 中主要实现多用户多实例功能的是 JupyterHub 模块（如下图）。JupyterHub 模块为整个 JupyterLab 对外提供了一个共同的 HTTP 接口，并可以进行用户鉴权和为通过鉴权的用户创建一个新的 Docker 实例。笔者在这里主要是使用 Gitlab 方式鉴权登录，图中涉及到 Admin 以及数据库这里不作探讨。
 
-![架构图 JupyterHub Design](https://i.luish.cc/blog/Uibi3q.webp)
+![架构图 JupyterHub Design](https://i.lisz.top/blog/Uibi3q.webp)
 
 &emsp;&emsp;以下为搭建所需的文件的列表：
 
-![文件列表 Files](https://i.luish.cc/blog/tU3EqP.webp)
+![文件列表 Files](https://i.lisz.top/blog/tU3EqP.webp)
 
 ### 构建 Jupyter Notebook 实例镜像
 

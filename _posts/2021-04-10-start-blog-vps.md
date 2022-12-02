@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-10 16:45:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/FofQVR.webp'
+cover: 'https://i.lisz.top/cover/FofQVR.webp'
 cover_author: 'Toa Heftiba'
 cover_author_link: 'https://unsplash.com/@heftiba'
 tags: 
@@ -121,23 +121,23 @@ scp -r _site/* /var/www/lisz.me/
 
 &emsp;&emsp;VPS 的自动部署与 FTP 的自动部署非常类似，只是使用的模板不一样。如下图所示使用 SSH 筛选出 SFTP 模板，并点击选中创建。
 
-![新建 SFTP 部署 New SFTP deploy](https://i.luish.cc/blog/EBFlZd.webp)
+![新建 SFTP 部署 New SFTP deploy](https://i.lisz.top/blog/EBFlZd.webp)
 
 &emsp;&emsp;填写上传源目录、VPS 主机信息（此处推荐使用 Buddy key）。
 
-![输入信息 Input vps information](https://i.luish.cc/blog/eeplHr.webp)
+![输入信息 Input vps information](https://i.lisz.top/blog/eeplHr.webp)
 
 &emsp;&emsp;复制命令将 Buddy key 添加到 VPS ，同时设置远程目录，其他配置默认即可，点击 Add this action 按钮完成创建。
 
-![添加秘钥 Add Buddy key to vps](https://i.luish.cc/blog/MPvmSO.webp)
+![添加秘钥 Add Buddy key to vps](https://i.lisz.top/blog/MPvmSO.webp)
 
 &emsp;&emsp;执行流水线，如下图所示开始 Jekyll 编译动作。
 
-![运行流水线 Run pipeline](https://i.luish.cc/blog/FAtP0C.webp)
+![运行流水线 Run pipeline](https://i.lisz.top/blog/FAtP0C.webp)
 
 &emsp;&emsp;如下图所示，完成所有动作，浏览器访问设置好的域名验证是否成功部署。
 
-![查看部署 Check status](https://i.luish.cc/blog/fB9tVg.webp)
+![查看部署 Check status](https://i.lisz.top/blog/fB9tVg.webp)
 
 ### 评价
 

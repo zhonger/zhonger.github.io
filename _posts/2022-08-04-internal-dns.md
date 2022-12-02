@@ -5,7 +5,7 @@ subtitle: '如何为团队内部提供免费、可靠的私有域名解析解决
 date: 2022-08-04 11:30:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/w9mf2P.webp'
+cover: 'https://i.lisz.top/cover/w9mf2P.webp'
 cover_author: 'Bruce Warrington'
 cover_author_link: 'https://unsplash.com/@brucebmax'
 tags:  
@@ -42,7 +42,7 @@ tags:
 7. 然后，baidu.com 权威 DNS 响应 www.baidu.com 对应的 A 记录（或者 AAAA 记录）是什么；
 8. 最后，递归 DNS 将解析结果告诉客户端（我们）。
 
-![域名解析过程 DNS Resolution Process](https://i.luish.cc/blog/hwyKGH.webp)
+![域名解析过程 DNS Resolution Process](https://i.lisz.top/blog/hwyKGH.webp)
 
 &emsp;&emsp;那么问题来了，**一个 DNS 能否同时是权威 DNS 和递归 DNS 呢？**实际上是不可能的，但是可以实现这种效果。如果我们把权威 DNS 隐藏在递归 DNS 的后面，那么对于顶级域名 DNS 来说，你指定的递归 DNS 就是它理解的权威 DNS。这里的隐藏指的是，当有请求询问递归 DNS 的权威解析记录时，递归 DNS 根据规则将请求转发给背后真正的权威 DNS。等待权威 DNS 返回解析记录后，递归 DNS 再把结果返回给请求方（其他递归 DNS 或者客户端）。
 
@@ -126,28 +126,28 @@ services:
 
 &emsp;&emsp;使用浏览器访问 [http://localhost:3000](http://localhost:3000) 进行实例初始化设置，如下所示根据页面提示设置好用户名和密码。
 
-![初始化 AdGuard Home Initial](https://i.luish.cc/blog/PreFoj.webp)
+![初始化 AdGuard Home Initial](https://i.lisz.top/blog/PreFoj.webp)
 
-![确认端口 Check ports](https://i.luish.cc/blog/7LHDlg.webp)
+![确认端口 Check ports](https://i.lisz.top/blog/7LHDlg.webp)
 
-![设置管理员 Set Admin](https://i.luish.cc/blog/qjTNW8.webp)
+![设置管理员 Set Admin](https://i.lisz.top/blog/qjTNW8.webp)
 
-![客户端配置指南 Client setting guideline](https://i.luish.cc/blog/yLkLc4.webp)
+![客户端配置指南 Client setting guideline](https://i.lisz.top/blog/yLkLc4.webp)
 
-![完成初始化 Finish the initialization](https://i.luish.cc/blog/buQ6LT.webp)
+![完成初始化 Finish the initialization](https://i.lisz.top/blog/buQ6LT.webp)
 
 &emsp;&emsp;初始化成功后，页面会自动跳转到登录界面 [http://localhost](http://localhost)（80 端口）。
 
 > info "小提示"
 > &emsp;&emsp;由于在实际环境中，我们不一定是在本机启动该实例，所以可能需要使用服务器的 IP 来替代 localhost 访问。另外，如果原来就有 Nginx 或其他服务占用了 80 端口，我们在配置端口映射的时候可能就会设置到另外一个端口，因此自动跳转到的页面并非是 AdGuard Home 的首页。我们需要使用 IP + 映射 80 的端口来定位到首页。
 
-![登录页面 AdGuard Home Login](https://i.luish.cc/blog/Wwb5At.webp)
+![登录页面 AdGuard Home Login](https://i.lisz.top/blog/Wwb5At.webp)
 
 #### 私有域名转发
 
 &emsp;&emsp;由于接下来我们将要用 PowerDNS 来管理权威域名解析，所以需要设置私有域名规则，即当 AdGuard Home 收到关于内网自定义权威域名的请求时，就会把请求转给 PowerDNS。这在 AdGuard Home 中也是比较容易就能设置好的，如下图所示，添加一行规则使得匹配的所有二级域名请求转发给 PowerDNS。
 
-![配置转发 Redirect to Authroized DNS](https://i.luish.cc/blog/4GMZAO.webp)
+![配置转发 Redirect to Authroized DNS](https://i.lisz.top/blog/4GMZAO.webp)
 
 ### PowerDNS
 
@@ -215,37 +215,37 @@ services:
 
 &emsp;&emsp;PowerDNS-Admin 本身不会自动初始化管理员用户，而是将注册的第一个用户认定为管理员用户。使用浏览器访问 PowerDNS-Admin 登录页面 [http://localhost:8080](http://localhost:8080)，如下图所示点击 Create an account 链接跳转到注册页。
 
-![PowerDNS-Admin 登录页 Login page](https://i.luish.cc/blog/9NDNpc.webp)
+![PowerDNS-Admin 登录页 Login page](https://i.lisz.top/blog/9NDNpc.webp)
 
 &emsp;&emsp;如下图所示，填写姓名、邮箱、用户名和密码，点击 Register 按钮即可完成注册。这里，PowerDNS-Admin 默认采用邮箱的 Gavatar 头像作为用户头像。
 
-![PowerDNS-Admin 注册页 Register page](https://i.luish.cc/blog/TJqhDE.webp)
+![PowerDNS-Admin 注册页 Register page](https://i.lisz.top/blog/TJqhDE.webp)
 
 #### 初始化配置
 
 &emsp;&emsp;注册和登录后，会跳转到 PDNS 配置页面。这里由于 PDNS 和 PowerDNS-Admin 实例是在同一个网络中，可以直接使用 pdns 来代替 PDNS 实例的 IP 地址。PDNS API KEY 则是刚才启动时设置的那一长串字符（PDNS_api_key）。PDNS VERSION 最好是与 PDNS 实际使用的一致，不过不一致也不会有什么事。`zhonger/pdns:latest` 目前实际是 4.6 版本，这里默认填的 4.1.1 也可以。然后点击 Update 按钮保存配置。
 
-![CJ1Wl1](https://i.luish.cc/blog/CJ1Wl1.webp)
+![CJ1Wl1](https://i.lisz.top/blog/CJ1Wl1.webp)
 
 &emsp;&emsp;保存配置成功后，如果填写信息无误，点击侧边导航中的 PDNS 就可以看到 PDNS 的各项配置信息。如果填写有误，则没有任何信息。
 
-![UdkXGi](https://i.luish.cc/blog/UdkXGi.webp)
+![UdkXGi](https://i.lisz.top/blog/UdkXGi.webp)
 
 #### 新增域名
 
 &emsp;&emsp;接下来就可以点击侧边导航栏中的 New Domain 来新增私有域名 home.lisz。如下图所示，我们需要填写的是域名，需要选择的是域名模板，一般 basic_template_1 即可。之后点击 Submit 按钮提交。
 
-![nMyRKR](https://i.luish.cc/blog/nMyRKR.webp)
+![nMyRKR](https://i.lisz.top/blog/nMyRKR.webp)
 
 #### 新增解析记录
 
 &emsp;&emsp;新增域名成功后，我们就可以在 Dashboard 里面的域名列表看到 home.lisz 了。点击即可进入域名解析。
 
-![naFe9s](https://i.luish.cc/blog/naFe9s.webp)
+![naFe9s](https://i.lisz.top/blog/naFe9s.webp)
 
 &emsp;&emsp;这里我们以一个 CNAME 和 A 记录为例，来尝试新增解析记录。如下图所示，点击左上角的 Add Record 添加记录，完成后点击右上角的 Apply Changes 来提交解析记录到 PDNS。
 
-![SmwtCT](https://i.luish.cc/blog/SmwtCT.webp)
+![SmwtCT](https://i.lisz.top/blog/SmwtCT.webp)
 
 > note "小知识"
 > &emsp;&emsp;实际域名解析时我们一般会采用 CNAME 和 A 记录联合使用的方式，这样相当于在 DNS 解析层面就有负载均衡了。A 记录是域名与 IP 的关系，这就意味着同一个域名可以有多个 A 记录。CNAME 记录是域名与域名的关系，而两个域名分别是为了不同的目的，前一个是为了给大家使用的，后一个是为了运维人员使用的。当存在 CNAME → A 时，客户端会根据网络情况来判断使用哪一条 A 记录对应的 IP，从而提升用户体验。

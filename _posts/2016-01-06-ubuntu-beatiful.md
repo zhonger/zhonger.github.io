@@ -5,7 +5,7 @@ subtitle: '美化 Ubuntu 你值得拥有'
 date: 2016-01-06 13:11:23 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://i.luish.cc/cover/EWbke4.webp'
+cover: 'https://i.lisz.top/cover/EWbke4.webp'
 cover_author: 'Alexander Tsang'
 cover_author_link: 'https://unsplash.com/@alexander_tsang'
 tags: 

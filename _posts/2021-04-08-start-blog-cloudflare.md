@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-08 16:18:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/XMDCxb.webp'
+cover: 'https://i.lisz.top/cover/XMDCxb.webp'
 cover_author: 'Malik Skydsgaard'
 cover_author_link: 'https://unsplash.com/@malikskyds'
 tags: 
@@ -31,27 +31,27 @@ tags:
 
 &emsp;&emsp;访问 [Cloudflare Pages 官网](https://pages.cloudflare.com/)，点击 Sign Up 按钮使用 Cloudflare 账户登录。
 
-![登录 Login](https://i.luish.cc/blog/a0C23w.webp)
+![登录 Login](https://i.lisz.top/blog/a0C23w.webp)
 
 #### 创建项目
 
 &emsp;&emsp;登录后点击**创建项目**按钮开始创建。
 
-![创建项目 Create project](https://i.luish.cc/blog/s12Jkr.webp)
+![创建项目 Create project](https://i.lisz.top/blog/s12Jkr.webp)
 
 &emsp;&emsp;选择一个 Github 的项目，比如 zhonger/zhonger.github.io。
 
-![选择项目 Select project](https://i.luish.cc/blog/YwXaml.webp)
+![选择项目 Select project](https://i.lisz.top/blog/YwXaml.webp)
 
 &emsp;&emsp;设置永久访问域名前缀，部署分支，以及所用的静态生成框架，然后点击**保存并部署**。
 
-![设置域名前缀 Set domain prefix](https://i.luish.cc/blog/Q3uTjI.webp)
+![设置域名前缀 Set domain prefix](https://i.lisz.top/blog/Q3uTjI.webp)
 
 #### 预览
 
 &emsp;&emsp;添加完成后等待完成构建与部署，可以看到目前绑定的域名。点击访问站点即可跳转预览
 
-![预览 Preview](https://i.luish.cc/blog/t8ZdUt.webp)
+![预览 Preview](https://i.lisz.top/blog/t8ZdUt.webp)
 
 ### 评价
 

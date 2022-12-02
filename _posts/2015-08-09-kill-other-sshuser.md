@@ -5,7 +5,7 @@ subtitle: '踢出其他 SSH 登录用户'
 date: 2015-08-09 15:32:12 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://i.luish.cc/cover/ygaIWo.webp'
+cover: 'https://i.lisz.top/cover/ygaIWo.webp'
 cover_author: 'Jeremy Ricketts'
 cover_author_link: 'https://unsplash.com/@jeremydgreat'
 tags: 

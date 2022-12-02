@@ -5,7 +5,7 @@ subtitle: '在 Ubuntu 系统上安装 NodeJS 和 Bower 工具。'
 date: 2015-11-11 22:20:20 +0800
 categories: [tech, Nodejs]
 author: zhonger
-cover: 'https://i.luish.cc/cover/Elw37f.webp'
+cover: 'https://i.lisz.top/cover/Elw37f.webp'
 cover_author: 'NATHAN MULLET'
 cover_author_link: 'https://unsplash.com/@nate072107'
 tags: 

@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-05 16:03:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/2irpGg.webp'
+cover: 'https://i.lisz.top/cover/2irpGg.webp'
 cover_author: 'Aaron Burden'
 cover_author_link: 'https://unsplash.com/@aaronburden'
 tags: 

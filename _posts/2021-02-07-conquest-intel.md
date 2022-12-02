@@ -5,7 +5,7 @@ subtitle: '欢迎进入量子化学的世界'
 date: 2021-02-07 20:22:00 +0800
 categories: [tech, conquest]
 author: zhonger
-cover: 'https://i.luish.cc/cover/THXqW2.webp'
+cover: 'https://i.lisz.top/cover/THXqW2.webp'
 cover_author: 'Sajad Nori'
 cover_author_link: 'https://unsplash.com/@sajadnori'
 tags: 

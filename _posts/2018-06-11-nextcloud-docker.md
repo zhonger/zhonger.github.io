@@ -5,7 +5,7 @@ subtitle: LNMPA 源码部署通常不便于更新，迁移到容器部署倒是�
 date: 2018-06-11 12:46:00 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/mOUgW0.webp'
+cover: 'https://i.lisz.top/cover/mOUgW0.webp'
 cover_author: 'Jason Blackeye'
 cover_author_link: 'https://unsplash.com/@jeisblack'
 tags:

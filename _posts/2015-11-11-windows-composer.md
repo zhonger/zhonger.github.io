@@ -5,7 +5,7 @@ subtitle: '在 Windows 系统上配置 Composer，并应用于 Laravel 框架开
 date: 2015-11-11 12:12:12 +0800
 categories: [tech, PHP]
 author: zhonger
-cover: 'https://i.luish.cc/cover/ajok5a.webp'
+cover: 'https://i.lisz.top/cover/ajok5a.webp'
 cover_author: 'Jeremy Weber'
 cover_author_link: 'https://unsplash.com/@doubleweber'
 tags: 

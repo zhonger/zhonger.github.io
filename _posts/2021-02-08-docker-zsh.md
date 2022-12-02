@@ -5,7 +5,7 @@ subtitle: '个性化 Docker 镜像，你值得拥有'
 date: 2021-02-08 20:09:00 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/HYKnLH.webp'
+cover: 'https://i.lisz.top/cover/HYKnLH.webp'
 cover_author: 'Daniel Seßler'
 cover_author_link: 'https://unsplash.com/@danielsessler'
 tags: 

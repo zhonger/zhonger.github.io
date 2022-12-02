@@ -5,7 +5,7 @@ subtitle: 使用 Docker 搭建 Onlyoffice 如此轻松愉快
 date: 2018-04-01 18:10:35 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/XDpumD.webp'
+cover: 'https://i.lisz.top/cover/XDpumD.webp'
 cover_author: 'Boban Simonovski'
 cover_author_link: 'https://unsplash.com/@3031n'
 tags: 

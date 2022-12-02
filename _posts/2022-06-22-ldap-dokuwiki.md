@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 Dokuwiki 提供用户认证服务'
 date: 2022-06-22 15:40:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/0QQ3x6.webp'
+cover: 'https://i.lisz.top/cover/0QQ3x6.webp'
 cover_author: 'Artur Voznenko'
 cover_author_link: 'https://unsplash.com/@voznenko_artur'
 tags:  
@@ -67,7 +67,7 @@ services:
 > info "小提示"
 > &emsp;&emsp;shuosc/dokuwiki 默认管理员 admin 的初始密码为 admin。如果容器实例可被外部网络访问，出于安全性考虑建议在运行后及时修改成强密码。
 
-![首页 Home Page](https://i.luish.cc/blog/nNCoC5.webp)
+![首页 Home Page](https://i.lisz.top/blog/nNCoC5.webp)
 
 ### 配置 LDAP 登录
 
@@ -94,15 +94,15 @@ docker restart <id>
 
 &emsp;&emsp;在登录成功后，可以如上步中图中所示点击右上角**管理**按钮进入**管理页面**。
 
-![管理界面 Admin Page](https://i.luish.cc/blog/ABVW2W.webp)
+![管理界面 Admin Page](https://i.lisz.top/blog/ABVW2W.webp)
 
 &emsp;&emsp;这里可以先点击**扩展管理器**确认一下 **LDAP Auth Plugin** 插件是否已预安装。这里由于是启用后的截图，所以右边没有**卸载**和**关闭**按钮以及启用的提示。
 
-![扩展管理器 Plugins Manage Page](https://i.luish.cc/blog/ysQEBr.webp)
+![扩展管理器 Plugins Manage Page](https://i.lisz.top/blog/ysQEBr.webp)
 
 &emsp;&emsp;返回刚才的**管理页面**，点击**配置设置**按钮即可进入完整的配置设置。如下图所示是 LDAP 认证部分的配置，在实际页面的比较靠后的位置可以找到。
 
-![LDAP 设置 LDAP Settings](https://i.luish.cc/blog/hnMxkY.webp)
+![LDAP 设置 LDAP Settings](https://i.lisz.top/blog/hnMxkY.webp)
 
 &emsp;&emsp;上图是默认的配置，我们需要填一下其中的一些条目，内容如下（其他保持默认即可）：
 
@@ -123,7 +123,7 @@ docker restart <id>
 > info "小提示"
 > &emsp;&emsp;由于启用了 LDAP 认证，这里应该要如下图所示停用 Dokuwiki 的**注册**功能，
 
-![启用 LDAP Enable LDAP](https://i.luish.cc/blog/zW5Fgq.webp)
+![启用 LDAP Enable LDAP](https://i.lisz.top/blog/zW5Fgq.webp)
 
 ### 其他
 

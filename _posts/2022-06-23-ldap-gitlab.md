@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 Gitlab 提供用户认证服务'
 date: 2022-06-23 15:20:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/8XVXW3.webp'
+cover: 'https://i.lisz.top/cover/8XVXW3.webp'
 cover_author: 'Steve Johnson'
 cover_author_link: 'https://unsplash.com/@steve_j'
 tags:  
@@ -55,7 +55,7 @@ tags:
 
 &emsp;&emsp;使用命令 `docker-compose up -d` 运行一个 Gitlab 实例。由于初始运行需要执行数据库初始化等操作，可能需要几分钟，之后打开指定的端口即可看到如下类似的登录页面。可以看到，这里默认就是使用 LDAP 登录，次要登录方式才是标准登录。
 
-![登录页面 Login Page](https://i.luish.cc/blog/BaWBKa.webp)
+![登录页面 Login Page](https://i.lisz.top/blog/BaWBKa.webp)
 
 > info "小提示"
 > &emsp;&emsp;这里 Gitlab 默认使用 uid 作为 username，而非常见 LDAP 登录定义里的 cn 字段，所以只需要最简单的 uid 和 password 即可登录成功。

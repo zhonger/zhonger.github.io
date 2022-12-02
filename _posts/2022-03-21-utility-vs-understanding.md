@@ -5,7 +5,7 @@ subtitle: 'Utility vs Understanding: the State of Machine Learning Entering 2022
 date: 2022-03-21 14:30:00 +0900
 categories: [ac, ml]
 author: zhonger
-cover: 'https://i.luish.cc/cover/ZsNwKN.webp'
+cover: 'https://i.lisz.top/cover/ZsNwKN.webp'
 cover_author: 'Simone Hutsch'
 cover_author_link: 'https://unsplash.com/@heysupersimi'
 tags:  
@@ -33,7 +33,7 @@ tags:
 
 &emsp;&emsp;一般来说，我们期待效用和理解是松散相关的，因为被很好理解的东西比那些不被理解的东西可能更有用。这意味着大多数领域应位于左下象限或右上象限。远离对角线的领域代表着有趣的例外。通常，实用性落后于理论，因为将新兴的研究转化为实际应用需要时间。因此，对角线应该位于原点上方，而不是直接穿过它。
 
-![机器学习领域分布图 The distribution of Machine Learning fields](https://i.luish.cc/blog/PJcfa1.webp)
+![机器学习领域分布图 The distribution of Machine Learning fields](https://i.lisz.top/blog/PJcfa1.webp)
 
 ## 2022 年的机器学习领域
 
@@ -53,7 +53,7 @@ tags:
 
 &emsp;&emsp;假设，**通用人工智能**将占据右下角，因为根据定义，超级智能超出了人类的理解范围，可以用于解决任何问题。目前，它仅作为思想实验包含在内。
 
-![理论理解力 vs 经验实用性 understanding vs utility](https://i.luish.cc/blog/aSdim3.webp)
+![理论理解力 vs 经验实用性 understanding vs utility](https://i.lisz.top/blog/aSdim3.webp)
 **<center>图1. 每个象限的定性描述。领域可以通过其对应区域的部分或全部描述来描述。</center>**
 
 ### 左上象限：高理解，低效用
@@ -78,7 +78,7 @@ tags:
 
 &emsp;&emsp;渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的**有监督机器学习**就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。[^2]渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。
 
-![领域发展机制 The steps of development](https://i.luish.cc/blog/lR1g7Q.webp)
+![领域发展机制 The steps of development](https://i.lisz.top/blog/lR1g7Q.webp)
 **<center>图2. 领域可以遍历矩阵的方式的说明性示例。</center>**
 
 &emsp;&emsp;由于技术的飞跃，一些领域看到了科学进步的阶梯式变化。**深度学习**领域并没有因其理论基础而解锁，这些理论基础是在 2010 年代深度学习热潮之前 20 多年发现的——它是由消费级 GPU 支持的并行处理推动了它的复兴。技术飞跃通常表现为沿经验效用轴向右跳跃。然而，并非所有以技术为主导的进步都是飞跃。今天的深度学习的特点是通过使用更多的计算能力和越来越专业的硬件训练越来越大的模型来实现跃进式进步。
@@ -93,7 +93,7 @@ tags:
 
 **<center>表1. 机器学习的特定领域未来可能会或可能不会取得进展的预测。</center>**
 
-![未来可能的发展方向 Possible development in future](https://i.luish.cc/blog/w4ELGn.webp)
+![未来可能的发展方向 Possible development in future](https://i.lisz.top/blog/w4ELGn.webp)
 
 <!-- | 研究领域 | 2022 年以后的预测 |
 | -- | -- |

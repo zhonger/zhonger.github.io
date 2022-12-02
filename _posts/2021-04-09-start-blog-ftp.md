@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-09 16:23:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/LagmRA.webp'
+cover: 'https://i.lisz.top/cover/LagmRA.webp'
 cover_author: 'aranprime'
 cover_author_link: 'https://unsplash.com/@aranprime'
 tags: 
@@ -73,21 +73,21 @@ v0.ftp.upyun.com. 300 IN A 117.21.235.5
 #### 下载安装 Filezilla
 
 &emsp;&emsp;访问 [Filezilla 官网](https://filezilla-project.org/) 点击安装按钮。
-![下载 Filezilla Download Filezilla](https://i.luish.cc/blog/UDbqKm.webp)
+![下载 Filezilla Download Filezilla](https://i.lisz.top/blog/UDbqKm.webp)
 
 #### 新建主机
 
 &emsp;&emsp;打开 Filezilla，点击左上角**新建虚拟主机**按钮。
-![新建主机 New host connection](https://i.luish.cc/blog/qPR1Lg.webp)
+![新建主机 New host connection](https://i.lisz.top/blog/qPR1Lg.webp)
 
 &emsp;&emsp;填写 FTP 服务器信息、登录用户名和密码。
-![输入 FTP 信息 Input the information](https://i.luish.cc/blog/2IBv6o.webp)
+![输入 FTP 信息 Input the information](https://i.lisz.top/blog/2IBv6o.webp)
 
 #### 上传最新静态博客文件
 
 &emsp;&emsp;点击**连接**按钮开始访问 FTP 空间，将 _site 目录下的文件拖到右边远程根目录。
 
-![上传文件 Upload files](https://i.luish.cc/blog/1HDsxR.webp)
+![上传文件 Upload files](https://i.lisz.top/blog/1HDsxR.webp)
 
 > info "小提示"
 > 使用 `bundle exec jekyll b` 命令可以生成 _site 目录。
@@ -102,55 +102,55 @@ v0.ftp.upyun.com. 300 IN A 117.21.235.5
 
 &emsp;&emsp;访问 [Buddy 官网](https://buddy.works) ，使用 Github 账户登录即可，如下图所示搜索到想要部署的项目，并选中创建。
 
-![创建项目 Create project](https://i.luish.cc/blog/zERtXj.webp)
+![创建项目 Create project](https://i.lisz.top/blog/zERtXj.webp)
 
 #### 创建流水线
 
 &emsp;&emsp;转到项目页面后，点击 **Create a pipeline** 按钮。
 
-![创建流水线 Create pipeline](https://i.luish.cc/blog/yWlC0t.webp)
+![创建流水线 Create pipeline](https://i.lisz.top/blog/yWlC0t.webp)
 
 &emsp;&emsp;如下图所示填写流水线名称、选中在代码发生 PUSH 操作时触发流水线、操作的分支设置为 master 单分支，点击下面按钮完成创建。
 
-![设置基本信息 Basic settings](https://i.luish.cc/blog/W8apKH.webp)
+![设置基本信息 Basic settings](https://i.lisz.top/blog/W8apKH.webp)
 
 #### 添加 Jekyll 编译动作
 
 &emsp;&emsp;如下图所示，点击 Add an action 按钮，选中 Jekyll。
 
-![添加动作 Add an action](https://i.luish.cc/blog/V74aZS.webp)
+![添加动作 Add an action](https://i.lisz.top/blog/V74aZS.webp)
 
 &emsp;&emsp;无须作任何修改，点击右下角的 Add this action 按钮即可完成添加。
 
-![自定义编译命令 Define compile commands](https://i.luish.cc/blog/CFZBt5.webp)
+![自定义编译命令 Define compile commands](https://i.lisz.top/blog/CFZBt5.webp)
 
 #### 添加 FTP 部署动作
 
 &emsp;&emsp;如下图所示再次添加一个动作，这次使用 FTP 字符筛选选中 TRANSFER 的 FTP。
 
-![添加 FTP 上传方式 Add FTP upload way](https://i.luish.cc/blog/B1HEq5.webp)
+![添加 FTP 上传方式 Add FTP upload way](https://i.lisz.top/blog/B1HEq5.webp)
 
 &emsp;&emsp;选择从流水线文件系统加载文件，并将源目录设置为 _site，远程目录不变。同时修改 FTP 主机地址及端口、登录用户名和密码三个参数。
 
-![输入 FTP 信息 Input FTP information](https://i.luish.cc/blog/bFdlex.webp)
+![输入 FTP 信息 Input FTP information](https://i.lisz.top/blog/bFdlex.webp)
 
 &emsp;&emsp;为了防止同名文件，开启删除同名旧文件，不使用缓存文件，点击 Add this action 按钮完成添加。
 
-![上传设置 Upload settings](https://i.luish.cc/blog/4Dmc3R.webp)
+![上传设置 Upload settings](https://i.lisz.top/blog/4Dmc3R.webp)
 
 #### 运行流水线
 
 &emsp;&emsp;如下图所示，可以看到两个动作添加完毕，点击右上角 Run pipeline 按钮开始执行流水线。
 
-![运行流水线 Run pipeline](https://i.luish.cc/blog/5kte8s.webp)
+![运行流水线 Run pipeline](https://i.lisz.top/blog/5kte8s.webp)
 
 &emsp;&emsp;从下图可以看到**环境准备**和 Jekyll 编译动作正在执行。
 
-![查看运行情况 Check the status](https://i.luish.cc/blog/5aKADO.webp)
+![查看运行情况 Check the status](https://i.lisz.top/blog/5aKADO.webp)
 
 &emsp;&emsp;等待两分钟左右，可以看到 FTP 部署动作成功完成。
 
-![运行完成 Finish](https://i.luish.cc/blog/R7XsVH.webp)
+![运行完成 Finish](https://i.lisz.top/blog/R7XsVH.webp)
 
 ### 评价
 

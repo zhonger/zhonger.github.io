@@ -5,7 +5,7 @@ subtitle: Docker 搭建 or LNMPA 搭建 随你选
 date: 2018-03-24 16:49:44 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/gLQGHs.webp'
+cover: 'https://i.lisz.top/cover/gLQGHs.webp'
 cover_author: 'Andre Furtado'
 cover_author_link: 'https://unsplash.com/@andre_furtado'
 tags:
@@ -86,7 +86,7 @@ sudo docker-compose down && sudo docker-compose up -d
 
 &emsp;&emsp;自行设置管理员用户名和密码，数据目录默认即可，数据库信息填写如 docker-composer.yml 中所示，数据库主机名填 db （配置文件中的数据库应用名）。
 
-![初始化示意图 Initialize](https://i.luish.cc/blog/aG3Ax6.webp)
+![初始化示意图 Initialize](https://i.lisz.top/blog/aG3Ax6.webp)
 
 &emsp;&emsp;所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见 nextcloud 的主目录页面。到此处，Docker 搭建 Nextcloud 应用就大功告成了（也可在 80 端口安装 Nginx 服务代理到 7009 端口，此处不加赘述）。
 
@@ -250,7 +250,7 @@ CustomLog "/home/wwwlogs/nextcloud-access_log" combined
 
 &emsp;&emsp;自行设置管理员用户名和密码，数据目录可任意选择一处有权限的目录即可（默认的应为 /home/wwwroot/nextcloud/data，建议填一个非源代码的目录便于版本更新，比如 /home/data/nextcloud，要求所属用户和用户组为 www-data），数据库信息均填写 nextcloud，数据库主机名默认填 localhost。
 
-![初始化示意图](https://i.luish.cc/blog/aG3Ax6.webp)
+![初始化示意图](https://i.lisz.top/blog/aG3Ax6.webp)
 
 &emsp;&emsp;所有初始化配置填写完毕之后，等待大约半分钟左右安装完成就可以看见nextcloud的主目录页面。到此处， `LNMPA` 搭建 `Nextcloud` 应用就完成了，不过更新应用版本的话就更麻烦一点了。
 

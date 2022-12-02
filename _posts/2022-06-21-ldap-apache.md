@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 Apache 提供用户认证服务'
 date: 2022-06-21 13:24:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/c7e20u.webp'
+cover: 'https://i.lisz.top/cover/c7e20u.webp'
 cover_author: 'Mel Poole'
 cover_author_link: 'https://unsplash.com/@melpoole'
 tags:  
@@ -29,7 +29,7 @@ tags:
 
 &emsp;&emsp;现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：
 
-![基于 Apache 的文档方案 Solutions based on Apache](https://i.luish.cc/blog/4hsLnz.webp)
+![基于 Apache 的文档方案 Solutions based on Apache](https://i.lisz.top/blog/4hsLnz.webp)
 
 &emsp;&emsp;如上图所示，基于 Apache 的解决方案主要包含以下三点：
 
@@ -260,26 +260,26 @@ services:
     echo phpinfo();
 ```
 
-![正常内容 Normal Page Content](https://i.luish.cc/blog/iw6WKt.webp)
-![要求验证 Auth Required](https://i.luish.cc/blog/Px1PiS.webp)
+![正常内容 Normal Page Content](https://i.lisz.top/blog/iw6WKt.webp)
+![要求验证 Auth Required](https://i.lisz.top/blog/Px1PiS.webp)
 
 #### 验证日志
 
 &emsp;&emsp;当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。
 
-![日志文件 Log file](https://i.luish.cc/blog/CdxxGU.webp)
+![日志文件 Log file](https://i.lisz.top/blog/CdxxGU.webp)
 
 #### 验证目录假名
 
 &emsp;&emsp;这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。
 
-![目录假名 Alias](https://i.luish.cc/blog/NDnuLk.webp)
+![目录假名 Alias](https://i.lisz.top/blog/NDnuLk.webp)
 
 #### 验证代理
 
 &emsp;&emsp;这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。
 
-![代理 Proxy](https://i.luish.cc/blog/kdbabl.webp)
+![代理 Proxy](https://i.lisz.top/blog/kdbabl.webp)
 
 ## 参考资料
 

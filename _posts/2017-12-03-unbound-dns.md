@@ -5,7 +5,7 @@ subtitle: 从零开始搭建一个无污染的 DNS 服务
 date: 2017-12-03 18:23:41 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://i.luish.cc/cover/mL0Jdi.webp'
+cover: 'https://i.lisz.top/cover/mL0Jdi.webp'
 cover_author: 'zoo_monkey'
 cover_author_link: 'https://unsplash.com/@zoo_monkey'
 tags:

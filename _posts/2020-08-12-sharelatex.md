@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的在线中英文 LaTex 编辑平台'
 date: 2020-08-12 13:51:45 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/VZwBqm.webp'
+cover: 'https://i.lisz.top/cover/VZwBqm.webp'
 cover_author: 'Adli Wahid'
 cover_author_link: 'https://unsplash.com/@adliwahid'
 tags: 

@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-06 16:10:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/19ZjKL.webp'
+cover: 'https://i.lisz.top/cover/19ZjKL.webp'
 cover_author: 'Diogo Fagundes'
 cover_author_link: 'https://unsplash.com/@diofagundes'
 tags: 
@@ -29,13 +29,13 @@ tags:
 
 &emsp;&emsp;访问 Github 项目，点击 Settings。
 
-![开启 Pages Enable Pages](https://i.luish.cc/blog/16b12O.webp)
+![开启 Pages Enable Pages](https://i.lisz.top/blog/16b12O.webp)
 
 ### 选择分支
 
 &emsp;&emsp;下拉至 Github Pages，选择分支为 master 或者 main，目录为根目录，不要选择主题，建议 Enforce HTTPS。
 
-![选择分支 Select branch](https://i.luish.cc/blog/2bRpVi.webp)
+![选择分支 Select branch](https://i.lisz.top/blog/2bRpVi.webp)
 
 ### 自定义域名(可选)
 

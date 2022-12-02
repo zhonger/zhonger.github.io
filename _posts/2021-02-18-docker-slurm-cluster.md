@@ -5,7 +5,7 @@ subtitle: '多机集群上部署 Slurm 有没有什么简单快捷的方法呢�
 date: 2021-02-18 16:02:00 +0800
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/v3TaO9.webp'
+cover: 'https://i.lisz.top/cover/v3TaO9.webp'
 cover_author: 'Brxxto'
 cover_author_link: 'https://unsplash.com/@brxxto'
 tags: 
@@ -32,7 +32,7 @@ tags:
 
 &emsp;&emsp;根据往常的经验，觉得可能还是需要先 Docker 集群化，然后在 Docker 集群上运行 Slurm 集群。而目前比较熟知的流行的 Docker 集群化方法主要有 swarm，kubernetes 以及 rancher 等，但是这些基本上都需要 root 权限，并需要安装某些软件在物理机系统上，这与现有的条件和想法还是有点冲突。所以产生了一个大胆的想法------如果没有 Docker 集群，能不能部署可用的高性能 Slurm 集群呢？这个想法其实在上面提到的开源项目的架构图（下图）中就找到了答案。如图所示，对于 Slurm 集群来说最重要的其实是 6817 和 6818 两个端口的通信。图中的数据库的目的是为了保证 Slurm 节点的用户名一致，事实上可以想到别的办法来替代它。所以，即使把数据库去掉，也不建立集群节点之间的相互无密码登录，只要保证 Slurm 节点的这两个端口能够互相访问到，就可以成功部署 Slurm 集群。
 
-![架构图 Architecture](https://i.luish.cc/blog/PjpwI6.webp)
+![架构图 Architecture](https://i.lisz.top/blog/PjpwI6.webp)
 (上图引用自 https://github.com/SciDAS/slurm-in-docker )
 
 ## 安装配置

@@ -5,7 +5,7 @@ subtitle: 'Iterative Machine Learning: A step towards Model Accuracy'
 date: 2022-01-05 20:30:00 +0900
 categories: [ac, ml]
 author: zhonger
-cover: 'https://i.luish.cc/cover/VyWq2f.webp'
+cover: 'https://i.lisz.top/cover/VyWq2f.webp'
 cover_author: 'masahiro miyagi'
 cover_author_link: 'https://unsplash.com/@masamasa3'
 tags: 
@@ -32,7 +32,7 @@ tags:
 1. 数据迭代——算法固有的
 2. 模型训练迭代——外部引入
 
-![迭代机器学习 Iterative Machine Learning](https://i.luish.cc/blog/19OqPp.webp)
+![迭代机器学习 Iterative Machine Learning](https://i.lisz.top/blog/19OqPp.webp)
 
 &emsp;&emsp;现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？
 
@@ -90,7 +90,7 @@ tags:
 
 &emsp;&emsp;为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：
 
-![迭代的不同阶段 Different stages](https://i.luish.cc/blog/WMRZBJ.webp)
+![迭代的不同阶段 Different stages](https://i.lisz.top/blog/WMRZBJ.webp)
 
 1. **参数迭代**：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。
 2. **数据迭代**：一旦模型参数最终确定之后，将数据放入系统并模拟模型。将多组数据放入系统中，以检查参数在产生想要的结果方面的有效性。因此，如果数据迭代阶段表明某些参数不适合模型，则将它们带回参数迭代阶段，并添加或修改参数。

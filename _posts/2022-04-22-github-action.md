@@ -5,7 +5,7 @@ subtitle: '你是否还在困扰如何为 Docker 镜像提供多平台支持？'
 date: 2022-04-22 13:54:00 +0900
 categories: [tech, docker]
 author: zhonger
-cover: 'https://i.luish.cc/cover/Isx0hj.webp'
+cover: 'https://i.lisz.top/cover/Isx0hj.webp'
 cover_author: 'Daniel Buhat'
 cover_author_link: 'https://unsplash.com/@danielbuhat'
 tags:  
@@ -140,13 +140,13 @@ jobs:
 
 &emsp;&emsp;由于我们需要保护我们的 DockerHub  账户和密码的安全，所以需要通过 Secret 的变量来传递给 Github Action。如下图所示，进入 Settings 的 Security 的 Secrets 的 Actions 标签，添加对应的 DOCKERHUB_USERNAME 和 DOCKERHUB_TOKEN 变量。
 
-![变量配置 ENV Setting](https://i.luish.cc/blog/T8UIVu.webp)
+![变量配置 ENV Setting](https://i.lisz.top/blog/T8UIVu.webp)
 
 ### 发布新 tag
 
 &emsp;&emsp;访问 [https://github.com/用户名/项目名/releases/new](https://github.com/用户名/项目名/releases/new) 即可到达发布页面，如下所示。定义一个以 `v` 开头的新的标签并指向想要的分支，依次填写标题、描述后点击 `Public release` 按钮完成发布。
 
-![新标签 New Tag](https://i.luish.cc/blog/y7i8fo.webp)
+![新标签 New Tag](https://i.lisz.top/blog/y7i8fo.webp)
 
 &emsp;&emsp;发布 tag 后 Github Action 就会自动开始执行上述定义流程，最终成功发布支持不同平台架构的 Docker 镜像到 DockerHub。当然，如果想要发布到其他平台，可以将镜像名和对应的验证方式修改一下即可同样有效。
 

@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 Squid 提供用户认证服务'
 date: 2022-09-28 15:00:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/slF29A.webp'
+cover: 'https://i.lisz.top/cover/slF29A.webp'
 cover_author: 'Olmes Sosa'
 cover_author_link: 'https://unsplash.com/@sosacl'
 tags:  
@@ -68,13 +68,13 @@ services:
 
 &emsp;&emsp;通过浏览器访问 http://ip:3128 并输入对应的用户名和密码可以看到类似下面的内容。
 
-![nUOnpb](https://i.luish.cc/blog/nUOnpb.webp)
+![nUOnpb](https://i.lisz.top/blog/nUOnpb.webp)
 
 ### 客户端连接
 
 &emsp;&emsp;由于我们未指定实际需要访问的地址，Squid 会直接报错。一般使用时，需要使用操作系统的网络设置中的代理来配置好 Squid。如下图所示，勾选“网页代理（HTTP）”并填写相关的 IP、端口、用户名及密码。如果想要同样应用在访问 HTTPS 站点，则还需要勾选“安全网页代理（HTTPS）”及填写相关信息。然后点击保存生效。
 
-![oXWsLE](https://i.luish.cc/blog/oXWsLE.webp)
+![oXWsLE](https://i.lisz.top/blog/oXWsLE.webp)
 
 &emsp;&emsp;这样一来就可以将访问的流量完全交给 Squid 来控制了。当然，如果不确定客户端连接是否成功，可以通过访问 [ip.sb](https://ip.sb) 来确认当前客户端流量出口 IP 是否为 Squid 服务器 IP。
 

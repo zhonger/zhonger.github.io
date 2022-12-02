@@ -5,7 +5,7 @@ subtitle: Linux 的 NVIDIA 驱动安装
 date: 2017-05-09 12:02:49 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://i.luish.cc/cover/yFfBCJ.webp'
+cover: 'https://i.lisz.top/cover/yFfBCJ.webp'
 cover_author: 'Jeremy Cai'
 cover_author_link: 'https://unsplash.com/@j'
 tags:

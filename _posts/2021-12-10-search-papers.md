@@ -5,7 +5,7 @@ subtitle: '如何找到自己需要的科学文献，并进行阅读和管理？
 date: 2021-12-10 09:10:00 +0800
 categories: [ac, experience]
 author: zhonger
-cover: 'https://i.luish.cc/cover/Zi9eHC.webp'
+cover: 'https://i.lisz.top/cover/Zi9eHC.webp'
 cover_author: 'Shubham Dhage'
 cover_author_link: 'https://unsplash.com/@theshubhamdhage'
 tags: 
@@ -46,32 +46,32 @@ tags:
 
 &emsp;&emsp;以下就拿“基于机器学习的二元合金的固溶度研究”来举例。首先根据这个标题，可以确定几个英文关键词：alloys、machine learning、 solid solubility。其次，需要选择一个搜索引擎，这里选用 [必应学术](https://www.bing.com/academic)。以下是搜索的结果。（哈哈哈，没想到我的文章居然是最相关的。）
 
-![必应学术 Bing Scholar](https://i.luish.cc/blog/zhvwco.webp)
+![必应学术 Bing Scholar](https://i.lisz.top/blog/zhvwco.webp)
 
 &emsp;&emsp;如果直接点击搜索结果的链接，那么将会直接跳转到文献的在线出版页。一般来说，学校购买的版权都是只能校园网内使用的。如果在校外直接访问文献的在线出版页，会提示你没有权限在线访问文献的所有内容以及下载。这个时候我们就可以打开图书馆搜索引擎搜索想要的文献标题，并且使用自己的校园账号登录授权。结果如下图所示。
 
-![学校搜索 School Search](https://i.luish.cc/blog/hegfmA.webp)
-![文章页面 Article page](https://i.luish.cc/blog/EP0or7.webp)
+![学校搜索 School Search](https://i.lisz.top/blog/hegfmA.webp)
+![文章页面 Article page](https://i.lisz.top/blog/EP0or7.webp)
 
 &emsp;&emsp;从图中可以看出，如果学校已购买版权，就会像上面那样是“有全文（请点击查看全文了解详情）”。但是问题是，如果我们在校外即使点击了这个链接，也会提示没有权限。这又是怎么了？我们期待的是可以直接访问有权限的页面。实际上，出版商们为了能够有效地控制所有可用的请求都是从可以追踪的授权方发出的，坚持限制只有固定的公网校园网 IP 段有权限。这样就是说，你想要在校外通过 IP 验证权限访问文献就必须连上学校的 VPN。但是学校的 VPN 也是花钱买的，所以还是会有客户端数量的限制，尤其一个大学往往是几万人起步，显然 VPN 的路径是特别拥堵的。为此，国外诞生了名为 EZproxy 的图书馆专用代理软件。它主要是给所有可能会使用到的网站都做了一个反向代理，并且利用学校提供的 IDP 服务进行鉴权。国外很多高校都采用了 EZproxy 作为校外访问图书馆资源的替代方式。
 
 &emsp;&emsp;国内高校虽然没有使用 EZproxy，但是有一个由北京大学计算中心开发和维护的 [CARSI 联盟认证](https://ds.carsi.edu.cn)。CARSI 与 EZproxy 不同的是，它不依赖于每个高校去建立一套完整的反向代理，而是借助所有出版商提供的第三方账号鉴权 API 为学校和出版商之间架起了一座桥。登录之后如下图所示，会展示学校购买的所有数据库。
 
-![CARSI](https://i.luish.cc/blog/Iq5lQH.webp)
+![CARSI](https://i.lisz.top/blog/Iq5lQH.webp)
 
 &emsp;&emsp;因为刚才我们想要下载的文章属于 ScienceDirect 平台的，所以我们点击进入下图详情页面。然后点击访问资源，系统会帮助你自动完成登录操作，并且显示如下图所示的“You have institutional access”。
 
-![CARSI ELSEVIER](https://i.luish.cc/blog/dQ9q4c.webp)
-![CARSI Sciencedirect](https://i.luish.cc/blog/Br0oAy.webp)
+![CARSI ELSEVIER](https://i.lisz.top/blog/dQ9q4c.webp)
+![CARSI Sciencedirect](https://i.lisz.top/blog/Br0oAy.webp)
 
 &emsp;&emsp;现在我们去再次刷新一下刚才文献的在线出版页，发现也已经变成了有权限访问和下载了。
 
-![文章页面 Article page](https://i.luish.cc/blog/qIA3RP.webp)
+![文章页面 Article page](https://i.lisz.top/blog/qIA3RP.webp)
 
 &emsp;&emsp;这里也尝试了一下在 WoS 中搜索相同的关键词，搜索结果如下。（没想到最相关的结果也还是我的那篇文章。）这里的“出版商处的全文”其实与图书馆搜索引擎中的全文类似--点击就会直接跳转到文献的在线出版页。如果点击这里的标题的话，就会跳转到如下的详情页。在这个详情页里，我们可以看到非常丰富的相关信息，比如作者的 ORCID 号、文献的 DOI 号、摘要、资助信息、期刊的相关信息等。这里值得一提的是，每个研究者都可以创建一个属于自己的唯一 ORCID 号，不论所在单位或联系邮箱发生了改变都可以保持 ORCID 号完全不变。并且，ORCID 提供一个学术页面，可以介绍个人的教育经历、发表论文以及自定义的链接。现在一般投稿的时候都会建议与 ORCID 账号连接，这样可以保证相同的名字不同的人的一一对应，为整理某个研究者发表的所有文章列表非常有用。
 
-![WoS Search](https://i.luish.cc/blog/OP6iHp.webp)
-![WoS Article page](https://i.luish.cc/blog/RWTy98.webp)
+![WoS Search](https://i.lisz.top/blog/OP6iHp.webp)
+![WoS Article page](https://i.lisz.top/blog/RWTy98.webp)
 
 ### 按人名搜索
 
@@ -79,12 +79,12 @@ tags:
 
 &emsp;&emsp;Scopus 是由 ELSEVIER (爱思唯尔) 出版社建立的，与 ScienceDirect 属于兄弟网站。所以，如果你已经进行了刚才的登录，现在进入 Scopus 网站时就会是已登录状态。而且，Scopus 同时也提供一个期刊度量评价服务，虽然有类似 的第三方评价网站，但是这个指标还是更靠谱的。首先访问 [Scopus](https://www.scopus.com/)，然后点击顶部导航栏中的作者搜索，并输入姓和名（拼音或英文）点击搜索即可查看搜索结果。输入 Li 和 Shengzhou 的搜索结果如下所示，第二个就是我自己。
 
-![Scopus](https://i.luish.cc/blog/70aENN.webp)
-![Scopus search results](https://i.luish.cc/blog/Q3sWTK.webp)
+![Scopus](https://i.lisz.top/blog/70aENN.webp)
+![Scopus search results](https://i.lisz.top/blog/Q3sWTK.webp)
 
 &emsp;&emsp;那么我们可以点击这第二项进入查看详情，如下图所示。如果你开始看到的画面链接有很多灰色的地方，可以点击右上角铃铛旁边的机构登录按钮再次登录，之后就可以看到下图这样完整的画面了。不得不说，Scopus 整理出来的文章列表还是非常齐全的，其中连预印本也包括在内了。同样，这里既可以查看基本信息，也可以点击“View at Publisher”查看文献的在线出版页。甚至说，这里最后还有一个“相关文献”的推荐按钮，或许可以从中找到更多我们需要的文献。除此之外，如果我们在推荐列表中看到了感兴趣的文献，还可以点击其中的作者查看该作者参与的所有文献的列表，岂不是一举多得。
 
-![Scopus people page](https://i.luish.cc/blog/Uvznyb.webp)
+![Scopus people page](https://i.lisz.top/blog/Uvznyb.webp)
 
 ### 平台自动推荐
 

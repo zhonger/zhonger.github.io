@@ -5,7 +5,7 @@ subtitle: '利用 LDAP 为 OpenVPN 提供用户认证服务'
 date: 2022-09-28 15:04:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/tUQYGW.webp'
+cover: 'https://i.lisz.top/cover/tUQYGW.webp'
 cover_author: 'Buddika Gunathilaka'
 cover_author_link: 'https://unsplash.com/@unflashbuddika'
 tags:  

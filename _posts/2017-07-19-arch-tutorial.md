@@ -5,7 +5,7 @@ subtitle: 'Archlinux 从安装操作系统入手'
 date: 2017-07-19 15:23:10 +0800
 categories: [tech, Linux]
 author: zhonger
-cover: 'https://i.luish.cc/cover/zahv58.webp'
+cover: 'https://i.lisz.top/cover/zahv58.webp'
 cover_author: 'Tianshu Liu'
 cover_author_link: 'https://unsplash.com/@tianshu'
 tags: 

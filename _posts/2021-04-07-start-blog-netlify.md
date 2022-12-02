@@ -5,7 +5,7 @@ subtitle: '搭建一个属于自己的免费个人博客'
 date: 2021-04-07 16:17:00 +0800
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/JUFXBQ.webp'
+cover: 'https://i.lisz.top/cover/JUFXBQ.webp'
 cover_author: 'Norbert Buduczki'
 cover_author_link: 'https://unsplash.com/@buduczki'
 tags: 
@@ -31,44 +31,44 @@ tags:
 
 &emsp;&emsp;正常使用 Github 账号一键登录之后，在 Teams 主页面点击 New site from Git 按钮。
 
-![登录 Login](https://i.luish.cc/blog/4dTnLf.webp)
+![登录 Login](https://i.lisz.top/blog/4dTnLf.webp)
 
 ### 新建项目
 
 &emsp;&emsp;点击 Github 按钮登录并授予 Netlify 访问项目权限。
 
-![新建项目 Create project from Github](https://i.luish.cc/blog/p4vWTR.webp)
+![新建项目 Create project from Github](https://i.lisz.top/blog/p4vWTR.webp)
 
 ### 选择项目
 
 &emsp;&emsp;在搜索框中搜索想要部署的项目，比如 zhonger/zhonger.github.io，并点击右侧箭头选中完成创建。
 
-![选择项目 Select project](https://i.luish.cc/blog/RClRWo.webp)
+![选择项目 Select project](https://i.lisz.top/blog/RClRWo.webp)
 
 ### 自定义域名
 
 &emsp;&emsp;在创建好的项目的 Site settings 的 Domain management 中可以对已有的 *.netlify.app 域名进行修改，或添加自定义域名。
 
-![自定义域名 Custom domain](https://i.luish.cc/blog/wpkz2p.webp)
+![自定义域名 Custom domain](https://i.lisz.top/blog/wpkz2p.webp)
 
 ### 启用 HTTPS
 
 &emsp;&emsp;拉到页面下方 HTTPS 对已有域名生成 SSL 免费证书，只要第一次设置后，以后会自动更新。
 
-![启用 HTTPS Enable HTTPS](https://i.luish.cc/blog/74HffD.webp)
+![启用 HTTPS Enable HTTPS](https://i.lisz.top/blog/74HffD.webp)
 
 ### 配置变量（可选）
 
 &emsp;&emsp;另外，对于编译命令和变量的设置一般在项目创建之初完成，也可以在 Site settings 的 Build & deploy 中进行修改。默认的 Jekyll 设置如下所示：
 
-![vgy.me](https://i.luish.cc/blog/gDt22R.webp)
+![vgy.me](https://i.lisz.top/blog/gDt22R.webp)
 
 ### 查看编译日志（可选）
 
 &emsp;&emsp;关于编译过程可以在 Deploys 里面查看所有的日志，并且可以预览每一次编译的结果。
 
-![vgy.me](https://i.luish.cc/blog/UMVUaz.webp)
-![vgy.me](https://i.luish.cc/blog/cfMYpw.webp)
+![vgy.me](https://i.lisz.top/blog/UMVUaz.webp)
+![vgy.me](https://i.lisz.top/blog/cfMYpw.webp)
 
 ## 验证
 

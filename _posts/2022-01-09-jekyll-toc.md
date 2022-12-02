@@ -5,7 +5,7 @@ subtitle: '让你的 Jekyll 文章页阅读体验更好'
 date: 2022-01-09 22:00:00 +0900
 categories: [tech, webmaster]
 author: zhonger
-cover: 'https://i.luish.cc/cover/a9Y17X.webp'
+cover: 'https://i.lisz.top/cover/a9Y17X.webp'
 cover_author: 'Xianyu hao'
 cover_author_link: 'https://unsplash.com/@xianyuhao'
 tags: 
