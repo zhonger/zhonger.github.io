@@ -1,0 +1,51 @@
+name: COS-VPS deploy
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - name: 'Generate static files'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.0'
+          bundler: 'latest'
+          bundler-cache: true
+      - run: bundle exec jekyll build
+      - name: 'SCP upload for CVS'
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./_site/*
+          host: ${{ secrets.CVS_HOST }}
+          remote: ${{ secrets.CVS_PATH }}
+          port: ${{ secrets.CVS_PORT }}
+          user: ${{ secrets.CVS_USERNAME }}
+          key: ${{ secrets.TSUKUBA_KEY }}
+      - name: 'SCP upload for SWAS'
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./_site/*
+          host: ${{ secrets.SWAS_HOST }}
+          remote: ${{ secrets.SWAS_PATH }}
+          port: ${{ secrets.SWAS_PORT }}
+          user: ${{ secrets.SWAS_USERNAME }}
+          key: ${{ secrets.TSUKUBA_KEY }}
+      - name: 'SCP upload for UVM'
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./_site/*
+          host: ${{ secrets.UVM_HOST }}
+          remote: ${{ secrets.UVM_PATH }}
+          port: ${{ secrets.UVM_PORT }}
+          user: ${{ secrets.UVM_USERNAME }}
+          key: ${{ secrets.TSUKUBA_KEY }}
+      - name: 'Upload to COS'
+        uses: haloislet/cos-action@v2
+        with:
+          COMMAND: coscmd upload -rs --skipmd5 _site/ /
+          SECRET_ID: ${{ secrets.COS_SECRET_ID }}
+          SECRET_KEY: ${{ secrets.COS_SECRET_KEY }}
+          BUCKET: ${{ secrets.COS_BUCKET }}
+          REGION: ${{ secrets.COS_REGION }}
