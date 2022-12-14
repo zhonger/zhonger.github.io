@@ -17,7 +17,7 @@ github:
 theme: jekyll-theme-h2o-ac
 
 # Gray
-gray: true
+gray: false
 
 # Navigation links
 nav:
