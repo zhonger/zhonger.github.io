@@ -2,7 +2,7 @@
 layout: page
 home-title: Welcome to zhonger's blog!
 description: Writing, writing, writing ...
-cover: 'https://i.luish.cc/cover/5hrEAq.webp'
+cover: 'https://i.lisz.top/cover/5hrEAq.webp'
 cover_author: 'Chenwei Yao'
 cover_author_link: 'https://unsplash.com/@phounius'
 ---
