@@ -478,51 +478,51 @@
 <span class="kd">const</span> <span class="nx">offlineFallbackPage</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">index.html</span><span class="dl">"</span><span class="p">;</span>
 
 <span class="c1">// Install stage sets up the index page (home page) in the cache and opens a new cache</span>
-<span class="nb">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">install</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Install Event processing</span><span class="dl">"</span><span class="p">);</span>
+<span class="nb">self</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">install</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+<span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Install Event processing</span><span class="dl">"</span><span class="p">);</span>
 
-<span class="nx">event</span><span class="p">.</span><span class="nx">waitUntil</span><span class="p">(</span>
-    <span class="nx">caches</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Cached offline page during install</span><span class="dl">"</span><span class="p">);</span>
+<span class="nx">event</span><span class="p">.</span><span class="nf">waitUntil</span><span class="p">(</span>
+    <span class="nx">caches</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Cached offline page during install</span><span class="dl">"</span><span class="p">);</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="nx">offlineFallbackPage</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">ToDo-replace-this-name.html</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Response</span><span class="p">(</span><span class="dl">"</span><span class="s2">Update the value of the offlineFallbackPage constant in the serviceworker.</span><span class="dl">"</span><span class="p">));</span>
+    <span class="nf">if </span><span class="p">(</span><span class="nx">offlineFallbackPage</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">ToDo-replace-this-name.html</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="k">new</span> <span class="nc">Response</span><span class="p">(</span><span class="dl">"</span><span class="s2">Update the value of the offlineFallbackPage constant in the serviceworker.</span><span class="dl">"</span><span class="p">));</span>
     <span class="p">}</span>
 
-    <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">offlineFallbackPage</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="nx">offlineFallbackPage</span><span class="p">);</span>
     <span class="p">})</span>
 <span class="p">);</span>
 <span class="p">});</span>
 
 <span class="c1">// If any fetch fails, it will look for the request in the cache and serve it from there first</span>
-<span class="nb">self</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">fetch</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-<span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="nb">self</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">fetch</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+<span class="nf">if </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 
-<span class="nx">event</span><span class="p">.</span><span class="nx">respondWith</span><span class="p">(</span>
-    <span class="nx">fetch</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Add page to offline cache: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+<span class="nx">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span>
+    <span class="nf">fetch</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Add page to offline cache: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
 
         <span class="c1">// If request was success, add or update it in the cache</span>
-        <span class="nx">event</span><span class="p">.</span><span class="nx">waitUntil</span><span class="p">(</span><span class="nx">updateCache</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nx">clone</span><span class="p">()));</span>
+        <span class="nx">event</span><span class="p">.</span><span class="nf">waitUntil</span><span class="p">(</span><span class="nf">updateCache</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">.</span><span class="nf">clone</span><span class="p">()));</span>
 
         <span class="k">return</span> <span class="nx">response</span><span class="p">;</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>        
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Network request Failed. Serving content from cache: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
-        <span class="k">return</span> <span class="nx">fromCache</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">);</span>
+    <span class="p">.</span><span class="nf">catch</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>        
+        <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Network request Failed. Serving content from cache: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nf">fromCache</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">);</span>
     <span class="p">})</span>
 <span class="p">);</span>
 <span class="p">});</span>
 
-<span class="kd">function</span> <span class="nx">fromCache</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nf">fromCache</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
 <span class="c1">// Check to see if you have it in the cache</span>
 <span class="c1">// Return response</span>
 <span class="c1">// If not in the cache, then return error page</span>
-<span class="k">return</span> <span class="nx">caches</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">request</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">matching</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">matching</span> <span class="o">||</span> <span class="nx">matching</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nx">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">no-match</span><span class="dl">"</span><span class="p">);</span>
+<span class="k">return</span> <span class="nx">caches</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="nx">request</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">matching</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nx">matching</span> <span class="o">||</span> <span class="nx">matching</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">no-match</span><span class="dl">"</span><span class="p">);</span>
     <span class="p">}</span>
 
     <span class="k">return</span> <span class="nx">matching</span><span class="p">;</span>
@@ -530,9 +530,9 @@
 <span class="p">});</span>
 <span class="p">}</span>
 
-<span class="kd">function</span> <span class="nx">updateCache</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">caches</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nx">put</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">);</span>
+<span class="kd">function</span> <span class="nf">updateCache</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">caches</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="nx">request</span><span class="p">,</span> <span class="nx">response</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">}</span>
 </code></pre></div></div>
@@ -742,12 +742,12 @@
     2015
     -
   
-  2022
+  2023
   
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.14  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   

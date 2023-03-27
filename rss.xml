@@ -5,9 +5,420 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 14 Dec 2022 11:40:58 +0900</pubDate>
-    <lastBuildDate>Wed, 14 Dec 2022 11:40:58 +0900</lastBuildDate>
-    <generator>Jekyll v4.3.1</generator>
+    <pubDate>Mon, 27 Mar 2023 15:22:40 +0900</pubDate>
+    <lastBuildDate>Mon, 27 Mar 2023 15:22:40 +0900</lastBuildDate>
+    <generator>Jekyll v4.3.2</generator>
+    
+      <item>
+        <title>通用运行环境版本管理神器 ASDF</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  之前介绍了高性能集群中常用的运行环境和软件版本管理工具 Modules，今天打算介绍一款适合个人或团队开发使用的通用运行环境版本管理神器 &lt;a href=&quot;https://asdf-vm.com/zh-hans/&quot;&gt;ASDF&lt;/a&gt;。与高性能计算任务不同，个人或团队开发项目一般来说都是使用独立的设备或环境，然后通过代码版本跟踪 git 等来进行异步协作。所以说，在每个人的单个或多个设备上都安装配置 Modules 显得有点不太现实和高效。但是项目开发所需的代码环境确实有的时候可能比较复杂，比如说同时需要 Ruby、NodeJS、Java、Python 四种环境，而且可能对于每种环境还有版本的限制。这样一来，光配置这一堆环境就要花上大半天时间了。&lt;/p&gt;
+
+&lt;h3 id=&quot;asdf-简介&quot;&gt;ASDF 简介&lt;/h3&gt;
+
+&lt;p&gt;  ASDF 提供了全平台通用的环境配置方案，使用单个命令行工具和交互界面就可以管理超复杂的运行环境。以往针对不同运行环境，需要使用不同的配置文件来进行版本的声明。对于 ASDF，只需要一个可共享的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.tool-versions&lt;/code&gt; 配置文件即可。ASDF 涵盖了包括 Ruby、NodeJS、Java、PHP、.Net 在内的几百种运行环境，具体可以查看 &lt;a href=&quot;https://github.com/asdf-vm/asdf-plugins&quot;&gt;ASDF 插件列表&lt;/a&gt; 了解更多。&lt;/p&gt;
+
+&lt;p&gt;  另外，ASDF 完全支持包括 Bash、Zsh、Fish 和 Elvish 在内的常用 shell 类型，并提供补全功能。在类似 Github Actions 等的 CI/CD 工作流中，也可以轻松使用 ASDF。值得一提的是，笔者翻译了 ASDF 文档的中文版本并被官方采纳，现在 ASDF 官网支持英语、巴西语和中文三种语言。&lt;/p&gt;
+
+&lt;h3 id=&quot;为何不选其他方案&quot;&gt;为何不选其他方案&lt;/h3&gt;
+
+&lt;h4 id=&quot;docker&quot;&gt;Docker&lt;/h4&gt;
+
+&lt;p&gt;  很显然，如果大家的设备上都有 Docker 环境且 CPU 架构相同的话，Docker 无疑是最省心的方案。Docker 镜像的确可以轻松涵盖所有开发环境和实际运行环境（Apache 等 HTTP 服务器、数据库以及其他）。相比笨重的 VMware 或 Virtualbox 虚拟机镜像而言，Docker 镜像也更加小巧、便捷。而且团队可以通过在内部搭建自己的 Docker 镜像仓库，来分享这些镜像给所有参与项目的开发者。唯一可能会有问题的是，设备 CPU 架构和操作系统的多样性可能会给实际操作带来了不小的问题。实际上可能会有 Windows 系统、Linux 系统、MacOS 系统以及 Intel 架构、AMD 架构、ARM 架构（如 M1、M2 等）。可行的解决方法是，尽可能地构建更多架构的镜像。&lt;/p&gt;
+
+&lt;h4 id=&quot;anaconda&quot;&gt;Anaconda&lt;/h4&gt;
+
+&lt;p&gt;  Anaconda 现在可能已经完全超出了一个 Python 环境管理工具，有的时候也可以当成通用软件或环境管理器来用。但是毕竟还是以科学计算为主要目的，如果项目仅仅是 Python、R 语言可能还是比较合适的，对于实际编程所需的其他运行环境来说可能还是支持不够的。&lt;/p&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  据笔者所知，在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;conda-forge&lt;/code&gt; 频道里的确有 PHP 等编程语言的支持。除此之外，也有一些热心开发者在个人频道提供了 java-jdk、golang 等编程环境支持。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;云开发&quot;&gt;云开发&lt;/h4&gt;
+
+&lt;p&gt;  云开发主要是指基于云基础设施的在线代码开发环境，主要的代表有：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/cn/cloud9/&quot;&gt;Cloud9&lt;/a&gt;：笔者最早接触过的云开发，目前已被 AWS 收购，更名为 AWS Cloud9。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/features/codespaces&quot;&gt;Codespaces&lt;/a&gt;：由 Azure 提供云服务、Github 负责运营的一站式云开发环境。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.gitpod.io/&quot;&gt;Gitpod&lt;/a&gt;：基于 VS Code 研发的优秀云开发环境，早期以“便捷、快速”著称，较先于 Codespaces 出现。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cloud.tencent.com/product/cloudstudio&quot;&gt;Cloud Studio&lt;/a&gt;：由腾讯云提供云服务、基于 VS Code 的国产云开发环境，能够很好地支持个人开发、招聘笔试、课堂教学、应用快捷部署等各种场景。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.huaweicloud.com/product/cloudide.html&quot;&gt;CodeArts IDE Online&lt;/a&gt;：由华为云提供云服务、基于 VS Code 的国产云开发环境。除了一般云开发所具备的特点，还支持华为鲲鹏原生环境，能够很好地满足跨架构应用开发的需求。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cn.aliyun.com/product/yunxiao/devstudio&quot;&gt;DevStudio&lt;/a&gt;：由阿里云提供云服务、基于 VS Code 的国产云开发环境。支持应用开发全流程管理，与阿里云各项基础服务紧密结合，适合大规模团队使用。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;除了以上列举的云开发之外，也有一些比较传统的小型云开发实践，比如说知名的 &lt;a href=&quot;https://jsfiddle.net/&quot;&gt;JSFiddle&lt;/a&gt;、&lt;a href=&quot;https://codepen.io/&quot;&gt;CodePen&lt;/a&gt;、&lt;a href=&quot;https://replit.com/&quot;&gt;Replit&lt;/a&gt; 等。虽然说这些云开发主要是适合较小代码库，但在实际学习过程中用处也是很大的。&lt;/p&gt;
+
+&lt;p&gt;  云开发不仅兼顾了传统开发过程中的协同与流程，又将资源与环境整合在云里面，自然而然是最好的解决方案。随着 VS Code 在开发者之间的流行和云服务提供商的努力，基于 VS Code 的云开发环境层出不穷。即使云开发环境本身免费，云也还是要按量按时计费的。对于还没有足够支持上云的团队或个人来说，ASDF 依然是个不错的选择。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;环境需求&quot;&gt;环境需求&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Linux/Unix 环境（Linux、MacOS、Windows WSL）&lt;/li&gt;
+  &lt;li&gt;git&lt;/li&gt;
+  &lt;li&gt;bash 等（此处以 zsh 为例）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;环境配置&quot;&gt;环境配置&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载源码到 ~/.asdf 目录&lt;/span&gt;
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf &lt;span class=&quot;nt&quot;&gt;--branch&lt;/span&gt; v0.11.3
+
+&lt;span class=&quot;c&quot;&gt;# 在 ~/.zshrc 文件中加入内容&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; ~/.zshrc &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+. &quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;/.asdf/asdf.sh&quot;
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 激活配置&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; ~/.zshrc
+
+&lt;span class=&quot;c&quot;&gt;# 验证&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf version
+v0.11.3-0adc6c1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;安装插件&quot;&gt;安装插件&lt;/h3&gt;
+
+&lt;p&gt;  由于 ASDF 支持插件较多，这里以 Python 环境为例介绍 ASDF 安装插件。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加插件&lt;/span&gt;
+asdf plugin add python
+
+&lt;span class=&quot;c&quot;&gt;# 查看已安装插件&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf plugin list
+python
+
+&lt;span class=&quot;c&quot;&gt;# 查看最新 Python 版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf latest python
+3.11.2
+
+&lt;span class=&quot;c&quot;&gt;# ASDF 安装 Python 3.11.2 (latest)&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;python latest
+python-build 3.11.2 /home/ubuntu/.asdf/installs/python/3.11.2
+Downloading Python-3.11.2.tar.xz...
+-&amp;gt; https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tar.xz
+Installing Python-3.11.2...
+Installed Python-3.11.2 to /home/ubuntu/.asdf/installs/python/3.11.2
+
+&lt;span class=&quot;c&quot;&gt;# 查看已安装 Python 版本列表&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf list
+python
+  3.11.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;使用&quot;&gt;使用&lt;/h3&gt;
+
+&lt;p&gt;  ASDF 提供全局版本（Global）和本地版本（Local）两种方式定义运行环境版本。全局版本是系统级别的，类似于 PATH 变量中定义的；本地版本则是为了某个代码库或者部分代码准备的，通常在目录中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.tool-versions&lt;/code&gt; 文件里定义。为了区分全局和本地的效果差别，这里再安装一个指定 Python 版本。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查询 Python 插件支持的所有版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf list all python
+2.1.3
+2.2.3
+......
+stackless-3.7.5
+
+&lt;span class=&quot;c&quot;&gt;# 安装 Python 3.9.0&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;python 3.9.0
+python-build 3.9.0 /home/zhonger/.asdf/installs/python/3.9.0
+Downloading Python-3.9.0.tar.xz...
+-&amp;gt; https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz
+Installing Python-3.9.0...
+patching file Misc/NEWS.d/next/Build/2021-10-11-16-27-38.bpo-45405.iSfdW5.rst
+patching file configure
+patching file configure.ac
+Installed Python-3.9.0 to /home/zhonger/.asdf/installs/python/3.9.0
+
+&lt;span class=&quot;c&quot;&gt;# 查看已安装 Python 版本列表&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf list
+python
+  3.11.2
+  3.9.0
+
+&lt;span class=&quot;c&quot;&gt;# 查看当前系统 Python 及 Python3 版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+No python executable found &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;python system
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.10.6
+
+&lt;span class=&quot;c&quot;&gt;# 更改全局版本为 3.11.2 并查看&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf list
+python
+ &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;3.11.2
+  3.9.0
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.11.2
+
+&lt;span class=&quot;c&quot;&gt;# 创建子目录指定本地版本并查看&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir &lt;/span&gt;py &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;py
+asdf &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;python 3.9.0
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.9.0
+
+&lt;span class=&quot;c&quot;&gt;# 返回父目录查看 Python 版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .. &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; python &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.11.2
+
+&lt;span class=&quot;c&quot;&gt;# 查看当前系统 Python3 版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.10.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这里有一点比较有趣的是：由于 ASDF 接管的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python&lt;/code&gt; 命令而非 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python3&lt;/code&gt; 命令，所以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python3&lt;/code&gt; 命令输出的版本依然还是系统安装版本。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h3 id=&quot;其他相关&quot;&gt;其他相关&lt;/h3&gt;
+
+&lt;p&gt;  如果想要恢复到系统指定版本，可以很容易使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asdf global python system&lt;/code&gt; 命令。当然，对于本地版本，可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;asdf local python system&lt;/code&gt; 来实现。除此之外，还有一些常规操作如下。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看 Python 指定版本安装位置&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf where python 3.11.2
+/home/zhonger/.asdf/installs/python/3.11.2
+
+&lt;span class=&quot;c&quot;&gt;# 查看命令所在位置&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf which python
+/home/zhonger/.asdf/installs/python/3.11.2/bin/python
+
+&lt;span class=&quot;c&quot;&gt;# 查看当前 ASDF 管理的运行环境&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;asdf current
+python          3.11.2          /home/ubuntu/.tool-versions
+
+&lt;span class=&quot;c&quot;&gt;# 查看全局和本地版本配置文件&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; ~/.tool-versions
+python 3.11.2
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; ~/py/.tool-versions
+python 3.9.0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://asdf-vm.com/zh-hans/guide/getting-started.html&quot;&gt;ASDF 官网 - 快速入门&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://asdf-vm.com/zh-hans/manage/versions.html&quot;&gt;ASDF 官网 - 版本&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 20 Mar 2023 15:50:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/asdf.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/asdf.html</guid>
+        
+        <category>Linux</category>
+        
+        <category>Environment</category>
+        
+        <category>Manage</category>
+        
+        <category>Dev Runtime</category>
+        
+        <category>软件环境</category>
+        
+        <category>多版本</category>
+        
+        <category>管理</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
+    
+      <item>
+        <title>Modules 配置之 Python</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  近年来得益于其轻量、易学易用、第三方支持依赖库多的特点，Python 语言大量被用于机器学习相关的研究、项目开发。在学术界，有以 &lt;a href=&quot;https://scikit-learn.org&quot;&gt;Scikit-Learn&lt;/a&gt; 为代表的全能机器学习库；在产业界，有以 &lt;a href=&quot;https://www.tensorflow.org&quot;&gt;TensorFlow&lt;/a&gt;、&lt;a href=&quot;https://pytorch.org&quot;&gt;PyTorch&lt;/a&gt; 为代表的生产级机器学习模型计算框架。（当然，学术界实际上构建大规模深度学习模型时也会用到 PyTorch 等计算框架。）但对于大多数人来说，学习这些库、框架或者借助它们从事某些研究、项目开发时，可能还是在用自己的笔记本、台式机。哪怕是在高校的实验室里，这种事情也是屡见不鲜。因此，有交互界面、相对容易上手的 &lt;a href=&quot;https://www.anaconda.com&quot;&gt;Anaconda&lt;/a&gt; 可能会作为大家管理 Python 环境的首选。&lt;/p&gt;
+
+&lt;p&gt;  当我们在用 Python 编写一些代码，而代码一次运行不可能在短短几秒、几分钟内得到结果时，将任务提交给高性能工作站或者集群作业系统就显得格外有效。尤其是当应用规模较大、计算迭代次数较多时，非交互式的作业提交方式会变得更加有利。毕竟如果是用自己的笔记本运行着这么大的计算，资源基本上都被计算占用了，根本没办法用笔记本去干点别的事情。甚至说，计算还会使得 CPU 等核心部件温度上升，从而影响计算性能。这样比较下来，不得不说提交任务给高性能工作站或者集群作业系统是多么明智的选择。&lt;/p&gt;
+
+&lt;p&gt;  其实，Anaconda 在没有交互界面的服务器操作系统上也还是可以使用的，我们可以使用其免费的精简版 —— &lt;a href=&quot;https://conda.io/miniconda&quot;&gt;miniconda&lt;/a&gt;。虽然 miniconda 已经是精简版了，但和原生 Python 环境比起来还是要多不少东西的。从高性能计算环境的角度来看，使用 Modules 直接管理 Python 环境实际上更加贴近原生，也更加有利于用户与其他环境搭配使用。比如说安装  Python 的 MPI 支持库 —— MPI4PY，仅需要通过 Modules 管理工具加载 Python 和 MPI 两个基础环境，使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip3 install mpi4py&lt;/code&gt; 命令即可安装。&lt;/p&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;p&gt;  将 Python 环境纳入 Modules 管理的步骤就是两步：第一步，编译源代码及安装；第二步，添加 Modules 配置文件。当然，最开始还是需要确认一下编译环境是否完备以及文件夹是否准备好。&lt;/p&gt;
+
+&lt;h3 id=&quot;环境及文件夹准备&quot;&gt;环境及文件夹准备&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装编译环境&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; build-essential libbz2-dev libdb-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  libreadline-dev libffi-dev libgdbm-dev liblzma-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  libncursesw5-dev libsqlite3-dev libssl-dev &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  zlib1g-dev uuid-dev tk-dev wget
+  
+&lt;span class=&quot;c&quot;&gt;# 准备文件夹&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /opt/python/3.10.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;编译及安装&quot;&gt;编译及安装&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载源代码&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://www.python.org/ftp/python/3.10.6/Python-3.10.6.tar.xz
+
+&lt;span class=&quot;c&quot;&gt;# 解压源代码&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xf Python-3.10.6.tar.xz
+
+&lt;span class=&quot;c&quot;&gt;# 配置安装路径及编译选项&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Python-3.10.6
+./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/python/3.10.6 &lt;span class=&quot;nt&quot;&gt;--enable-optimizations&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--with-lto&lt;/span&gt; 
+
+&lt;span class=&quot;c&quot;&gt;# 编译及安装&lt;/span&gt;
+make &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;配置-modules&quot;&gt;配置 Modules&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /opt/modules/modulefiles/py
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;vim /opt/modules/modulefiles/py/3.10.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  首先如上命令准备文件夹，并新建 module 配置文件，内容如下：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#%Module&lt;/span&gt;
+proc ModulesHelp &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    puts stderr &lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;This module file will load Python 3.10.6&lt;span class=&quot;s2&quot;&gt;&quot;
+}
+
+module-whatis  &quot;&lt;/span&gt;Enable Python 3.10.6&lt;span class=&quot;s2&quot;&gt;&quot;
+
+eval set  [ array get env HOME ]
+set basedir /opt/python/3.10.6
+prepend-path PATH &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;basedir&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/bin&lt;span class=&quot;s2&quot;&gt;&quot;
+prepend-path LIBRARY_PATH &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;basedir&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/lib&lt;span class=&quot;s2&quot;&gt;&quot;
+prepend-path LD_LIBRARY_PATH &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;basedir&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/lib&lt;span class=&quot;s2&quot;&gt;&quot;
+prepend-path INCLUDE_PATH &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;basedir&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/include&lt;span class=&quot;s2&quot;&gt;&quot;
+prepend-path LD_INCLUDE_PATH &quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;basedir&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/include&lt;span class=&quot;s2&quot;&gt;&quot;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;验证&quot;&gt;验证&lt;/h3&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看所有可用模块&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;module ava
+&lt;span class=&quot;nt&quot;&gt;--------------------------&lt;/span&gt; /opt/modules/modulefiles &lt;span class=&quot;nt&quot;&gt;---------------------------&lt;/span&gt;
+dot  module-git  module-info  modules  null  py/3.10.6  use.own
+
+Key:
+modulepath
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 加载 python 3.10.6 环境，并确认已加载模块&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;module load py/3.10.6
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;module list
+Currently Loaded Modulefiles:
+ 1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; py/3.10.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 确认目前 python 版本&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt;
+Python 3.10.6
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;使用&quot;&gt;使用&lt;/h3&gt;
+
+&lt;p&gt;  由于以上操作将 Python 3.10.6 安装到了一个系统文件夹中，编译完成后会出现如下警告提示。不过无须担心，普通用户可以通过 venv 虚拟环境工具正常使用。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Installing collected packages: setuptools, pip
+  WARNING: The scripts pip3 and pip3.10 are installed &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;/opt/python/3.10.6/bin&apos;&lt;/span&gt; which is not on PATH.
+  Consider adding this directory to PATH or, &lt;span class=&quot;k&quot;&gt;if &lt;/span&gt;you prefer to suppress this warning, use &lt;span class=&quot;nt&quot;&gt;--no-warn-script-location&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Successfully installed pip-22.2.1 setuptools-63.2.0
+WARNING: Running pip as the &lt;span class=&quot;s1&quot;&gt;&apos;root&apos;&lt;/span&gt; user can result &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  如下所示，当已经如&lt;strong&gt;验证&lt;/strong&gt;部分加载好 python 3.10.6 模块后，使用以下命令新建虚拟环境、激活后即可使用。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;   新建虚拟环境时最后的参数 env 是指虚拟环境的名字，我们可以取任意符合 python 规则的字符串作为虚拟环境名字。值得注意的是，python 虚拟环境有关的文件将会被安装在命令执行的当前目录下的同名文件夹中。为了便于管理和使用，建议将所有的 python 虚拟环境都放置在同一目录下。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 新建 env 虚拟环境&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python3 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; venv &lt;span class=&quot;nb&quot;&gt;env&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 激活 env 虚拟环境&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source env&lt;/span&gt;/bin/activate
+
+&lt;span class=&quot;c&quot;&gt;# 可以看到 &amp;lt;env&amp;gt; 的环境提示&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 尝试升级 pip，可以看到成功升级 &lt;/span&gt;
+╭─zhonger@lep-u ~ ‹env›
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pip3 &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; pip
+Requirement already satisfied: pip &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; ./env/lib/python3.10/site-packages &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;22.2.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Collecting pip
+  Using cached pip-23.0.1-py3-none-any.whl &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.1 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 22.2.1
+    Uninstalling pip-22.2.1:
+      Successfully uninstalled pip-22.2.1
+Successfully installed pip-23.0.1
+
+&lt;span class=&quot;c&quot;&gt;# 取消激活 env 虚拟环境&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;deactivate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;有趣的问题&quot;&gt;有趣的问题&lt;/h2&gt;
+
+&lt;p&gt;  如果使用 module 提供的 python 模块创建了虚拟环境后，实际运行虚拟环境时还需要使用 module 加载 python 模块吗？答案是&lt;strong&gt;不需要&lt;/strong&gt;。虚拟环境的本质是拷贝运行相同命令所需的必要文件，如下对比查看一下 python 模块和 env 虚拟环境的顶级目录。可以发现，两者的差别不是很大。env 虚拟环境少了 share 目录，多了 pyvenv.cfg 文件。查看该文件可知，存在与 python 模块之间的关系的声明。再查看 bin 目录，可以看到 python 可执行命令用了链接的方式，pip 命令则是直接从原来的 python 模块复制过来的。于是，这就能允许普通用户自行管理  pip 命令和 python 库了。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/python/3.10.6
+bin  include  lib  share
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls env
+&lt;/span&gt;bin  include  lib  lib64  pyvenv.cfg
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat env&lt;/span&gt;/pyvenv.cfg
+home &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; /opt/python/3.10.6/bin
+include-system-site-packages &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;false
+&lt;/span&gt;version &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 3.10.6
+
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ll &lt;span class=&quot;nb&quot;&gt;env&lt;/span&gt;/bin
+total 36K
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 zhonger zhonger 8.9K Mar 20 15:20 Activate.ps1
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 zhonger zhonger 2.0K Mar 20 15:20 activate
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 zhonger zhonger  908 Mar 20 15:20 activate.csh
+&lt;span class=&quot;nt&quot;&gt;-rw-r--r--&lt;/span&gt; 1 zhonger zhonger 2.1K Mar 20 15:20 activate.fish
+&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt; 1 zhonger zhonger  234 Mar 20 15:20 pip
+&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt; 1 zhonger zhonger  234 Mar 20 15:20 pip3
+&lt;span class=&quot;nt&quot;&gt;-rwxrwxr-x&lt;/span&gt; 1 zhonger zhonger  234 Mar 20 15:20 pip3.10
+lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python -&amp;gt; python3
+lrwxrwxrwx 1 zhonger zhonger   30 Mar 20 15:20 python3 -&amp;gt; /opt/python/3.10.6/bin/python3
+lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python3.10 -&amp;gt; python3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.python.org/zh-cn/3/using/unix.html#building-python&quot;&gt;Python 官方文档 - 构建 Python&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.python.org/zh-cn/3/using/configure.html#configure-options&quot;&gt;Python 官方文档 - 性能选项&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.python.org/zh-cn/3/tutorial/venv.html&quot;&gt;Python 官方文档 - 虚拟环境和包&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.python.jp/install/ubuntu/index.html&quot;&gt;Ubuntu 環境の Python&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 20 Mar 2023 12:48:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/modules-python.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/modules-python.html</guid>
+        
+        <category>Linux</category>
+        
+        <category>Modules</category>
+        
+        <category>Python</category>
+        
+        <category>软件环境</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>集群动态环境管理神器 Modules</title>
@@ -1404,633 +1815,6 @@ docker restart &amp;lt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt;&lt;span 
         <category>LDAP</category>
         
         <category>Dokuwiki</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>LDAP 集成之 Apache 篇</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;h3 id=&quot;apache&quot;&gt;Apache&lt;/h3&gt;
-
-&lt;p&gt;  Apache HTTP 服务器作为当今流行的几大 HTTP 服务器之一，几乎占据了半壁江山。与知名的Nginx（现已被 F1 收购）、微软的 IIS 相比，Apache 具有更好的模块化支持，无论是从服务端的编程语言还是到身份认证方案。Apache 支持 Perl、Python、PHP 等常用服务端语言，同时也支持 Basic 认证、LDAP 认证、OAuth 2.0 等。尤其是 LAMP（Linux+Apache+MySQL+PHP）集成环境已经成为了虚拟主机的首选。当然，也有提供 ASP 虚拟主机环境的。&lt;/p&gt;
-
-&lt;h3 id=&quot;apache-与博客发展&quot;&gt;Apache 与博客发展&lt;/h3&gt;
-
-&lt;p&gt;  实际上，在博客兴起的初期，大部分博客是最简单的静态页面。而随着服务器端语言的发展，开始有了基于 ASP.net 或 PHP 的博客开源程序，例如最为流行的 WordPress 就是基于 PHP 编写的。在笔者学习博客的初期，也是使用了 WordPress 和 PHP 虚拟主机来搭建自己的博客。可以说，PHP 或 ASP 集成环境在相当一段时间内可能都是最好的博客或者网站解决方案。但随着云服务、无服务计算、Git 等的兴起，以 Git 为中心的持续集成、持续部署的方式越来越成为了搭建个人静态博客的首选。这也反映了博客发展的动态变化过程：&lt;strong&gt;静态博客→动态博客→静态博客&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;  以 Github Page、Gitlab Page、Netlify、Vercel、Cloudflare Page 等为代表的静态站点部署方式越来越受到大家的喜爱，现在大部分大公司的文档都已经转变为这种方式，比如 Azure 的官方文档、Cloudflare 的官方文档、腾讯云的官方文档等。这样一种方式不仅有利于开发的快速迭代，还有利于吸引大众参与到文档的贡献与纠错中来，可以使文档越来越好。当然，这其实就是“开源”的思想。那这是不是就意味着 Apache 对静态网站变得不那么有用了呢？当然不是。Apache 所支持的认证模块、日志模块、重写模块、代理模块等对静态网站也非常重要。&lt;/p&gt;
-
-&lt;h3 id=&quot;apache-对文档的妙用&quot;&gt;Apache 对文档的妙用&lt;/h3&gt;
-
-&lt;p&gt;  现在的开发文档大部分都已经采用 Git+Markdown+SSG（Static Site Generator，静态站点生成器）的方式进行开发部署。对于团队内部的文档可能常常会有权限限制和访问记录的需求，甚至说如果有共享文件，也希望能够知道是谁下载了、在什么时候下载了。如果以后端编程的角度来想，可能需要开发一套系统专门实现验权、访问记录、下载记录、数据统计等功能。即使如此，当有多个文档需要集成到一起时，这种解决方案仍然有点困难了。所以付出了相当的代价，而所获取的收益却不是很明显。针对这一需求，基于 Apache 可以有更加简便的方案，如下图所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/4hsLnz.webp&quot; alt=&quot;基于 Apache 的文档方案 Solutions based on Apache&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  如上图所示，基于 Apache 的解决方案主要包含以下三点：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;利用 Apache 与 LDAP 或其他用户系统集成来验证权限；&lt;/li&gt;
-  &lt;li&gt;利用 Apache 的日志功能来记录所有验权动作以及用户行为；&lt;/li&gt;
-  &lt;li&gt;利用 Apache 的重写模块和代理模块将所有文档集中在一个域名的不同子目录下。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;p&gt;  为了尽可能简单地实现一下上面所提到的基于 Apache 的文档解决方案，这里采用了 Docker 镜像的方式。&lt;/p&gt;
-
-&lt;h3 id=&quot;环境准备&quot;&gt;环境准备&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Docker 环境（推荐 Linux 或 Mac）&lt;/li&gt;
-  &lt;li&gt;已安装 docker-compose 工具&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;配置文件准备&quot;&gt;配置文件准备&lt;/h3&gt;
-
-&lt;p&gt;  如需自行构建 Docker 镜像，请将以下三个配置文件放置在 conf 子目录中。如直接使用下面笔者构建的 &lt;a href=&quot;https://hub.docker.com/r/zhonger/ldap-apache&quot;&gt;zhonger/ldap-apache&lt;/a&gt; 镜像，可以忽略。&lt;/p&gt;
-
-&lt;h4 id=&quot;ldap-验证定义&quot;&gt;LDAP 验证定义&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# ldap-demo.conf
-
-&amp;lt;AuthnProviderAlias ldap demo&amp;gt;
-  AuthLDAPBindDN ${LDAP_BindDN}
-  AuthLDAPBindPassword ${LDAP_BindPass}
-  AuthLDAPURL ${LDAP_URL}
-  Require ldap-group ${LDAP_BindGroup}
-&amp;lt;/AuthnProviderAlias&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;激活-ldap-验证&quot;&gt;激活 LDAP 验证&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# .htaccess
-
-AuthBasicProvider demo
-AuthType Basic
-AuthName &quot;Protected Area&quot;
-Require valid-user
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&quot;重写-apache-配置文件&quot;&gt;重写 Apache 配置文件&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;# apache2.conf
-
-DefaultRuntimeDir ${APACHE_RUN_DIR}
-
-PidFile ${APACHE_PID_FILE}
-
-Timeout 300
-
-KeepAlive On
-
-MaxKeepAliveRequests 100
-
-KeepAliveTimeout 5
-
-User ${APACHE_RUN_USER}
-Group ${APACHE_RUN_GROUP}
-
-HostnameLookups Off
-
-ErrorLog ${APACHE_LOG_DIR}/error.log
-
-LogLevel warn
-
-# Include module configuration:
-IncludeOptional mods-enabled/*.load
-IncludeOptional mods-enabled/*.conf
-
-# Include list of ports to listen on
-Include ports.conf
-
-&amp;lt;Directory /&amp;gt;
-    Options FollowSymLinks
-    AllowOverride None
-    Require all denied
-&amp;lt;/Directory&amp;gt;
-
-&amp;lt;Directory /usr/share&amp;gt;
-    AllowOverride None
-    Require all granted
-&amp;lt;/Directory&amp;gt;
-
-&amp;lt;Directory /var/www/&amp;gt;
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-&amp;lt;/Directory&amp;gt;
-
-AccessFileName .htaccess
-
-&amp;lt;FilesMatch &quot;^\.ht&quot;&amp;gt;
-    Require all denied
-&amp;lt;/FilesMatch&amp;gt;
-
-LogFormat &quot;%v:%p %h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot;&quot; vhost_combined
-LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot;&quot; combined
-LogFormat &quot;%h %l %u %t \&quot;%r\&quot; %&amp;gt;s %O&quot; common
-LogFormat &quot;%{Referer}i -&amp;gt; %U&quot; referer
-LogFormat &quot;%{User-agent}i&quot; agent
-
-IncludeOptional conf-enabled/*.conf
-IncludeOptional sites-enabled/*.conf
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&quot;apache-子目录设置&quot;&gt;Apache 子目录设置&lt;/h3&gt;
-
-&lt;p&gt;  之前提到如果有多个文档分别以多个 Git 项目存在，那么最终编译成的静态文件也是分别存放或者分别部署。这里介绍两种子目录的形式：&lt;strong&gt;目录假名（Alias）&lt;/strong&gt;和&lt;strong&gt;代理（Proxy）&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h4 id=&quot;目录假名&quot;&gt;目录假名&lt;/h4&gt;
-
-&lt;p&gt;  目录假名比较简单，我们可以直接使用以下配置实现方案图中的各个文档目录：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;...
-Alias &quot;/dvm/&quot; &quot;/var/www/dvm/&quot;
-Alias &quot;/ds3/&quot; &quot;/var/www/ds3/&quot;
-Alias &quot;/dgit/&quot; &quot;/var/www/dgit/&quot;
-Alias &quot;/dml/&quot; &quot;/var/www/dml/&quot;
-Alias &quot;/dnc/&quot; &quot;/var/www/dnc/&quot;
-...
-&amp;lt;Directory /var/www/&amp;gt;
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;  由于下面构建的镜像仍采用了上面的 Apache 配置文件，所以不包含以上目录假名设置。如有需要，可以按照上面给出的顺序将目录假名设置加入到新的 apache2.conf 文件中，并且在 docker-compose.yml 文件中如下所示挂载新的 apache2.conf 文件即可生效。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/var/www/&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./logs:/var/log/apache2/&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./apache2.conf:/etc/apache2/apache2.conf&lt;/span&gt;
-&lt;span class=&quot;nn&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;代理&quot;&gt;代理&lt;/h4&gt;
-
-&lt;p&gt;  下面的构建镜像 Dockerfile 中将会预先启用代理模块，由于可能会代理 HTTPS 端口，所以 HTTP 模块和 SSL 模块也预先启用了。除此之外，如果需要代理 HTTPS 站点，就要像下面一样开启 SSLProxyEngine 配置，否则只能完成 HTTP 代理。代理配置的第二行是“ProxyPass+子目录+代理 URL”。&lt;/p&gt;
-
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;需要注意的是应该把&lt;strong&gt;代理配置&lt;/strong&gt;放在&lt;strong&gt;目录配置&lt;/strong&gt;之前。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;pre&gt;&lt;code class=&quot;language-apacheconf&quot;&gt;...
-SSLProxyEngine On
-ProxyPass /foo https://foo.example.com
-...
-&amp;lt;Directory /var/www/&amp;gt;
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&quot;构建镜像&quot;&gt;构建镜像&lt;/h3&gt;
-
-&lt;p&gt;  Docker 镜像的构建实际上就是要做这么几件事：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;复制三个配置文件到容器镜像中&lt;/li&gt;
-  &lt;li&gt;启用 LDAP 认证模块&lt;/li&gt;
-  &lt;li&gt;准备好日志目录和默认日志文件&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-docker highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; php:7-apache&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;LABEL&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; maintainer=&quot;zhonger zhonger@live.cn&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Enable ldap for apache2&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/ldap-demo.conf /etc/apache2/conf-available/ldap-demo.conf&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;a2enmod authnz_ldap proxy proxy_http ssl &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
-&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /etc/apache2/conf-available/ldap-demo.conf /etc/apache2/conf-enabled/ldap-demo.conf
-
-&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/.htaccess /var/www/html/&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;COPY&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; conf/apache2.conf /etc/apache2/apache2.conf&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Save logs for apache&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; /var/log/apache2/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
-&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /var/log/apache2/ &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\
-&lt;/span&gt;    &lt;span class=&quot;nb&quot;&gt;touch &lt;/span&gt;access.log error.log
-
-&lt;span class=&quot;c&quot;&gt;# Remove cache&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;RUN &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-rf&lt;/span&gt; /var/lib/apt/lists/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;EXPOSE&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; 80&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  当准备好配置文件和上面的 Dockerfile 文件时，执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker build . -t zhonger/ldap-apache&lt;/code&gt; 命令构建 Docker 镜像。&lt;/p&gt;
-
-&lt;h3 id=&quot;运行验证&quot;&gt;运行验证&lt;/h3&gt;
-
-&lt;p&gt;  构建 Docker 镜像成功后，新建 docker-compose.yml 文件并使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令来运行一个实例。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2&apos;&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;apache&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zhonger/ldap-apache:latest&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./data:/var/www/&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./logs:/var/log/apache2/&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;LDAP_URL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ldap://ldap.example.com/ou=users,dc=example,dc=com?uid&quot;&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;LDAP_BindDN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;cn=admin,dc=example,dc=com&quot;&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;LDAP_BindPass&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;xxxxxxxxxx&quot;&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;LDAP_BindGroup&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ou=people,dc=example,dc=com&quot;&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;APACHE_LOG_DIR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/var/log/apache2&quot;&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;80:80&lt;/span&gt;
-      &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;验证网页&quot;&gt;验证网页&lt;/h4&gt;
-
-&lt;p&gt;  为了验证 LDAP 认证是否有效，这里写了一个简单的 PHP 文件 /var/www/html/p.php。当没有放置 .htaccess 文件时，无须任何认证即可访问。当在 /var/www/html 目录放置 .htaccess 文件时，浏览器再次访问会弹出如下登录弹窗。正确输入 LDAP 允许的用户名和密码后，浏览器会再次正常显示刚才看到的内容。&lt;/p&gt;
-
-&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- p.php --&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;cp&quot;&gt;&amp;lt;?&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;php&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;phpinfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/iw6WKt.webp&quot; alt=&quot;正常内容 Normal Page Content&quot; /&gt;
-&lt;img src=&quot;https://i.lisz.top/blog/Px1PiS.webp&quot; alt=&quot;要求验证 Auth Required&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;验证日志&quot;&gt;验证日志&lt;/h4&gt;
-
-&lt;p&gt;  当查看 Apache 的访问日志 access.log 文件时，可以看到如下内容。第一行是未设置 LDAP 验证时的正常访问记录，第二行是设置 LDAP 验证后提醒登录的记录，第三行是登录成功后带有登录用户名的记录（由于隐私关系，下图遮住了登录用户名）。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/CdxxGU.webp&quot; alt=&quot;日志文件 Log file&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;验证目录假名&quot;&gt;验证目录假名&lt;/h4&gt;
-
-&lt;p&gt;  这里为了验证目录假名，新建了目录 /var/www/dvm，并在目录中新建了内容为 dvm 的 index.html 文件。在配置上面提到的目录假名之后访问浏览器可以看到如下所示效果，正常生效。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/NDnuLk.webp&quot; alt=&quot;目录假名 Alias&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;验证代理&quot;&gt;验证代理&lt;/h4&gt;
-
-&lt;p&gt;  这里为了验证代理效果，直接代理了百度首页（虽然这样不大好）。如下所示可以正常看到百度首页内容。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/kdbabl.webp&quot; alt=&quot;代理 Proxy&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/zh-cn/Apache_HTTP_Server&quot;&gt;Apache HTTP 服务器&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://httpd.apache.org/docs/current/ja/mod/mod_alias.html&quot;&gt;Apache Module mod_alias&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-use-apache-http-server-as-reverse-proxy-using-mod_proxy-extension&quot;&gt;How To Use Apache HTTP Server As Reverse-Proxy Using mod_proxy Extension&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 21 Jun 2022 13:24:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/ldap-apache.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-apache.html</guid>
-        
-        <category>LDAP</category>
-        
-        <category>Apache</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>PWA：可能是成本最低的站点加速方式</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;p&gt;  PWA（Progressive Web App），中文称为“&lt;strong&gt;渐进式网络应用程序&lt;/strong&gt;”，利用一系列现代的 Web 技术来增强 Web App 的功能，从而实现应用程序一样的用户体验。事实上，任何的网站都可以做成 PWA。从这个概念上来说，PWA 实际上是一种理念。根据这种理念可以创造出各式各样的东西，比如说微信小程序、百度小程序、支付宝小程序等等（😂 虽然它们都不承认自己是和 PWA 一脉相承的）。&lt;/p&gt;
-
-&lt;h3 id=&quot;为何有-pwa&quot;&gt;为何有 PWA&lt;/h3&gt;
-
-&lt;p&gt;  随着网络和智能设备的飞速发展及提升，越来越多的原生应用程序占据了智能设备的空间和资源。曾几何时，一个微博应用程序还只有 100M 左右，现在一安装一登录就要到快 1G。再没事刷一刷新闻或者视频，可能就要变成 1.5G，甚至更多。类似微博这样，我们日常可能常用的淘宝、微信、QQ、知乎等等几乎都是如此。虽然这样的空间和运行内存资源占用能给我们带来很好的用户体验，但实际上还是在一点点榨干智能设备的资源。最后智能设备越来越卡，只能依靠时常清理、重置或者升级硬件来焕发新机。&lt;/p&gt;
-
-&lt;p&gt;  相比原生应用开发而言，Web 应用程序的开发和更新维护则显得不要太轻松，真正实现了“一遍更新所有客户端适用”。如果要从性能和可调用设备资源来看，可能以前原生应用要占上风。但是随着 HTML5 和 CSS3 的发展，Web 应用程序在性能和设备资源调用上已经与原生应用差别无二了。所以越来越多的基于 Web 技术的 Hybrid 客户端或者纯 Web 客户端开始涌现，比如非常知名的网易云客户端，无论是 PC 客户端还是移动客户端都已经切换到了 Web 技术栈。还有现在非常流行的代码编辑器 VS Code，是基于 Electron 框架进行二次开发，其简易的操作逻辑和丰富的插件为开发者带来了无限的可能。&lt;/p&gt;
-
-&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 代码编辑器小知识 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。&lt;br /&gt;
-  “巨无霸”代码编辑器也有其好处，能够提供保姆式的界面交互，可能看着省心一点。但这也是一个缺点，你需要先学习如何使用代码编辑器，才能用它来编写你想要的程序。“简洁”代码编辑器只提供必要的组件，比如文件列表、终端、搜索替换、高亮等。如果需要更多的功能，可以通过安装插件的方式来扩展支持。当然，“简洁”代码编辑器会要求你对“一切皆文件”的 Unix/Linux 哲学有比较好的认识，因为你需要通过手动修改文件配置内容的方式来设置各种各样的东西，而极少有交互界面提供。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;  当我们把原生应用和 Web 应用放在一起来考虑时，我们就会想是否能有一种方式可以结合两者的优点来为用户提供更好的服务呢？&lt;strong&gt;PWA 于是应运而生&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 其他方案 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  除了 PWA 之外，其实还是其他的方案出现。比如像 Hybrid 应用、React Native、Flutter 等，具体可以阅读参考资料了解更多。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;h3 id=&quot;什么是渐进式&quot;&gt;什么是渐进式&lt;/h3&gt;
-
-&lt;p&gt;  所谓的“&lt;strong&gt;渐进式&lt;/strong&gt;”有两个含义：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;一是 &lt;strong&gt;Web 应用渐进式接近原生应用&lt;/strong&gt;：通过各种 Web 技术实现与原生应用相近的用户体验。&lt;/li&gt;
-  &lt;li&gt;二是&lt;strong&gt;给支持 PWA 的浏览器用户带来更好的体验&lt;/strong&gt;：由于不同浏览器支持的 HTML/CSS 的情况有所差别，可以利用 PWA 来分步骤、分阶段在不同浏览器上新增特性。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 渐进式应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  一个渐进式应用首先是一个网页，通过各种 Web 技术编写出的一个网页应用。之后通过添加应用 Manifest 实现添加到主屏幕，通过 Service Worker 来实现离线缓存和消息推送等功能。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;  正是由于这些因素，PWA 至少可以给你的站点带来以下好处：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;更快、更安全的用户体验&lt;/li&gt;
-  &lt;li&gt;更好的搜索排名（尤其对于 Google）&lt;/li&gt;
-  &lt;li&gt;更好的可用性&lt;/li&gt;
-  &lt;li&gt;更好的性能&lt;/li&gt;
-  &lt;li&gt;离线访问&lt;/li&gt;
-  &lt;li&gt;手机屏幕上的快捷方式像是原生应用&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;为-jekyll-配置-pwa&quot;&gt;为 Jekyll 配置 PWA&lt;/h2&gt;
-
-&lt;p&gt;  从上面列举的 PWA 的好处，我们可以很显然知道：PWA 的离线缓存、原生式体验、搜索引擎友好这些优点都能用于实现站点加速。通常的静态站点加速方法可能是：减少请求、缩减请求的大小、CDN 加速等等，但是 PWA 本身的特性对于用户体验来说也是有一些加速效果的，毕竟被访问过一次就会缓存下来。这与 CDN 的缓存有些类似，只不过 CDN 有很多缓存节点，而 PWA 是把本机作为唯一的缓存节点。&lt;/p&gt;
-
-&lt;p&gt;  经过一番对于 Jekyll 上 PWA 支持的调查后，发现的确也存在一些号称可以很方便、简单地使用的 PWA 插件。但是尝试了一下觉得有点复杂且插件看起来毫无用处。根据上面提到的 PWA 实现方式来看，只要我们配置好 Manifest 和 Service Worker，就可以把一个站点全部变成 PWA 应用。根本上与是否 Jekyll 或其他应用无关，因此使用 PWA 插件的必要性不大。&lt;/p&gt;
-
-&lt;p&gt;  接下来就让我们来尝试一下徒手配置 PWA。&lt;/p&gt;
-
-&lt;h3 id=&quot;配置-manifest&quot;&gt;配置 Manifest&lt;/h3&gt;
-
-&lt;h4 id=&quot;元信息&quot;&gt;元信息&lt;/h4&gt;
-
-&lt;p&gt;  Manifest 实际上是一个声明了 PWA 应用的所有元信息的 JSON 配置文件，如下所示。我们需要定义 PWA 应用的名称、语言、缩写、图标、主题颜色、背景颜色、起始路径。&lt;/p&gt;
-
-&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;lang&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.language }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;dir&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;site.title&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;smartify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;jsonify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;short_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;site.pwa.short_name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;smartify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;jsonify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;icons&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192x192&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;512x512&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-          &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome-maskable&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;192&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;192x192&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;purpose&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;maskable&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/assets/img/touch/android-chrome-maskable&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;-512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;512&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.png&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;sizes&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;512x512&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;type&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;image/png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;purpose&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;maskable&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;theme_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.pwa.color }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;background_color&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ site.pwa.color }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;start_url&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;{{ &quot;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot; | prepend: site.baseurl }}&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;display&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;standalone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;orientation&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;natural&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  这里大部分的元信息都可以通过 Jekyll 的 _config.yml 全局配置文件来动态配置。其中，由于图标需要适用于不同的设备、屏幕分辨率，所以需要准备不同尺寸、分辨率的站点图标。这里可以使用 &lt;a href=&quot;https://cthedot.de&quot;&gt;cthedot&lt;/a&gt; 开发的 &lt;a href=&quot;https://github.com/cthedot/icongen&quot;&gt;cthedot/icongen&lt;/a&gt; 工具来一键生成，非常简单方便。生成后将图标文件放置在上面设置好的位置（可自行对应修改）。&lt;/p&gt;
-
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; icongen 镜像站 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 &lt;a href=&quot;https://icongen.pages.dev/&quot;&gt;icongen&lt;/a&gt;，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;h4 id=&quot;模板化&quot;&gt;模板化&lt;/h4&gt;
-
-&lt;p&gt;  由于 manifest.json 文件我们不想要每个用户都来复制一遍，所以可以将这个文件内容模板化，即把 manifest.json 文件放置在 _layouts 文件夹中。这样一来，用户可以非常简单地在源码的主目录下建立一个新的 manifest.json 文件，内容如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;manifest&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  另外，在全局配置文件 _config.yml 中需确保有如下配置：&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;language&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;zh&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Blog&apos;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;# PWA&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;pwa&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#81BBFF&apos;&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;short_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;lisz&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;链接到页面&quot;&gt;链接到页面&lt;/h4&gt;
-
-&lt;p&gt;  当上面的内容都设置好后，我们还需将 manifest.json 的声明配置加入到网站的所有页面，内容如下所示。一般来说，Jekyll 主题只需要在 head.html 和 post-head.html 两个头文件模块中加入下面内容即可（一个是普通页面，一个是文章页面）。&lt;/p&gt;
-
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;link&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rel=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;manifest.json&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;配置-service-worker&quot;&gt;配置 Service Worker&lt;/h3&gt;
-
-&lt;h4 id=&quot;注册-service-worker&quot;&gt;注册 Service Worker&lt;/h4&gt;
-
-&lt;p&gt;  配置完  Manifest 之后，只是能告诉浏览器你的应用是一个 PWA 应用，而实际的 PWA 的离线缓存等特性都还没有实现，这些都是在 Service Worker 中实现的。首先在 _includes 目录中创建 pwa.html 文件，用于注册 PWA 应用，内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-liquid highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;!-- pwa.html --&amp;gt;
-&amp;lt;script&amp;gt;
-    if (&quot;serviceWorker&quot; in navigator) {
-        if (navigator.serviceWorker.controller) {
-            console.log(&quot;An active service worker found, no need to register&quot;);
-        } else {
-            // Register the service worker
-            navigator.serviceWorker
-            .register(&quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/sw.js&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;prepend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;, {
-                scope: &quot;&lt;span class=&quot;p&quot;&gt;{{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;prepend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}}&lt;/span&gt;&quot;
-            })
-            .then(function (reg) {
-                console.log(&quot;Service worker has been registered for scope: &quot; + reg.scope);
-            });
-        }
-    }
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  并且为了启用 pwa.html 小插件，应该在 page.html 和 post.html 模板的 body 末尾添加上对小插件的引用，如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-liquid highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
-&amp;lt;body&amp;gt;
-...
-  &lt;span class=&quot;p&quot;&gt;{%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;pwa.html&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;%}&lt;/span&gt;
-...
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;离线缓存&quot;&gt;离线缓存&lt;/h4&gt;
-
-&lt;p&gt;  Service Worker 功能定义文件实际上也是一个 JS 文件（这里命名为 sw.js），参考内容如下：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// sw.js&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;pwabuilder-offline&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;index.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Install stage sets up the index page (home page) in the cache and opens a new cache&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Install Event processing&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Cached offline page during install&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;ToDo-replace-this-name.html&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Update the value of the offlineFallbackPage constant in the serviceworker.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;offlineFallbackPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// If any fetch fails, it will look for the request in the cache and serve it from there first&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;respondWith&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;fetch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Add page to offline cache: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;c1&quot;&gt;// If request was success, add or update it in the cache&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitUntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;updateCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()));&lt;/span&gt;
-
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;        
-        &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Network request Failed. Serving content from cache: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fromCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;event&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fromCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Check to see if you have it in the cache&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Return response&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// If not in the cache, then return error page&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;status&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;404&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;no-match&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;matching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;updateCache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;caches&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CACHE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;cache&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;put&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  sw.js 文件的内容主要定义了第一次访问时将文件离线缓存下来，再次请求是从缓存中加载。如果首次从缓存中没有找到想要的文件，则会请求更新缓存获取该文件。&lt;/p&gt;
-
-&lt;h4 id=&quot;模板化-1&quot;&gt;模板化&lt;/h4&gt;
-
-&lt;p&gt;  为了在 Jekyll 主题中能更方便用户使用，这里也应该像 Manifest 那样模板化，即在 _layouts 目录下创建以上内容的 sw.js 文件。而用户只需要在源代码主目录下创建如下内容的 sw.js 文件即可：&lt;/p&gt;
-
-&lt;div class=&quot;language-js highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;layout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sw&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;---&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;验证-pwa&quot;&gt;验证 PWA&lt;/h2&gt;
-
-&lt;p&gt;  当我们设置好 Manifest 和 Service Worker，并且再次生成 Jekyll 静态页面并托管到服务器之后，用 Chrome 浏览器访问主页就会发现地址栏的右边会出现一个新的图标，如下图所示。这个图标就是在提示你所访问的页面是 PWA 应用，支持安装快捷方式。点击该图标，会有一个像下面这样的小弹窗提示，点击安装即可安装到主屏幕，PC 端、移动端均可。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/8nPgKk.webp&quot; alt=&quot;安装提示 Install tips&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  除此之外，我们还可以在 PC 端打开浏览器的控制台。如下图所示，我们可以发现一些来自 sw.js 的打印信息。这些信息告诉我们 Service Worker 已经注册成功了，并且有哪些文件已经离线缓存了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/OnrGr1.webp&quot; alt=&quot;控制台提示 Command line tips&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  在浏览器开发工具中，我们还可以通过查看&lt;strong&gt;应用&lt;/strong&gt;的 &lt;strong&gt;Service Workers&lt;/strong&gt; 来再次确认 PWA 的情况。如下图所示，我们可以看到 sw.js 从 Initial 到 Wait 到 Activate 的过程，&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/mXdqdH.webp&quot; alt=&quot;应用提示 App tips&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;后记&quot;&gt;后记&lt;/h2&gt;
-
-&lt;p&gt;  从上面的步骤来看，Web 应用 PWA 化似乎也不是那么难。只要有 Manifest 和 Service Worker 就能成功把 Web 应用 PWA 化。当然，也有一些更加简单 PWA 化的方法，比如说 &lt;a href=&quot;https://www.pwabuilder.com/&quot;&gt;pwabuilder&lt;/a&gt;。不过，pwabuilder 更擅长帮你优化 PWA 应用并且转成 Windodws、Apple 和 Android 三个平台的应用。如果你想要把你的 PWA 应用上传到应用商店，那么不妨试试。&lt;/p&gt;
-
-&lt;p&gt;  除了 Jekyll 之外，其他的静态生成器比如 Hexo、Next.js 等等或者动态网站都可以 PWA 化，而且和 CDN 加速一起使用也非常合适。&lt;/p&gt;
-
-&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 推荐一款 PWA 应用 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – &lt;a href=&quot;https://squoosh.app/&quot;&gt;Squoosh&lt;/a&gt;。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 &lt;a href=&quot;https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli&quot;&gt;squoosh cli&lt;/a&gt;。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;h2 id=&quot;相关补充&quot;&gt;相关补充&lt;/h2&gt;
-
-&lt;h3 id=&quot;pwa-空间占用及流量消耗&quot;&gt;PWA 空间占用及流量消耗&lt;/h3&gt;
-
-&lt;p&gt;(2022年6月8日)&lt;/p&gt;
-
-&lt;p&gt;  前两天刚发布本文时，有位叫 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 的网友向我提了一个关于“PWA 空间占用及流量消耗”的问题，我也回答了一些自己的想法（可以在博客主节点 &lt;a href=&quot;https://lisz.me/tech/webmaster/pwa.html&quot;&gt;lisz.me&lt;/a&gt; 的评论区看到具体内容）。首先非常感谢 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 的热心提问，其次他的这个问题也让我觉得可能我需要再进一步了解一下，否则这篇博文的标题中的加速可能需要打上引号了。&lt;/p&gt;
-
-&lt;p&gt;  虽然从我自身的安卓手机 PWA 应用空间占用查询来看，Chrome 的空间设置中的空间占用量有点大（最高 4.9 GB，首次访问 480 MB，如下图所示），但查询手机系统中的空间管理却没有发现 PWA 应用或者 Chrome 占用了所谓的“4.9 GB”空间（PWA 应用 230K 左右，Chrome 1.4 GB 左右）。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/IYuKyo.webp&quot; alt=&quot;Chrome 显示存储用量 Storage&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;  正如 &lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 所说，Chrome 显示的空间占用量存在水分，毕竟不可能只访问一个页面就需要下载 400 MB 的东西吧。而且，根本就没有那么多文件让 PWA 应用下载。据个人不完全统计，本站目前所有代码加上所有图床托管图片的总体大小在 15 MB 左右。即使全站都缓存下来，也不可能用到 400 MB。&lt;a href=&quot;https://blog.lyh543.cn/&quot;&gt;小灰灰灰灰&lt;/a&gt; 用在 Stack Overflows 上查到的命令在 Chrome 的控制台中输出了类似 “Using 23K out of 270M”的结果，因此他猜测可能是预申请了过百兆的空间，而实际使用量只有几十 K 左右。对此，我表示赞同。从实际的源站流量监控来看，与所谓的 400 MB 也不匹配。从上月 26 日到今天（共 14 天）为止消耗了 323.2 MB 流量，本月截止到今天（共 8 天）图床托管消耗了 131 MB 流量。&lt;/p&gt;
-
-&lt;p&gt;  综合以上的信息来看，一个像本站一样的静态博客 PWA 化之后对于智能终端空间占用量或者服务提供的流量消耗影响不会太大。如果是其他非常复杂的站点或者有大量未经优化图片的站点，可能全部 PWA 化会在空间占用了和流量消耗上面有一些比较明显的影响。这一点可以查看参考资料《PWA 初探》一文了解更多。其实我们还是应该回到我们使用 PWA 的初衷上来，PWA 是用来加速和优化提升用户体验的，因此我们可以选择某些部分 PWA 化而非整体。&lt;/p&gt;
-
-&lt;p&gt;  对于博客或者静态站点 PWA 化，个人有几点小建议可以在一定程度上降低 PWA 化对空间占用和流量消耗的影响：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;图片 webp 化&lt;/strong&gt;：压缩图片大小、保留大部分的质量，从而加快所有图片加载时间。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;图床托管图片&lt;/strong&gt;：图片交由图床来管理和存储，这样可以分担一部分的源站流量，毕竟也是有很多可以免费使用的图床的。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;懒加载和骨架屏&lt;/strong&gt;：懒加载可以只加载可视区域内的若干张图片，只有在页面滑动时才会陆续加载将要看到的区域内的图片，减少初次渲染页面的时间；骨架屏能够在元素尚未完全加载前填充元素的空间，不会突然冒出元素占用（Vue 用得不好的时候会有这种情况），从视觉上给用户更加友好的体验。&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;CDN 化&lt;/strong&gt;：虽然 PWA 应用有缓存能力，但是只是本地缓存，对于大多数第一次请求缓存的时间还是取决于用户客户端到源站之间的网络，CDN 能够很好地弥补这一点。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://dev.to/thewhitewulfy/make-any-jekyll-site-into-a-pwa-1de2&quot;&gt;Make any Jekyll site into a PWA&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://sunbufu.vercel.app/posts/2019/2019-01-23-pwa/&quot;&gt;jekyll 博客的 PWA 配置&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000041729491&quot;&gt;小程序鼻祖 —— 在国内逐渐消亡的 PWA 可以带给我们哪些启示？&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://segmentfault.com/a/1190000018590996&quot;&gt;Flutter 、React Native 、 Ionic、 NativeScript 、小程序和 PWA 哪个值得学？&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://mrluo.life/article/detail/140/pwa-primer&quot;&gt;PWA 初探&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://web.dev/storage-for-the-web/&quot;&gt;Web 存储&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://lavas-project.github.io/pwa-book/&quot;&gt;《PWA 应用实战》&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 03 Jun 2022 10:54:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/pwa.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/pwa.html</guid>
-        
-        <category>PWA</category>
-        
-        <category>渐进式网络应用程序</category>
-        
-        <category>小程序</category>
-        
-        <category>加速</category>
-        
-        <category>Accelerate</category>
         
         
         <category>tech</category>

@@ -482,16 +482,16 @@
 <span class="s">ADD install_jupyterhub /tmp/install_jupyterhub</span>
 <span class="s">ARG JUPYTERHUB_VERSION=master</span>
 <span class="c1"># install pinned jupyterhub and ensure notebook is installed</span>
-<span class="s">RUN </span><span class="no">true</span><span class="s"> &amp;&amp; \</span>
+<span class="s">RUN </span><span class="kc">true</span><span class="s"> &amp;&amp; \</span>
     <span class="s">python3 -m pip install notebook jupyterhub</span>
 </code></pre></div></div>
 
 <p>  install_jupyterhub 脚本文件</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
-</span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
-<span class="kn">import</span> <span class="nn">sys</span>
+</span><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="n">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
+<span class="kn">import</span> <span class="n">sys</span>
 
 <span class="n">V</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">[</span><span class="s">'JUPYTERHUB_VERSION'</span><span class="p">]</span>
 
@@ -502,13 +502,13 @@
 <span class="k">if</span> <span class="n">V</span> <span class="o">==</span> <span class="s">'master'</span><span class="p">:</span>
     <span class="n">req</span> <span class="o">=</span> <span class="s">'https://github.com/jupyterhub/jupyterhub/archive/master.tar.gz'</span>
 <span class="k">else</span><span class="p">:</span>
-    <span class="n">version_info</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">V</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="p">]</span>
+    <span class="n">version_info</span> <span class="o">=</span> <span class="p">[</span> <span class="nf">int</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">V</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)</span> <span class="p">]</span>
     <span class="n">version_info</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">upper_bound</span> <span class="o">=</span> <span class="s">'.'</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">version_info</span><span class="p">))</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="s">'.'</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="nf">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">version_info</span><span class="p">))</span>
     <span class="n">vs</span> <span class="o">=</span> <span class="s">'&gt;=%s,&lt;%s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span>
     <span class="n">req</span> <span class="o">=</span> <span class="s">'jupyterhub%s'</span> <span class="o">%</span> <span class="n">vs</span>
 
-<span class="n">check_call</span><span class="p">(</span><span class="n">pip_install</span> <span class="o">+</span> <span class="p">[</span><span class="n">req</span><span class="p">])</span>
+<span class="nf">check_call</span><span class="p">(</span><span class="n">pip_install</span> <span class="o">+</span> <span class="p">[</span><span class="n">req</span><span class="p">])</span>
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> singleuser:latest <span class="nb">.</span>
@@ -561,12 +561,12 @@
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># jupyterhub_config.py
 </span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">oauthenticator.gitlab</span> <span class="kn">import</span> <span class="n">GitLabOAuthenticator</span>
+<span class="kn">import</span> <span class="n">os</span>
+<span class="kn">from</span> <span class="n">oauthenticator.gitlab</span> <span class="kn">import</span> <span class="n">GitLabOAuthenticator</span>
 <span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">authenticator_class</span> <span class="o">=</span> <span class="n">GitLabOAuthenticator</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">oauth_callback_url</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_OAUTH_CALLBACK"</span><span class="p">)</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_CLIENT"</span><span class="p">)</span>
-<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_KEY"</span><span class="p">)</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">oauth_callback_url</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="s">"GITLAB_OAUTH_CALLBACK"</span><span class="p">)</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_CLIENT"</span><span class="p">)</span>
+<span class="n">c</span><span class="p">.</span><span class="n">GitLabOAuthenticator</span><span class="p">.</span><span class="n">client_secret</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">getenv</span><span class="p">(</span><span class="s">"GITLAB_API_KEY"</span><span class="p">)</span>
 
 <span class="n">c</span><span class="p">.</span><span class="n">JupyterHub</span><span class="p">.</span><span class="n">spawner_class</span> <span class="o">=</span> <span class="s">'dockerspawner.DockerSpawner'</span>
 <span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="s">'jupyter_lab_singleuser:latest'</span>
@@ -575,7 +575,7 @@
   <span class="s">'UID'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
 <span class="p">}</span>
 <span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">'user'</span><span class="p">:</span> <span class="s">'ubuntu'</span><span class="p">}</span>
-<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span><span class="p">.</span><span class="n">update</span><span class="p">({</span> <span class="s">'command'</span><span class="p">:</span> <span class="s">"start-singleuser.sh --SingleUserNotebookApp.default_url=/lab"</span> <span class="p">})</span>
+<span class="n">c</span><span class="p">.</span><span class="n">DockerSpawner</span><span class="p">.</span><span class="n">extra_create_kwargs</span><span class="p">.</span><span class="nf">update</span><span class="p">({</span> <span class="s">'command'</span><span class="p">:</span> <span class="s">"start-singleuser.sh --SingleUserNotebookApp.default_url=/lab"</span> <span class="p">})</span>
 <span class="c1"># Mount the real user's Docker volume on the host to the notebook user's
 # notebook directory in the container
 </span><span class="n">notebook_dir</span> <span class="o">=</span> <span class="s">'/home/ubuntu/work'</span>
@@ -771,12 +771,12 @@
     2015
     -
   
-  2022
+  2023
   
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.14  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   

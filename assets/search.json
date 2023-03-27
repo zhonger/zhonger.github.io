@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "通用运行环境版本管理神器 ASDF",
+      "tags"     : "Linux Environment Manage Dev Runtime 软件环境 多版本 管理",
+      "url"      : "/tech/webmaster/asdf.html"
+    } ,
+  
+    {
+      "title"    : "Modules 配置之 Python",
+      "tags"     : "Linux Modules Python 软件环境",
+      "url"      : "/tech/webmaster/modules-python.html"
+    } ,
+  
+    {
       "title"    : "集群动态环境管理神器 Modules",
       "tags"     : "Linux 集群 Cluster Modules 软件环境",
       "url"      : "/tech/webmaster/modules.html"

@@ -477,7 +477,7 @@ Host YOURCLUSTERADDRESS
 <span class="na">label</span><span class="pi">:</span> <span class="s2">"</span><span class="s">qe-6.5-pw"</span>
 <span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantum_espresso</span><span class="nv"> </span><span class="s">v6.5"</span>
 <span class="na">input_plugin</span><span class="pi">:</span> <span class="s2">"</span><span class="s">quantumespresso.pw"</span>
-<span class="na">on_computer</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">on_computer</span><span class="pi">:</span> <span class="kc">true</span>
 <span class="na">remote_abs_path</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/usr/local/bin/pw.x"</span>
 <span class="na">computer</span><span class="pi">:</span> <span class="s2">"</span><span class="s">localhost"</span>
 <span class="na">prepend_text</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ulimit</span><span class="nv"> </span><span class="s">-s</span><span class="nv"> </span><span class="s">unlimited"</span>
@@ -521,18 +521,18 @@ Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>nu
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># cal.py
 </span>
-<span class="kn">from</span> <span class="nn">aiida</span> <span class="kn">import</span> <span class="n">load_profile</span>
+<span class="kn">from</span> <span class="n">aiida</span> <span class="kn">import</span> <span class="n">load_profile</span>
 
-<span class="kn">from</span> <span class="nn">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
-<span class="kn">from</span> <span class="nn">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
-<span class="kn">from</span> <span class="nn">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
-<span class="kn">from</span> <span class="nn">aiida.orm.nodes.data.upf</span> <span class="kn">import</span> <span class="n">get_pseudos_from_structure</span>
+<span class="kn">from</span> <span class="n">aiida.orm</span> <span class="kn">import</span> <span class="n">Code</span>
+<span class="kn">from</span> <span class="n">aiida.plugins</span> <span class="kn">import</span> <span class="n">DataFactory</span>
+<span class="kn">from</span> <span class="n">aiida.engine</span> <span class="kn">import</span> <span class="n">submit</span>
+<span class="kn">from</span> <span class="n">aiida.orm.nodes.data.upf</span> <span class="kn">import</span> <span class="n">get_pseudos_from_structure</span>
 
-<span class="n">load_profile</span><span class="p">()</span>
+<span class="nf">load_profile</span><span class="p">()</span>
 
-<span class="n">StructureData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'structure'</span><span class="p">)</span>
-<span class="n">Dict</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'dict'</span><span class="p">)</span>
-<span class="n">KpointsData</span> <span class="o">=</span> <span class="n">DataFactory</span><span class="p">(</span><span class="s">'array.kpoints'</span><span class="p">)</span>
+<span class="n">StructureData</span> <span class="o">=</span> <span class="nc">DataFactory</span><span class="p">(</span><span class="s">'structure'</span><span class="p">)</span>
+<span class="n">Dict</span> <span class="o">=</span> <span class="nc">DataFactory</span><span class="p">(</span><span class="s">'dict'</span><span class="p">)</span>
+<span class="n">KpointsData</span> <span class="o">=</span> <span class="nc">DataFactory</span><span class="p">(</span><span class="s">'array.kpoints'</span><span class="p">)</span>
 
 <span class="c1">###########################################
 # Set constant values here
@@ -541,8 +541,8 @@ Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>nu
 <span class="c1">###########################################
 </span>
 
-<span class="n">code</span> <span class="o">=</span> <span class="n">Code</span><span class="p">.</span><span class="n">get_from_string</span><span class="p">(</span><span class="n">codename</span><span class="p">)</span>
-<span class="n">builder</span> <span class="o">=</span> <span class="n">code</span><span class="p">.</span><span class="n">get_builder</span><span class="p">()</span>
+<span class="n">code</span> <span class="o">=</span> <span class="n">Code</span><span class="p">.</span><span class="nf">get_from_string</span><span class="p">(</span><span class="n">codename</span><span class="p">)</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">code</span><span class="p">.</span><span class="nf">get_builder</span><span class="p">()</span>
 
 <span class="c1"># Metadata settings
 </span><span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">label</span> <span class="o">=</span> <span class="s">"PW test"</span>
@@ -553,15 +553,15 @@ Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>nu
 <span class="c1"># Si structure
 </span><span class="n">alat</span> <span class="o">=</span> <span class="mi">4</span> <span class="c1"># angstorm
 </span><span class="n">unit_cell</span> <span class="o">=</span> <span class="p">[[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">],</span> <span class="p">[</span><span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mi">2</span><span class="p">]]</span>
-<span class="n">structure</span> <span class="o">=</span> <span class="n">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
-<span class="n">structure</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="nc">StructureData</span><span class="p">(</span><span class="n">cell</span><span class="o">=</span><span class="n">unit_cell</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="nf">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alat</span><span class="o">/</span><span class="mf">4.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="nf">append_atom</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">symbols</span><span class="o">=</span><span class="s">"Si"</span><span class="p">)</span>
+<span class="n">structure</span><span class="p">.</span><span class="nf">store</span><span class="p">()</span>
 
 <span class="c1"># kpoints-mesh
-</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">KpointsData</span><span class="p">()</span>
-<span class="n">kpoints</span><span class="p">.</span><span class="n">set_kpoints_mesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-<span class="n">kpoints</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+</span><span class="n">kpoints</span> <span class="o">=</span> <span class="nc">KpointsData</span><span class="p">()</span>
+<span class="n">kpoints</span><span class="p">.</span><span class="nf">set_kpoints_mesh</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<span class="n">kpoints</span><span class="p">.</span><span class="nf">store</span><span class="p">()</span>
 
 
 
@@ -578,23 +578,23 @@ Use verdi daemon <span class="o">[</span>incr | decr] <span class="o">[</span>nu
         <span class="s">'conv_thr'</span><span class="p">:</span> <span class="mf">1.e-6</span><span class="p">,</span>
     <span class="p">},</span>
 <span class="p">}</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameters_dict</span><span class="p">)</span>
-<span class="n">parameters</span><span class="p">.</span><span class="n">store</span><span class="p">()</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="nc">Dict</span><span class="p">(</span><span class="nb">dict</span><span class="o">=</span><span class="n">parameters_dict</span><span class="p">)</span>
+<span class="n">parameters</span><span class="p">.</span><span class="nf">store</span><span class="p">()</span>
 
 <span class="c1"># Builder settings
 </span><span class="n">builder</span><span class="p">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure</span>
 <span class="n">builder</span><span class="p">.</span><span class="n">kpoints</span> <span class="o">=</span> <span class="n">kpoints</span>
-<span class="n">builder</span><span class="p">.</span><span class="n">pseudos</span> <span class="o">=</span> <span class="n">get_pseudos_from_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="s">'SSSP'</span><span class="p">)</span>
+<span class="n">builder</span><span class="p">.</span><span class="n">pseudos</span> <span class="o">=</span> <span class="nf">get_pseudos_from_structure</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="s">'SSSP'</span><span class="p">)</span>
 <span class="n">builder</span><span class="p">.</span><span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span>
 <span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">dry_run</span> <span class="o">=</span> <span class="bp">False</span>
 <span class="n">builder</span><span class="p">.</span><span class="n">metadata</span><span class="p">.</span><span class="n">store_provenance</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="c1"># Submit the job
-</span><span class="n">calculation</span> <span class="o">=</span> <span class="n">submit</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
-<span class="n">calculation</span><span class="p">.</span><span class="n">set_extra</span><span class="p">(</span><span class="s">"element"</span><span class="p">,</span> <span class="s">"Si"</span><span class="p">)</span>
+</span><span class="n">calculation</span> <span class="o">=</span> <span class="nf">submit</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+<span class="n">calculation</span><span class="p">.</span><span class="nf">set_extra</span><span class="p">(</span><span class="s">"element"</span><span class="p">,</span> <span class="s">"Si"</span><span class="p">)</span>
 
 <span class="c1"># Print the job pk value
-</span><span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'created calculation with Pk=</span><span class="si">{</span><span class="n">calculation</span><span class="p">.</span><span class="n">pk</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+</span><span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'created calculation with Pk=</span><span class="si">{</span><span class="n">calculation</span><span class="p">.</span><span class="n">pk</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
 </code></pre></div></div>
 
 <h3 id="验证计算及结果">验证计算及结果</h3>
@@ -829,12 +829,12 @@ retrieved          2089  FolderData
     2015
     -
   
-  2022
+  2023
   
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.14  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
+  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
   
   </section>
   
