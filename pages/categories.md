@@ -6,4 +6,5 @@ permalink: /categories.html
 cover: 'https://i.lisz.top/cover/DGGmJW.webp'
 cover_author: 'Peter F'
 cover_author_link: 'https://unsplash.com/@peterf'
+permalink: /categories
 ---

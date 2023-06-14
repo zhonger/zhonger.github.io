@@ -1,3 +1,4 @@
 ---
 layout: cv
+permalink: /cv
 ---
