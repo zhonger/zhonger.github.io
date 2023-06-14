@@ -5,27 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>通用运行环境版本管理神器 ASDF - 仲儿的自留地</title>
+    <title>图片处理及上传命令行工具 —— PICTL - 仲儿的自留地</title>
     <meta name="author"  content="zhonger">
-    <meta name="description" content="通用运行环境版本管理神器 ASDF">
-    <meta name="keywords"  content="Linux, Environment, Manage, Dev Runtime, 软件环境, 多版本, 管理">
+    <meta name="description" content="图片处理及上传命令行工具 —— PICTL">
+    <meta name="keywords"  content="pictl, 命令行, 工具, cli, tool">
     <!-- Open Graph -->
-    <meta property="og:title" content="通用运行环境版本管理神器 ASDF - 仲儿的自留地">
+    <meta property="og:title" content="图片处理及上传命令行工具 —— PICTL - 仲儿的自留地">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lisz.me/tech/webmaster/asdf.html">
+    <meta property="og:url" content="https://lisz.me/tech/project/pictl.html">
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="仲儿的自留地">
     <meta property="og:gray" content="false">
     
-    <meta property="og:previous_url" content="/tech/project/pictl.html">
     
-    
-    <meta property="og:next_url" content="/tech/webmaster/modules-python.html">
+    <meta property="og:next_url" content="/tech/webmaster/asdf.html">
     
     <meta property="post-date-format" content="0">
     
-    <meta property="post-date" content="2023-03-20 15:50:00 +0900" />
+    <meta property="post-date" content="2023-06-13 13:41:01 +0900" />
     
     
     <meta name="alivestart" content="08/08/2015">
@@ -214,23 +212,19 @@
         <div class="post-tags">
           
             
-              <a href="/tags.html#Linux" class="post-tag">Linux</a>
+              <a href="/tags.html#pictl" class="post-tag">pictl</a>
             
-              <a href="/tags.html#Environment" class="post-tag">Environment</a>
+              <a href="/tags.html#%E5%91%BD%E4%BB%A4%E8%A1%8C" class="post-tag">命令行</a>
             
-              <a href="/tags.html#Manage" class="post-tag">Manage</a>
+              <a href="/tags.html#%E5%B7%A5%E5%85%B7" class="post-tag">工具</a>
             
-              <a href="/tags.html#Dev%20Runtime" class="post-tag">Dev Runtime</a>
+              <a href="/tags.html#cli" class="post-tag">cli</a>
             
-              <a href="/tags.html#%E8%BD%AF%E4%BB%B6%E7%8E%AF%E5%A2%83" class="post-tag">软件环境</a>
-            
-              <a href="/tags.html#%E5%A4%9A%E7%89%88%E6%9C%AC" class="post-tag">多版本</a>
-            
-              <a href="/tags.html#%E7%AE%A1%E7%90%86" class="post-tag">管理</a>
+              <a href="/tags.html#tool" class="post-tag">tool</a>
             
           
         </div>
-        <h1>通用运行环境版本管理神器 ASDF</h1>
+        <h1>图片处理及上传命令行工具 —— PICTL</h1>
         <div class="post-meta">
           <span class="post-meta-item">
             <svg class="icon" aria-hidden="true">
@@ -238,13 +232,13 @@
             </svg>
             zhonger
           </span>
-          <time class="post-meta-item" datetime="23-03-20">
+          <time class="post-meta-item" datetime="23-06-13">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-calendar"></use>
             </svg>
             <span class="create-at"></span>
           </time>
-          <time class="post-meta-item" datetime="23-03-20">
+          <time class="post-meta-item" datetime="23-06-13">
             <svg class="icon" aria-hidden="true">
               <use xlink:href="#icon-update"></use>
             </svg>
@@ -255,13 +249,13 @@
                 <use xlink:href="#icon-words"></use>
               </svg>
               
-              本文总共  4.1k  字
+              本文总共  6.2k  字
             </span>
             <span class="post-meta-item">
               <svg class="icon time" aria-hidden="true">
                 <use xlink:href="#icon-time"></use>
               </svg>
-              阅读全文大约需要 12 分钟
+              阅读全文大约需要 18 分钟
             </span>
             
               <span class="post-meta-item">
@@ -277,7 +271,7 @@
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                封面图片提供者 <a href="https://unsplash.com/@olivie_strauss" target="_blank">Olivie Strauss</a>
+                封面图片提供者 <a href="https://unsplash.com/@anniespratt" target="_blank">Annie Spratt</a>
               
             </span>
           
@@ -285,12 +279,12 @@
       </div>
       
       <div class="filter"></div>
-        <div class="post-cover" style="background: url('https://i.lisz.top/cover/DetiCJ.webp') center no-repeat; background-size: cover;"></div>
+        <div class="post-cover" style="background: url('https://i.lisz.top/cover/A2OQ14.webp') center no-repeat; background-size: cover;"></div>
       
     </header>
     <div class="post-content visible">
       
-      <h2 class="post-subtitle">利用 ASDF 一键管理各种软件开发运行环境</h2>
+      <h2 class="post-subtitle">适合开发者提升静态博客撰文效率</h2>
       
 
       
@@ -300,197 +294,285 @@
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<p>  之前介绍了高性能集群中常用的运行环境和软件版本管理工具 Modules，今天打算介绍一款适合个人或团队开发使用的通用运行环境版本管理神器 <a href="https://asdf-vm.com/zh-hans/">ASDF</a>。与高性能计算任务不同，个人或团队开发项目一般来说都是使用独立的设备或环境，然后通过代码版本跟踪 git 等来进行异步协作。所以说，在每个人的单个或多个设备上都安装配置 Modules 显得有点不太现实和高效。但是项目开发所需的代码环境确实有的时候可能比较复杂，比如说同时需要 Ruby、NodeJS、Java、Python 四种环境，而且可能对于每种环境还有版本的限制。这样一来，光配置这一堆环境就要花上大半天时间了。</p>
+<p>  自从博客从 WordPress 转到静态博客（先 Hexo 后 Jekyll）之后，文章的图片处理、图片上传就成了一个不大顺畅的事情。最先是使用了 <a href="https://vgy.me">vgy.me</a> 提供的免费图床，支持直接从剪切板上传，操作上相对比较简单，也不需要任何本地存储。不过后来 vgy.me 进行了升级改版，原先的剪切板上传功能也不再支持了，偶尔还出现图片像素被降低、丢失的问题。同时，考虑到 WebP 格式可能会适合博客使用，而 vgy.me 还不支持该格式。于是开始切换到 “对象存储 + CDN” 的方案。本地准备好的 PNG 格式图片，先通过 <a href="https://developers.google.com/speed/webp/">cwebp</a> 命令行转成 WebP 格式图片，再通过 <a href="https://github.com/gee1k/uPic">uPic</a> 工具修改文件名后上传到对象存储。由于此前采用的是腾讯云的 COS 对象存储和 CDN，经常面临着 SSL 证书更新等琐碎的事情。这样一来，整体的效率实际上并不高，只能说勉强接受。</p>
 
-<h3 id="asdf-简介">ASDF 简介</h3>
+<h3 id="现有工具及存储考察">现有工具及存储考察</h3>
 
-<p>  ASDF 提供了全平台通用的环境配置方案，使用单个命令行工具和交互界面就可以管理超复杂的运行环境。以往针对不同运行环境，需要使用不同的配置文件来进行版本的声明。对于 ASDF，只需要一个可共享的 <code class="language-plaintext highlighter-rouge">.tool-versions</code> 配置文件即可。ASDF 涵盖了包括 Ruby、NodeJS、Java、PHP、.Net 在内的几百种运行环境，具体可以查看 <a href="https://github.com/asdf-vm/asdf-plugins">ASDF 插件列表</a> 了解更多。</p>
+<p>  为此，也对其他工具和对象存储进行了考察。</p>
 
-<p>  另外，ASDF 完全支持包括 Bash、Zsh、Fish 和 Elvish 在内的常用 shell 类型，并提供补全功能。在类似 Github Actions 等的 CI/CD 工作流中，也可以轻松使用 ASDF。值得一提的是，笔者翻译了 ASDF 文档的中文版本并被官方采纳，现在 ASDF 官网支持英语、巴西语和中文三种语言。</p>
+<p>  <a href="https://github.com/Molunerfinn/PicGo">PicGo</a> 是一款集客户端 UI 和命令行于一体的图片上传工具，虽然可以利用命令串联的方式简单将图片格式转换和上传两步变成一步，但还是有那么点不舒服的地方，比如 PicGo 不提供文件名修改（为固定长度随机字符串）的特性。而 uPic 本身关注于客户端桌面交互，不提供命令行接口。</p>
 
-<h3 id="为何不选其他方案">为何不选其他方案</h3>
+<p>  至于对象存储，国内各家云服务厂商提供的都需要自行手动更新 SSL 证书，且收费。尽管腾讯云 CDN 目前老用户可以每月领券免费使用，但一旦忘记就开始被收费了。实际上也有逐步转向收费的趋势。国外各家云服务厂商基本上都需要收费使用对象存储或者 CDN，大差不差。</p>
 
-<h4 id="docker">Docker</h4>
+<p>  当然，网上一直有一种 “Backblaze B2 + Cloudflare” 的解决方案。由于 B2 本身存储和读写操作都有免费额度，流量需要收费，且无法自定义域名，而 B2 和 Cloudflare 同属于宽带联盟（内部流量免费），Cloudflare 还提供 URL 重写功能，这种解决方案一时成为了潮流。不过，B2 的访问链接是中间带着一串参数，重写之后仍然还是有部分参数，最终的 URL 并不是那么朴素。总的来说，还是有那么点别扭。</p>
 
-<p>  很显然，如果大家的设备上都有 Docker 环境且 CPU 架构相同的话，Docker 无疑是最省心的方案。Docker 镜像的确可以轻松涵盖所有开发环境和实际运行环境（Apache 等 HTTP 服务器、数据库以及其他）。相比笨重的 VMware 或 Virtualbox 虚拟机镜像而言，Docker 镜像也更加小巧、便捷。而且团队可以通过在内部搭建自己的 Docker 镜像仓库，来分享这些镜像给所有参与项目的开发者。唯一可能会有问题的是，设备 CPU 架构和操作系统的多样性可能会给实际操作带来了不小的问题。实际上可能会有 Windows 系统、Linux 系统、MacOS 系统以及 Intel 架构、AMD 架构、ARM 架构（如 M1、M2 等）。可行的解决方法是，尽可能地构建更多架构的镜像。</p>
+<h3 id="r2-的出现">R2 的出现</h3>
 
-<h4 id="anaconda">Anaconda</h4>
+<p>  因此观望了许久，直到 Cloudflare 推出了 R2。R2 是一款对标 AWS S3 的产品，基于 Cloudflare 对宽带联盟的承诺而构建，为存储对象提供零成本出口，实际上就是免费 CDN。由于 Cloudflare 本身就是一家 CDN 服务商，自定义对象存储访问域名、自动生成部署 SSL 证书这些事情就变得轻而易举了。R2 提供 10GB 的免费存储，读操作每月免费 1000 万次，写、更新和删除操作每月免费 100 万次。这对于一般的静态博客来说，应该完全足够了，即使超出了免费额度，超出部分收费也相较其他云服务厂商便宜一些。</p>
 
-<p>  Anaconda 现在可能已经完全超出了一个 Python 环境管理工具，有的时候也可以当成通用软件或环境管理器来用。但是毕竟还是以科学计算为主要目的，如果项目仅仅是 Python、R 语言可能还是比较合适的，对于实际编程所需的其他运行环境来说可能还是支持不够的。</p>
+<p>  对笔者而言，R2 产品将对象存储和 CDN 两款产品有机地结合起来，解决了静态博客图片对外访问前的“最后一公里”。于是想从 COS 迁移到 R2，无奈 uPic 这个时候卖了个“破绽”。uPic 似乎在开始转向商业收费，Github 上不再发布新版本，而仅在 Appstore 上继续更新对 R2 的支持。当然，Appstore 上的 uPic 是收费的（4.99 美元，其实也不贵）。</p>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  据笔者所知，在 <code class="language-plaintext highlighter-rouge">conda-forge</code> 频道里的确有 PHP 等编程语言的支持。除此之外，也有一些热心开发者在个人频道提供了 java-jdk、golang 等编程环境支持。</p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  R2 虽然说是对标 AWS S3，但是并没有完整实现所有 API 接口，所以目前 Github 上发布的 uPic 版本无法兼容。尽管可以自行通过修改 uPic 的开源代码来实现兼容，但毕竟修改别人的代码的成本还是有一点高的。</p>
 
 
 
  </div> </div>
-<h4 id="云开发">云开发</h4>
+<h2 id="开个新项目">开个新项目</h2>
 
-<p>  云开发主要是指基于云基础设施的在线代码开发环境，主要的代表有：</p>
-
-<ul>
-  <li><a href="https://aws.amazon.com/cn/cloud9/">Cloud9</a>：笔者最早接触过的云开发，目前已被 AWS 收购，更名为 AWS Cloud9。</li>
-  <li><a href="https://github.com/features/codespaces">Codespaces</a>：由 Azure 提供云服务、Github 负责运营的一站式云开发环境。</li>
-  <li><a href="https://www.gitpod.io/">Gitpod</a>：基于 VS Code 研发的优秀云开发环境，早期以“便捷、快速”著称，较先于 Codespaces 出现。</li>
-  <li><a href="https://cloud.tencent.com/product/cloudstudio">Cloud Studio</a>：由腾讯云提供云服务、基于 VS Code 的国产云开发环境，能够很好地支持个人开发、招聘笔试、课堂教学、应用快捷部署等各种场景。</li>
-  <li><a href="https://www.huaweicloud.com/product/cloudide.html">CodeArts IDE Online</a>：由华为云提供云服务、基于 VS Code 的国产云开发环境。除了一般云开发所具备的特点，还支持华为鲲鹏原生环境，能够很好地满足跨架构应用开发的需求。</li>
-  <li><a href="https://cn.aliyun.com/product/yunxiao/devstudio">DevStudio</a>：由阿里云提供云服务、基于 VS Code 的国产云开发环境。支持应用开发全流程管理，与阿里云各项基础服务紧密结合，适合大规模团队使用。</li>
-</ul>
-
-<p>除了以上列举的云开发之外，也有一些比较传统的小型云开发实践，比如说知名的 <a href="https://jsfiddle.net/">JSFiddle</a>、<a href="https://codepen.io/">CodePen</a>、<a href="https://replit.com/">Replit</a> 等。虽然说这些云开发主要是适合较小代码库，但在实际学习过程中用处也是很大的。</p>
-
-<p>  云开发不仅兼顾了传统开发过程中的协同与流程，又将资源与环境整合在云里面，自然而然是最好的解决方案。随着 VS Code 在开发者之间的流行和云服务提供商的努力，基于 VS Code 的云开发环境层出不穷。即使云开发环境本身免费，云也还是要按量按时计费的。对于还没有足够支持上云的团队或个人来说，ASDF 依然是个不错的选择。</p>
-
-<h2 id="实践">实践</h2>
-
-<h3 id="环境需求">环境需求</h3>
+<p>  在充分梳理个人使用需求之后，还是决定开个新项目——开发一款简单易用的命令行工具 PICTL（全称 <strong>Pi</strong>cture <strong>C</strong>on<strong>t</strong>ro<strong>l</strong>）。该工具须具备以下特性：</p>
 
 <ul>
-  <li>Linux/Unix 环境（Linux、MacOS、Windows WSL）</li>
-  <li>git</li>
-  <li>bash 等（此处以 zsh 为例）</li>
+  <li>考虑图片的存储空间大小和网页加载时长，所有图片应被压缩并转成 WebP 格式；</li>
+  <li>所有图片的名称应被修改成一个固定长度随机字符串，并支持上传到类 S3 的对象存储；</li>
+  <li>简单易用，命令行优先，无网页或桌面交互界面；</li>
+  <li>（可选）自动添加水印；</li>
+  <li>（可选）根据设定自动调整图片尺寸；</li>
+  <li>（可选）可以直接从剪切板读取图片。</li>
 </ul>
 
-<h3 id="环境配置">环境配置</h3>
+<h2 id="架构设计">架构设计</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载源码到 ~/.asdf 目录</span>
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf <span class="nt">--branch</span> v0.11.3
+<p>  根据所列出的特性，这款命令行工具主要的模块就是：<strong>图片处理模块</strong>和<strong>上传模块</strong>，架构如下图所示。</p>
 
-<span class="c"># 在 ~/.zshrc 文件中加入内容</span>
-<span class="nb">tee</span> <span class="nt">-a</span> ~/.zshrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
-. "</span><span class="nv">$HOME</span><span class="sh">/.asdf/asdf.sh"
-</span><span class="no">EOF
+<p><img src="https://i.lisz.top/blog/Gl8qhI.webp" alt="PICTL 架构图 The architecture of PICTL" /></p>
 
-</span><span class="c"># 激活配置</span>
-<span class="nb">source</span> ~/.zshrc
+<p>  图片处理模块包括图片压缩、图片格式转换、图片水印、尺寸调整等功能，可以进行无缝横向扩展。上传模块主要包括对于三种存储方式的支持：<strong>第一类</strong>是最为广泛的类 S3 对象存储，如 R2、AWS S3 及国内外云服务厂商各种对象存储等，<strong>第二类</strong>是目前仍然在博客中广泛流行的第三方图床，如 <a href="https://sm.ms">SM.MS</a>、<a href="https://vgy.me">vgy.me</a>、<a href="https://github.com/chevereto/chevereto">chevereto</a> 类型图床等，<strong>第三类</strong>是自托管 Git 平台和 FTP 平台。</p>
 
-<span class="c"># 验证</span>
-╰─<span class="nv">$ </span>asdf version
-v0.11.3-0adc6c1
+<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 特此声明 </div> </div> <div class="content"> <p>  鉴于 Github、Gitlab、Gitee 等公共代码托管平台均禁止把 Git 仓库作为图床的做法，本工具仅支持自建 Git 平台，如自建 Gitlab 和 Gitlab Pages。如试图上传到公共代码托管平台，本工具会自行中断上传。</p>
+
+
+
+ </div> </div>
+<p>  本工具由于仅支持命令行，所以计划用 Python 和 <a href="https://click.palletsprojects.com/">Click</a> 进行开发。虽然借助 <a href="https://google.github.io/python-fire/">Google Fire</a> 也可以快速开发命令行工具，但其使用方式上与原生 *nix 的命令行工具有所不同。相比之下，用 Click 开发可能会麻烦一点，但能够开发出更类原生的 Python 命令行工具。当然，目前开发上还是比较喜欢使用 Rust 或者 Go 语言来开发高性能的命令行工具。不过，本工具只是做一些非常简单的工作，没有性能上的瓶颈，用 Python 开发也足够了。</p>
+
+<h2 id="开发计划">开发计划</h2>
+
+<p>  请移步 <a href="https://github.com/users/zhonger/projects/5">Github Project</a> 了解更多。</p>
+
+<h2 id="使用方法">使用方法</h2>
+
+<p>  目前，PICTL 已经在 <a href="https://github.com/zhonger/pictl/releases">Github</a> 和 <a href="https://pypi.org/project/pictl/">PyPI</a> 同步发布了 v0.1.0 版本。该版本实现了以上架构图中的基本功能，即特性中的前三点必要项。接下来介绍一下如何安装和使用本工具。</p>
+
+<h3 id="安装">安装</h3>
+
+<p>  目前支持两种安装方式：<strong>源码安装</strong>和 <strong>PIP 安装</strong>，后续将增加对于 brew 的支持。</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  安装前，请务必确保已满足 Python 版本高于 3.10 的条件。</p>
+
+
+
+ </div> </div>
+<h4 id="源码安装">源码安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/zhonger/pictl
+<span class="nb">cd </span>pictl
+pip3 <span class="nb">install</span> <span class="nb">.</span>
 </code></pre></div></div>
 
-<h3 id="安装插件">安装插件</h3>
+<h4 id="pip-安装">PIP 安装</h4>
 
-<p>  由于 ASDF 支持插件较多，这里以 Python 环境为例介绍 ASDF 安装插件。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加插件</span>
-asdf plugin add python
-
-<span class="c"># 查看已安装插件</span>
-╰─<span class="nv">$ </span>asdf plugin list
-python
-
-<span class="c"># 查看最新 Python 版本</span>
-╰─<span class="nv">$ </span>asdf latest python
-3.11.2
-
-<span class="c"># ASDF 安装 Python 3.11.2 (latest)</span>
-╰─<span class="nv">$ </span>asdf <span class="nb">install </span>python latest
-python-build 3.11.2 /home/ubuntu/.asdf/installs/python/3.11.2
-Downloading Python-3.11.2.tar.xz...
--&gt; https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tar.xz
-Installing Python-3.11.2...
-Installed Python-3.11.2 to /home/ubuntu/.asdf/installs/python/3.11.2
-
-<span class="c"># 查看已安装 Python 版本列表</span>
-╰─<span class="nv">$ </span>asdf list
-python
-  3.11.2
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 <span class="nb">install </span>pictl
 </code></pre></div></div>
 
 <h3 id="使用">使用</h3>
 
-<p>  ASDF 提供全局版本（Global）和本地版本（Local）两种方式定义运行环境版本。全局版本是系统级别的，类似于 PATH 变量中定义的；本地版本则是为了某个代码库或者部分代码准备的，通常在目录中的 <code class="language-plaintext highlighter-rouge">.tool-versions</code> 文件里定义。为了区分全局和本地的效果差别，这里再安装一个指定 Python 版本。</p>
+<h4 id="显示版本">显示版本</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查询 Python 插件支持的所有版本</span>
-╰─<span class="nv">$ </span>asdf list all python
-2.1.3
-2.2.3
-......
-stackless-3.7.5
-
-<span class="c"># 安装 Python 3.9.0</span>
-╰─<span class="nv">$ </span>asdf <span class="nb">install </span>python 3.9.0
-python-build 3.9.0 /home/zhonger/.asdf/installs/python/3.9.0
-Downloading Python-3.9.0.tar.xz...
--&gt; https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz
-Installing Python-3.9.0...
-patching file Misc/NEWS.d/next/Build/2021-10-11-16-27-38.bpo-45405.iSfdW5.rst
-patching file configure
-patching file configure.ac
-Installed Python-3.9.0 to /home/zhonger/.asdf/installs/python/3.9.0
-
-<span class="c"># 查看已安装 Python 版本列表</span>
-╰─<span class="nv">$ </span>asdf list
-python
-  3.11.2
-  3.9.0
-
-<span class="c"># 查看当前系统 Python 及 Python3 版本</span>
-╰─<span class="nv">$ </span>python <span class="nt">-V</span>
-No python executable found <span class="k">for </span>python system
-
-╰─<span class="nv">$ </span>python3 <span class="nt">-V</span>
-Python 3.10.6
-
-<span class="c"># 更改全局版本为 3.11.2 并查看</span>
-╰─<span class="nv">$ </span>asdf list
-python
- <span class="k">*</span>3.11.2
-  3.9.0
-
-╰─<span class="nv">$ </span>python <span class="nt">-V</span>
-Python 3.11.2
-
-<span class="c"># 创建子目录指定本地版本并查看</span>
-<span class="nb">mkdir </span>py <span class="o">&amp;&amp;</span> <span class="nb">cd </span>py
-asdf <span class="nb">local </span>python 3.9.0
-
-╰─<span class="nv">$ </span>python <span class="nt">-V</span>
-Python 3.9.0
-
-<span class="c"># 返回父目录查看 Python 版本</span>
-╰─<span class="nv">$ </span><span class="nb">cd</span> .. <span class="o">&amp;&amp;</span> python <span class="nt">-V</span>
-Python 3.11.2
-
-<span class="c"># 查看当前系统 Python3 版本</span>
-╰─<span class="nv">$ </span>python3 <span class="nt">-V</span>
-Python 3.10.6
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl <span class="nt">-V</span>
+PICTL 0.1.0
 </code></pre></div></div>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  这里有一点比较有趣的是：由于 ASDF 接管的 <code class="language-plaintext highlighter-rouge">python</code> 命令而非 <code class="language-plaintext highlighter-rouge">python3</code> 命令，所以 <code class="language-plaintext highlighter-rouge">python3</code> 命令输出的版本依然还是系统安装版本。</p>
+<h4 id="列举所有支持命令">列举所有支持命令</h4>
 
+<p>  目前 v0.1.0 版本包含四个子命令：config（配置管理），compress（图片处理），upload（上传文件）和 cup（一键式压缩、转换、上传）。</p>
 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl
+Usage: pictl <span class="o">[</span>OPTIONS] COMMAND <span class="o">[</span>ARGS]...
 
- </div> </div>
-<h3 id="其他相关">其他相关</h3>
+  A <span class="nb">command </span>line tool <span class="k">for </span>image processing and uploading <span class="o">(</span>ex. S3-type<span class="o">)</span><span class="nb">.</span>
 
-<p>  如果想要恢复到系统指定版本，可以很容易使用 <code class="language-plaintext highlighter-rouge">asdf global python system</code> 命令。当然，对于本地版本，可以使用 <code class="language-plaintext highlighter-rouge">asdf local python system</code> 来实现。除此之外，还有一些常规操作如下。</p>
+  Now it supports:
+    - transformation from other image types to <span class="sb">`</span>webp<span class="sb">`</span> image as well as
+      image compression.
+    - image file uploading to AWS S3 or Cloudflare R2.
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看 Python 指定版本安装位置</span>
-╰─<span class="nv">$ </span>asdf where python 3.11.2
-/home/zhonger/.asdf/installs/python/3.11.2
+Options:
+  <span class="nt">-V</span>, <span class="nt">--version</span>  Show the pictl version.
+  <span class="nt">-h</span>, <span class="nt">--help</span>     Show this message and exit.
 
-<span class="c"># 查看命令所在位置</span>
-╰─<span class="nv">$ </span>asdf which python
-/home/zhonger/.asdf/installs/python/3.11.2/bin/python
-
-<span class="c"># 查看当前 ASDF 管理的运行环境</span>
-╰─<span class="nv">$ </span>asdf current
-python          3.11.2          /home/ubuntu/.tool-versions
-
-<span class="c"># 查看全局和本地版本配置文件</span>
-╰─<span class="nv">$ </span><span class="nb">cat</span> ~/.tool-versions
-python 3.11.2
-
-╰─<span class="nv">$ </span><span class="nb">cat</span> ~/py/.tool-versions
-python 3.9.0
+Commands:
+  compress  Compress any image into <span class="sb">`</span>webp<span class="sb">`</span> image.
+  config    Operations <span class="k">for </span>the config file <span class="sb">`</span>~/.pictlrc<span class="sb">`</span><span class="nb">.</span>
+  cup       Compress image and upload to remote storage <span class="o">(</span>compress and...
+  upload    Upload the file to remote storage
 </code></pre></div></div>
+
+<h4 id="config-子命令">config 子命令</h4>
+
+<p>  config 子命令包含 add（添加配置）、delete（删除配置）、info（查看所有配置）和 init（初始化配置）四种操作。使用本工具需要先执行初始行配置操作，再执行其他配置操作。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl config
+Usage: pictl config <span class="o">[</span>OPTIONS] COMMAND <span class="o">[</span>ARGS]...
+
+  Operations <span class="k">for </span>the config file <span class="sb">`</span>~/.pictlrc<span class="sb">`</span><span class="nb">.</span>
+
+Options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this message and exit.
+
+Commands:
+  add     Add configs to the config file.
+  delete  Delete config group from the config file.
+  info    Check the configs.
+  init    Initialize config file with default configs.
+</code></pre></div></div>
+
+<p>  如下所示，使用 <code class="language-plaintext highlighter-rouge">pictl config init</code> 命令初始化配置。第二次执行时，由于已存在配置文件，会提示已经初始化过了。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl config init
+The settings has been initilized <span class="k">in</span> /home/ubuntu/.pictlrc.
+
+╰─<span class="nv">$ </span>pictl config init
+/home/ubuntu/.pictlrc already exists.
+Please add settings or change it manaully.
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">pictl config info</code> 以 JSON 格式打印所有配置信息。配置文件默认采用 TOML 格式。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl config info
+<span class="o">{</span>
+    <span class="s1">'basic'</span>: <span class="o">{</span><span class="s1">'length'</span>: 6, <span class="s1">'ntype'</span>: <span class="s1">'random'</span>, <span class="s1">'algorithm'</span>: <span class="s1">'sha1'</span><span class="o">}</span>,
+<span class="o">}</span>
+
+╰─<span class="nv">$ </span><span class="nb">cat</span> ~/.pictlrc
+<span class="o">[</span>basic]
+length <span class="o">=</span> 6
+ntype <span class="o">=</span> <span class="s2">"random"</span>
+algorithm <span class="o">=</span> <span class="s2">"sha1"</span>
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">pictl config add</code> 以命令行交互方式添加配置（以下是 R2 的例子）。添加完成后可以再次查看新增后的所有配置。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl config add
+<span class="k">******</span> Please input these information <span class="k">******</span>
+Group Name <span class="o">(</span>default <span class="s1">'blog'</span><span class="o">)</span>: <span class="nb">test</span>
+<span class="o">[</span>?] Type: : R2
+   S3
+ <span class="o">&gt;</span> R2
+
+Account ID: testid
+Bucket Name: <span class="nb">test
+</span>Key: testkey
+Secret: testsecret
+Prefix <span class="o">(</span>Default is None<span class="o">)</span>:
+Access Url <span class="o">(</span>like <span class="sb">`</span>https://i.example.com<span class="sb">`</span><span class="o">)</span>: https://i.example.com
+New group <span class="s1">'test'</span> has been saved <span class="k">in</span> /Users/zhonger/.pictlrc.
+
+╰─<span class="nv">$ </span>pictl config info
+<span class="o">{</span>
+    <span class="s1">'basic'</span>: <span class="o">{</span><span class="s1">'length'</span>: 6, <span class="s1">'ntype'</span>: <span class="s1">'random'</span>, <span class="s1">'algorithm'</span>: <span class="s1">'sha1'</span><span class="o">}</span>,
+    <span class="s1">'test'</span>: <span class="o">{</span>
+        <span class="s1">'endpoint'</span>: <span class="s1">'https://testid.r2.cloudflarestorage.com/test'</span>,
+        <span class="s1">'bucket'</span>: <span class="s1">'test'</span>,
+        <span class="s1">'prefix'</span>: <span class="s1">''</span>,
+        <span class="s1">'key'</span>: <span class="s1">'testkey'</span>,
+        <span class="s1">'secret'</span>: <span class="s1">'testsecret'</span>,
+        <span class="s1">'url'</span>: <span class="s1">'https://i.example.com'</span>,
+        <span class="s1">'type'</span>: <span class="s1">'R2'</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>  使用 <code class="language-plaintext highlighter-rouge">pictl config delete</code> 命令可以选择删除远程配置组（此处为了展示，除 test 外还添加了其他配置组）。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl config delete
+<span class="o">[</span>?] Please <span class="k">select </span>one group: : <span class="nb">test
+   </span>blog
+   cover
+ <span class="o">&gt;</span> <span class="nb">test
+
+test </span>has been deleted.
+</code></pre></div></div>
+
+<h4 id="compress-子命令">compress 子命令</h4>
+
+<p>  本子命令输入参数为<strong>图片文件名</strong>，可以带路径。输出图片会被保存在命令执行位置，<strong>而非原图片所在目录</strong>。执行该操作后，图片还不会被上传，需要继续使用 upload 命令完成上传。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl compress <span class="nt">-h</span>
+Usage: pictl compress <span class="o">[</span>OPTIONS] FILENAME
+
+  Compress any image into <span class="sb">`</span>webp<span class="sb">`</span> image.
+
+  FILENAME is the name of the file to compress.
+
+Options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this message and exit.
+
+╰─<span class="nv">$ </span>pictl compress ../../pictl/fig01.png
+The output file is EVyP2J.webp
+</code></pre></div></div>
+
+<h4 id="upload-子命令">upload 子命令</h4>
+
+<p>  如下所示，使用 <code class="language-plaintext highlighter-rouge">pictl upload</code> 命令加上指定上传文件名和远程配置组即可完成上传。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl upload <span class="nt">-h</span>
+Usage: pictl upload <span class="o">[</span>OPTIONS] FILENAME GROUP
+
+  Upload the file to remote storage.
+
+  FILENAME is the name of the file to upload.
+  GROUP is the group <span class="k">in </span>the config file you want to use.
+
+Options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this message and exit.
+
+╰─<span class="nv">$ </span>pictl upload EVyP2J.webp <span class="nb">test
+</span>Direct URL: https://i.example.com/EVyP2J.webp
+Markdown: <span class="o">![</span>EVyP2J.webp]<span class="o">(</span>https://i.example.com/EVyP2J.webp<span class="o">)</span>
+HTML Code: &lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">"https://i.example.com/EVyP2J.webp"</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">"EVyP2J.webp"</span> /&gt;
+</code></pre></div></div>
+
+<h4 id="cup-子命令">cup 子命令</h4>
+
+<p>  cup 子命令 = compress 子命令 + upload 子命令，仅需要指定初始图片文件和远程配置组，即可一步完成图片压缩、格式转换、修改名称、上传。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>pictl cup <span class="nt">-h</span>
+Usage: pictl cup <span class="o">[</span>OPTIONS] FILENAME GROUP
+
+  Compress image and upload to remote storage <span class="o">(</span>compress and upload<span class="o">)</span><span class="nb">.</span>
+
+  FILENAME is the name of the file to compress.
+  GROUP is the group <span class="k">in </span>the config file you want to use.
+
+Options:
+  <span class="nt">-h</span>, <span class="nt">--help</span>  Show this message and exit.
+
+╰─<span class="nv">$ </span>pictl cup ../../pictl/fig01.png <span class="nb">test
+</span>The output file is Gl8qhI.webp
+Direct URL: https://i.example.com/Gl8qhI.webp
+Markdown: <span class="o">![</span>Gl8qhI.webp]<span class="o">(</span>https://i.example.com/Gl8qhI.webp<span class="o">)</span>
+HTML Code: &lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">"https://i.example.com/Gl8qhI.webp"</span> <span class="nv">alt</span><span class="o">=</span><span class="s2">"Gl8qhI.webp"</span> /&gt;
+</code></pre></div></div>
+
+<h2 id="todo">TODO</h2>
+
+<p>  目前的 v0.1.0 版本还比较简陋，不过已经能满足笔者的必要需求，有效提升效率。后续将继续完善、新增功能：</p>
+
+<ul>
+  <li>自动补全（shell completion），增强命令行使用体验。</li>
+  <li>增加对各云服务厂商提供对象存储的支持。</li>
+  <li>增加对各流行图床的支持。</li>
+  <li>增加对自托管 Git 的支持。</li>
+  <li>增加对 FTP 的支持。</li>
+  <li>增加包括水印、调整大小等在内的图片处理的支持。</li>
+  <li>增加与 Unplash 等公共图库的连接，更加便于博客封面的操作。</li>
+</ul>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://asdf-vm.com/zh-hans/guide/getting-started.html">ASDF 官网 - 快速入门</a></li>
-  <li><a href="https://asdf-vm.com/zh-hans/manage/versions.html">ASDF 官网 - 版本</a></li>
+  <li><a href="https://blog.cloudflare.com/introducing-r2-object-storage-zh-cn/">隆重推出 Cloudflare R2 Storage —— 快速、可靠的对象存储，减免出口费用</a></li>
+  <li><a href="https://developers.cloudflare.com/r2/">R2 文档</a></li>
 </ul>
 
             <div class="post-copyright">
@@ -507,15 +589,15 @@ python 3.9.0
                   许可协议进行授权）
                 </p>
               
-              <p><span>本文标题：</span>《 通用运行环境版本管理神器 ASDF 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/asdf.html">https://lisz.me/tech/webmaster/asdf.html</a></p>
+              <p><span>本文标题：</span>《 图片处理及上传命令行工具 —— PICTL 》</p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/project/pictl.html">https://lisz.me/tech/project/pictl.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a><ul><li><a href="#asdf-简介">ASDF 简介</a></li><li><a href="#为何不选其他方案">为何不选其他方案</a><ul><li><a href="#docker">Docker</a></li><li><a href="#anaconda">Anaconda</a></li><li><a href="#云开发">云开发</a></li></ul></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#环境需求">环境需求</a></li><li><a href="#环境配置">环境配置</a></li><li><a href="#安装插件">安装插件</a></li><li><a href="#使用">使用</a></li><li><a href="#其他相关">其他相关</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a href="#前言">前言</a><ul><li><a href="#现有工具及存储考察">现有工具及存储考察</a></li><li><a href="#r2-的出现">R2 的出现</a></li></ul></li><li><a href="#开个新项目">开个新项目</a></li><li><a href="#架构设计">架构设计</a></li><li><a href="#开发计划">开发计划</a></li><li><a href="#使用方法">使用方法</a><ul><li><a href="#安装">安装</a><ul><li><a href="#源码安装">源码安装</a></li><li><a href="#pip-安装">PIP 安装</a></li></ul></li><li><a href="#使用">使用</a><ul><li><a href="#显示版本">显示版本</a></li><li><a href="#列举所有支持命令">列举所有支持命令</a></li><li><a href="#config-子命令">config 子命令</a></li><li><a href="#compress-子命令">compress 子命令</a></li><li><a href="#upload-子命令">upload 子命令</a></li><li><a href="#cup-子命令">cup 子命令</a></li></ul></li></ul></li><li><a href="#todo">TODO</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -592,29 +674,17 @@ python 3.9.0
       </section>
       <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-          <a href="/tech/project/pictl.html" class="read-next-link" aria-label="图片处理及上传命令行工具 —— PICTL"></a>
-          <section>
-            <span>图片处理及上传命令行工具 —— PICTL</span>
-            <p>前言</p>
-          </section>
-          
-          <div class="filter"></div>
-          <img src="https://i.lisz.top/cover/A2OQ14.webp" alt="">
-          
-      </div>
-        
 
         
         <div class="read-next-item">
-          <a href="/tech/webmaster/modules-python.html" class="read-next-link" aria-label="Modules 配置之 Python"></a>
+          <a href="/tech/webmaster/asdf.html" class="read-next-link" aria-label="通用运行环境版本管理神器 ASDF"></a>
             <section>
-              <span>Modules 配置之 Python</span>
+              <span>通用运行环境版本管理神器 ASDF</span>
               <p>前言</p>
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.lisz.top/cover/7QqYtI.webp" alt="">
+            <img src="https://i.lisz.top/cover/DetiCJ.webp" alt="">
             
         </div>
         
@@ -825,7 +895,7 @@ python 3.9.0
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/develope/2023-03-20-asdf.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/project/2023-06-14-pictl.md")
           .then((response) => {
             return response.json();
           })

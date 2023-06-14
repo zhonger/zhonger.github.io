@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "图片处理及上传命令行工具 —— PICTL",
+      "tags"     : "pictl 命令行 工具 cli tool",
+      "url"      : "/tech/project/pictl.html"
+    } ,
+  
+    {
       "title"    : "通用运行环境版本管理神器 ASDF",
       "tags"     : "Linux Environment Manage Dev Runtime 软件环境 多版本 管理",
       "url"      : "/tech/webmaster/asdf.html"
