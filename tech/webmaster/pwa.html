@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@marcojodoin" target="_blank">Marc-Olivier Jodoin</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@marcojodoin" target="_blank">Marc-Olivier Jodoin</a>
               
             </span>
           
@@ -295,6 +290,7 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
@@ -308,7 +304,7 @@
 
 <p>  相比原生应用开发而言，Web 应用程序的开发和更新维护则显得不要太轻松，真正实现了“一遍更新所有客户端适用”。如果要从性能和可调用设备资源来看，可能以前原生应用要占上风。但是随着 HTML5 和 CSS3 的发展，Web 应用程序在性能和设备资源调用上已经与原生应用差别无二了。所以越来越多的基于 Web 技术的 Hybrid 客户端或者纯 Web 客户端开始涌现，比如非常知名的网易云客户端，无论是 PC 客户端还是移动客户端都已经切换到了 Web 技术栈。还有现在非常流行的代码编辑器 VS Code，是基于 Electron 框架进行二次开发，其简易的操作逻辑和丰富的插件为开发者带来了无限的可能。</p>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 代码编辑器小知识 </div> </div> <div class="content"> <p>  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。<br>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 代码编辑器小知识 </div> </div> <div class="content"> <p>  代码编辑器可以从本身的复杂程度分成两种：一种是以 Eclipse、Visual Studio、*Storm（PHPStorm 等）、 Xcode、IDEA 为代表的大而全的“巨无霸”代码编辑器，另一种是以 Sublime Text、Notepad++、Atom、VS Code、Brackets 为代表的小而实用的“简洁”代码编辑器。<br />
   “巨无霸”代码编辑器也有其好处，能够提供保姆式的界面交互，可能看着省心一点。但这也是一个缺点，你需要先学习如何使用代码编辑器，才能用它来编写你想要的程序。“简洁”代码编辑器只提供必要的组件，比如文件列表、终端、搜索替换、高亮等。如果需要更多的功能，可以通过安装插件的方式来扩展支持。当然，“简洁”代码编辑器会要求你对“一切皆文件”的 Unix/Linux 哲学有比较好的认识，因为你需要通过手动修改文件配置内容的方式来设置各种各样的东西，而极少有交互界面提供。</p>
 
 
@@ -397,9 +393,9 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 
-<p>  这里大部分的元信息都可以通过 Jekyll 的 _config.yml 全局配置文件来动态配置。其中，由于图标需要适用于不同的设备、屏幕分辨率，所以需要准备不同尺寸、分辨率的站点图标。这里可以使用 <a href="https://cthedot.de" rel="nofollow" target="_blank" class="extlinks">cthedot</a> 开发的 <a href="https://github.com/cthedot/icongen" rel="nofollow" target="_blank" class="extlinks">cthedot/icongen</a> 工具来一键生成，非常简单方便。生成后将图标文件放置在上面设置好的位置（可自行对应修改）。</p>
+<p>  这里大部分的元信息都可以通过 Jekyll 的 _config.yml 全局配置文件来动态配置。其中，由于图标需要适用于不同的设备、屏幕分辨率，所以需要准备不同尺寸、分辨率的站点图标。这里可以使用 <a href="https://cthedot.de">cthedot</a> 开发的 <a href="https://github.com/cthedot/icongen">cthedot/icongen</a> 工具来一键生成，非常简单方便。生成后将图标文件放置在上面设置好的位置（可自行对应修改）。</p>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> icongen 镜像站 </div> </div> <div class="content"> <p>  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 <a href="https://icongen.pages.dev/" rel="nofollow" target="_blank" class="extlinks">icongen</a>，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。</p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> icongen 镜像站 </div> </div> <div class="content"> <p>  由于 icongen 源站在德国，亚洲访问速度有时可能不大好，所以笔者使用 icongen 开源代码在 Cloudflare 上部署了一个镜像站点 <a href="https://icongen.pages.dev/">icongen</a>，欢迎使用。当然，由于 icongen 是一个静态页面，无须任何服务器托管也可使用，大家也可下载项目源代码，用浏览器打开源代码目录下的 app/index.html 文件也可正常使用。</p>
 
 
 
@@ -446,8 +442,8 @@
         } else {
             // Register the service worker
             navigator.serviceWorker
-            .register("<span class="p">{{</span><span class="w"> </span><span class="s2">"/sw.js"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">prepend</span><span class="p">:</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">baseurl</span><span class="w"> </span><span class="p">}}</span>", {
-                scope: "<span class="p">{{</span><span class="w"> </span><span class="s2">"/"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">prepend</span><span class="p">:</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">baseurl</span><span class="w"> </span><span class="p">}}</span>"
+            .register("<span class="cp">{{</span><span class="w"> </span><span class="s2">"/sw.js"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">prepend</span><span class="p">:</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">baseurl</span><span class="w"> </span><span class="cp">}}</span>", {
+                scope: "<span class="cp">{{</span><span class="w"> </span><span class="s2">"/"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">prepend</span><span class="p">:</span><span class="w"> </span><span class="nv">site</span><span class="p">.</span><span class="nv">baseurl</span><span class="w"> </span><span class="cp">}}</span>"
             })
             .then(function (reg) {
                 console.log("Service worker has been registered for scope: " + reg.scope);
@@ -462,7 +458,7 @@
 <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code>...
 &lt;body&gt;
 ...
-  <span class="p">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>pwa.html<span class="w"> </span><span class="p">%}</span>
+  <span class="cp">{%</span><span class="w"> </span><span class="nt">include</span><span class="w"> </span>pwa.html<span class="w"> </span><span class="cp">%}</span>
 ...
 &lt;/body&gt;
 &lt;/html&gt;
@@ -485,7 +481,7 @@
     <span class="nx">caches</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Cached offline page during install</span><span class="dl">"</span><span class="p">);</span>
 
-    <span class="nf">if </span><span class="p">(</span><span class="nx">offlineFallbackPage</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">ToDo-replace-this-name.html</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">offlineFallbackPage</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">ToDo-replace-this-name.html</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="k">new</span> <span class="nc">Response</span><span class="p">(</span><span class="dl">"</span><span class="s2">Update the value of the offlineFallbackPage constant in the serviceworker.</span><span class="dl">"</span><span class="p">));</span>
     <span class="p">}</span>
 
@@ -496,7 +492,7 @@
 
 <span class="c1">// If any fetch fails, it will look for the request in the cache and serve it from there first</span>
 <span class="nb">self</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">fetch</span><span class="dl">"</span><span class="p">,</span> <span class="nf">function </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-<span class="nf">if </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<span class="k">if </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">!==</span> <span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
 
 <span class="nx">event</span><span class="p">.</span><span class="nf">respondWith</span><span class="p">(</span>
     <span class="nf">fetch</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">)</span>
@@ -508,7 +504,7 @@
 
         <span class="k">return</span> <span class="nx">response</span><span class="p">;</span>
     <span class="p">})</span>
-    <span class="p">.</span><span class="nf">catch</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>        
+    <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>        
         <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">"</span><span class="s2">Network request Failed. Serving content from cache: </span><span class="dl">"</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
         <span class="k">return</span> <span class="nf">fromCache</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">request</span><span class="p">);</span>
     <span class="p">})</span>
@@ -521,7 +517,7 @@
 <span class="c1">// If not in the cache, then return error page</span>
 <span class="k">return</span> <span class="nx">caches</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">cache</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">cache</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="nx">request</span><span class="p">).</span><span class="nf">then</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">matching</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nf">if </span><span class="p">(</span><span class="o">!</span><span class="nx">matching</span> <span class="o">||</span> <span class="nx">matching</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="o">!</span><span class="nx">matching</span> <span class="o">||</span> <span class="nx">matching</span><span class="p">.</span><span class="nx">status</span> <span class="o">===</span> <span class="mi">404</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nb">Promise</span><span class="p">.</span><span class="nf">reject</span><span class="p">(</span><span class="dl">"</span><span class="s2">no-match</span><span class="dl">"</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -552,23 +548,23 @@
 
 <p>  当我们设置好 Manifest 和 Service Worker，并且再次生成 Jekyll 静态页面并托管到服务器之后，用 Chrome 浏览器访问主页就会发现地址栏的右边会出现一个新的图标，如下图所示。这个图标就是在提示你所访问的页面是 PWA 应用，支持安装快捷方式。点击该图标，会有一个像下面这样的小弹窗提示，点击安装即可安装到主屏幕，PC 端、移动端均可。</p>
 
-<p><img src="https://i.lisz.top/blog/8nPgKk.webp" alt="安装提示 Install tips"></p>
+<p><img src="https://i.lisz.top/blog/8nPgKk.webp" alt="安装提示 Install tips" /></p>
 
 <p>  除此之外，我们还可以在 PC 端打开浏览器的控制台。如下图所示，我们可以发现一些来自 sw.js 的打印信息。这些信息告诉我们 Service Worker 已经注册成功了，并且有哪些文件已经离线缓存了。</p>
 
-<p><img src="https://i.lisz.top/blog/OnrGr1.webp" alt="控制台提示 Command line tips"></p>
+<p><img src="https://i.lisz.top/blog/OnrGr1.webp" alt="控制台提示 Command line tips" /></p>
 
 <p>  在浏览器开发工具中，我们还可以通过查看<strong>应用</strong>的 <strong>Service Workers</strong> 来再次确认 PWA 的情况。如下图所示，我们可以看到 sw.js 从 Initial 到 Wait 到 Activate 的过程，</p>
 
-<p><img src="https://i.lisz.top/blog/mXdqdH.webp" alt="应用提示 App tips"></p>
+<p><img src="https://i.lisz.top/blog/mXdqdH.webp" alt="应用提示 App tips" /></p>
 
 <h2 id="后记">后记</h2>
 
-<p>  从上面的步骤来看，Web 应用 PWA 化似乎也不是那么难。只要有 Manifest 和 Service Worker 就能成功把 Web 应用 PWA 化。当然，也有一些更加简单 PWA 化的方法，比如说 <a href="https://www.pwabuilder.com/" rel="nofollow" target="_blank" class="extlinks">pwabuilder</a>。不过，pwabuilder 更擅长帮你优化 PWA 应用并且转成 Windodws、Apple 和 Android 三个平台的应用。如果你想要把你的 PWA 应用上传到应用商店，那么不妨试试。</p>
+<p>  从上面的步骤来看，Web 应用 PWA 化似乎也不是那么难。只要有 Manifest 和 Service Worker 就能成功把 Web 应用 PWA 化。当然，也有一些更加简单 PWA 化的方法，比如说 <a href="https://www.pwabuilder.com/">pwabuilder</a>。不过，pwabuilder 更擅长帮你优化 PWA 应用并且转成 Windodws、Apple 和 Android 三个平台的应用。如果你想要把你的 PWA 应用上传到应用商店，那么不妨试试。</p>
 
 <p>  除了 Jekyll 之外，其他的静态生成器比如 Hexo、Next.js 等等或者动态网站都可以 PWA 化，而且和 CDN 加速一起使用也非常合适。</p>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 推荐一款 PWA 应用 </div> </div> <div class="content"> <p>  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – <a href="https://squoosh.app/" rel="nofollow" target="_blank" class="extlinks">Squoosh</a>。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 <a href="https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli" rel="nofollow" target="_blank" class="extlinks">squoosh cli</a>。</p>
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 推荐一款 PWA 应用 </div> </div> <div class="content"> <p>  当年 Google 为了推广 PWA 曾开发了一款非常好用的 PWA 应用 – <a href="https://squoosh.app/">Squoosh</a>。这就是本地版的图片格式转换、图片压缩的免费工具，完全可以替代大部分其他工具。如果你喜欢终端的话，你也可以使用 <a href="https://github.com/GoogleChromeLabs/squoosh/tree/dev/cli">squoosh cli</a>。</p>
 
 
 
@@ -579,51 +575,59 @@
 
 <p>(2022年6月8日)</p>
 
-<p>  前两天刚发布本文时，有位叫 <a href="https://blog.lyh543.cn/" rel="nofollow" target="_blank" class="extlinks">小灰灰灰灰</a> 的网友向我提了一个关于“PWA 空间占用及流量消耗”的问题，我也回答了一些自己的想法（可以在博客主节点 <a href="https://lisz.me/tech/webmaster/pwa.html" rel="nofollow" target="_blank">lisz.me</a> 的评论区看到具体内容）。首先非常感谢 <a href="https://blog.lyh543.cn/" rel="nofollow" target="_blank" class="extlinks">小灰灰灰灰</a> 的热心提问，其次他的这个问题也让我觉得可能我需要再进一步了解一下，否则这篇博文的标题中的加速可能需要打上引号了。</p>
+<p>  前两天刚发布本文时，有位叫 <a href="https://blog.lyh543.cn/">小灰灰灰灰</a> 的网友向我提了一个关于“PWA 空间占用及流量消耗”的问题，我也回答了一些自己的想法（可以在博客主节点 <a href="https://lisz.me/tech/webmaster/pwa.html">lisz.me</a> 的评论区看到具体内容）。首先非常感谢 <a href="https://blog.lyh543.cn/">小灰灰灰灰</a> 的热心提问，其次他的这个问题也让我觉得可能我需要再进一步了解一下，否则这篇博文的标题中的加速可能需要打上引号了。</p>
 
 <p>  虽然从我自身的安卓手机 PWA 应用空间占用查询来看，Chrome 的空间设置中的空间占用量有点大（最高 4.9 GB，首次访问 480 MB，如下图所示），但查询手机系统中的空间管理却没有发现 PWA 应用或者 Chrome 占用了所谓的“4.9 GB”空间（PWA 应用 230K 左右，Chrome 1.4 GB 左右）。</p>
 
-<p><img src="https://i.lisz.top/blog/IYuKyo.webp" alt="Chrome 显示存储用量 Storage"></p>
+<p><img src="https://i.lisz.top/blog/IYuKyo.webp" alt="Chrome 显示存储用量 Storage" /></p>
 
-<p>  正如 <a href="https://blog.lyh543.cn/" rel="nofollow" target="_blank" class="extlinks">小灰灰灰灰</a> 所说，Chrome 显示的空间占用量存在水分，毕竟不可能只访问一个页面就需要下载 400 MB 的东西吧。而且，根本就没有那么多文件让 PWA 应用下载。据个人不完全统计，本站目前所有代码加上所有图床托管图片的总体大小在 15 MB 左右。即使全站都缓存下来，也不可能用到 400 MB。<a href="https://blog.lyh543.cn/" rel="nofollow" target="_blank" class="extlinks">小灰灰灰灰</a> 用在 Stack Overflows 上查到的命令在 Chrome 的控制台中输出了类似 “Using 23K out of 270M”的结果，因此他猜测可能是预申请了过百兆的空间，而实际使用量只有几十 K 左右。对此，我表示赞同。从实际的源站流量监控来看，与所谓的 400 MB 也不匹配。从上月 26 日到今天（共 14 天）为止消耗了 323.2 MB 流量，本月截止到今天（共 8 天）图床托管消耗了 131 MB 流量。</p>
+<p>  正如 <a href="https://blog.lyh543.cn/">小灰灰灰灰</a> 所说，Chrome 显示的空间占用量存在水分，毕竟不可能只访问一个页面就需要下载 400 MB 的东西吧。而且，根本就没有那么多文件让 PWA 应用下载。据个人不完全统计，本站目前所有代码加上所有图床托管图片的总体大小在 15 MB 左右。即使全站都缓存下来，也不可能用到 400 MB。<a href="https://blog.lyh543.cn/">小灰灰灰灰</a> 用在 Stack Overflows 上查到的命令在 Chrome 的控制台中输出了类似 “Using 23K out of 270M”的结果，因此他猜测可能是预申请了过百兆的空间，而实际使用量只有几十 K 左右。对此，我表示赞同。从实际的源站流量监控来看，与所谓的 400 MB 也不匹配。从上月 26 日到今天（共 14 天）为止消耗了 323.2 MB 流量，本月截止到今天（共 8 天）图床托管消耗了 131 MB 流量。</p>
 
 <p>  综合以上的信息来看，一个像本站一样的静态博客 PWA 化之后对于智能终端空间占用量或者服务提供的流量消耗影响不会太大。如果是其他非常复杂的站点或者有大量未经优化图片的站点，可能全部 PWA 化会在空间占用了和流量消耗上面有一些比较明显的影响。这一点可以查看参考资料《PWA 初探》一文了解更多。其实我们还是应该回到我们使用 PWA 的初衷上来，PWA 是用来加速和优化提升用户体验的，因此我们可以选择某些部分 PWA 化而非整体。</p>
 
 <p>  对于博客或者静态站点 PWA 化，个人有几点小建议可以在一定程度上降低 PWA 化对空间占用和流量消耗的影响：</p>
 
 <ul>
-  <li>
-<strong>图片 webp 化</strong>：压缩图片大小、保留大部分的质量，从而加快所有图片加载时间。</li>
-  <li>
-<strong>图床托管图片</strong>：图片交由图床来管理和存储，这样可以分担一部分的源站流量，毕竟也是有很多可以免费使用的图床的。</li>
-  <li>
-<strong>懒加载和骨架屏</strong>：懒加载可以只加载可视区域内的若干张图片，只有在页面滑动时才会陆续加载将要看到的区域内的图片，减少初次渲染页面的时间；骨架屏能够在元素尚未完全加载前填充元素的空间，不会突然冒出元素占用（Vue 用得不好的时候会有这种情况），从视觉上给用户更加友好的体验。</li>
-  <li>
-<strong>CDN 化</strong>：虽然 PWA 应用有缓存能力，但是只是本地缓存，对于大多数第一次请求缓存的时间还是取决于用户客户端到源站之间的网络，CDN 能够很好地弥补这一点。</li>
+  <li><strong>图片 webp 化</strong>：压缩图片大小、保留大部分的质量，从而加快所有图片加载时间。</li>
+  <li><strong>图床托管图片</strong>：图片交由图床来管理和存储，这样可以分担一部分的源站流量，毕竟也是有很多可以免费使用的图床的。</li>
+  <li><strong>懒加载和骨架屏</strong>：懒加载可以只加载可视区域内的若干张图片，只有在页面滑动时才会陆续加载将要看到的区域内的图片，减少初次渲染页面的时间；骨架屏能够在元素尚未完全加载前填充元素的空间，不会突然冒出元素占用（Vue 用得不好的时候会有这种情况），从视觉上给用户更加友好的体验。</li>
+  <li><strong>CDN 化</strong>：虽然 PWA 应用有缓存能力，但是只是本地缓存，对于大多数第一次请求缓存的时间还是取决于用户客户端到源站之间的网络，CDN 能够很好地弥补这一点。</li>
 </ul>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://dev.to/thewhitewulfy/make-any-jekyll-site-into-a-pwa-1de2" rel="nofollow" target="_blank" class="extlinks">Make any Jekyll site into a PWA</a></li>
-  <li><a href="https://sunbufu.vercel.app/posts/2019/2019-01-23-pwa/" rel="nofollow" target="_blank" class="extlinks">jekyll 博客的 PWA 配置</a></li>
-  <li><a href="https://segmentfault.com/a/1190000041729491" rel="nofollow" target="_blank" class="extlinks">小程序鼻祖 —— 在国内逐渐消亡的 PWA 可以带给我们哪些启示？</a></li>
-  <li><a href="https://segmentfault.com/a/1190000018590996" rel="nofollow" target="_blank" class="extlinks">Flutter 、React Native 、 Ionic、 NativeScript 、小程序和 PWA 哪个值得学？</a></li>
-  <li><a href="https://mrluo.life/article/detail/140/pwa-primer" rel="nofollow" target="_blank" class="extlinks">PWA 初探</a></li>
-  <li><a href="https://web.dev/storage-for-the-web/" rel="nofollow" target="_blank" class="extlinks">Web 存储</a></li>
-  <li><a href="https://lavas-project.github.io/pwa-book/" rel="nofollow" target="_blank" class="extlinks">《PWA 应用实战》</a></li>
+  <li><a href="https://dev.to/thewhitewulfy/make-any-jekyll-site-into-a-pwa-1de2">Make any Jekyll site into a PWA</a></li>
+  <li><a href="https://sunbufu.vercel.app/posts/2019/2019-01-23-pwa/">jekyll 博客的 PWA 配置</a></li>
+  <li><a href="https://segmentfault.com/a/1190000041729491">小程序鼻祖 —— 在国内逐渐消亡的 PWA 可以带给我们哪些启示？</a></li>
+  <li><a href="https://segmentfault.com/a/1190000018590996">Flutter 、React Native 、 Ionic、 NativeScript 、小程序和 PWA 哪个值得学？</a></li>
+  <li><a href="https://mrluo.life/article/detail/140/pwa-primer">PWA 初探</a></li>
+  <li><a href="https://web.dev/storage-for-the-web/">Web 存储</a></li>
+  <li><a href="https://lavas-project.github.io/pwa-book/">《PWA 应用实战》</a></li>
 </ul>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 PWA：可能是成本最低的站点加速方式 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/pwa.html">https://lisz.me/tech/webmaster/pwa.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a><ul><li><a href="#为何有-pwa">为何有 PWA</a></li><li><a href="#什么是渐进式">什么是渐进式</a></li></ul></li><li><a href="#为-jekyll-配置-pwa">为 Jekyll 配置 PWA</a><ul><li><a href="#配置-manifest">配置 Manifest</a><ul><li><a href="#元信息">元信息</a></li><li><a href="#模板化">模板化</a></li><li><a href="#链接到页面">链接到页面</a></li></ul></li><li><a href="#配置-service-worker">配置 Service Worker</a><ul><li><a href="#注册-service-worker">注册 Service Worker</a></li><li><a href="#离线缓存">离线缓存</a></li><li><a href="#模板化-1">模板化</a></li></ul></li></ul></li><li><a href="#验证-pwa">验证 PWA</a></li><li><a href="#后记">后记</a></li><li><a href="#相关补充">相关补充</a><ul><li><a href="#pwa-空间占用及流量消耗">PWA 空间占用及流量消耗</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
@@ -735,8 +739,11 @@
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -747,44 +754,50 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -822,7 +835,7 @@
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -856,7 +869,7 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -925,7 +938,7 @@
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-06-03-pwa.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/jekyll/2022-06-03-pwa.md")
           .then((response) => {
             return response.json();
           })
@@ -940,8 +953,9 @@
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -960,8 +974,6 @@
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -974,8 +986,6 @@
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

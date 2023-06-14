@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -253,7 +252,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -272,19 +270,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@aaronburden" target="_blank">Aaron Burden</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@aaronburden" target="_blank">Aaron Burden</a>
               
             </span>
           
@@ -301,24 +296,25 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
             <h2 id="前言">前言</h2>
 
-<p>  越来越多的人想要搭建一个属于自己的免费个人博客，记录下自己在技术上的学习历程，或是写一些文章。甚至有一天，可以将这些文章整理成集出版。这也不是没有可能的，个人所知很多深受大众喜爱的技术书籍就是这样诞生的，像阮一峰大神的<a href="https://es6.ruanyifeng.com/" rel="nofollow" target="_blank" class="extlinks">《ES6 标准入门》</a>、杨宝华等的<a href="https://vuepress.mirror.docker-practice.com/" rel="nofollow" target="_blank" class="extlinks">《Docker 从入门到实践》</a>、刘遄老师的<a href="https://www.linuxprobe.com/" rel="nofollow" target="_blank" class="extlinks">《Linux 就该这么学》</a>等等。</p>
+<p>  越来越多的人想要搭建一个属于自己的免费个人博客，记录下自己在技术上的学习历程，或是写一些文章。甚至有一天，可以将这些文章整理成集出版。这也不是没有可能的，个人所知很多深受大众喜爱的技术书籍就是这样诞生的，像阮一峰大神的<a href="https://es6.ruanyifeng.com/">《ES6 标准入门》</a>、杨宝华等的<a href="https://vuepress.mirror.docker-practice.com/">《Docker 从入门到实践》</a>、刘遄老师的<a href="https://www.linuxprobe.com/">《Linux 就该这么学》</a>等等。</p>
 
 <h3 id="markdown-的出现">Markdown 的出现</h3>
 
-<p>  很久以前想要搭建一个个人网站或者个人博客，可能非常困难，需要自己购买域名、虚拟主机或者虚拟服务器、搭建运行环境等等。为了简化这些步骤，开始有了一些免费建站工具出现，比如非常知名的 <a href="https://www.fkw.com" rel="nofollow" target="_blank" class="extlinks">凡科网</a>。当年笔者也是从这样的免费二级域名、免费拖拽式建站开始的，只不过后来越来越感受到了这种建站方式的局限性。首要的局限性就是免费的模板和功能有限，而想要更多好看的模板或者功能就需要付费升级，奈何并不想花钱买模板。于是开始投向了博客平台的怀抱，早期的博客平台有博客园、CSDN、InfoQ 等，发展到现在新兴的简书、掘金等等。虽然这些博客平台能让我们更加专注于编辑内容，但是也有受限的地方——有些想要的功能平台不可能马上就提供，比如现今博客平台都比较流行的 Markdown 编辑器。在 Markdown 语法流行于技术博客编辑之初，博客平台还是使用着“所见即所得”编辑器。当然，“所见即所得”编辑器并没有什么不好，至少对于初学者来说几乎零成本、包学包会。但是，Markdown 语法的出现无疑为博客编辑带来了一种全新的体验。按照规范化的文本内容标记编写，使用不同的 Markdown 语法翻译器和 CSS 样式，就可以带来丰富多彩的效果呈现。</p>
+<p>  很久以前想要搭建一个个人网站或者个人博客，可能非常困难，需要自己购买域名、虚拟主机或者虚拟服务器、搭建运行环境等等。为了简化这些步骤，开始有了一些免费建站工具出现，比如非常知名的 <a href="https://www.fkw.com">凡科网</a>。当年笔者也是从这样的免费二级域名、免费拖拽式建站开始的，只不过后来越来越感受到了这种建站方式的局限性。首要的局限性就是免费的模板和功能有限，而想要更多好看的模板或者功能就需要付费升级，奈何并不想花钱买模板。于是开始投向了博客平台的怀抱，早期的博客平台有博客园、CSDN、InfoQ 等，发展到现在新兴的简书、掘金等等。虽然这些博客平台能让我们更加专注于编辑内容，但是也有受限的地方——有些想要的功能平台不可能马上就提供，比如现今博客平台都比较流行的 Markdown 编辑器。在 Markdown 语法流行于技术博客编辑之初，博客平台还是使用着“所见即所得”编辑器。当然，“所见即所得”编辑器并没有什么不好，至少对于初学者来说几乎零成本、包学包会。但是，Markdown 语法的出现无疑为博客编辑带来了一种全新的体验。按照规范化的文本内容标记编写，使用不同的 Markdown 语法翻译器和 CSS 样式，就可以带来丰富多彩的效果呈现。</p>
 
 <h3 id="静态网站生成器">静态网站生成器</h3>
 
-<p>  正是 Markdown 的出现，呼唤出了一大批支持 Markdown 语法的<strong>静态网站生成器</strong>。最早开始，笔者是通过 <a href="https://www.staticgen.com/" rel="nofollow" target="_blank" class="extlinks">StaticGen</a> 这个站点才知道原来有这么多开箱即用的静态网站生成器。无论是用 NodeJS 编写的 Hexo，还是用 Ruby 编写的 Jekyll，甚至是用 Go 编写的 Hugo，都能轻易为你带来一个支持自定义模板、功能以及 Markdown 语法的个人网站或者个人博客。实际上，从这个站点列举出来的可以看出，至少有 322 种已知可用的静态网站生成器。这个网站还有一个很神奇的附带功能——它与 Netlify 相连接，从网站上就可以看出 Netlify 支持部署的静态网站生成器。</p>
+<p>  正是 Markdown 的出现，呼唤出了一大批支持 Markdown 语法的<strong>静态网站生成器</strong>。最早开始，笔者是通过 <a href="https://www.staticgen.com/">StaticGen</a> 这个站点才知道原来有这么多开箱即用的静态网站生成器。无论是用 NodeJS 编写的 Hexo，还是用 Ruby 编写的 Jekyll，甚至是用 Go 编写的 Hugo，都能轻易为你带来一个支持自定义模板、功能以及 Markdown 语法的个人网站或者个人博客。实际上，从这个站点列举出来的可以看出，至少有 322 种已知可用的静态网站生成器。这个网站还有一个很神奇的附带功能——它与 Netlify 相连接，从网站上就可以看出 Netlify 支持部署的静态网站生成器。</p>
 
-<p>  说到这里，又有一个新的名词出现了——Netlify。<a href="https://www.netlify.com" rel="nofollow" target="_blank" class="extlinks">Netlify</a> 其实是一个自带持续部署的网站，它需要与 Github 提供的持续集成联合使用。当 Github 指定的项目发生了推送操作时，Netlify 会通过已授权认证的方式从 Github 上拉取代码，并根据预设好的编译、部署命令生成最终的网页。这些网页在生成后，会被自动推送到 Netlify 的全球网络节点，并且会提供一个默认的 *.netlify.app 域名进行访问。这个默认的域名是可以完全自主定义的，只要与已有的域名不冲突即可。当然，用户也可以使用自己的域名解析到 Netlify，并且享有 Netlify 提供的免费 SSL 证书和全球节点加速。</p>
+<p>  说到这里，又有一个新的名词出现了——Netlify。<a href="https://www.netlify.com">Netlify</a> 其实是一个自带持续部署的网站，它需要与 Github 提供的持续集成联合使用。当 Github 指定的项目发生了推送操作时，Netlify 会通过已授权认证的方式从 Github 上拉取代码，并根据预设好的编译、部署命令生成最终的网页。这些网页在生成后，会被自动推送到 Netlify 的全球网络节点，并且会提供一个默认的 *.netlify.app 域名进行访问。这个默认的域名是可以完全自主定义的，只要与已有的域名不冲突即可。当然，用户也可以使用自己的域名解析到 Netlify，并且享有 Netlify 提供的免费 SSL 证书和全球节点加速。</p>
 
-<p>  其实 <a href="https://github.com" rel="nofollow" target="_blank" class="extlinks">Github</a> 本身也是提供这样的服务的，可以使用 username.github.io 的域名进行访问。之前 Github 的这个域名还是不提供 CDN 功能的，现在看起来像是有了所谓的 CDN 功能，但是实际的效果不得而知，因为笔者试着使用不同国家 IP 访问得到的地址都是美国的。国内的 <a href="https://gitee.com" rel="nofollow" target="_blank" class="extlinks">Gitee</a>、<a href="https://coding.net" rel="nofollow" target="_blank" class="extlinks">Coding</a>、国外的 <a href="https://gitlab.com" rel="nofollow" target="_blank" class="extlinks">Gitlab</a>、<a href="https://sourceforge.net/" rel="nofollow" target="_blank" class="extlinks">SourceForge</a> 等等都提供这类的功能，并且同样也存在 CDN 的短板问题。</p>
+<p>  其实 <a href="https://github.com">Github</a> 本身也是提供这样的服务的，可以使用 username.github.io 的域名进行访问。之前 Github 的这个域名还是不提供 CDN 功能的，现在看起来像是有了所谓的 CDN 功能，但是实际的效果不得而知，因为笔者试着使用不同国家 IP 访问得到的地址都是美国的。国内的 <a href="https://gitee.com">Gitee</a>、<a href="https://coding.net">Coding</a>、国外的 <a href="https://gitlab.com">Gitlab</a>、<a href="https://sourceforge.net/">SourceForge</a> 等等都提供这类的功能，并且同样也存在 CDN 的短板问题。</p>
 
 <h3 id="cdn">CDN</h3>
 
@@ -326,17 +322,17 @@
 
 <h3 id="其他">其他</h3>
 
-<p>  除了以上这些，也有一些其他的支持 Markdown 语法和部署简单的免费博客搭建方法，比如说将静态网站部署在普通虚拟主机、虚拟服务器上，将静态网站的文件当做是对象存储并开放匿名访问，使用 <a href="https://readthedocs.org/" rel="nofollow" target="_blank" class="extlinks">Read the Docs</a>、<a href="https://gitbook.com" rel="nofollow" target="_blank" class="extlinks">GitBook</a> 提供的在线文档编辑和托管服务等等。</p>
+<p>  除了以上这些，也有一些其他的支持 Markdown 语法和部署简单的免费博客搭建方法，比如说将静态网站部署在普通虚拟主机、虚拟服务器上，将静态网站的文件当做是对象存储并开放匿名访问，使用 <a href="https://readthedocs.org/">Read the Docs</a>、<a href="https://gitbook.com">GitBook</a> 提供的在线文档编辑和托管服务等等。</p>
 
 <h2 id="实现与评价">实现与评价</h2>
 
-<p>  这里就以笔者的个人博客站点为例解释一下如何使用静态生成器来搭建博客。其实，笔者的博客本来也不是静态生成器，最早还是 WordPress，后来过渡到 Hexo，再后来才转到 Jekyll。说实话，当时 Hexo 转投 Jekyll 也是因为发现了 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" rel="nofollow" target="_blank" class="extlinks">H2O</a> 这个好看又优秀的 Jekyll 主题，果断选择切换到 Jekyll。当然，还有另外一个原因，Github 的原生支持静态生成器就是 Jekyll，这也意味着在 Github 上部署 Jekyll 更加方便。</p>
+<p>  这里就以笔者的个人博客站点为例解释一下如何使用静态生成器来搭建博客。其实，笔者的博客本来也不是静态生成器，最早还是 WordPress，后来过渡到 Hexo，再后来才转到 Jekyll。说实话，当时 Hexo 转投 Jekyll 也是因为发现了 <a href="https://github.com/kaeyleo/jekyll-theme-H2O">H2O</a> 这个好看又优秀的 Jekyll 主题，果断选择切换到 Jekyll。当然，还有另外一个原因，Github 的原生支持静态生成器就是 Jekyll，这也意味着在 Github 上部署 Jekyll 更加方便。</p>
 
-<p>  Jekyll 的开始与 Hexo 有所不同，Hexo 是采用子目录的方式加载应用新的主题，而 Jekyll 则是采用主题化的方式应用主题。也就是说，如果你想使用某个 Jekyll 主题，唯一的方式就是克隆这个 Jekyll 主题的项目，并在此基础上开始你的博客。当然，Jekyll 完全支持用户在原有主题上进行更改，只要你了解文件是如何组织的、需要何种环境等等，你就可以做出自己的修改。为了保障原有主题的版权声明，即使你自己修改了一部分，也应该保留原有主题在底部的声明，你可以做的是加上自己的声明。在实际的使用过程中，笔者根据自己的需求也在 H2O 主题上做出了一定的功能修改，并开源为 <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" rel="nofollow" target="_blank" class="extlinks">jekyll-them-H2O-ac</a>。</p>
+<p>  Jekyll 的开始与 Hexo 有所不同，Hexo 是采用子目录的方式加载应用新的主题，而 Jekyll 则是采用主题化的方式应用主题。也就是说，如果你想使用某个 Jekyll 主题，唯一的方式就是克隆这个 Jekyll 主题的项目，并在此基础上开始你的博客。当然，Jekyll 完全支持用户在原有主题上进行更改，只要你了解文件是如何组织的、需要何种环境等等，你就可以做出自己的修改。为了保障原有主题的版权声明，即使你自己修改了一部分，也应该保留原有主题在底部的声明，你可以做的是加上自己的声明。在实际的使用过程中，笔者根据自己的需求也在 H2O 主题上做出了一定的功能修改，并开源为 <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">jekyll-them-H2O-ac</a>。</p>
 
 <h3 id="fork-项目">Fork 项目</h3>
 
-<p>  访问 <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" rel="nofollow" target="_blank" class="extlinks">jekyll-them-H2O-ac</a>，点击 Fork 按钮，选择合适的用户命名空间。为了可以支持 username.github.io 域名直接展示该项目，建议在 Settings 里面将 Respository name 修改为 username.github.io，然后克隆项目到本地目录。</p>
+<p>  访问 <a href="https://github.com/zhonger/jekyll-theme-H2O-ac">jekyll-them-H2O-ac</a>，点击 Fork 按钮，选择合适的用户命名空间。为了可以支持 username.github.io 域名直接展示该项目，建议在 Settings 里面将 Respository name 修改为 username.github.io，然后克隆项目到本地目录。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:zhonger/zhonger.github.io
 </code></pre></div></div>
@@ -525,7 +521,7 @@ $$
   <li>英文与中文标点符号一起时，标点符号在英文或符号之前之后都无须空格；</li>
   <li>在代码内容中，# 号与文字之间空一格，# 号与代码同行时距离不宜过长，如相邻几行都有注释对齐为佳；当代码注释内容超过一行时最好将注释放在代码的后一行，此时 # 号前不留空格；</li>
   <li>在使用图片进行解释的时候，在对应段落附近加载图片，并使用“下图”、“上图”这样的字眼进行描述；</li>
-  <li>图片可以使用 PPT 自行制作，使用 <a href="https://zh.snipaste.com/" rel="nofollow" target="_blank" class="extlinks">Snipaste 截图工具</a> 截图保存，也可下载分辨率高的 PNG 图或者 SVG 图，并上传至 <a href="https://vgy.me" rel="nofollow" target="_blank" class="extlinks">vgy.me</a> 后加载使用；</li>
+  <li>图片可以使用 PPT 自行制作，使用 <a href="https://zh.snipaste.com/">Snipaste 截图工具</a> 截图保存，也可下载分辨率高的 PNG 图或者 SVG 图，并上传至 <a href="https://vgy.me">vgy.me</a> 后加载使用；</li>
   <li>编程语言、专用英文词汇使用时，根据其通用的写法来适当调整大小写，比如 Python 3 的第一个字母就需要大写，Java 的第一个字母也需要大写；</li>
   <li>当括号内是英文字符，使用英文括号（半角）；当括号内是中文字符时，使用中文括号（全角）；当括号外是英文、括号内是中文时，可以使用英文括号（半角）来缩短字符距离，不过英文与括号之间须有空格。</li>
 </ul>
@@ -584,49 +580,49 @@ git push origin main
   <tbody>
     <tr>
       <td style="text-align: center">Netlify</td>
-      <td style="text-align: center"><a href="https://lisz.me" rel="nofollow" target="_blank">lisz.me</a></td>
+      <td style="text-align: center"><a href="https://lisz.me">lisz.me</a></td>
       <td style="text-align: center">Netlify</td>
       <td style="text-align: center">是</td>
       <td>全球性节点</td>
     </tr>
     <tr>
       <td style="text-align: center">Github</td>
-      <td style="text-align: center"><a href="https://blog.lui8.cn" rel="nofollow" target="_blank">blog.lui8.cn</a></td>
+      <td style="text-align: center"><a href="https://blog.lui8.cn">blog.lui8.cn</a></td>
       <td style="text-align: center">Github</td>
       <td style="text-align: center">否</td>
       <td>美国节点</td>
     </tr>
     <tr>
       <td style="text-align: center">Cloudflare</td>
-      <td style="text-align: center"><a href="https://lui.site" rel="nofollow" target="_blank">lui.site</a></td>
+      <td style="text-align: center"><a href="https://lui.site">lui.site</a></td>
       <td style="text-align: center">Cloudflare</td>
       <td style="text-align: center">是</td>
       <td>全球性节点</td>
     </tr>
     <tr>
       <td style="text-align: center">阿里云服务器</td>
-      <td style="text-align: center"><a href="https://www.lisz.ink" rel="nofollow" target="_blank">www.lisz.ink</a></td>
+      <td style="text-align: center"><a href="https://www.lisz.ink">www.lisz.ink</a></td>
       <td style="text-align: center">VPS</td>
       <td style="text-align: center">否</td>
       <td>国内单节点</td>
     </tr>
     <tr>
       <td style="text-align: center">腾讯云服务器</td>
-      <td style="text-align: center"><a href="https://luish.cc" rel="nofollow" target="_blank">luish.cc</a></td>
+      <td style="text-align: center"><a href="https://luish.cc">luish.cc</a></td>
       <td style="text-align: center">VPS</td>
       <td style="text-align: center">否</td>
       <td>国内单节点</td>
     </tr>
     <tr>
       <td style="text-align: center">腾讯云 COS</td>
-      <td style="text-align: center"><a href="https://lisz.ink" rel="nofollow" target="_blank">lisz.ink</a></td>
+      <td style="text-align: center"><a href="https://lisz.ink">lisz.ink</a></td>
       <td style="text-align: center">对象存储</td>
       <td style="text-align: center">否</td>
       <td>国内 CDN 节点</td>
     </tr>
     <tr>
       <td style="text-align: center">筑波大学</td>
-      <td style="text-align: center"><a href="https://www.u.tsukuba.ac.jp/~s2036012/" rel="nofollow" target="_blank">u.tsukuba.ac.jp</a></td>
+      <td style="text-align: center"><a href="https://www.u.tsukuba.ac.jp/~s2036012/">u.tsukuba.ac.jp</a></td>
       <td style="text-align: center">FTP</td>
       <td style="text-align: center">否</td>
       <td>日本单节点</td>
@@ -639,15 +635,27 @@ git push origin main
 <p>  跟着笔者了解了这些，是不是突然觉得搭建一个属于自己的免费个人博客其实也不难，而且还可以有这么多免费节点，感兴趣的话就快来试一试吧！</p>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 个人免费博客花式搭建指南 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog.html">https://lisz.me/tech/webmaster/start-blog.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a><ul><li><a href="#markdown-的出现">Markdown 的出现</a></li><li><a href="#静态网站生成器">静态网站生成器</a></li><li><a href="#cdn">CDN</a></li><li><a href="#其他">其他</a></li></ul></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#fork-项目">Fork 项目</a></li><li><a href="#修改配置">修改配置</a></li><li><a href="#撰写文章">撰写文章</a><ul><li><a href="#书写规范">书写规范</a><ul><li><a href="#markdown-语法指南">Markdown 语法指南</a></li><li><a href="#通用文章规范">通用文章规范</a></li></ul></li></ul></li><li><a href="#预览">预览</a></li><li><a href="#发布部署">发布部署</a></li></ul></li><li><a href="#写在最后">写在最后</a></li></ul>
         </div>
       </div>
@@ -759,8 +767,11 @@ git push origin main
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -771,44 +782,50 @@ git push origin main
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -846,7 +863,7 @@ git push origin main
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -880,7 +897,7 @@ git push origin main
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -949,7 +966,7 @@ git push origin main
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2021-04-05-start-blog.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/start-blog/2021-04-05-start-blog.md")
           .then((response) => {
             return response.json();
           })
@@ -964,8 +981,9 @@ git push origin main
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -984,8 +1002,6 @@ git push origin main
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -998,8 +1014,6 @@ git push origin main
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

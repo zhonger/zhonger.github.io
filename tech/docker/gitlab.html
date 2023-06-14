@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -243,7 +242,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -262,19 +260,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@duexsong" target="_blank">Somruthai Keawjan</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@duexsong" target="_blank">Somruthai Keawjan</a>
               
             </span>
           
@@ -290,6 +285,7 @@
       <h2 class="post-subtitle">如何使用 Gitlab 实现代码托管自由？</h2>
       
 
+      
       
       <div class="container">  
         <div class="contents">
@@ -308,7 +304,7 @@
 
 <p>  举个例子，当我在写论文或者做 PPT 的时候，我习惯在文件名的最后加上完成年月日以示区分。这样做的唯一好处就是简单便捷，但是特别容易犯错，尤其是需要和之前的版本进行交叉修改的时候。为了解决这种问题，很久以前就有许多中本地版本控制系统被开发出来，其中大多数都是采用某种简单的数据库来记录文件的历次更新差异。其中最流行的一种叫做 RCS，现今许多计算机系统上还看得到它的踪影。RCS 的工作原理是在硬盘上保留补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。我们常用的网盘的增量同步就是采用了这种方式，网盘同步工具会在同步的主目录建立一个文件来描述本地文件的修订情况，在联网之后与远程服务器的信息进行对比就能发现本地文件与远程文件是否一致。如果两个文件的 MD5 值相同则可以说明文件无须操作，如果不同则根据时间戳来判断哪个文件最新，并将最新的文件更新给另一方。</p>
 
-<p><img src="https://i.lisz.top/blog/pHTwoo.webp" alt="本地版本 local-version"></p>
+<p><img src="https://i.lisz.top/blog/pHTwoo.webp" alt="本地版本 local-version" /></p>
 
 <h4 id="集中化的版本控制系统">集中化的版本控制系统</h4>
 
@@ -316,7 +312,7 @@
 
 <p>  这样一来，的确在某种程度上提供了多人开发协同的功能，但是如果中央服务器发生了故障，那么谁也无法提交更新或者协同工作。如果磁盘发生损坏且未进行实时备份，毫无疑问所有或者一部分数据都会丢失。</p>
 
-<p><img src="https://i.lisz.top/blog/DkO4GL.webp" alt="集中化版本 central-version"></p>
+<p><img src="https://i.lisz.top/blog/DkO4GL.webp" alt="集中化版本 central-version" /></p>
 
 <h4 id="分布式版本控制系统">分布式版本控制系统</h4>
 
@@ -324,21 +320,21 @@
 
 <p>  关于 Git 的诞生有个小故事一直被人津津乐道。Linux 内核开源项目有着众多的参与者，但是早期（1991~2002 年间）绝大多数的 Linux 内核维护工作都花在了提交补丁和保存归档的繁琐事务上。从 2002 年开始，整个项目组开始启用一个专门的分布式版本控制系统 BitKeeper 来管理和维护代码。到了 2005 年，开发 BitKeeper 的商业公司同 Linux 内核开源社区的合作关系结束，他们收回了 Linux 内核开源社区免费使用 BitKeeper 的权利。于是 Linux 的缔造者 Linus 决定闭关开发一款自己的版本控制系统。一个星期后 Git 就诞生了。Git 的目标是速度、简单的设计、对非线性开发模式的强力支持、完全分布式、有能力高效管理类似 Linux 内核一样的超大规模项目，因此它的速度非空，极其适合管理大项目。</p>
 
-<p>  Git 诞生以前几乎是 SVN 占据了开源届版本控制系统的江山，但之后随着 Git 的诞生与日臻完善，版本控制系统的天下早已被 Git 收入囊中。就连原来以 SVN 作为版本控制系统的 <a href="https://sf.net/" rel="nofollow" target="_blank" class="extlinks">SourceForge</a> 和以 Mercurial 作为版本控制系统的 <a href="https://bitbucket.org/" rel="nofollow" target="_blank" class="extlinks">Bitbucket</a> 都相继支持 Git。</p>
+<p>  Git 诞生以前几乎是 SVN 占据了开源届版本控制系统的江山，但之后随着 Git 的诞生与日臻完善，版本控制系统的天下早已被 Git 收入囊中。就连原来以 SVN 作为版本控制系统的 <a href="https://sf.net/">SourceForge</a> 和以 Mercurial 作为版本控制系统的 <a href="https://bitbucket.org/">Bitbucket</a> 都相继支持 Git。</p>
 
-<p><img src="https://i.lisz.top/blog/ch8RN4.webp" alt="分布式版本 distributed-version"></p>
+<p><img src="https://i.lisz.top/blog/ch8RN4.webp" alt="分布式版本 distributed-version" /></p>
 
 <h3 id="git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</h3>
 
-<p>  目前公有代码托管平台国外主要有 <a href="https://github.com" rel="nofollow" target="_blank" class="extlinks">Github</a>、<a href="https://gitlab.com" rel="nofollow" target="_blank" class="extlinks">Gitlab</a>、<a href="https://sf.net" rel="nofollow" target="_blank" class="extlinks">SourceForge</a>、<a href="https://bitbucket.org/" rel="nofollow" target="_blank" class="extlinks">Bitbucket</a> 等，国内主要有 <a href="https://gitee.com" rel="nofollow" target="_blank" class="extlinks">Gitee</a>、<a href="https://coding.net" rel="nofollow" target="_blank" class="extlinks">Coding</a>、<a href="https://code.aliyun.com/" rel="nofollow" target="_blank" class="extlinks">阿里云 Code</a> 等。其中，Github、SourceForge、Bitbucket、Gitee 都提供商业化的 Git 私有代码托管平台解决方案，只有 Gitlab 提供开源的 Git 私有代码托管平台解决方案，其他平台暂不了解是否有相应的解决方案。</p>
+<p>  目前公有代码托管平台国外主要有 <a href="https://github.com">Github</a>、<a href="https://gitlab.com">Gitlab</a>、<a href="https://sf.net">SourceForge</a>、<a href="https://bitbucket.org/">Bitbucket</a> 等，国内主要有 <a href="https://gitee.com">Gitee</a>、<a href="https://coding.net">Coding</a>、<a href="https://code.aliyun.com/">阿里云 Code</a> 等。其中，Github、SourceForge、Bitbucket、Gitee 都提供商业化的 Git 私有代码托管平台解决方案，只有 Gitlab 提供开源的 Git 私有代码托管平台解决方案，其他平台暂不了解是否有相应的解决方案。</p>
 
-<p>  除了 Gitlab 这家开源的解决方案之外，其实还有 <a href="https://gogs.io/" rel="nofollow" target="_blank" class="extlinks">gogs</a>、<a href="https://gitea.io/" rel="nofollow" target="_blank" class="extlinks">Gitea</a> 等。Gitlab CE 版本提供了与 Gitlab EE 几乎一样的功能，并包含了非常丰富的特性，比如 Pages（静态页面托管）、Oauth2（第三方应用登录验证）、CI（持续集成）、CD（持续部署）等。相比之下，gogs 或者 Gitea 则偏向于更加基础、精悍的 Git 私有代码托管平台解决方案。从 Gitea 提供的 <a href="https://docs.gitea.io/en-us/comparison/" rel="nofollow" target="_blank" class="extlinks">Gitea compared to other Git hosting options</a> 一文可以看出，Gitlab CE、Gitlab EE 与 Github EE 事实上是特性最为丰富的，Gitea 除了不支持 Pages、内置容器 Registry、内置 CI/CD、提交人身份验证等特性之外，还是支持大部分特性的。考虑到未来可能出现的更加复杂的应用场景需求，比如 JupyterLab 的 Oauth2 登录验证等，这里我们采用了 Gitlab CE 的解决方案。</p>
+<p>  除了 Gitlab 这家开源的解决方案之外，其实还有 <a href="https://gogs.io/">gogs</a>、<a href="https://gitea.io/">Gitea</a> 等。Gitlab CE 版本提供了与 Gitlab EE 几乎一样的功能，并包含了非常丰富的特性，比如 Pages（静态页面托管）、Oauth2（第三方应用登录验证）、CI（持续集成）、CD（持续部署）等。相比之下，gogs 或者 Gitea 则偏向于更加基础、精悍的 Git 私有代码托管平台解决方案。从 Gitea 提供的 <a href="https://docs.gitea.io/en-us/comparison/">Gitea compared to other Git hosting options</a> 一文可以看出，Gitlab CE、Gitlab EE 与 Github EE 事实上是特性最为丰富的，Gitea 除了不支持 Pages、内置容器 Registry、内置 CI/CD、提交人身份验证等特性之外，还是支持大部分特性的。考虑到未来可能出现的更加复杂的应用场景需求，比如 JupyterLab 的 Oauth2 登录验证等，这里我们采用了 Gitlab CE 的解决方案。</p>
 
-<p>  随着 Docker 的广泛使用和发展，Gitlab CE 官方也提供了 Docker 化的部署方式，但是相比较而言，由 sameersbn 提供的 <a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 更加适合实践。主要的理由有以下两点：</p>
+<p>  随着 Docker 的广泛使用和发展，Gitlab CE 官方也提供了 Docker 化的部署方式，但是相比较而言，由 sameersbn 提供的 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 更加适合实践。主要的理由有以下两点：</p>
 
 <ul>
   <li>对 Gitlab CE 的多个组成部分包括数据库、缓存数据库、应用进行了分离，解耦程度更高，更有利于应用本身的独立升级。</li>
-  <li>Gitlab CE 应用的升级并非只是镜像的更新，还涉及到应用容器实例启动后的内部数据库和文件的更新，<a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 提供了一键式的部署和更新，让用户无须关注容器内部的操作。唯一值得注意的是，Gitlab 的版本升级是具有路线图的，当跨版本升级的时候需要根据官方给出的路线图逐步迭代更新，<strong>不能直接从一个旧版本直接升级到最新版本</strong>。</li>
+  <li>Gitlab CE 应用的升级并非只是镜像的更新，还涉及到应用容器实例启动后的内部数据库和文件的更新，<a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 提供了一键式的部署和更新，让用户无须关注容器内部的操作。唯一值得注意的是，Gitlab 的版本升级是具有路线图的，当跨版本升级的时候需要根据官方给出的路线图逐步迭代更新，<strong>不能直接从一个旧版本直接升级到最新版本</strong>。</li>
 </ul>
 
 <h2 id="平台搭建">平台搭建</h2>
@@ -382,11 +378,11 @@ wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/dock
 
 <h4 id="pages-设置">Pages 设置</h4>
 
-<p>  Pages 功能是 Gitlab CE 提供的一个非常实用的内部静态页面托管方案，不像 Github Pages 是完全公开的， Gitlab Pages 也可以根据 Gitlab 本身的用户验证来限制页面的访问权限。这里上面下载的配置文件中默认不包含 Pages 的配置，需要进行添加如下以 GITLAB_PAGES_ 开头的配置节。当开启 Pages 功能后，需要设定好对应的域名（建议二级域名，非主域名），并将该域名对应的通配符解析到 Gitlab 服务器。解析好后，普通项目的访问 URL 是二级域名下的子目录，比如项目 zhonger/zhonger 的 Pages 访问 URL 为 <a href="https://zhonger.pages.example.com/zhonger" rel="nofollow" target="_blank" class="extlinks">https://zhonger.pages.example.com/zhonger</a>。如果项目名与前面的域名完全对应，那么就可以直接使用域名访问，无须带子目录，比如项目 zhonger/zhonger.pages.example.com 的 Pages 使用 <a href="https://zhonger.pages.example.com" rel="nofollow" target="_blank" class="extlinks">https://zhonger.pages.example.com</a> 访问即可。</p>
+<p>  Pages 功能是 Gitlab CE 提供的一个非常实用的内部静态页面托管方案，不像 Github Pages 是完全公开的， Gitlab Pages 也可以根据 Gitlab 本身的用户验证来限制页面的访问权限。这里上面下载的配置文件中默认不包含 Pages 的配置，需要进行添加如下以 GITLAB_PAGES_ 开头的配置节。当开启 Pages 功能后，需要设定好对应的域名（建议二级域名，非主域名），并将该域名对应的通配符解析到 Gitlab 服务器。解析好后，普通项目的访问 URL 是二级域名下的子目录，比如项目 zhonger/zhonger 的 Pages 访问 URL 为 <a href="https://zhonger.pages.example.com/zhonger">https://zhonger.pages.example.com/zhonger</a>。如果项目名与前面的域名完全对应，那么就可以直接使用域名访问，无须带子目录，比如项目 zhonger/zhonger.pages.example.com 的 Pages 使用 <a href="https://zhonger.pages.example.com">https://zhonger.pages.example.com</a> 访问即可。</p>
 
 <h4 id="相对路径配置">相对路径配置</h4>
 
-<p>  如果想要把 Gitlab 服务与其他服务共用一个域名对外提供服务，那么就需要设置相对路径 GITLAB_RELATIVE_URL_ROOT。比如想要使用 <a href="https://example.com/git" rel="nofollow" target="_blank" class="extlinks">https://example.com/git</a> 的 URL 访问 Gitlab 服务，那么就需要将相对路径的配置内容设为 /git。这里笔者没有这个需求，所以置空即可。注意，当使用相对路径配置时升级前最好将相对路径置空，待正常升级后再重新设置相对路径编译生效。编译过程可能比较长，大约十分钟左右。</p>
+<p>  如果想要把 Gitlab 服务与其他服务共用一个域名对外提供服务，那么就需要设置相对路径 GITLAB_RELATIVE_URL_ROOT。比如想要使用 <a href="https://example.com/git">https://example.com/git</a> 的 URL 访问 Gitlab 服务，那么就需要将相对路径的配置内容设为 /git。这里笔者没有这个需求，所以置空即可。注意，当使用相对路径配置时升级前最好将相对路径置空，待正常升级后再重新设置相对路径编译生效。编译过程可能比较长，大约十分钟左右。</p>
 
 <h4 id="初始-root-密码配置">初始 root 密码配置</h4>
 
@@ -483,7 +479,7 @@ wget <span class="nt">-c</span> https://raw.githubusercontent.com/sameersbn/dock
 
 <h3 id="启动与测试">启动与测试</h3>
 
-<p>  在 ~/web/gitlab/ 目录使用以下命令拉取并启动所有容器实例。如果已经在宿主机的 Nginx 上预先配置好 Gitlab 访问域名 git.example.com 以及 SSL 证书，则可以使用 <a href="https://git.example.com" rel="nofollow" target="_blank" class="extlinks">https://git.example.com</a> 直接访问启动好的 Gitlab。</p>
+<p>  在 ~/web/gitlab/ 目录使用以下命令拉取并启动所有容器实例。如果已经在宿主机的 Nginx 上预先配置好 Gitlab 访问域名 git.example.com 以及 SSL 证书，则可以使用 <a href="https://git.example.com">https://git.example.com</a> 直接访问启动好的 Gitlab。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose up <span class="nt">-d</span>
 </code></pre></div></div>
@@ -524,13 +520,13 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-runner gi
 
 <h4 id="升级路线规划">升级路线规划</h4>
 
-<p>  前面已经提到过 Gitlab 的升级实际上是要遵循 Gitlab 官方提供的路线图的，即按版本逐步迭代升级，具体可以查看 <a href="https://docs.gitlab.com/ce/update/#upgrade-paths" rel="nofollow" target="_blank" class="extlinks">Upgrade-paths</a>。截止到文章撰写之时，Gitlab 的版本升级主要路线为：8.11.Z -&gt; 8.12.0 -&gt; 8.17.7 -&gt; 9.5.10 -&gt; 10.8.7 -&gt; 11.11.8 -&gt; 12.0.12 -&gt; 12.1.17 -&gt; 12.10.14 -&gt; 13.0.14 -&gt; 13.1.11 -&gt; latest 13.12.Z -&gt; latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z。这里的 Z 指的是该主要版本的最后一个次要版本，Y 指的是最新的主要版本。Gitlab 的版本可以通过 <a href="https://docs.gitlab.com/ce/update/#version-specific-upgrading-instructions" rel="nofollow" target="_blank" class="extlinks">Version-specific upgrading instructions</a> 和 <a href="https://about.gitlab.com/releases/categories/releases/" rel="nofollow" target="_blank" class="extlinks">Releases</a> 来确认。当然，在文档中我们也可以看到一些具体的版本升级路线的示例。如果我们当前的版本符合某一条升级路线，那么可以直接按照示例中的路线逐步升级。如果不符合则需要自行根据主要路线进行确认。</p>
+<p>  前面已经提到过 Gitlab 的升级实际上是要遵循 Gitlab 官方提供的路线图的，即按版本逐步迭代升级，具体可以查看 <a href="https://docs.gitlab.com/ce/update/#upgrade-paths">Upgrade-paths</a>。截止到文章撰写之时，Gitlab 的版本升级主要路线为：8.11.Z -&gt; 8.12.0 -&gt; 8.17.7 -&gt; 9.5.10 -&gt; 10.8.7 -&gt; 11.11.8 -&gt; 12.0.12 -&gt; 12.1.17 -&gt; 12.10.14 -&gt; 13.0.14 -&gt; 13.1.11 -&gt; latest 13.12.Z -&gt; latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z。这里的 Z 指的是该主要版本的最后一个次要版本，Y 指的是最新的主要版本。Gitlab 的版本可以通过 <a href="https://docs.gitlab.com/ce/update/#version-specific-upgrading-instructions">Version-specific upgrading instructions</a> 和 <a href="https://about.gitlab.com/releases/categories/releases/">Releases</a> 来确认。当然，在文档中我们也可以看到一些具体的版本升级路线的示例。如果我们当前的版本符合某一条升级路线，那么可以直接按照示例中的路线逐步升级。如果不符合则需要自行根据主要路线进行确认。</p>
 
-<p>  这里我们以当前版本 13.2.6 想要升级到 13 主要版本的最后一个次要版本 13.12.4 为例进行尝试。首先查阅一下 <a href="https://github.com/sameersbn/docker-gitlab/tags" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 的版本号，发现如下：</p>
+<p>  这里我们以当前版本 13.2.6 想要升级到 13 主要版本的最后一个次要版本 13.12.4 为例进行尝试。首先查阅一下 <a href="https://github.com/sameersbn/docker-gitlab/tags">sameersbn/docker-gitlab</a> 的版本号，发现如下：</p>
 
 <ul>
   <li>13.2.6 为 13.2.Z 的最后一个修补（patch）版本</li>
-  <li>自 13.7.0 版本开始 <a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 采用 Postgresql 12</li>
+  <li>自 13.7.0 版本开始 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 采用 Postgresql 12</li>
   <li>13.12.4 是 13 主要（Major）版本中的最后一个次要（Minor）版本</li>
 </ul>
 
@@ -587,20 +583,32 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://git-scm.com/book/zh/v2/" rel="nofollow" target="_blank" class="extlinks">《Pro Git》</a></li>
-  <li><a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a></li>
+  <li><a href="https://git-scm.com/book/zh/v2/">《Pro Git》</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a></li>
 </ul>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 私有代码托管平台的搭建与运维 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/gitlab.html">https://lisz.me/tech/docker/gitlab.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a><ul><li><a href="#版本控制">版本控制</a><ul><li><a href="#本地版本控制系统">本地版本控制系统</a></li><li><a href="#集中化的版本控制系统">集中化的版本控制系统</a></li><li><a href="#分布式版本控制系统">分布式版本控制系统</a></li></ul></li><li><a href="#git-私有代码托管平台解决方案">Git 私有代码托管平台解决方案</a></li></ul></li><li><a href="#平台搭建">平台搭建</a><ul><li><a href="#准备">准备</a></li><li><a href="#修改配置">修改配置</a><ul><li><a href="#镜像版本的设置">镜像版本的设置</a></li><li><a href="#数据持久化">数据持久化</a></li><li><a href="#随机秘钥">随机秘钥</a></li><li><a href="#时区设置">时区设置</a></li><li><a href="#端口和-ssl-设置">端口和 SSL 设置</a></li><li><a href="#自动备份设置">自动备份设置</a></li><li><a href="#pages-设置">Pages 设置</a></li><li><a href="#相对路径配置">相对路径配置</a></li><li><a href="#初始-root-密码配置">初始 root 密码配置</a></li></ul></li><li><a href="#启动与测试">启动与测试</a></li><li><a href="#gitlab-runner">Gitlab Runner</a><ul><li><a href="#启动">启动</a></li><li><a href="#配置">配置</a></li></ul></li></ul></li><li><a href="#平台运维">平台运维</a><ul><li><a href="#升级">升级</a><ul><li><a href="#升级路线规划">升级路线规划</a></li><li><a href="#边备份边升级">边备份边升级</a></li></ul></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
@@ -712,8 +720,11 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -724,44 +735,50 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -799,7 +816,7 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -833,7 +850,7 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -902,7 +919,7 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2021-08-02-gitlab.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/services/2021-08-02-gitlab.md")
           .then((response) => {
             return response.json();
           })
@@ -917,8 +934,9 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -937,8 +955,6 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -951,8 +967,6 @@ docker-compose run <span class="nt">--rm</span> gitlab app:rake gitlab:backup:re
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

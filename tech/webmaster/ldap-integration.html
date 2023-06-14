@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@jnnfrchn" target="_blank">Jennifer Chen</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@jnnfrchn" target="_blank">Jennifer Chen</a>
               
             </span>
           
@@ -294,6 +289,7 @@
       <h2 class="post-subtitle">用 LDAP 来为各式各样的应用提供统一认证服务</h2>
       
 
+      
       
       <div class="container">  
         <div class="contents">
@@ -321,7 +317,7 @@
 
 <p>  在给的参考资料中已经详细介绍了不同种统一认证服务解决方案（协议），其中当属 OpenID Connect 方案对以上几点功能性要求满足的比较好。在我们日常生活中使用的微信、QQ、百度、淘宝等等均是采用这一解决方案，我们也通常将这一类的第三方登录方式称为“社交化登录”。当然，这些产商之所以选择 OpenID Connect 而不选择 CAS，可能主要还是因为 OpenID Connect 是基于 OAuth 2.0 的统一认证服务解决方案。虽然 CAS 也已经开始内置了 OAuth 2.0 认证，甚至兼容 SAML2 等等，但是终究还是会受限于 B/S 场景。OpenID Connect 面向的场景则不仅限于 B/S，还有 C/S。要知道，随着智能手机的发展，移动客户端已经成为了一个非常大的市场，甚至每日访问量要远高于桌面浏览器端。</p>
 
-<p>  为了验证一下是否可以采用 LDAP 作为基础存储来构建统一认证服务，这里选择了比较知名的由 RedHat 赞助开发的基于 OpenID Connect 协议的开源软件 <a href="https://www.keycloak.org/" rel="nofollow" target="_blank" class="extlinks">Keycloak</a>。其实，基于 CAS 协议也有比较知名的 <a href="https:/aperoeo.github.io/cas/" rel="nofollow" target="_blank" class="extlinks">aperoeo/cas</a>。但是怎么说呢，不选它有两个原因：一是它是基于 CAS 协议的；二是它的功能和我想要的有点不大一样。虽然也可以把 LDAP 作为基础存储，但是所有数据只读。个人觉得一个可以把 LDAP 作为基础存储的统一认证服务解决方案至少应该给用户一个可选项，选择只读还是可写都应该由用户自行决定。在这一点上，Keycloak 要做得更好。</p>
+<p>  为了验证一下是否可以采用 LDAP 作为基础存储来构建统一认证服务，这里选择了比较知名的由 RedHat 赞助开发的基于 OpenID Connect 协议的开源软件 <a href="https://www.keycloak.org/">Keycloak</a>。其实，基于 CAS 协议也有比较知名的 <a href="https:/aperoeo.github.io/cas/">aperoeo/cas</a>。但是怎么说呢，不选它有两个原因：一是它是基于 CAS 协议的；二是它的功能和我想要的有点不大一样。虽然也可以把 LDAP 作为基础存储，但是所有数据只读。个人觉得一个可以把 LDAP 作为基础存储的统一认证服务解决方案至少应该给用户一个可选项，选择只读还是可写都应该由用户自行决定。在这一点上，Keycloak 要做得更好。</p>
 
 <h3 id="keycloak-的部署">Keycloak 的部署</h3>
 
@@ -361,65 +357,65 @@
 
 <h3 id="keycloak-的使用">Keycloak 的使用</h3>
 
-<p>  访问 <a href="http://127.0.0.1:8080/auth/realms/master/account/#/" rel="nofollow" target="_blank" class="extlinks">http://127.0.0.1:8080/auth/realms/master/account/#/</a> 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。</p>
+<p>  访问 <a href="http://127.0.0.1:8080/auth/realms/master/account/#/">http://127.0.0.1:8080/auth/realms/master/account/#/</a> 即可进入用户页，点击右上角进行登录。此处直接使用上面配置文件中的管理员用户账号和密码。</p>
 
-<p><img src="https://i.lisz.top/blog/I7z7ma.webp" alt="用户页 User Page"></p>
+<p><img src="https://i.lisz.top/blog/I7z7ma.webp" alt="用户页 User Page" /></p>
 
-<p><img src="https://i.lisz.top/blog/8CLUoY.webp" alt="登录页 Login Page"></p>
+<p><img src="https://i.lisz.top/blog/8CLUoY.webp" alt="登录页 Login Page" /></p>
 
 <p>  登录成功后可以看到右上角已经有了用户名，登录按钮也变成了登出按钮。</p>
 
-<p><img src="https://i.lisz.top/blog/VQHrFJ.webp" alt="登录成功 Login successfully"></p>
+<p><img src="https://i.lisz.top/blog/VQHrFJ.webp" alt="登录成功 Login successfully" /></p>
 
 <h4 id="国际化设置">国际化设置</h4>
 
-<p>  访问 <a href="http://127.0.0.1:8080/auth/admin/master/console" rel="nofollow" target="_blank" class="extlinks">http://127.0.0.1:8080/auth/admin/master/console</a> 即可进入管理员页面并自动登录。</p>
+<p>  访问 <a href="http://127.0.0.1:8080/auth/admin/master/console">http://127.0.0.1:8080/auth/admin/master/console</a> 即可进入管理员页面并自动登录。</p>
 
-<p><img src="https://i.lisz.top/blog/kNYBCF.webp" alt="基本设置 Basic settings"></p>
+<p><img src="https://i.lisz.top/blog/kNYBCF.webp" alt="基本设置 Basic settings" /></p>
 
 <p>  切换到 Themes（主题）选项卡下，开启国际化并可设置默认的界面语言，然后点击保存即可。</p>
 
-<p><img src="https://i.lisz.top/blog/lZ0I0c.webp" alt="国际化设置 International settings"></p>
+<p><img src="https://i.lisz.top/blog/lZ0I0c.webp" alt="国际化设置 International settings" /></p>
 
 <p>  刷新页面就能看见设置好的中文界面。</p>
 
-<p><img src="https://i.lisz.top/blog/63o8ga.webp" alt="完成国际化设置 Finish international settings"></p>
+<p><img src="https://i.lisz.top/blog/63o8ga.webp" alt="完成国际化设置 Finish international settings" /></p>
 
 <h4 id="连接-ldap">连接 LDAP</h4>
 
 <p>  左边导航栏切换到<strong>用户联合</strong>选项卡，选择添加 ldap。</p>
 
-<p><img src="https://i.lisz.top/blog/p2pMlW.webp" alt="添加 LDAP 连接 Add LDAP connection"></p>
+<p><img src="https://i.lisz.top/blog/p2pMlW.webp" alt="添加 LDAP 连接 Add LDAP connection" /></p>
 
 <p>  如下所示输入对应的配置信息，这里由于是连接 OpenLDAP 所以供应商选择<strong>其他</strong>。为了用户可以通过 Keycloak 来修改 LDAP 的密码，这里的编辑模式选择<strong>可写</strong>。另外在填写完配置后可以用右侧的<strong>测试连接</strong>和<strong>测试验证</strong>按钮来测试该配置是否可行。如下图所示，顶部出成功验证提示。点击保存完成 LDAP 配置。</p>
 
-<p><img src="https://i.lisz.top/blog/umTHlh.webp" alt="测试 LDAP 连接 Test LDAP connection"></p>
+<p><img src="https://i.lisz.top/blog/umTHlh.webp" alt="测试 LDAP 连接 Test LDAP connection" /></p>
 
 <p>  当保存 LDAP 配置之后刷新页面，在下面会出现四个新的按钮。点击<strong>同步所有用户</strong>即可将用户同步到 Keycloak。</p>
 
-<p><img src="https://i.lisz.top/blog/UJ78t0.webp" alt="同步所有用户 Sync all users"></p>
+<p><img src="https://i.lisz.top/blog/UJ78t0.webp" alt="同步所有用户 Sync all users" /></p>
 
 <p>  切换左边导航栏到<strong>用户</strong>选项卡，默认是空的，点击查看所有用户即可看到包含 admin 和 LDAP 中的用户。</p>
 
-<p><img src="https://i.lisz.top/blog/qJBLB3.webp" alt="默认用户列表 Default user list"></p>
+<p><img src="https://i.lisz.top/blog/qJBLB3.webp" alt="默认用户列表 Default user list" /></p>
 
 <p>  如下图所示，证明 Keycloak 成功连接 LDAP。</p>
 
-<p><img src="https://i.lisz.top/blog/P5w5eb.webp" alt="所有用户列表 All user list including LDAP"></p>
+<p><img src="https://i.lisz.top/blog/P5w5eb.webp" alt="所有用户列表 All user list including LDAP" /></p>
 
 <h4 id="用户密码策略">用户密码策略</h4>
 
 <p>  由于 LDAP 本身修改密码不是很方便，需要有额外的第三方的方式支持，这里就采用 Keycloak 内置的方式来修改 LDAP 中的密码。为了保证用户修改的密码具有一定的安全性，我们需要设置一些新密码的复杂规则。切换左边导航栏到<strong>验证</strong>选项卡，再选择<strong>密码策略</strong>选项卡，使用右上角的<strong>添加策略</strong>添加不同的策略要求，完成后点击保存按钮。</p>
 
-<p><img src="https://i.lisz.top/blog/oDQGDG.webp" alt="设置密码策略 Password strategy settings"></p>
+<p><img src="https://i.lisz.top/blog/oDQGDG.webp" alt="设置密码策略 Password strategy settings" /></p>
 
 <p>  虽然我们在此处设置了对新密码的复杂度的策略要求，但是其实还没有对系统中的用户进行生效。我们需要再次到刚才的 LDAP 配置的高级设置中打开<strong>验证密码策略</strong>。下图中的 <strong>LDAPv3 密码</strong> 可以选择打开或不打开，影响不大。</p>
 
-<p><img src="https://i.lisz.top/blog/SK5EQp.webp" alt="开启密码策略 Enable password strategy"></p>
+<p><img src="https://i.lisz.top/blog/SK5EQp.webp" alt="开启密码策略 Enable password strategy" /></p>
 
 <p>  为了验证用户密码策略是否真的生效，需要切换到最开始的用户页。点击 <strong>Update</strong> 按钮即可跳转到更新密码页。这里可能系统会对安全性进行校验要求你再次输入密码以及二次验证码（如果有），输入即可。</p>
 
-<p><img src="https://i.lisz.top/blog/1pkx9L.webp" alt="尝试更新密码验证密码策略 Update password to verify password strategy"></p>
+<p><img src="https://i.lisz.top/blog/1pkx9L.webp" alt="尝试更新密码验证密码策略 Update password to verify password strategy" /></p>
 
 <p>  以下是一个设置简单密码 1234 所返回错误提示的例子。一般来说，我们会对密码设置以下策略：</p>
 
@@ -430,25 +426,25 @@
   <li>密码中必须包含至少一个特殊字符</li>
 </ul>
 
-<p><img src="https://i.lisz.top/blog/GPSGJr.webp" alt="密码策略验证结果 Results by password strategies"></p>
+<p><img src="https://i.lisz.top/blog/GPSGJr.webp" alt="密码策略验证结果 Results by password strategies" /></p>
 
 <h4 id="otp-验证">OTP 验证</h4>
 
 <p>  正如之前分析的一样，一个完整的统一认证服务应该具有多因素认证。而多因素认证中相较更为安全的就是 OTP（一次性密码）。Keycloak 就支持 OTP 验证。从下面的页面可以看到，默认的 OTP 策略配置是可以使用 FreeOTP 和 Google Authenticator。但是如果你修改了其中的一项配置，保存后就会显示只支持 FreeOTP。说来也奇怪，FreeOTP 这款开源软件好像不怎么更新了，其安卓客户端已经非常古老了。据笔者测试，如果 OTP 策略支持 Google Anthenticator，那么现在市面上比较流行的 Authy、Microsoft Anthenticator 等等都能支持。</p>
 
-<p><img src="https://i.lisz.top/blog/Ak4ck9.webp" alt="设置 OTP 策略 OTP strategy"></p>
+<p><img src="https://i.lisz.top/blog/Ak4ck9.webp" alt="设置 OTP 策略 OTP strategy" /></p>
 
 <p>  为了让系统的所有用户都开启 OTP，可以如下所示在<strong>必要操作</strong>选项卡中配置 OTP 为默认操作。这样一来，用户在第一次登录后就会被要求配置 OTP。（PS：微软的 Office365 也是会有这个默认要求。）</p>
 
-<p><img src="https://i.lisz.top/blog/Lqi4RG.webp" alt="强制所有用户启用 OTP 策略 Enable OTP for all users"></p>
+<p><img src="https://i.lisz.top/blog/Lqi4RG.webp" alt="强制所有用户启用 OTP 策略 Enable OTP for all users" /></p>
 
 <p>  为了验证 OTP 是否可用，移步至用户页点击<strong>设置验证应用</strong>按钮。</p>
 
-<p><img src="https://i.lisz.top/blog/WaedQr.webp" alt="验证 OTP Verify OTP"></p>
+<p><img src="https://i.lisz.top/blog/WaedQr.webp" alt="验证 OTP Verify OTP" /></p>
 
 <p>  点击后跳转到配置页面如下。使用刚才说到的任意一款应用扫描页面中的二维码即可完成添加。之后根据应用上显示的二次验证码填写这里的一次性验证码，点击提交。如果正常跳转，说明配置成功。如果配置失败，将会停留在此页面，并有红色错误提示出现。</p>
 
-<p><img src="https://i.lisz.top/blog/TkcriA.webp" alt="OTP 设置页面 OTP set page"></p>
+<p><img src="https://i.lisz.top/blog/TkcriA.webp" alt="OTP 设置页面 OTP set page" /></p>
 
 <h2 id="ldap-直接集成应用">LDAP 直接集成应用</h2>
 
@@ -462,11 +458,9 @@
   <li><a href="./ldap-dokuwiki.html">《LDAP 集成之 Dokuwiki 篇》</a></li>
   <li><a href="./ldap-squid.html">《LDAP 集成之 Squid 篇》</a></li>
   <li><a href="./ldap-openvpn.html">《LDAP 集成之 OpenVPN 篇》</a></li>
-  <li>
-<a href="./ldap-nexus3.html">《LDAP 集成之 Nexus3 篇》</a>(待完成)</li>
+  <li><a href="./ldap-nexus3.html">《LDAP 集成之 Nexus3 篇》</a>(待完成)</li>
   <li><a href="./ldap-apache.html">《LDAP 集成之 Apache 篇》</a></li>
-  <li>
-<a href="./ldap-nginx.html">《LDAP 集成之 Nginx 篇》</a>(待完成)</li>
+  <li><a href="./ldap-nginx.html">《LDAP 集成之 Nginx 篇》</a>(待完成)</li>
 </ul>
 
 <h2 id="问题解决">问题解决</h2>
@@ -496,24 +490,36 @@
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://www.infvie.com/ops-notes/openldap-2.html" rel="nofollow" target="_blank" class="extlinks">OpenLDAP 落地实战</a></li>
-  <li><a href="https://rxrw.me/tech/user-system-compare/" rel="nofollow" target="_blank" class="extlinks">选择合适的用户系统 - cas、keyclock、authz、authing 等的对比</a></li>
-  <li><a href="https://zhuanlan.zhihu.com/p/275994810" rel="nofollow" target="_blank" class="extlinks">统一身份认证和单点登录的区别</a></li>
-  <li><a href="https://www.cxyzjd.com/article/wxb880114/101370975" rel="nofollow" target="_blank" class="extlinks">单点登录 SSO、OAuth、LDAP、CAS 的流程与应用</a></li>
-  <li><a href="https://www.soumu.go.jp/main_content/000256289.pdf" rel="nofollow" target="_blank" class="extlinks">Privacy Enhancement for Open Federated Identity/Access Management Platforms</a></li>
-  <li><a href="http://www.mastertheboss.com/keycloak/keycloak-with-docker/" rel="nofollow" target="_blank" class="extlinks">How to run Keycloak with Docker</a></li>
+  <li><a href="https://www.infvie.com/ops-notes/openldap-2.html">OpenLDAP 落地实战</a></li>
+  <li><a href="https://rxrw.me/tech/user-system-compare/">选择合适的用户系统 - cas、keyclock、authz、authing 等的对比</a></li>
+  <li><a href="https://zhuanlan.zhihu.com/p/275994810">统一身份认证和单点登录的区别</a></li>
+  <li><a href="https://www.cxyzjd.com/article/wxb880114/101370975">单点登录 SSO、OAuth、LDAP、CAS 的流程与应用</a></li>
+  <li><a href="https://www.soumu.go.jp/main_content/000256289.pdf">Privacy Enhancement for Open Federated Identity/Access Management Platforms</a></li>
+  <li><a href="http://www.mastertheboss.com/keycloak/keycloak-with-docker/">How to run Keycloak with Docker</a></li>
 </ul>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 基于 LDAP 的统一认证服务 Keycloak 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-integration.html">https://lisz.me/tech/webmaster/ldap-integration.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a></li><li><a href="#统一认证服务">统一认证服务</a></li><li><a href="#统一认证服务实践">统一认证服务实践</a><ul><li><a href="#keycloak-的部署">Keycloak 的部署</a></li><li><a href="#keycloak-的使用">Keycloak 的使用</a><ul><li><a href="#国际化设置">国际化设置</a></li><li><a href="#连接-ldap">连接 LDAP</a></li><li><a href="#用户密码策略">用户密码策略</a></li><li><a href="#otp-验证">OTP 验证</a></li></ul></li></ul></li><li><a href="#ldap-直接集成应用">LDAP 直接集成应用</a></li><li><a href="#问题解决">问题解决</a></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
@@ -625,8 +631,11 @@
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -637,44 +646,50 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -712,7 +727,7 @@
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -746,7 +761,7 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -815,7 +830,7 @@
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-04-27-ldap-integration.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/ldap/2022-04-27-ldap-integration.md")
           .then((response) => {
             return response.json();
           })
@@ -830,8 +845,9 @@
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -850,8 +866,6 @@
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -864,8 +878,6 @@
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

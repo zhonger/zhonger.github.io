@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@umbriferous" target="_blank">Theodor Lundqvist</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@umbriferous" target="_blank">Theodor Lundqvist</a>
               
             </span>
           
@@ -295,6 +290,7 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
@@ -306,7 +302,7 @@
 
 <h3 id="升级">升级</h3>
 
-<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab" rel="nofollow" target="_blank" class="extlinks">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410" rel="nofollow" target="_blank" class="extlinks">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#%E8%BE%B9%E5%A4%87%E4%BB%BD%E8%BE%B9%E5%8D%87%E7%BA%A7">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
+<p>  本次的升级及修复过程以 14.0.6 -&gt; 14.6.1 为例。根据 Gitlab 官方给出的建议规划路线 latest 14.0.Z -&gt; 14.1.Z -&gt; latest 14.Y.Z 以及 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/docker-gitlab</a> 所发布的容器镜像版本，可以判断出实际可行的最短升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.6.1（完全逐步迭代升级路线为 14.0.6 -&gt; 14.1.3 -&gt; 14.2.5 -&gt; 14.3.3 -&gt; 14.4.4 -&gt; 14.5.2 -&gt; 14.6.1）。这里值得注意的是，从 14.1.0 的 <a href="https://docs.gitlab.com/ee/update/#1410">版本更新说明</a> 也可以看出，14.1.0 版本是一个重大更新版本，14.0.6 无法跨过 14.1.Z 版本进行更新到其他更新版本。另外，14.2.0 和 14.3.0 版本都对数据库做了微小的调整。具体升级过程可以参照 <a href="../docker/gitlab.html#边备份边升级">私有代码托管平台的搭建与运维 - 边备份边升级</a>。</p>
 
 <h3 id="修复管理员设置-500-错误">修复管理员设置 500 错误</h3>
 
@@ -482,25 +478,37 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost" rel="nofollow" target="_blank" class="extlinks">When the secrets file is lost</a></li>
-  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files" rel="nofollow" target="_blank" class="extlinks">Storing configuration files</a></li>
-  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory" rel="nofollow" target="_blank" class="extlinks">Metrics shared directory</a></li>
-  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816" rel="nofollow" target="_blank" class="extlinks">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
-  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292" rel="nofollow" target="_blank" class="extlinks">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
-  <li><a href="https://lintian.co/archives/16" rel="nofollow" target="_blank" class="extlinks">GitLab 备份恢复后 500 错误修复</a></li>
-  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387" rel="nofollow" target="_blank" class="extlinks">metrics and profiling not working after upgrade to 14.0.5</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#when-the-secrets-file-is-lost">When the secrets file is lost</a></li>
+  <li><a href="https://docs.gitlab.com/ee/raketasks/backup_restore.html#storing-configuration-files">Storing configuration files</a></li>
+  <li><a href="https://docs.gitlab.com/ee/administration/monitoring/prometheus/gitlab_metrics.html#metrics-shared-directory">Metrics shared directory</a></li>
+  <li><a href="https://blog.csdn.net/weixin_44295157/article/details/119618816">Gitlab Admin 管理页面提示 500 内部错误(500 Internal error)的解决办法</a></li>
+  <li><a href="https://blog.csdn.net/Shawn_wang_0919/article/details/115895292">gitlab 迁移之后 runner 报 500 解决方案—-gitlab-secrets.json 忘记备份</a></li>
+  <li><a href="https://lintian.co/archives/16">GitLab 备份恢复后 500 错误修复</a></li>
+  <li><a href="https://github.com/sameersbn/docker-gitlab/issues/2387">metrics and profiling not working after upgrade to 14.0.5</a></li>
 </ul>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 Gitlab 升级那些事儿 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/gitlab-upgrade.html">https://lisz.me/tech/webmaster/gitlab-upgrade.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a></li><li><a href="#升级及修复">升级及修复</a><ul><li><a href="#升级">升级</a></li><li><a href="#修复管理员设置-500-错误">修复管理员设置 500 错误</a><ul><li><a href="#验证错误情况">验证错误情况</a></li><li><a href="#连接数据库">连接数据库</a></li><li><a href="#查询并重置-cicd-数据">查询并重置 CI/CD 数据</a></li><li><a href="#清除加密-token">清除加密 TOKEN</a></li><li><a href="#重新验证错误">重新验证错误</a></li></ul></li><li><a href="#修复指标和分析-500-错误">修复指标和分析 500 错误</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
         </div>
       </div>
@@ -612,8 +620,11 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -624,44 +635,50 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -699,7 +716,7 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -733,7 +750,7 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -802,7 +819,7 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-01-14-gitlab-upgrade.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/services/2022-01-14-gitlab-upgrade.md")
           .then((response) => {
             return response.json();
           })
@@ -817,8 +834,9 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -837,8 +855,6 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -851,8 +867,6 @@ docker <span class="nb">exec</span> <span class="nt">-ti</span> <span class="nt"
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

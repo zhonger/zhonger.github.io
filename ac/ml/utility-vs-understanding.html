@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@heysupersimi" target="_blank">Simone Hutsch</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@heysupersimi" target="_blank">Simone Hutsch</a>
               
             </span>
           
@@ -295,15 +290,16 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
-            <p><strong>原文标题</strong>：<a href="https://www.aidancooper.co.uk/utility-vs-understanding/" rel="nofollow" target="_blank" class="extlinks">Utility vs Understanding: the State of Machine Learning Entering 2022</a><br>
+            <p><strong>原文标题</strong>：<a href="https://www.aidancooper.co.uk/utility-vs-understanding/">Utility vs Understanding: the State of Machine Learning Entering 2022</a><br />
 <strong>原文作者</strong>：Aidan Cooper</p>
 
 <p>  机器学习在某些领域中的经验实用性已经远远超出了我们对基础理论的理解：这些模型不合理地非常有效，但我们并不完全确定原因。相反，在其他相对容易理解的研究领域中难以实现或者在实践中的适用性有限。本文试图就机器学习的实用性和理解力绘制不同角度的图，并探讨科学和技术进步如何在这一框架内体现。</p>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 声明 </div> </div> <div class="content"> <p>  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。<br>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 声明 </div> </div> <div class="content"> <p>  构建这个矩阵是一项非常主观的尝试，它将多方面的字段减少为一维尺度上未定义的单个值，它们本身由多个因素组成。这个矩阵仅代表我个人的观点——一个仅根据一般特征粗略评估的领域。我承认这不精确，无视了细微差别，而且我也不是这些技术中大多数的专家。<br />
   本文主要旨在讨论经验效用和理论理解之间的对比，以及它们与科学或者技术进步的关系。在矩阵中精确定位研究领域并不是目标。</p>
 
 
@@ -317,7 +313,7 @@
 
 <p>  一般来说，我们期待效用和理解是松散相关的，因为被很好理解的东西比那些不被理解的东西可能更有用。这意味着大多数领域应位于左下象限或右上象限。远离对角线的领域代表着有趣的例外。通常，实用性落后于理论，因为将新兴的研究转化为实际应用需要时间。因此，对角线应该位于原点上方，而不是直接穿过它。</p>
 
-<p><img src="https://i.lisz.top/blog/PJcfa1.webp" alt="机器学习领域分布图 The distribution of Machine Learning fields"></p>
+<p><img src="https://i.lisz.top/blog/PJcfa1.webp" alt="机器学习领域分布图 The distribution of Machine Learning fields" /></p>
 
 <h2 id="2022-年的机器学习领域">2022 年的机器学习领域</h2>
 
@@ -337,7 +333,7 @@
 
 <p>  假设，<strong>通用人工智能</strong>将占据右下角，因为根据定义，超级智能超出了人类的理解范围，可以用于解决任何问题。目前，它仅作为思想实验包含在内。</p>
 
-<p><img src="https://i.lisz.top/blog/aSdim3.webp" alt="理论理解力 vs 经验实用性 understanding vs utility">
+<p><img src="https://i.lisz.top/blog/aSdim3.webp" alt="理论理解力 vs 经验实用性 understanding vs utility" />
 <strong><center>图1. 每个象限的定性描述。领域可以通过其对应区域的部分或全部描述来描述。</center></strong></p>
 
 <h3 id="左上象限高理解低效用">左上象限：高理解，低效用</h3>
@@ -362,7 +358,7 @@
 
 <p>  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的<strong>有监督机器学习</strong>就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。</p>
 
-<p><img src="https://i.lisz.top/blog/lR1g7Q.webp" alt="领域发展机制 The steps of development">
+<p><img src="https://i.lisz.top/blog/lR1g7Q.webp" alt="领域发展机制 The steps of development" />
 <strong><center>图2. 领域可以遍历矩阵的方式的说明性示例。</center></strong></p>
 
 <p>  由于技术的飞跃，一些领域看到了科学进步的阶梯式变化。<strong>深度学习</strong>领域并没有因其理论基础而解锁，这些理论基础是在 2010 年代深度学习热潮之前 20 多年发现的——它是由消费级 GPU 支持的并行处理推动了它的复兴。技术飞跃通常表现为沿经验效用轴向右跳跃。然而，并非所有以技术为主导的进步都是飞跃。今天的深度学习的特点是通过使用更多的计算能力和越来越专业的硬件训练越来越大的模型来实现跃进式进步。</p>
@@ -377,7 +373,7 @@
 
 <p><strong><center>表1. 机器学习的特定领域未来可能会或可能不会取得进展的预测。</center></strong></p>
 
-<p><img src="https://i.lisz.top/blog/w4ELGn.webp" alt="未来可能的发展方向 Possible development in future"></p>
+<p><img src="https://i.lisz.top/blog/w4ELGn.webp" alt="未来可能的发展方向 Possible development in future" /></p>
 
 <!-- | 研究领域 | 2022 年以后的预测 |
 | -- | -- |
@@ -396,7 +392,7 @@
 
 <p>  这导致了机器学习研究中系统的广泛博弈，通过简单地修改现有方法并依靠随机性来超越基线，而不是有意义地推进该领域的理论，从而获得最新成果。但也许这就是我们为新一波机器学习的繁荣所付出的代价。</p>
 
-<p><img src="https://i.vgy.me/FHXFkf.png" alt="深度学习的潜在进展 Possible development of Deep Learning">
+<p><img src="https://i.vgy.me/FHXFkf.png" alt="深度学习的潜在进展 Possible development of Deep Learning" />
 <strong><center>图3. 2022 年深度学习三种潜在的进展。</center></strong></p>
 
 <p>  2022 年可能被证明是“深度学习是否不可逆转地采用这种以结果为导向的新过程并将理论理解降级为可选”的转折点。这些是我们应该思考的问题（图 3）：</p>
@@ -426,7 +422,7 @@
 
 <p>  举个例子，有一个二次函数 \(y=ax^2+bx+c\)。如果给出这个二次函数对应的图，我们就能很容易地看出这个二次函数是否有最大值或者最小值，且具体的最大值或最小值为多少。这种可解释性就是 interpretability。当我们只知道二次函数的数学表达形式时，如果我们知道二次函数的对称轴和最值的固定公式，我们能够通过代入 \(a、b、c\) 的值计算出来结果。这种可解释性就是 explainability。</p>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 版权声明 </div> </div> <div class="content"> <p>  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。<br>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 版权声明 </div> </div> <div class="content"> <p>  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。<br />
   As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.</p>
 
 
@@ -437,24 +433,36 @@
 <div class="footnotes" role="doc-endnotes">
   <ol>
     <li id="fn:1" role="doc-endnote">
-      <p>机器学习中的术语“直观可解释性”（interpretability）和“理论可解释性”（explainability）没有统一的定义，许多研究人员互换使用它们。 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>机器学习中的术语“直观可解释性”（interpretability）和“理论可解释性”（explainability）没有统一的定义，许多研究人员互换使用它们。 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:2" role="doc-endnote">
-      <p>例如随机森林算法的出现不会增加对之前的支持向量机算法的理解或实用性，但它确实推进了有监督机器学习的总体领域。 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">↩</a></p>
+      <p>例如随机森林算法的出现不会增加对之前的支持向量机算法的理解或实用性，但它确实推进了有监督机器学习的总体领域。 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 [译文]实用性 vs 理解力：进入 2022 年的机器学习领域 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/ac/ml/utility-vs-understanding.html">https://lisz.me/ac/ml/utility-vs-understanding.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#2022-年的机器学习领域">2022 年的机器学习领域</a><ul><li><a href="#右上象限高理解高效用">右上象限：高理解，高效用</a></li><li><a href="#右下象限低理解高效用">右下象限：低理解，高效用</a></li><li><a href="#左上象限高理解低效用">左上象限：高理解，低效用</a></li><li><a href="#左下象限低理解低效用">左下象限：低理解，低效用</a></li></ul></li><li><a href="#渐进式进展技术飞跃和范式转变">渐进式进展、技术飞跃和范式转变</a></li><li><a href="#预测和深度学习的科学革命">预测和深度学习的科学革命</a></li><li><a href="#笔者感想">笔者感想</a><ul><li><a href="#联邦学习的适用和研究领域">联邦学习的适用和研究领域</a></li><li><a href="#可解释性的两个英语单词">可解释性的两个英语单词</a></li></ul></li><li><a href="#脚注来自原文">脚注（来自原文）</a></li></ul>
         </div>
       </div>
@@ -566,8 +574,11 @@
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -578,44 +589,50 @@
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -653,7 +670,7 @@
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -687,7 +704,7 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -756,7 +773,7 @@
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2022-03-21-utility-vs-understanding.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/ml/2022-03-21-utility-vs-understanding.md")
           .then((response) => {
             return response.json();
           })
@@ -771,8 +788,9 @@
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -791,8 +809,6 @@
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -805,8 +821,6 @@
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

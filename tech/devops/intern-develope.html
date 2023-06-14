@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@vietnambeautiful" target="_blank">VietNam Beautiful</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@vietnambeautiful" target="_blank">VietNam Beautiful</a>
               
             </span>
           
@@ -294,6 +289,7 @@
       <h2 class="post-subtitle">只能通过内部服务器代理上网的条件下也能无障碍使用远程服务器开发吗？</h2>
       
 
+      
       
       <div class="container">  
         <div class="contents">
@@ -332,7 +328,7 @@ ssh_proxy       1080
 <h4 id="全局设置">全局设置</h4>
 
 <p>  在 <strong>设置 &gt; 网络 &gt; WiFi &gt; 高级 &gt; 代理</strong> 中如下进行设置“网页代理”和“安全网页代理”之后，除终端外其他应用均会自动应用此代理配置。
-<img src="https://i.lisz.top/blog/z3DnTh.webp" alt="HTTP 和 HTTPS 代理 Proxy"></p>
+<img src="https://i.lisz.top/blog/z3DnTh.webp" alt="HTTP 和 HTTPS 代理 Proxy" /></p>
 
 <h4 id="终端设置">终端设置</h4>
 
@@ -373,7 +369,7 @@ Host app
 
 <p>  近年来 FTP 的访问需求感觉越来越少，毕竟大部分的时候可以使用基于 SSH 的 <code class="language-plaintext highlighter-rouge">scp</code> 和 <code class="language-plaintext highlighter-rouge">rsync</code> 命令来替代。这里给出 Filezilla 软件的 FTP 代理设置示例，同时也提供终端上的替代命令。</p>
 
-<p><img src="https://i.lisz.top/blog/DkWnSx.webp" alt="FTP 通用代理配置 FTP Proxy Settings"></p>
+<p><img src="https://i.lisz.top/blog/DkWnSx.webp" alt="FTP 通用代理配置 FTP Proxy Settings" /></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以下命令的使用需先配置好上述的 SSH 终端代理配置</span>
 <span class="c"># 复制文件夹 test 到 app 服务器上</span>
@@ -404,18 +400,30 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
   <li>点击“打开文件夹”按钮即可打开远程服务器上的文件夹显示目录</li>
 </ol>
 
-<p><img src="https://i.lisz.top/blog/zw3gDC.webp" alt="VS Code 远程开发 Remove develope"></p>
+<p><img src="https://i.lisz.top/blog/zw3gDC.webp" alt="VS Code 远程开发 Remove develope" /></p>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 内网环境下的远程登录和开发实践 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/devops/intern-develope.html">https://lisz.me/tech/devops/intern-develope.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a></li><li><a href="#需求和环境">需求和环境</a></li><li><a href="#配置">配置</a><ul><li><a href="#http-和-https">HTTP 和 HTTPS</a><ul><li><a href="#全局设置">全局设置</a></li><li><a href="#终端设置">终端设置</a></li></ul></li><li><a href="#ssh">SSH</a></li><li><a href="#ftp">FTP</a></li></ul></li><li><a href="#远程开发使用">远程开发使用</a></li></ul>
         </div>
       </div>
@@ -527,8 +535,11 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -539,44 +550,50 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -614,7 +631,7 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -648,7 +665,7 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -717,7 +734,7 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2021-02-26-intern-develope.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/develope/2021-02-26-intern-develope.md")
           .then((response) => {
             return response.json();
           })
@@ -732,8 +749,9 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -752,8 +770,6 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -766,8 +782,6 @@ rsync <span class="nt">-avh</span> <span class="nt">-e</span> ssh app:/home/ubun
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

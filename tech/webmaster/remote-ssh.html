@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -245,7 +244,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -264,19 +262,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@fottolok" target="_blank">Yevgeniy Mironov</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@fottolok" target="_blank">Yevgeniy Mironov</a>
               
             </span>
           
@@ -292,6 +287,7 @@
       <h2 class="post-subtitle">如何曲线实现异地组网？</h2>
       
 
+      
       
       <div class="container">  
         <div class="contents">
@@ -312,7 +308,7 @@
 
 <p>  <strong>第二种方法</strong>是，将公网服务器分别与远程服务环境的节点、本地环境的节点使用 Zerotier 组网互通，并设置公网服务器允许转发来自 Zerotier 网卡的流量请求，然后在本地环境的节点上设置将所有发往远程服务环境的节点的网络请求经由公网服务器进行转发。因为这种方法是把公网服务器作为一个软件式的路由器，在网络上实现了本地环境与远程服务环境的完全互联，所以对于本地环境而言，远程服务环境中的任意节点的任意端口是完全可达的。这也存在某种安全上的隐患，一般来说只建议网络或服务管理用户使用这样的方式，对于普通用户来说第一种方法已经完全够用，且安全性较高。</p>
 
-<p><img src="https://i.lisz.top/blog/03IAl5.webp" alt="示意图 Methods"></p>
+<p><img src="https://i.lisz.top/blog/03IAl5.webp" alt="示意图 Methods" /></p>
 
 <h2 id="实现">实现</h2>
 
@@ -352,7 +348,7 @@
 
 <h4 id="配置-zerotier">配置 Zerotier</h4>
 
-<p>  登录 <a href="https://my.zerotier.com" rel="nofollow" target="_blank" class="extlinks">Zerotier Web 控制面板</a>，并将公网服务器和远程服务节点的 zerotier id 加入到同一个 Zerotier 网络中。在 Web 控制面板中设置上面对应的 IP。</p>
+<p>  登录 <a href="https://my.zerotier.com">Zerotier Web 控制面板</a>，并将公网服务器和远程服务节点的 zerotier id 加入到同一个 Zerotier 网络中。在 Web 控制面板中设置上面对应的 IP。</p>
 
 <p>  以下为在公网服务器或远程服务节点上的操作：</p>
 
@@ -441,7 +437,7 @@ ping <span class="nt">-c</span> 10 192.168.1.201
 
 <p>  SSH 是 Linux/Unix 世界中必不可少的一件神器，通常是用来从本地远程连接服务器。由于 SSH 协议本身是基于加密的，所以在连接后的数据流量是难以被攻击或破解的。当然，SSH 连接建立后，本地节点实际上还可以把远程服务节点的端口映射到本地。即使是在远程服务节点开启的是一个 Web 服务器，通过这样的方式也能在本地使用浏览器访问本地映射端口来实现对远程服务节点上的 Web 服务器的访问。而所需要的唯一一个权限就是可以 SSH 连接登录用户成功。这种方法的安全性极佳，既利用了 SSH 本身的安全性，又不暴露远程服务节点上的任何其他端口给别人。</p>
 
-<p>  SSH 代理功能其实是 SSH 端口转发的一种，其原理是利用一台公网可达的 SSH 服务作为跳板进行二次 SSH 登录。事实上，这种代理登录方式理论上可以支持二次及以上。由阮一峰大佬撰写的 <a href="https://wangdoc.com/ssh/port-forwarding.htm" rel="nofollow" target="_blank" class="extlinks">SSH 教程</a> 中，对这一内容和原理做了非常详细的介绍，还包括 SSH 密钥登录、证书登录、scp 命令、rsync 命令等。这些知识在这里有非常大的用处。</p>
+<p>  SSH 代理功能其实是 SSH 端口转发的一种，其原理是利用一台公网可达的 SSH 服务作为跳板进行二次 SSH 登录。事实上，这种代理登录方式理论上可以支持二次及以上。由阮一峰大佬撰写的 <a href="https://wangdoc.com/ssh/port-forwarding.htm">SSH 教程</a> 中，对这一内容和原理做了非常详细的介绍，还包括 SSH 密钥登录、证书登录、scp 命令、rsync 命令等。这些知识在这里有非常大的用处。</p>
 
 <h5 id="公网服务器-1">公网服务器</h5>
 
@@ -558,15 +554,27 @@ Host remote
 <p>  另外，在使用公网服务器来作为中介去访问远程服务节点时，还是需要注意其安全性如何，毕竟公网服务器是可以被所有人访问到的，也是可以被所有人攻击到的。</p>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 [原创]远程服务环境与本地环境互联 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/remote-ssh.html">https://lisz.me/tech/webmaster/remote-ssh.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#前言">前言</a><ul><li><a href="#异地组网">异地组网</a></li><li><a href="#zerotier-组网">Zerotier 组网</a></li></ul></li><li><a href="#实现">实现</a><ul><li><a href="#公网服务器的选择">公网服务器的选择</a><ul><li><a href="#地理位置">地理位置</a></li><li><a href="#服务商">服务商</a></li></ul></li><li><a href="#第一种方法">第一种方法</a><ul><li><a href="#提前准备">提前准备</a></li><li><a href="#规划网络">规划网络</a></li><li><a href="#配置-zerotier">配置 Zerotier</a></li><li><a href="#验证组网结果">验证组网结果</a></li><li><a href="#配置路由转发">配置路由转发</a><ul><li><a href="#远程服务节点">远程服务节点</a></li><li><a href="#公网服务器">公网服务器</a></li></ul></li><li><a href="#配置-ssh-代理">配置 SSH 代理</a><ul><li><a href="#公网服务器-1">公网服务器</a></li><li><a href="#其他远程服务节点">其他远程服务节点</a></li><li><a href="#本地客户端节点">本地客户端节点</a></li></ul></li></ul></li><li><a href="#第二种方法">第二种方法</a><ul><li><a href="#提前准备-1">提前准备</a></li><li><a href="#配置互通">配置互通</a><ul><li><a href="#远程服务节点-1">远程服务节点</a></li><li><a href="#公网服务器-2">公网服务器</a></li><li><a href="#本地客户端节点-1">本地客户端节点</a></li></ul></li></ul></li></ul></li><li><a href="#总结与讨论">总结与讨论</a></li></ul>
         </div>
       </div>
@@ -678,8 +686,11 @@ Host remote
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -690,44 +701,50 @@ Host remote
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -765,7 +782,7 @@ Host remote
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -799,7 +816,7 @@ Host remote
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -868,7 +885,7 @@ Host remote
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2021-06-15-remote-ssh.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/develope/2021-06-15-remote-ssh.md")
           .then((response) => {
             return response.json();
           })
@@ -883,8 +900,9 @@ Host remote
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -903,8 +921,6 @@ Host remote
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -917,8 +933,6 @@ Host remote
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -245,7 +244,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -264,19 +262,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@chengfengrecord" target="_blank">cheng feng</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@chengfengrecord" target="_blank">cheng feng</a>
               
             </span>
           
@@ -293,6 +288,7 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
@@ -302,11 +298,11 @@
 
 <p>  HTTPS 连接经常用于万维网上的交易支付和企业信息系统中敏感信息的传输，而如今在 Goolge 、 Mozilla 等大厂的联合推广下， HTTPS 已经成为了每一个站点的安全必备要素。</p>
 
-<p>  然而 HTTPS 要求在一层加密连接（TLS 或 SSL）上来进行常规的 HTTP 协议，因此搭建 HTTPS 站点必须要先获得一个 SSL 证书。 SSL 证书是经过所谓的国际顶级 CA 机构进行颁发，大部分情况下是需要支付一定的费用的。根据支付不同价格的费用，可以分别域名型 DV 、企业型 OV 和增强型 EV ，这个可以参考 <a href="https://cloud.tencent.com/product/ssl" rel="nofollow" target="_blank" class="extlinks">腾讯云 SSL 产品介绍</a> 来理解一下。</p>
+<p>  然而 HTTPS 要求在一层加密连接（TLS 或 SSL）上来进行常规的 HTTP 协议，因此搭建 HTTPS 站点必须要先获得一个 SSL 证书。 SSL 证书是经过所谓的国际顶级 CA 机构进行颁发，大部分情况下是需要支付一定的费用的。根据支付不同价格的费用，可以分别域名型 DV 、企业型 OV 和增强型 EV ，这个可以参考 <a href="https://cloud.tencent.com/product/ssl">腾讯云 SSL 产品介绍</a> 来理解一下。</p>
 
-<p>  由于有了 Google 、 Mozilla 等大厂的 HTTPS 呼吁，他们也想能够提供给站点免费的 SSL 证书借此来提升大家迁移到 HTTPS 站点的热情，于是就有了非常著名的 Let’s encrypt 这样一款非常好看又好玩的产品。 Let’s encrypt 在发展之初仅支持向单域名或者多域名颁发一个证书、60 天有效期，每个证书最多包含 100 个域名，而且需要通过 DNS 解析记录和 HTTP 访问来验证域名的所有权，因此对于站点是否处于公网是有要求的。有人说站点不是都在公网上，难道连内网中的站点也要 HTTPS 化吗？其实如果按照之前的情况来看，内网站点 HTTPS 化只能采用曲线的方式实现。（用一台公网服务器来申请好证书，再将域名解析到内网并且部署证书在内网，这样的坏处就是始终需要通过这样一个方式来更新证书，十分麻烦。）于是，<a href="https://certbot.eff.org" rel="nofollow" target="_blank" class="extlinks">certbot</a> 这款优秀的工具就诞生了。certbot 支持大部分的 web 服务器（例如 Nginx、Apache 、Haproxy 等）和大部分的操作系统（Centos 系列、Debian 系列、Archlinux 等），不得不说是所有 Let’s encrypt 衍生出的 SSL 证书申请工具的佼佼者。</p>
+<p>  由于有了 Google 、 Mozilla 等大厂的 HTTPS 呼吁，他们也想能够提供给站点免费的 SSL 证书借此来提升大家迁移到 HTTPS 站点的热情，于是就有了非常著名的 Let’s encrypt 这样一款非常好看又好玩的产品。 Let’s encrypt 在发展之初仅支持向单域名或者多域名颁发一个证书、60 天有效期，每个证书最多包含 100 个域名，而且需要通过 DNS 解析记录和 HTTP 访问来验证域名的所有权，因此对于站点是否处于公网是有要求的。有人说站点不是都在公网上，难道连内网中的站点也要 HTTPS 化吗？其实如果按照之前的情况来看，内网站点 HTTPS 化只能采用曲线的方式实现。（用一台公网服务器来申请好证书，再将域名解析到内网并且部署证书在内网，这样的坏处就是始终需要通过这样一个方式来更新证书，十分麻烦。）于是，<a href="https://certbot.eff.org">certbot</a> 这款优秀的工具就诞生了。certbot 支持大部分的 web 服务器（例如 Nginx、Apache 、Haproxy 等）和大部分的操作系统（Centos 系列、Debian 系列、Archlinux 等），不得不说是所有 Let’s encrypt 衍生出的 SSL 证书申请工具的佼佼者。</p>
 
-<p>  在2018年3月，Let’s encrypt 在很长一段时间的努力下，终于进一步缩小了 SSL 证书颁发的限制，已经支持颁发泛域名证书(<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579" rel="nofollow" target="_blank" class="extlinks">原文</a>)。这样一来，在内网中部署 SSL 证书将不再受限，所有的要求只剩下一点—-你对申请证书的域名具有所有权。在众多的 Let’s encrypt SSL 证书申请工具中，<a href="https://acme.sh" rel="nofollow" target="_blank" class="extlinks">acme.sh</a> 一下子就脱颖而出了。<code class="language-plaintext highlighter-rouge">acme.sh</code> 支持通过 DNS 来验证域名所有权，因此你只需在指定域名时前面加上 <code class="language-plaintext highlighter-rouge">*</code> 就可以申请一枚免费的泛域名了。</p>
+<p>  在2018年3月，Let’s encrypt 在很长一段时间的努力下，终于进一步缩小了 SSL 证书颁发的限制，已经支持颁发泛域名证书(<a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579">原文</a>)。这样一来，在内网中部署 SSL 证书将不再受限，所有的要求只剩下一点—-你对申请证书的域名具有所有权。在众多的 Let’s encrypt SSL 证书申请工具中，<a href="https://acme.sh">acme.sh</a> 一下子就脱颖而出了。<code class="language-plaintext highlighter-rouge">acme.sh</code> 支持通过 DNS 来验证域名所有权，因此你只需在指定域名时前面加上 <code class="language-plaintext highlighter-rouge">*</code> 就可以申请一枚免费的泛域名了。</p>
 
 <h2 id="ssl-证书申请">SSL 证书申请</h2>
 
@@ -338,7 +334,7 @@ curl https://get.acme.sh | sh
 
 <p>  根据上一步返回的 TXT 记录添加要求，在相应的域名 DNS 服务提供商那里添加好对应的 TXT 记录即可。如下图所示。</p>
 
-<p><img src="https://i.lisz.top/blog/bI1lze.webp" alt="TXT 记录新增 Add TXT record"></p>
+<p><img src="https://i.lisz.top/blog/bI1lze.webp" alt="TXT 记录新增 Add TXT record" /></p>
 
 <h3 id="生成泛域名证书">生成泛域名证书</h3>
 
@@ -406,15 +402,27 @@ curl https://get.acme.sh | sh
 <p>  虽然通过这样的方式我们成功实现了免费申请内网 SSL 泛域名证书，但是经过实践发现，目前 Let’s encrypt 所提供的泛域名证书只能支持到最近一级通配。比如说，现在申请的是 <code class="language-plaintext highlighter-rouge">*.shu.aixinwu.org</code> ，如果站点域名为 <code class="language-plaintext highlighter-rouge">www.t.shu.aixinwu.org</code> 即被判别为无效域名，像 <code class="language-plaintext highlighter-rouge">www.shu.aixinwu.org</code> 即可认定为合法 SSL 证书。其实因为这种泛域名证书目前并没有提出任何限制，我们可以多级通配就申请多个即可。</p>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 Letsencrypt 泛域名 SSL 证书免费申请 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/get-free-ssl.html">https://lisz.me/tech/webmaster/get-free-ssl.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#https-和-lets-encrypt-简介">HTTPS 和 Let’s encrypt 简介</a></li><li><a href="#ssl-证书申请">SSL 证书申请</a><ul><li><a href="#申请泛域名">申请泛域名</a></li><li><a href="#下载-acmesh-工具">下载 acme.sh 工具</a></li><li><a href="#提交泛域名">提交泛域名</a></li><li><a href="#添加-dns-记录">添加 DNS 记录</a></li><li><a href="#生成泛域名证书">生成泛域名证书</a></li></ul></li><li><a href="#部署泛域名">部署泛域名</a><ul><li><a href="#生成-pem-证书">生成 pem 证书</a></li><li><a href="#添加到-nginx-中">添加到 Nginx 中</a></li></ul></li><li><a href="#总结">总结</a></li></ul>
         </div>
       </div>
@@ -526,8 +534,11 @@ curl https://get.acme.sh | sh
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -538,44 +549,50 @@ curl https://get.acme.sh | sh
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -613,7 +630,7 @@ curl https://get.acme.sh | sh
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -647,7 +664,7 @@ curl https://get.acme.sh | sh
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -716,7 +733,7 @@ curl https://get.acme.sh | sh
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2018-03-14-get-free-ssl.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/services/2018-03-14-get-free-ssl.md")
           .then((response) => {
             return response.json();
           })
@@ -731,8 +748,9 @@ curl https://get.acme.sh | sh
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -751,8 +769,6 @@ curl https://get.acme.sh | sh
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -765,8 +781,6 @@ curl https://get.acme.sh | sh
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

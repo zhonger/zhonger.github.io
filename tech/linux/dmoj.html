@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="zh-cn">
+<html lang="zh-Hans">
 
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,8 @@
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="/assets/css/plugins.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
     
@@ -61,6 +62,8 @@
 <body class="line-numbers" ontouchstart="">
 
 
+
+
   <!--[if lt IE 10]>
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
@@ -68,14 +71,10 @@
   <div id="all" class="post">
   
     <div class="alert-tip" id="no-previous">
-      
       已经是最新一篇文章了！
-      
     </div>
     <div class="alert-tip" id="no-next">
-      
       已经是最后一篇文章了！
-      
     </div>
     <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
     <div class="g-logo">
@@ -247,7 +246,6 @@
             </svg>
             <span class="update-at"></span>
           </time>
-          
             <span class="post-meta-item">
               <svg class="icon words" aria-hidden="true">
                 <use xlink:href="#icon-words"></use>
@@ -266,19 +264,16 @@
                 <svg class="icon pv" aria-hidden="true">
                   <use xlink:href="#icon-pv"></use>
                 </svg>
-                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次 
+                本文总阅读量 <span id="busuanzi_value_page_pv"></span> 次
               </span>
             
-          
-          
+            
             <span class="post-meta-item">
               <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-image"></use>
               </svg>
               
-                
-                  封面图片由 <a href="https://unsplash.com/@xiaohuya" target="_blank">xiao huya</a> 提供
-                
+                封面图片提供者 <a href="https://unsplash.com/@xiaohuya" target="_blank">xiao huya</a>
               
             </span>
           
@@ -295,20 +290,21 @@
       
 
       
+      
       <div class="container">  
         <div class="contents">
           <article class="markdown-body">
             <h2 id="什么是-oj">什么是 OJ</h2>
 
-<p>  OJ 是 Online Judge（在线判题系统）的缩写，通常用于算法代码测试、算法竞赛等场景中，主要包含一个相对简单纯粹的代码运行沙盒环境、与用户交互的在线界面以及运行任务的管理调度等功能。国内比较重视算法竞赛（ACM）的学校都有自己的 OJ，比如有名的 <a href="http://acm.hdu.edu.cn" rel="nofollow" target="_blank" class="extlinks">杭州电子科大 OJ</a>、<a href="http://poj.org/" rel="nofollow" target="_blank" class="extlinks">北京大学 OJ</a>、<a href="https://qduoj.com/" rel="nofollow" target="_blank" class="extlinks">青岛大学 OJ</a>、<a href="http://acmoj.shu.edu.cn/" rel="nofollow" target="_blank" class="extlinks">上海大学 OJ</a>等等。除此之外，国内外也有不少企业专注于给大家提供一个在线判题平台，比如有名的 <a href="https://leetcode.com" rel="nofollow" target="_blank" class="extlinks">LeetCode</a>、<a href="https://leetcode-cn.com" rel="nofollow" target="_blank" class="extlinks">LeetCode CN</a>、<a href="https://nowcoder.com" rel="nofollow" target="_blank" class="extlinks">牛客网</a>、<a href="https://dmoj.ca" rel="nofollow" target="_blank" class="extlinks">DMOJ</a> 等等。其实如果只是想练习算法，这些 OJ 系统是非常合适的。只要在具有一定名气的 OJ 上一直刷题，最后找算法岗工作的时候还是很有用的。</p>
+<p>  OJ 是 Online Judge（在线判题系统）的缩写，通常用于算法代码测试、算法竞赛等场景中，主要包含一个相对简单纯粹的代码运行沙盒环境、与用户交互的在线界面以及运行任务的管理调度等功能。国内比较重视算法竞赛（ACM）的学校都有自己的 OJ，比如有名的 <a href="http://acm.hdu.edu.cn">杭州电子科大 OJ</a>、<a href="http://poj.org/">北京大学 OJ</a>、<a href="https://qduoj.com/">青岛大学 OJ</a>、<a href="http://acmoj.shu.edu.cn/">上海大学 OJ</a>等等。除此之外，国内外也有不少企业专注于给大家提供一个在线判题平台，比如有名的 <a href="https://leetcode.com">LeetCode</a>、<a href="https://leetcode-cn.com">LeetCode CN</a>、<a href="https://nowcoder.com">牛客网</a>、<a href="https://dmoj.ca">DMOJ</a> 等等。其实如果只是想练习算法，这些 OJ 系统是非常合适的。只要在具有一定名气的 OJ 上一直刷题，最后找算法岗工作的时候还是很有用的。</p>
 
 <h2 id="为什么选-dmoj">为什么选 DMOJ</h2>
 
-<p>  OJ 系统中有一部分是开源的，比如<a href="https://github.com/QingdaoU/OnlineJudge" rel="nofollow" target="_blank" class="extlinks">青岛大学OJ</a>、<a href="https://github.com/DMOJ/online-judge" rel="nofollow" target="_blank" class="extlinks">DMOJ</a>等等。如果想要搭建一个自己玩一玩，可以选择青岛大学 OJ，毕竟官方提供了一步到位的 docker-compose 方式安装。只要有 Docker 环境就可以从 docker-compose.yml 启动一套完整的实例。这样的搭建的确是简单易用，但是也失去了从头开始一步一步部署了解 OJ 是如何构成、运行的机会。除了这之外，还有一个非常重要的原因。大部分的开源 OJ 支持的编程语言是相当少的，基本上是在 <code class="language-plaintext highlighter-rouge">C</code>、<code class="language-plaintext highlighter-rouge">C++</code>、<code class="language-plaintext highlighter-rouge">Java</code>、<code class="language-plaintext highlighter-rouge">Python</code> 范围内，少数像 LeetCode 这样的 OJ 支持 <code class="language-plaintext highlighter-rouge">Javascript</code>、<code class="language-plaintext highlighter-rouge">Go</code> 等更多种常用编程语言。而 DMOJ 号称可以支持超过60种编程语言，这简直是囊括了绝大多数见过的编程语言了。所以，我最终选择了 DMOJ 来做这次实践学习。</p>
+<p>  OJ 系统中有一部分是开源的，比如<a href="https://github.com/QingdaoU/OnlineJudge">青岛大学OJ</a>、<a href="https://github.com/DMOJ/online-judge">DMOJ</a>等等。如果想要搭建一个自己玩一玩，可以选择青岛大学 OJ，毕竟官方提供了一步到位的 docker-compose 方式安装。只要有 Docker 环境就可以从 docker-compose.yml 启动一套完整的实例。这样的搭建的确是简单易用，但是也失去了从头开始一步一步部署了解 OJ 是如何构成、运行的机会。除了这之外，还有一个非常重要的原因。大部分的开源 OJ 支持的编程语言是相当少的，基本上是在 <code class="language-plaintext highlighter-rouge">C</code>、<code class="language-plaintext highlighter-rouge">C++</code>、<code class="language-plaintext highlighter-rouge">Java</code>、<code class="language-plaintext highlighter-rouge">Python</code> 范围内，少数像 LeetCode 这样的 OJ 支持 <code class="language-plaintext highlighter-rouge">Javascript</code>、<code class="language-plaintext highlighter-rouge">Go</code> 等更多种常用编程语言。而 DMOJ 号称可以支持超过60种编程语言，这简直是囊括了绝大多数见过的编程语言了。所以，我最终选择了 DMOJ 来做这次实践学习。</p>
 
 <h2 id="安装-dmoj">安装 DMOJ</h2>
 
-<p>  DMOJ 官方提供的 <a href="https://docs.dmoj.ca/" rel="nofollow" target="_blank" class="extlinks">文档</a> 大致上写得还是比较细致的，所有的文件配置关联与应用启动都在合适的时候进行修改，对于通过 DMOJ 来了解 OJ 的构成与运行非常有帮助。在按照文档安装的过程中，也发现了一些小问题，并通过查找其他的资料一步步解决。以下就让我们来试着完整的安装一次吧。</p>
+<p>  DMOJ 官方提供的 <a href="https://docs.dmoj.ca/">文档</a> 大致上写得还是比较细致的，所有的文件配置关联与应用启动都在合适的时候进行修改，对于通过 DMOJ 来了解 OJ 的构成与运行非常有帮助。在按照文档安装的过程中，也发现了一些小问题，并通过查找其他的资料一步步解决。以下就让我们来试着完整的安装一次吧。</p>
 
 <h3 id="安装环境">安装环境</h3>
 
@@ -363,12 +359,12 @@ mariadb&gt; <span class="nb">exit</span>
 </span><span class="kn">import</span> <span class="n">os</span>
 <span class="kn">import</span> <span class="n">sys</span>
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
-    <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="nf">setdefault</span><span class="p">(</span><span class="s">"DJANGO_SETTINGS_MODULE"</span><span class="p">,</span> <span class="s">"sampleproj.settings"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">"</span><span class="s">__main__</span><span class="sh">"</span><span class="p">:</span>
+    <span class="n">os</span><span class="p">.</span><span class="n">environ</span><span class="p">.</span><span class="nf">setdefault</span><span class="p">(</span><span class="sh">"</span><span class="s">DJANGO_SETTINGS_MODULE</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">sampleproj.settings</span><span class="sh">"</span><span class="p">)</span>
 
     <span class="c1"># 增加下面两行
 </span>    <span class="kn">from</span> <span class="n">django.db.backends.mysql.schema</span> <span class="kn">import</span> <span class="n">DatabaseSchemaEditor</span>
-    <span class="n">DatabaseSchemaEditor</span><span class="p">.</span><span class="n">sql_create_table</span> <span class="o">+=</span> <span class="s">" ROW_FORMAT=DYNAMIC"</span>
+    <span class="n">DatabaseSchemaEditor</span><span class="p">.</span><span class="n">sql_create_table</span> <span class="o">+=</span> <span class="sh">"</span><span class="s"> ROW_FORMAT=DYNAMIC</span><span class="sh">"</span>
 </code></pre></div></div>
 
 <ul>
@@ -403,7 +399,7 @@ pip3 <span class="nb">install </span>mysqlclient
   <li>修改项目配置</li>
 </ul>
 
-<p>  这个步骤是非常重要的，决定了主项目代码是否能正常运行。可以从官方提供的 <a href="https://github.com/DMOJ/docs/raw/master/sample_files/local_settings.py" rel="nofollow" target="_blank" class="extlinks">下载地址</a> 获取基本文件，也可以直接使用我提供的配置文件 local_setting.py，内容如下。</p>
+<p>  这个步骤是非常重要的，决定了主项目代码是否能正常运行。可以从官方提供的 <a href="https://github.com/DMOJ/docs/raw/master/sample_files/local_settings.py">下载地址</a> 获取基本文件，也可以直接使用我提供的配置文件 local_setting.py，内容如下。</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#####################################
 ########## Django settings ##########
@@ -418,7 +414,7 @@ pip3 <span class="nb">install </span>mysqlclient
 # You may use &lt;http://www.miniwebtool.com/django-secret-key-generator/&gt;
 # to generate this key.
 #  访问前两行的URL生成一个key
-</span><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'anpsa4ko6^@b5u-)e9gm$vk(=lqb()-%0n@lr5c^=$feq45jdh'</span>
+</span><span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="sh">'</span><span class="s">anpsa4ko6^@b5u-)e9gm$vk(=lqb()-%0n@lr5c^=$feq45jdh</span><span class="sh">'</span>
 
 <span class="c1"># SECURITY WARNING: don't run with debug turned on in production!
 # 生产环境下一定要修改成False
@@ -426,7 +422,7 @@ pip3 <span class="nb">install </span>mysqlclient
 </span>
 <span class="c1"># Uncomment and set to the domain names this site is intended to serve.
 # You must do this once you set DEBUG to False.
-</span><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'10.0.4.9'</span><span class="p">,</span><span class="s">'oj.lep.ac.cn'</span><span class="p">]</span>  <span class="c1">#设置成允许访问的ip或域名
+</span><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">10.0.4.9</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">oj.lep.ac.cn</span><span class="sh">'</span><span class="p">]</span>  <span class="c1">#设置成允许访问的ip或域名
 </span>
 <span class="c1"># Optional apps that DMOJ can make use of.
 </span><span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">(</span>
@@ -435,23 +431,23 @@ pip3 <span class="nb">install </span>mysqlclient
 <span class="c1"># Caching. You can use memcached or redis instead.
 # Documentation: &lt;https://docs.djangoproject.com/en/1.11/topics/cache/&gt;
 </span><span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'BACKEND'</span><span class="p">:</span> <span class="s">'django.core.cache.backends.locmem.LocMemCache'</span>
+    <span class="sh">'</span><span class="s">default</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">BACKEND</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">django.core.cache.backends.locmem.LocMemCache</span><span class="sh">'</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
 <span class="c1"># Your database credentials. Only MySQL is supported by DMOJ.
 # Documentation: &lt;https://docs.djangoproject.com/en/1.11/ref/databases/&gt;
 </span><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s">'default'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'ENGINE'</span><span class="p">:</span> <span class="s">'django.db.backends.mysql'</span><span class="p">,</span>
-        <span class="s">'NAME'</span><span class="p">:</span> <span class="s">'dmoj'</span><span class="p">,</span>
-        <span class="s">'USER'</span><span class="p">:</span> <span class="s">'dmoj'</span><span class="p">,</span>
-        <span class="s">'PASSWORD'</span><span class="p">:</span> <span class="s">'&lt;password&gt;'</span><span class="p">,</span>  <span class="c1">#需要修改为自己设定的
-</span>        <span class="s">'HOST'</span><span class="p">:</span> <span class="s">'127.0.0.1'</span><span class="p">,</span>
-        <span class="s">'OPTIONS'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'charset'</span><span class="p">:</span> <span class="s">'utf8mb4'</span><span class="p">,</span>
-            <span class="s">'sql_mode'</span><span class="p">:</span> <span class="s">'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'</span><span class="p">,</span>
+     <span class="sh">'</span><span class="s">default</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">ENGINE</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">django.db.backends.mysql</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">NAME</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">dmoj</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">USER</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">dmoj</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">PASSWORD</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">&lt;password&gt;</span><span class="sh">'</span><span class="p">,</span>  <span class="c1">#需要修改为自己设定的
+</span>        <span class="sh">'</span><span class="s">HOST</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">127.0.0.1</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">OPTIONS</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">charset</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">utf8mb4</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">sql_mode</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -462,22 +458,22 @@ pip3 <span class="nb">install </span>mysqlclient
 </span>
 <span class="c1"># Internationalization.
 # Documentation: &lt;https://docs.djangoproject.com/en/1.11/topics/i18n/&gt;
-</span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s">'zh-hans'</span>  <span class="c1"># 可以修改成符合国际规范的语言编码
-</span><span class="n">DEFAULT_USER_TIME_ZONE</span> <span class="o">=</span> <span class="s">'Asia/Shanghai'</span>  <span class="c1"># 设置时区
+</span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="sh">'</span><span class="s">zh-hans</span><span class="sh">'</span>  <span class="c1"># 可以修改成符合国际规范的语言编码
+</span><span class="n">DEFAULT_USER_TIME_ZONE</span> <span class="o">=</span> <span class="sh">'</span><span class="s">Asia/Shanghai</span><span class="sh">'</span>  <span class="c1"># 设置时区
 </span><span class="n">USE_I18N</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">USE_L10N</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">USE_TZ</span> <span class="o">=</span> <span class="bp">True</span>
 
 <span class="c1">## django-compressor settings, for speeding up page load times by minifying CSS and JavaScript files.
 # Documentation: https://django-compressor.readthedocs.io/en/latest/
-</span><span class="n">COMPRESS_OUTPUT_DIR</span> <span class="o">=</span> <span class="s">'cache'</span>
+</span><span class="n">COMPRESS_OUTPUT_DIR</span> <span class="o">=</span> <span class="sh">'</span><span class="s">cache</span><span class="sh">'</span>
 <span class="n">COMPRESS_CSS_FILTERS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s">'compressor.filters.css_default.CssAbsoluteFilter'</span><span class="p">,</span>
-    <span class="s">'compressor.filters.cssmin.CSSMinFilter'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">compressor.filters.css_default.CssAbsoluteFilter</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">compressor.filters.cssmin.CSSMinFilter</span><span class="sh">'</span><span class="p">,</span>
 <span class="p">]</span>
-<span class="n">COMPRESS_JS_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'compressor.filters.jsmin.JSMinFilter'</span><span class="p">]</span>
-<span class="n">COMPRESS_STORAGE</span> <span class="o">=</span> <span class="s">'compressor.storage.GzipCompressorFileStorage'</span>
-<span class="n">STATICFILES_FINDERS</span> <span class="o">+=</span> <span class="p">(</span><span class="s">'compressor.finders.CompressorFinder'</span><span class="p">,)</span>
+<span class="n">COMPRESS_JS_FILTERS</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">compressor.filters.jsmin.JSMinFilter</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">COMPRESS_STORAGE</span> <span class="o">=</span> <span class="sh">'</span><span class="s">compressor.storage.GzipCompressorFileStorage</span><span class="sh">'</span>
+<span class="n">STATICFILES_FINDERS</span> <span class="o">+=</span> <span class="p">(</span><span class="sh">'</span><span class="s">compressor.finders.CompressorFinder</span><span class="sh">'</span><span class="p">,)</span>
 
 
 <span class="c1">#########################################
@@ -514,11 +510,11 @@ pip3 <span class="nb">install </span>mysqlclient
 <span class="c1"># A tuple of (name, email) pairs that specifies those who will be mailed
 # when the server experiences an error when DEBUG = False.
 </span><span class="n">ADMINS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s">'zhonger'</span><span class="p">,</span> <span class="s">'zhonger@lep.ac.cn'</span><span class="p">),</span>
+    <span class="p">(</span><span class="sh">'</span><span class="s">zhonger</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">zhonger@lep.ac.cn</span><span class="sh">'</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="c1"># The sender for the aforementioned emails.
-</span><span class="n">SERVER_EMAIL</span> <span class="o">=</span> <span class="s">'LEPOJ: Modern Online Judge &lt;zhonger@lep.ac.cn&gt;'</span>
+</span><span class="n">SERVER_EMAIL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">LEPOJ: Modern Online Judge &lt;zhonger@lep.ac.cn&gt;</span><span class="sh">'</span>
 
 
 <span class="c1">##################################################
@@ -531,7 +527,7 @@ pip3 <span class="nb">install </span>mysqlclient
 # static files DMOJ uses will be collected to.
 # You must configure your webserver to serve this directory as /static/ in production.
 # 这个目录是用于存放静态文件的地方
-</span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="s">'/tmp/static/'</span>
+</span><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/tmp/static/</span><span class="sh">'</span>
 
 <span class="c1"># URL to access static files.
 #STATIC_URL = '/static/'
@@ -548,16 +544,16 @@ pip3 <span class="nb">install </span>mysqlclient
 ############################################
 </span>
 <span class="c1">## DMOJ site display settings.
-</span><span class="n">SITE_NAME</span> <span class="o">=</span> <span class="s">'LEPOJ'</span>
-<span class="n">SITE_LONG_NAME</span> <span class="o">=</span> <span class="s">'LEPOJ: Modern Online Judge'</span>
-<span class="n">SITE_ADMIN_EMAIL</span> <span class="o">=</span> <span class="s">'zhonger@lep.ac.cn'</span>
-<span class="n">TERMS_OF_SERVICE_URL</span> <span class="o">=</span> <span class="s">'//oj.lep.ac.cn/tos'</span> <span class="c1"># Use a flatpage.
+</span><span class="n">SITE_NAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">LEPOJ</span><span class="sh">'</span>
+<span class="n">SITE_LONG_NAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">LEPOJ: Modern Online Judge</span><span class="sh">'</span>
+<span class="n">SITE_ADMIN_EMAIL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">zhonger@lep.ac.cn</span><span class="sh">'</span>
+<span class="n">TERMS_OF_SERVICE_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">//oj.lep.ac.cn/tos</span><span class="sh">'</span> <span class="c1"># Use a flatpage.
 </span>
 <span class="c1">## Bridge controls.
 # The judge connection address and port; where the judges will connect to the site.
 # You should change this to something your judges can actually connect to
 # (e.g., a port that is unused and unblocked by a firewall).
-</span><span class="n">BRIDGED_JUDGE_ADDRESS</span> <span class="o">=</span> <span class="p">[(</span><span class="s">'localhost'</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)]</span>  <span class="c1"># 任务调度服务配置
+</span><span class="n">BRIDGED_JUDGE_ADDRESS</span> <span class="o">=</span> <span class="p">[(</span><span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)]</span>  <span class="c1"># 任务调度服务配置
 </span>
 <span class="c1"># The bridged daemon bind address and port to communicate with the site.
 #BRIDGED_DJANGO_ADDRESS = [('localhost', 9998)]
@@ -582,7 +578,7 @@ pip3 <span class="nb">install </span>mysqlclient
 #EVENT_DAEMON_POST = '&lt;ws:// URL to post to&gt;'
 </span>
 <span class="c1"># If you are using the defaults from the guide, it is this:
-</span><span class="n">EVENT_DAEMON_POST</span> <span class="o">=</span> <span class="s">'ws://127.0.0.1:15101/'</span>  <span class="c1"># 提交事件
+</span><span class="n">EVENT_DAEMON_POST</span> <span class="o">=</span> <span class="sh">'</span><span class="s">ws://127.0.0.1:15101/</span><span class="sh">'</span>  <span class="c1"># 提交事件
 </span>
 <span class="c1"># These are the publicly accessed interface configurations.
 # They should match those used by the script.
@@ -592,9 +588,9 @@ pip3 <span class="nb">install </span>mysqlclient
 # i.e. the path to /channels/ exposed by the daemon, through whatever proxy setup you have.
 </span>
 <span class="c1"># Using our standard nginx configuration, these should be.
-</span><span class="n">EVENT_DAEMON_GET</span> <span class="o">=</span> <span class="s">'ws://127.0.0.1:15100/event/'</span> <span class="c1"># 获取事件
+</span><span class="n">EVENT_DAEMON_GET</span> <span class="o">=</span> <span class="sh">'</span><span class="s">ws://127.0.0.1:15100/event/</span><span class="sh">'</span> <span class="c1"># 获取事件
 #EVENT_DAEMON_GET_SSL = 'wss://&lt;your domain&gt;/event/' # Optional
-</span><span class="n">EVENT_DAEMON_POLL</span> <span class="o">=</span> <span class="s">'/channels/'</span>  <span class="c1"># 频道广播
+</span><span class="n">EVENT_DAEMON_POLL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">/channels/</span><span class="sh">'</span>  <span class="c1"># 频道广播
 </span>
 <span class="c1"># If you would like to use the AMQP-based event server from &lt;https://github.com/DMOJ/event-server&gt;,
 # uncomment this section instead. This is more involved, and recommended to be done
@@ -603,20 +599,20 @@ pip3 <span class="nb">install </span>mysqlclient
 #EVENT_DAEMON_AMQP_EXCHANGE = '&lt;AMQP exchange to use&gt;'
 </span>
 <span class="c1">## Celery 消息队列服务，需将注释去除
-</span><span class="n">CELERY_BROKER_URL</span> <span class="o">=</span> <span class="s">'redis://localhost:6379'</span> 
-<span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="s">'redis://localhost:6379'</span>
+</span><span class="n">CELERY_BROKER_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">redis://localhost:6379</span><span class="sh">'</span> 
+<span class="n">CELERY_RESULT_BACKEND</span> <span class="o">=</span> <span class="sh">'</span><span class="s">redis://localhost:6379</span><span class="sh">'</span>
 
 <span class="c1">## CDN control.
 # Base URL for a copy of ace editor.
 # Should contain ace.js, along with mode-*.js.
-</span><span class="n">ACE_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/'</span>
-<span class="n">JQUERY_JS</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'</span>
-<span class="n">SELECT2_JS_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js'</span>
-<span class="n">SELECT2_CSS_URL</span> <span class="o">=</span> <span class="s">'//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css'</span>
+</span><span class="n">ACE_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">//cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/</span><span class="sh">'</span>
+<span class="n">JQUERY_JS</span> <span class="o">=</span> <span class="sh">'</span><span class="s">//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js</span><span class="sh">'</span>
+<span class="n">SELECT2_JS_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js</span><span class="sh">'</span>
+<span class="n">SELECT2_CSS_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css</span><span class="sh">'</span>
 
 <span class="c1"># A map of Earth in Equirectangular projection, for timezone selection.
 # Please try not to hotlink this poor site.
-</span><span class="n">TIMEZONE_MAP</span> <span class="o">=</span> <span class="s">'http://naturalearth.springercarto.com/ne3_data/8192/textures/3_no_ice_clouds_8k.jpg'</span>
+</span><span class="n">TIMEZONE_MAP</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://naturalearth.springercarto.com/ne3_data/8192/textures/3_no_ice_clouds_8k.jpg</span><span class="sh">'</span>
 
 <span class="c1">## Camo (https://github.com/atmos/camo) usage.
 #DMOJ_CAMO_URL = "&lt;URL to your camo install&gt;"
@@ -665,52 +661,52 @@ pip3 <span class="nb">install </span>mysqlclient
 # Documentation: https://docs.djangoproject.com/en/1.9/ref/settings/#logging
 #                https://docs.python.org/2/library/logging.config.html#logging-config-dictschema
 </span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">'version'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s">'disable_existing_loggers'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-    <span class="s">'formatters'</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">'file'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'format'</span><span class="p">:</span> <span class="s">'%(levelname)s %(asctime)s %(module)s %(message)s'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">version</span><span class="sh">'</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">disable_existing_loggers</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">formatters</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">file</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">format</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">%(levelname)s %(asctime)s %(module)s %(message)s</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s">'simple'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'format'</span><span class="p">:</span> <span class="s">'%(levelname)s %(message)s'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">simple</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">format</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">%(levelname)s %(message)s</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
-    <span class="s">'handlers'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">handlers</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
         <span class="c1"># You may use this handler as example for logging to other files..
-</span>        <span class="s">'bridge'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'level'</span><span class="p">:</span> <span class="s">'INFO'</span><span class="p">,</span>
-            <span class="s">'class'</span><span class="p">:</span> <span class="s">'logging.handlers.RotatingFileHandler'</span><span class="p">,</span>
-            <span class="s">'filename'</span><span class="p">:</span> <span class="s">'&lt;desired bridge log path&gt;'</span><span class="p">,</span>
-            <span class="s">'maxBytes'</span><span class="p">:</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
-            <span class="s">'backupCount'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="s">'formatter'</span><span class="p">:</span> <span class="s">'file'</span><span class="p">,</span>
+</span>        <span class="sh">'</span><span class="s">bridge</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">INFO</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">logging.handlers.RotatingFileHandler</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">filename</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">&lt;desired bridge log path&gt;</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">maxBytes</span><span class="sh">'</span><span class="p">:</span> <span class="mi">10</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">backupCount</span><span class="sh">'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">formatter</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">file</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s">'mail_admins'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'level'</span><span class="p">:</span> <span class="s">'ERROR'</span><span class="p">,</span>
-            <span class="s">'class'</span><span class="p">:</span> <span class="s">'dmoj.throttle_mail.ThrottledEmailHandler'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">mail_admins</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">ERROR</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">dmoj.throttle_mail.ThrottledEmailHandler</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s">'console'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'level'</span><span class="p">:</span> <span class="s">'DEBUG'</span><span class="p">,</span>
-            <span class="s">'class'</span><span class="p">:</span> <span class="s">'logging.StreamHandler'</span><span class="p">,</span>
-            <span class="s">'formatter'</span><span class="p">:</span> <span class="s">'file'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">console</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">DEBUG</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">logging.StreamHandler</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">formatter</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">file</span><span class="sh">'</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">},</span>
-    <span class="s">'loggers'</span><span class="p">:</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">loggers</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
         <span class="c1"># Site 500 error mails.
-</span>        <span class="s">'django.request'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'mail_admins'</span><span class="p">],</span>
-            <span class="s">'level'</span><span class="p">:</span> <span class="s">'ERROR'</span><span class="p">,</span>
-            <span class="s">'propagate'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+</span>        <span class="sh">'</span><span class="s">django.request</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">handlers</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">mail_admins</span><span class="sh">'</span><span class="p">],</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">ERROR</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">propagate</span><span class="sh">'</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="c1"># Judging logs as received by bridged.
-</span>        <span class="s">'judge.bridge'</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'bridge'</span><span class="p">,</span> <span class="s">'mail_admins'</span><span class="p">],</span>
-            <span class="s">'level'</span><span class="p">:</span> <span class="s">'INFO'</span><span class="p">,</span>
-            <span class="s">'propagate'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+</span>        <span class="sh">'</span><span class="s">judge.bridge</span><span class="sh">'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">handlers</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">bridge</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">mail_admins</span><span class="sh">'</span><span class="p">],</span>
+            <span class="sh">'</span><span class="s">level</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">INFO</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">propagate</span><span class="sh">'</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
         <span class="p">},</span>
         <span class="c1"># Catch all log to stderr.
-</span>        <span class="s">''</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">'handlers'</span><span class="p">:</span> <span class="p">[</span><span class="s">'console'</span><span class="p">],</span>
+</span>        <span class="sh">''</span><span class="p">:</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">handlers</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">console</span><span class="sh">'</span><span class="p">],</span>
         <span class="p">},</span>
         <span class="c1"># Other loggers of interest. Configure at will.
 </span>        <span class="c1">#  - judge.user: logs naughty user behaviours.
@@ -796,7 +792,7 @@ celery <span class="nt">-A</span> dmoj_celery worker
   <li>配置 uwsgi</li>
 </ul>
 
-<p>  众所周知，uwsgi 是一个用于长久运行 Python Web 项目的工具。这里的配置文件放在<code class="language-plaintext highlighter-rouge">site</code>目录下，<a href="https://github.com/DMOJ/docs/raw/master/sample_files/uwsgi.ini" rel="nofollow" target="_blank" class="extlinks">官方下载地址</a>，也可以用我提供的配置文件。</p>
+<p>  众所周知，uwsgi 是一个用于长久运行 Python Web 项目的工具。这里的配置文件放在<code class="language-plaintext highlighter-rouge">site</code>目录下，<a href="https://github.com/DMOJ/docs/raw/master/sample_files/uwsgi.ini">官方下载地址</a>，也可以用我提供的配置文件。</p>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[uwsgi]</span>
 <span class="c"># Socket and pid file location/permission.
@@ -1059,15 +1055,27 @@ runtime:
 <p>  到此，DMOJ 就安装完成了。从整个安装过程来看，一个 OJ 系统所包含的组件的确挺多，各种各样的配置来回修改，很容易让人一不留神就落下某个配置而使得程序无法正常运行。当然也有在测试过程中是可以正常运行的，而使用 supervisord 和 nginx 之后突然就不能了。我在实践过程中，对于官方提供的不同程序使用用户可能造成的文件权限不足，从而导致程序无法运行的问题感受颇深。折腾了很久也没有找出其中哪个步骤少了或者文件路径不对，后来发现主项目目录没有权限访问执行会导致一系列的问题。如果对用户管理和文件权限安全管理非常了解的话，还是按照官方的做法来设置，毕竟这样能保证操作系统的安全。</p>
 
             <div class="post-copyright">
-              <p><span>版权声明：</span>如无特别声明，本文版权归&nbsp;<a href="https://lisz.me">仲儿的自留地</a>&nbsp;所有，转载请注明本文链接。</p>
-              <p>（采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 许可协议进行授权）</p>
+              <p>
+                <span>版权声明：</span>
+                如无特别声明，本文版权归
+                <a href="https://lisz.me">仲儿的自留地</a>
+                所有，转载请注明本文链接。 
+              </p>
+              
+                <p> 
+                  （采用 
+                  <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" class="extlinks">CC BY-NC-SA 4.0</a> 
+                  许可协议进行授权）
+                </p>
+              
               <p><span>本文标题：</span>《 用 DMOJ 搭建属于自己的 OJ 》</p>
               <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/dmoj.html">https://lisz.me/tech/linux/dmoj.html</a></p>
+              <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
-          <h2>Contents</h2>
+          <h2>目录</h2>
           <ul><li><a href="#什么是-oj">什么是 OJ</a></li><li><a href="#为什么选-dmoj">为什么选 DMOJ</a></li><li><a href="#安装-dmoj">安装 DMOJ</a><ul><li><a href="#安装环境">安装环境</a></li><li><a href="#正式安装前的准备工作">正式安装前的准备工作</a></li><li><a href="#开始安装dmoj">开始安装DMOJ</a></li><li><a href="#安装判题服务器">安装判题服务器</a></li><li><a href="#验证和总结">验证和总结</a></li></ul></li></ul>
         </div>
       </div>
@@ -1179,8 +1187,11 @@ runtime:
       
     </section>
 
-    <footer class="g-footer">
-  <section>仲儿的自留地 ©
+    
+
+
+<footer class="g-footer">
+  <section class="links">仲儿的自留地 ©
   
   
     2015
@@ -1191,44 +1202,50 @@ runtime:
     <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
   
   </section>
-  <section>Powered by <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> & <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> v1.1.15  (based on <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a>) 
-  
+  <section class="links">
+    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+    
   </section>
+  
   
   <section>
     <span id="busuanzi_container_site_pv">
-      👁️ Total Views <span id="busuanzi_value_site_pv"></span> <b>·</b>
+      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
     </span>
     <span id="busuanzi_container_site_uv">
-      👤 Total Visitors <span id="busuanzi_value_site_uv"></span>
+      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
     </span>
   </section>
   
   
   <section>
     
-    本站已运行 <span class="alivetime"></span>
+      本站已运行 
+      <span class="alivetime_days"></span> 天
+      <span class="alivetime_hours"></span> 小时
+      <span class="alivetime_minutes"></span> 分
+      <span class="alivetime_seconds"></span> 秒
     
     
     <br/>
     
     
-    <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-      <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-    </a>
+      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+      </a>
     
     
-    <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-      <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-    </a>
+      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+      </a>
     
   </section>
 </footer>
 <div class="cookie-tip">
-  
-  为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「<a href="/tos.html">本站使用条款</a>」了解更多。
-  
-  <button id="accept-tos">同意（Accept）</button>
+   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
+
+  <button id="accept-tos">同意</button>
 </div>
 <button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
   <svg class="icon list day" aria-hidden="true">
@@ -1266,7 +1283,7 @@ runtime:
     
   </div>
 
-  <script src="/assets/js/social-share.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script>
   <script>
     socialShare('.social-share', {
       sites: [
@@ -1300,7 +1317,7 @@ runtime:
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-  <script src="/assets/js/index.min.js"></script>
+  <script src="/assets/js/app.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
@@ -1369,7 +1386,7 @@ runtime:
 
           $(".post time span.create-at").html(local_post_date["date"]);
 
-          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/2020-08-04-dmoj.md")
+          fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/services/2020-08-04-dmoj.md")
           .then((response) => {
             return response.json();
           })
@@ -1384,8 +1401,9 @@ runtime:
             $('.post time span.update-at').html(local_update_at["date"]);
 
             var relative_time = dayjs().diff(local_update_at["date_org"], 'day');
+            $(".post-copyright .tips span").append(relative_time);
             if(relative_time > 365){
-              $(".post-copyright").append("<p class='tips'>本文最后一次更新为 <span>" + relative_time + "</span> 天前，文章中的某些内容可能已过时！</p>");
+              $(".post-copyright .tips").addClass("active");
             }
           });   
           
@@ -1404,8 +1422,6 @@ runtime:
                   window.location.href = previous_url;
               }else {
                   $("#no-previous").addClass("active");
-                  console.log('已经是最新一篇文章了！');
-                  console.log('Already the latest article！');
                   setTimeout(function(){$("#no-previous").removeClass("active");}, 1500);
               }
           });
@@ -1418,8 +1434,6 @@ runtime:
                   window.location.href = next_url;
               }else {
                   $("#no-next").addClass("active");
-                  console.log('已经是最后一篇文章了！');
-                  console.log('Already the last article！');
                   setTimeout(function(){$("#no-next").removeClass("active");}, 1500);
               }
           });

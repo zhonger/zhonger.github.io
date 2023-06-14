@@ -271,15 +271,15 @@
     } ,
   
     {
-      "title"    : "Laravel 开发和部署环境搭建",
-      "tags"     : "Laravel Valet Linux Mint Nginx php-fpm",
-      "url"      : "/tech/php/laravel-dev.html"
-    } ,
-  
-    {
       "title"    : "ShareLaTeX 搭建",
       "tags"     : "ShareLaTeX LaTex Ubuntu",
       "url"      : "/tech/docker/sharelatex.html"
+    } ,
+  
+    {
+      "title"    : "Laravel 开发和部署环境搭建",
+      "tags"     : "Laravel Valet Linux Mint Nginx php-fpm",
+      "url"      : "/tech/php/laravel-dev.html"
     } ,
   
     {
