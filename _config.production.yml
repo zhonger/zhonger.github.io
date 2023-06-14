@@ -91,6 +91,7 @@ sns:
 links:
   Fortran 入门: 'https://fortran-tutorial.lisz.me/'
   个人导航: 'https://nav.lisz.me'
+  PICTL: 'https://github.com/zhonger/pictl'
 
 # Beian 备案号
 beian: '沪ICP备15014851号'
