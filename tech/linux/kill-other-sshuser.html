@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -287,7 +287,8 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <p>  在一些生产平台或者做安全审计的时候往往看到一大堆的用户 SSH 连接到同一台服务器，或者连接后没有正常关闭进程还驻留在系统内。限制 SSH 连接数与手动断开空闲连接也有必要之举，这里写出手动剔出其他用户的过程。</p>
 
 <h3 id="查看">查看</h3>
@@ -335,13 +336,13 @@ root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
 
 <h3 id="转载声明">转载声明</h3>
 
-<p>  原文转自 <a href="http://www.myhack58.com/Article/48/66/2013/37031.htm">《Linux 踢出其他正在 SSH 登陆用户》</a>（作者未知）</p>
+<p>  原文转自 <a href="http://www.myhack58.com/Article/48/66/2013/37031.htm" rel="nofollow" target="_blank" class="extlinks">《Linux 踢出其他正在 SSH 登陆用户》</a>（作者未知）</p>
 
             <div class="post-copyright">
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -352,14 +353,14 @@ root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
                 </p>
               
               <p><span>本文标题：</span>《 Linux 踢出其他正在 SSH 登陆用户 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/kill-other-sshuser.html">https://lisz.me/tech/linux/kill-other-sshuser.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/kill-other-sshuser.html" class="cplink">https://lisz.me/tech/linux/kill-other-sshuser.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#查看">查看</a></li><li><a href="#确认">确认</a></li><li><a href="#踢掉用户">踢掉用户</a></li><li><a href="#验证">验证</a></li><li><a href="#强制踢掉">强制踢掉</a></li><li><a href="#转载声明">转载声明</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('查看')">查看</a></li><li><a onclick="scrollToAdjust('确认')">确认</a></li><li><a onclick="scrollToAdjust('踢掉用户')">踢掉用户</a></li><li><a onclick="scrollToAdjust('验证')">验证</a></li><li><a onclick="scrollToAdjust('强制踢掉')">强制踢掉</a></li><li><a onclick="scrollToAdjust('转载声明')">转载声明</a></li></ul>
         </div>
       </div>
       
@@ -474,56 +475,68 @@ root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -610,6 +623,19 @@ root     pts/0    116.204.64.165   14:15    0.00s  0.03s  0.00s w
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

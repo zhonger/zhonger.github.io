@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -287,27 +287,28 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
 <h3 id="百科的发展">百科的发展</h3>
 
-<p>  说到百科，国际上最出名的莫过于 <a href="https://wikipedia.org">WikiPedia</a>，而国内最出名的莫过于<a href="https://baike.baidu.com">百度百科</a>。当然，这两者也有一些差别。WikiPedia 支持多种语言，可以自由编辑，不过一般会要求提供必要的参考资料及链接来佐证。百度百科则只支持中文，对于编辑条目也有比较高的要求，一般来说是由专门的人员编写、审核。除了这两家之外，也有一些其他的大众百科，比如 <a href="https://www.zgbk.com">中国大百科</a>、<a href="https://baike.so.com">360 百科</a>、<a href="https://baike.sogou.com">搜狗百科</a> 等。大众百科的显著特点是范围非常广，适合大众科普，而想要查找一些太过详细的知识可能无法满足。</p>
+<p>  说到百科，国际上最出名的莫过于 <a href="https://wikipedia.org" rel="nofollow" target="_blank" class="extlinks">WikiPedia</a>，而国内最出名的莫过于<a href="https://baike.baidu.com" rel="nofollow" target="_blank" class="extlinks">百度百科</a>。当然，这两者也有一些差别。WikiPedia 支持多种语言，可以自由编辑，不过一般会要求提供必要的参考资料及链接来佐证。百度百科则只支持中文，对于编辑条目也有比较高的要求，一般来说是由专门的人员编写、审核。除了这两家之外，也有一些其他的大众百科，比如 <a href="https://www.zgbk.com" rel="nofollow" target="_blank" class="extlinks">中国大百科</a>、<a href="https://baike.so.com" rel="nofollow" target="_blank" class="extlinks">360 百科</a>、<a href="https://baike.sogou.com" rel="nofollow" target="_blank" class="extlinks">搜狗百科</a> 等。大众百科的显著特点是范围非常广，适合大众科普，而想要查找一些太过详细的知识可能无法满足。</p>
 
-<p>  于是随着百科特殊化的需求增大，越来越多的专门化或者特殊化的百科也开始涌现，比如与计算机专业相关的 <a href="https://wiki.swarma.org">集智百科</a>、<a href="https://easyai.tech">AI 知识库</a>，与游戏相关的 <a href="https://www.huijiwiki.com/wiki">灰机 Wiki</a>，与二次元动漫、小说相关的 <a href="https://zh.moegirl.org.cn">萌娘百科</a> 等等。这在一定程度上弥补了大众百科的不足，满足了大众对于专门化知识科普或者手册的需求。</p>
+<p>  于是随着百科特殊化的需求增大，越来越多的专门化或者特殊化的百科也开始涌现，比如与计算机专业相关的 <a href="https://wiki.swarma.org" rel="nofollow" target="_blank" class="extlinks">集智百科</a>、<a href="https://easyai.tech" rel="nofollow" target="_blank" class="extlinks">AI 知识库</a>，与游戏相关的 <a href="https://www.huijiwiki.com/wiki" rel="nofollow" target="_blank" class="extlinks">灰机 Wiki</a>，与二次元动漫、小说相关的 <a href="https://zh.moegirl.org.cn" rel="nofollow" target="_blank" class="extlinks">萌娘百科</a> 等等。这在一定程度上弥补了大众百科的不足，满足了大众对于专门化知识科普或者手册的需求。</p>
 
 <h3 id="开源百科程序">开源百科程序</h3>
 
-<p>  既然是百科站点，就需要有百科程序来支撑用户管理、条目编辑、条目审核等功能。其实，世界上最大的百科站点 WikiPedia 使用的是免费开源的 <a href="https://www.mediawiki.org/">MediaWiki</a>。而百度百科则是采用自家开发的闭源程序，且与百度账号、百度知道等百度系产品打通。如果自己想要搭建一个百科站点，除了 MediaWiki 外，还有很多免费的选择，比如 <a href="https://www.dokuwiki.org/">Dokuwiki</a>、<a href="https://js.wiki">Wiki.js</a>、<a href="https://www.notion.so">Notion</a> 等等。</p>
+<p>  既然是百科站点，就需要有百科程序来支撑用户管理、条目编辑、条目审核等功能。其实，世界上最大的百科站点 WikiPedia 使用的是免费开源的 <a href="https://www.mediawiki.org/" rel="nofollow" target="_blank" class="extlinks">MediaWiki</a>。而百度百科则是采用自家开发的闭源程序，且与百度账号、百度知道等百度系产品打通。如果自己想要搭建一个百科站点，除了 MediaWiki 外，还有很多免费的选择，比如 <a href="https://www.dokuwiki.org/" rel="nofollow" target="_blank" class="extlinks">Dokuwiki</a>、<a href="https://js.wiki" rel="nofollow" target="_blank" class="extlinks">Wiki.js</a>、<a href="https://www.notion.so" rel="nofollow" target="_blank" class="extlinks">Notion</a> 等等。</p>
 
-<p>  其中，Dokuwiki 是一个基于 PHP 的、可以百科站点、团队站点两用的开源程序。笔者比较喜欢 Dokuwiki 的一点是，<strong>完全不需要数据库可以独立部署以及支持版本迭代</strong>。这一点与“一切皆文件”的思想似乎很接近。（😂 实际上是因为笔者不愿意管理数据库） Wiki.js 虽然是基于 NodeJS 编写的，但还是需要连接数据库。Notion 是一款更像个人笔记的软件，无须自行部署，只需要使用 Web 端或者客户端编辑即可。Notion 本身支持很多开放性的功能，甚至说还能和 <a href="https://www.zotero.org">zotero</a> 一起管理文献。如果非常熟悉 Notion 的各种功能，可能用 Notion 来搭建一个百科也非常合适。不过，笔者觉得要达到这种程度可能需要像学习宇宙无敌的 IDE – Visual Studio 一样复杂。</p>
+<p>  其中，Dokuwiki 是一个基于 PHP 的、可以百科站点、团队站点两用的开源程序。笔者比较喜欢 Dokuwiki 的一点是，<strong>完全不需要数据库可以独立部署以及支持版本迭代</strong>。这一点与“一切皆文件”的思想似乎很接近。（😂 实际上是因为笔者不愿意管理数据库） Wiki.js 虽然是基于 NodeJS 编写的，但还是需要连接数据库。Notion 是一款更像个人笔记的软件，无须自行部署，只需要使用 Web 端或者客户端编辑即可。Notion 本身支持很多开放性的功能，甚至说还能和 <a href="https://www.zotero.org" rel="nofollow" target="_blank" class="extlinks">zotero</a> 一起管理文献。如果非常熟悉 Notion 的各种功能，可能用 Notion 来搭建一个百科也非常合适。不过，笔者觉得要达到这种程度可能需要像学习宇宙无敌的 IDE – Visual Studio 一样复杂。</p>
 
 <p>  Dokuwiki 的设计有点类似于 VS Code 的设计哲学，本体提供的只是最基本的、最简单的功能。如果你想要其他功能或者改变样式，你可以通过安装插件或者主题的方式来实现。而 Dokuwiki
 官方和社区作者提供了比较丰富的插件和主题，能够有很好的可扩展性和 DIY 可能。就比如本文准备要为 Dokuwiki 接入的 LDAP 认证，实际上也是官方提供的插件之一。默认程序是已安装 LDAP Auth Plugin 插件的，我们只需要再做一些简单设置即可接入 LDAP 认证。</p>
 
 <h2 id="实践">实践</h2>
 
-<p>  为了更加简便地实现 Dokuwiki 接入 LDAP 认证，这里采用了预先准备好的 Docker 镜像 – <a href="https://hub.docker.com/r/shuosc/dokuwiki">shuosc/dokuwiki</a>。如果感兴趣的话，可以访问笔者维护的 <a href="https://github.com/shuosc/docker-dokuwiki">shuosc/docker-dokuwiki</a> 项目了解更多关于该镜像的构建细节。</p>
+<p>  为了更加简便地实现 Dokuwiki 接入 LDAP 认证，这里采用了预先准备好的 Docker 镜像 – <a href="https://hub.docker.com/r/shuosc/dokuwiki" rel="nofollow" target="_blank" class="extlinks">shuosc/dokuwiki</a>。如果感兴趣的话，可以访问笔者维护的 <a href="https://github.com/shuosc/docker-dokuwiki" rel="nofollow" target="_blank" class="extlinks">shuosc/docker-dokuwiki</a> 项目了解更多关于该镜像的构建细节。</p>
 
 <h3 id="预先准备的环境">预先准备的环境</h3>
 
@@ -338,20 +339,20 @@
 
 <h4 id="运行验证">运行验证</h4>
 
-<p>  访问 <a href="http://localhost/wiki/">http://localhost/wiki/</a> 即可看到如下图所示的 Dokuwiki 实例首页。这里其实是已经使用默认的 admin 用户登录之后的页面了。</p>
+<p>  访问 <a href="http://localhost/wiki/" rel="nofollow" target="_blank" class="extlinks">http://localhost/wiki/</a> 即可看到如下图所示的 Dokuwiki 实例首页。这里其实是已经使用默认的 admin 用户登录之后的页面了。</p>
 
 <div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  shuosc/dokuwiki 默认管理员 admin 的初始密码为 admin。如果容器实例可被外部网络访问，出于安全性考虑建议在运行后及时修改成强密码。</p>
 
 
 
  </div> </div>
-<p><img src="https://i.lisz.top/blog/nNCoC5.webp" alt="首页 Home Page" /></p>
+<p><img src="https://i.lisz.top/blog/nNCoC5.webp" alt="首页 Home Page"></p>
 
 <h3 id="配置-ldap-登录">配置 LDAP 登录</h3>
 
 <h4 id="安装-ldap-支持">安装 LDAP 支持</h4>
 
-<p>  由于 <a href="https://hub.docker.com/r/shuosc/dokuwiki">shuosc/dokuwiki</a> 镜像本来不是为 LDAP 认证构建的，没有安装 LDAP 认证所需的 <code class="language-plaintext highlighter-rouge">php7-ldap</code> 库，所以需要在启动实例后进入容器内部安装一下，并重启容器实例生效。</p>
+<p>  由于 <a href="https://hub.docker.com/r/shuosc/dokuwiki" rel="nofollow" target="_blank" class="extlinks">shuosc/dokuwiki</a> 镜像本来不是为 LDAP 认证构建的，没有安装 LDAP 认证所需的 <code class="language-plaintext highlighter-rouge">php7-ldap</code> 库，所以需要在启动实例后进入容器内部安装一下，并重启容器实例生效。</p>
 
 <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入容器实例</span>
 docker <span class="nb">exec</span> <span class="nt">-ti</span> &lt;<span class="nb">id</span><span class="o">&gt;</span> /bin/bash 
@@ -363,7 +364,7 @@ apt update <span class="o">&amp;&amp;</span> apt <span class="nb">install</span>
 docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
 </code></pre></div></div>
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  由于 shuosc/dokuwiki 镜像默认采用的 USTC（中科大）的软件源，笔者在安装 php7-ldap 库时遇到 Not Found 的错误。如果你也遇到了，可以将容器实例的软件源切换到其他软件源，比如执行 <code class="language-plaintext highlighter-rouge">sed -i "s/ustc/nju/" /etc/apt/sources.list</code> 即可从 USTC 切换到 NJU（南京大学）软件源。<br />
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  由于 shuosc/dokuwiki 镜像默认采用的 USTC（中科大）的软件源，笔者在安装 php7-ldap 库时遇到 Not Found 的错误。如果你也遇到了，可以将容器实例的软件源切换到其他软件源，比如执行 <code class="language-plaintext highlighter-rouge">sed -i "s/ustc/nju/" /etc/apt/sources.list</code> 即可从 USTC 切换到 NJU（南京大学）软件源。<br>
   另外，这样的安装只是一种临时的解决方案，销毁并重建容器实例后仍然没有 php7-ldap 库。因此后续 shuosc/dokuwki 镜像将会增加这一支持。</p>
 
 
@@ -373,15 +374,15 @@ docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
 
 <p>  在登录成功后，可以如上步中图中所示点击右上角<strong>管理</strong>按钮进入<strong>管理页面</strong>。</p>
 
-<p><img src="https://i.lisz.top/blog/ABVW2W.webp" alt="管理界面 Admin Page" /></p>
+<p><img src="https://i.lisz.top/blog/ABVW2W.webp" alt="管理界面 Admin Page"></p>
 
 <p>  这里可以先点击<strong>扩展管理器</strong>确认一下 <strong>LDAP Auth Plugin</strong> 插件是否已预安装。这里由于是启用后的截图，所以右边没有<strong>卸载</strong>和<strong>关闭</strong>按钮以及启用的提示。</p>
 
-<p><img src="https://i.lisz.top/blog/ysQEBr.webp" alt="扩展管理器 Plugins Manage Page" /></p>
+<p><img src="https://i.lisz.top/blog/ysQEBr.webp" alt="扩展管理器 Plugins Manage Page"></p>
 
 <p>  返回刚才的<strong>管理页面</strong>，点击<strong>配置设置</strong>按钮即可进入完整的配置设置。如下图所示是 LDAP 认证部分的配置，在实际页面的比较靠后的位置可以找到。</p>
 
-<p><img src="https://i.lisz.top/blog/hnMxkY.webp" alt="LDAP 设置 LDAP Settings" /></p>
+<p><img src="https://i.lisz.top/blog/hnMxkY.webp" alt="LDAP 设置 LDAP Settings"></p>
 
 <p>  上图是默认的配置，我们需要填一下其中的一些条目，内容如下（其他保持默认即可）：</p>
 
@@ -433,24 +434,24 @@ docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
 
 
  </div> </div>
-<p><img src="https://i.lisz.top/blog/zW5Fgq.webp" alt="启用 LDAP Enable LDAP" /></p>
+<p><img src="https://i.lisz.top/blog/zW5Fgq.webp" alt="启用 LDAP Enable LDAP"></p>
 
 <h3 id="其他">其他</h3>
 
-<p>  为 Dokuwiki 接入 LDAP 认证之后，所有指定组目录下的所有 LDAP 用户都可以正常登录 Dokuwiki。但由于 LDAP 只提供了用户登录验证，Dokuwiki 相应页面的权限仍然需要使用 Dokuwiki 自带的<strong>用户管理器</strong>来管理。具体操作可以 <a href="https://www.dokuwiki.org/start?id=zh:manual">Dokuwiki Manual</a> 来了解更多。</p>
+<p>  为 Dokuwiki 接入 LDAP 认证之后，所有指定组目录下的所有 LDAP 用户都可以正常登录 Dokuwiki。但由于 LDAP 只提供了用户登录验证，Dokuwiki 相应页面的权限仍然需要使用 Dokuwiki 自带的<strong>用户管理器</strong>来管理。具体操作可以 <a href="https://www.dokuwiki.org/start?id=zh:manual" rel="nofollow" target="_blank" class="extlinks">Dokuwiki Manual</a> 来了解更多。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://www.dokuwiki.org/auth:ldap_openldap">LDAP Auth Backend: OpenLDAP Examples</a></li>
-  <li><a href="https://stackoverflow.com/questions/24322779/dokuwiki-with-ldap-error-user-authentication-is-temporarily-unavailable">Dokuwiki with LDAP error: User authentication is temporarily unavailable</a></li>
+  <li><a href="https://www.dokuwiki.org/auth:ldap_openldap" rel="nofollow" target="_blank" class="extlinks">LDAP Auth Backend: OpenLDAP Examples</a></li>
+  <li><a href="https://stackoverflow.com/questions/24322779/dokuwiki-with-ldap-error-user-authentication-is-temporarily-unavailable" rel="nofollow" target="_blank" class="extlinks">Dokuwiki with LDAP error: User authentication is temporarily unavailable</a></li>
 </ul>
 
             <div class="post-copyright">
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -461,14 +462,14 @@ docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
                 </p>
               
               <p><span>本文标题：</span>《 LDAP 集成之 Dokuwiki 篇 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-dokuwiki.html">https://lisz.me/tech/webmaster/ldap-dokuwiki.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-dokuwiki.html" class="cplink">https://lisz.me/tech/webmaster/ldap-dokuwiki.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a><ul><li><a href="#百科的发展">百科的发展</a></li><li><a href="#开源百科程序">开源百科程序</a></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#预先准备的环境">预先准备的环境</a></li><li><a href="#dokuwiki">Dokuwiki</a><ul><li><a href="#创建实例">创建实例</a></li><li><a href="#运行验证">运行验证</a></li></ul></li><li><a href="#配置-ldap-登录">配置 LDAP 登录</a><ul><li><a href="#安装-ldap-支持">安装 LDAP 支持</a></li><li><a href="#设置-ldap">设置 LDAP</a></li><li><a href="#启用-ldap">启用 LDAP</a></li></ul></li><li><a href="#其他">其他</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a><ul><li><a onclick="scrollToAdjust('百科的发展')">百科的发展</a></li><li><a onclick="scrollToAdjust('开源百科程序')">开源百科程序</a></li></ul></li><li><a onclick="scrollToAdjust('实践')">实践</a><ul><li><a onclick="scrollToAdjust('预先准备的环境')">预先准备的环境</a></li><li><a onclick="scrollToAdjust('dokuwiki')">Dokuwiki</a><ul><li><a onclick="scrollToAdjust('创建实例')">创建实例</a></li><li><a onclick="scrollToAdjust('运行验证')">运行验证</a></li></ul></li><li><a onclick="scrollToAdjust('配置-ldap-登录')">配置 LDAP 登录</a><ul><li><a onclick="scrollToAdjust('安装-ldap-支持')">安装 LDAP 支持</a></li><li><a onclick="scrollToAdjust('设置-ldap')">设置 LDAP</a></li><li><a onclick="scrollToAdjust('启用-ldap')">启用 LDAP</a></li></ul></li><li><a onclick="scrollToAdjust('其他')">其他</a></li></ul></li><li><a onclick="scrollToAdjust('参考资料')">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -583,56 +584,68 @@ docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -719,6 +732,19 @@ docker restart &lt;<span class="nb">id</span><span class="o">&gt;</span>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

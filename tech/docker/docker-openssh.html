@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -287,7 +287,8 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
 <p>  Docker 镜像是否有 SSH 远程登录的必要？这个问题其实对于开发者来说是相对而言的，在实际的生产环境中是无必要需求就不必要，而在开发环境中则显得大有裨益。当然，即使在开发环境中也仍然应该把安全性放在首位，因此采用凭一对公钥和私钥实现无密码登录是比较安全、稳妥的办法。</p>
@@ -359,7 +360,7 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -370,14 +371,14 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
                 </p>
               
               <p><span>本文标题：</span>《 Docker 镜像支持 SSH 远程登录 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/docker-openssh.html">https://lisz.me/tech/docker/docker-openssh.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/docker/docker-openssh.html" class="cplink">https://lisz.me/tech/docker/docker-openssh.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#安装配置">安装配置</a><ul><li><a href="#运行">运行</a><ul><li><a href="#方式一">方式一</a></li><li><a href="#方式二">方式二</a></li></ul></li></ul></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a></li><li><a onclick="scrollToAdjust('安装配置')">安装配置</a><ul><li><a onclick="scrollToAdjust('运行')">运行</a><ul><li><a onclick="scrollToAdjust('方式一')">方式一</a></li><li><a onclick="scrollToAdjust('方式二')">方式二</a></li></ul></li></ul></li></ul>
         </div>
       </div>
       
@@ -492,56 +493,68 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -628,6 +641,19 @@ ssh ubuntu@&lt;instance ip&gt; <span class="c"># 尝试登陆验证</span>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -289,16 +289,17 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
-<p>  <a href="https://www.quantum-espresso.org/">Quantum Espresson</a> （以下简称 QE）是一款基于平面波函数的开源第一性原理计算框架，其免费、易安装使用等优点受到了广大第一性原理计算研究人员的喜爱。QE 不仅支持 CPU 的并行高性能计算，还支持 GPU 计算。这看起来有点像是计算机专业里的深度学习框架，有完整的计算加速支持。另外，QE 与 VASP 的使用习惯类似度比较高，不管是输入文件还是赝势文件，都可以类比着使用。对于计算后的输出结果，QE 也有一套完整的工具链辅助用户完成一些常用的分析操作，比如寻找 k 路径、分析能带结构（Band Gap）等等。</p>
+<p>  <a href="https://www.quantum-espresso.org/" rel="nofollow" target="_blank" class="extlinks">Quantum Espresson</a> （以下简称 QE）是一款基于平面波函数的开源第一性原理计算框架，其免费、易安装使用等优点受到了广大第一性原理计算研究人员的喜爱。QE 不仅支持 CPU 的并行高性能计算，还支持 GPU 计算。这看起来有点像是计算机专业里的深度学习框架，有完整的计算加速支持。另外，QE 与 VASP 的使用习惯类似度比较高，不管是输入文件还是赝势文件，都可以类比着使用。对于计算后的输出结果，QE 也有一套完整的工具链辅助用户完成一些常用的分析操作，比如寻找 k 路径、分析能带结构（Band Gap）等等。</p>
 
 <p>  上次我们提到的 AiiDA 这款专门应用于材料计算领域的开源数据管理软件，与 QE 可以非常方便地结合在一起使用，而且 AiiDA 官网上给出的示例就是基于 QE 计算的。现在我们就来体验一下如何把 QE 和 AiiDA 结合起来使用吧。</p>
 
 <h2 id="实践">实践</h2>
 
-<p>  上次介绍的安装部署 AiiDA 的文章中的 <a href="https://quantum-mobile.readthedocs.io/en/latest/index.html">Quantum Mobile</a>，就开发了 AiiDA 与 QE 的一体化虚拟机和 Docker 镜像，直接使用非常方便。这里为了在服务器上部署比较方便，采用了 Docker 部署的方式。为了缩短篇幅，使用 Docker 启动一个 Quantum Mobile 实例的操作就不在此赘述了，请参照 <a href="./aiida-install.html">AiiDA 开源数据管理软件</a> 中的 <strong>Docker 安装</strong> 部分。</p>
+<p>  上次介绍的安装部署 AiiDA 的文章中的 <a href="https://quantum-mobile.readthedocs.io/en/latest/index.html" rel="nofollow" target="_blank" class="extlinks">Quantum Mobile</a>，就开发了 AiiDA 与 QE 的一体化虚拟机和 Docker 镜像，直接使用非常方便。这里为了在服务器上部署比较方便，采用了 Docker 部署的方式。为了缩短篇幅，使用 Docker 启动一个 Quantum Mobile 实例的操作就不在此赘述了，请参照 <a href="./aiida-install.html">AiiDA 开源数据管理软件</a> 中的 <strong>Docker 安装</strong> 部分。</p>
 
 <h3 id="进入环境">进入环境</h3>
 
@@ -684,24 +685,24 @@ retrieved          2089  FolderData
 
 <h2 id="总结">总结</h2>
 
-<p>  如上所示，经过了一系列的操作 AiiDA 可以非常容易搭配 QE 完成第一性原理计算，并且对计算过程中的输入、输出数据都实现了有效的管理。不过在实践过程中发现， AiiDA 对于我们设定的 QE 输入参数并不会进行校验，甚至在 AiiDA 对这些输入参数进行格式化生成 QE 输入文件之后，QE 会视之为非法字符串。虽然参考了 <a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/sections/running.html#creating-and-launching-calculations">aiida-toturial</a> 的输入参数配置，但是其中的 mickeymouse 字段使得 QE 计算无法正常运行。</p>
+<p>  如上所示，经过了一系列的操作 AiiDA 可以非常容易搭配 QE 完成第一性原理计算，并且对计算过程中的输入、输出数据都实现了有效的管理。不过在实践过程中发现， AiiDA 对于我们设定的 QE 输入参数并不会进行校验，甚至在 AiiDA 对这些输入参数进行格式化生成 QE 输入文件之后，QE 会视之为非法字符串。虽然参考了 <a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/sections/running.html#creating-and-launching-calculations" rel="nofollow" target="_blank" class="extlinks">aiida-toturial</a> 的输入参数配置，但是其中的 mickeymouse 字段使得 QE 计算无法正常运行。</p>
 
 <p>  另外，如果我们设置了比较严苛的输入参数值，QE 计算可能会受限无法完成完整的计算，并且无法格式化抽取到预设的重要数据信息。因此只能在设置输入参数时，除必要精度需要外尽量放宽其他计算的限制。我们除了可以通过 AiiDA 提供的 verdi 命令来交互式查询计算结果之外，也可以进入到计算的目录直接查询 QE 计算的原始输入文件和输出文件（默认本地目录是 ~/.aiida_run）。</p>
 
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/index.html">2020 AiiDA tutorial week “Virtual Edition”</a></li>
-  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/index.html">aiida-quantumespresoo documentation</a></li>
-  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/_downloads/2dc19f2e8a6300052734f58bd000d074/pw_short_example.py">example script provided by aiida-quantumespresso</a></li>
-  <li><a href="https://github.com/atztogo/aiida-tutorials/wiki">AiiDA virtual hands-on tutorial in 2021 Spring</a></li>
+  <li><a href="https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/index.html" rel="nofollow" target="_blank" class="extlinks">2020 AiiDA tutorial week “Virtual Edition”</a></li>
+  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/index.html" rel="nofollow" target="_blank" class="extlinks">aiida-quantumespresoo documentation</a></li>
+  <li><a href="https://aiida-quantumespresso.readthedocs.io/en/latest/_downloads/2dc19f2e8a6300052734f58bd000d074/pw_short_example.py" rel="nofollow" target="_blank" class="extlinks">example script provided by aiida-quantumespresso</a></li>
+  <li><a href="https://github.com/atztogo/aiida-tutorials/wiki" rel="nofollow" target="_blank" class="extlinks">AiiDA virtual hands-on tutorial in 2021 Spring</a></li>
 </ul>
 
             <div class="post-copyright">
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -712,14 +713,14 @@ retrieved          2089  FolderData
                 </p>
               
               <p><span>本文标题：</span>《 AiiDA 与 Quantum Espresso 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/aiida/aiida-qe.html">https://lisz.me/tech/aiida/aiida-qe.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/aiida/aiida-qe.html" class="cplink">https://lisz.me/tech/aiida/aiida-qe.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#进入环境">进入环境</a></li><li><a href="#初始化配置">初始化配置</a></li><li><a href="#导入数据">导入数据</a></li><li><a href="#配置主机和-qe">配置主机和 QE</a><ul><li><a href="#配置本地主机">配置本地主机</a></li><li><a href="#配置远程集群">配置远程集群</a></li><li><a href="#配置-qe">配置 QE</a></li></ul></li><li><a href="#提交计算">提交计算</a><ul><li><a href="#确认-aiida-后台状态">确认 aiida 后台状态</a></li><li><a href="#确认代码配置">确认代码配置</a></li><li><a href="#准备执行脚本">准备执行脚本</a></li></ul></li><li><a href="#验证计算及结果">验证计算及结果</a><ul><li><a href="#验证计算状态">验证计算状态</a></li><li><a href="#验证结果">验证结果</a></li></ul></li></ul></li><li><a href="#总结">总结</a></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a></li><li><a onclick="scrollToAdjust('实践')">实践</a><ul><li><a onclick="scrollToAdjust('进入环境')">进入环境</a></li><li><a onclick="scrollToAdjust('初始化配置')">初始化配置</a></li><li><a onclick="scrollToAdjust('导入数据')">导入数据</a></li><li><a onclick="scrollToAdjust('配置主机和-qe')">配置主机和 QE</a><ul><li><a onclick="scrollToAdjust('配置本地主机')">配置本地主机</a></li><li><a onclick="scrollToAdjust('配置远程集群')">配置远程集群</a></li><li><a onclick="scrollToAdjust('配置-qe')">配置 QE</a></li></ul></li><li><a onclick="scrollToAdjust('提交计算')">提交计算</a><ul><li><a onclick="scrollToAdjust('确认-aiida-后台状态')">确认 aiida 后台状态</a></li><li><a onclick="scrollToAdjust('确认代码配置')">确认代码配置</a></li><li><a onclick="scrollToAdjust('准备执行脚本')">准备执行脚本</a></li></ul></li><li><a onclick="scrollToAdjust('验证计算及结果')">验证计算及结果</a><ul><li><a onclick="scrollToAdjust('验证计算状态')">验证计算状态</a></li><li><a onclick="scrollToAdjust('验证结果')">验证结果</a></li></ul></li></ul></li><li><a onclick="scrollToAdjust('总结')">总结</a></li><li><a onclick="scrollToAdjust('参考资料')">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -834,56 +835,68 @@ retrieved          2089  FolderData
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -970,6 +983,19 @@ retrieved          2089  FolderData
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

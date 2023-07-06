@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -287,7 +287,8 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
 <h3 id="easy-connect">Easy Connect</h3>
@@ -321,7 +322,7 @@
 
 <h3 id="启动实例">启动实例</h3>
 
-<p>  为了方便部署和测试，这里采用 <a href="https://hub.docker.com/r/wheelybird/openvpn-ldap-otp">wheelybird/openvpn-ldap-otp</a> 提供的 Docker 镜像。这个镜像比较小，同时也支持 x64 和 arm 两种体系架构，能满足大部分主流服务器平台。</p>
+<p>  为了方便部署和测试，这里采用 <a href="https://hub.docker.com/r/wheelybird/openvpn-ldap-otp" rel="nofollow" target="_blank" class="extlinks">wheelybird/openvpn-ldap-otp</a> 提供的 Docker 镜像。这个镜像比较小，同时也支持 x64 和 arm 两种体系架构，能满足大部分主流服务器平台。</p>
 
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
 
@@ -354,11 +355,11 @@
 
 <p>  一般来说，服务器内网为了管理方便，会根据服务器的 ip 和编号来配置对应的域名解析及反向域名解析，形如 <code class="language-plaintext highlighter-rouge">ec2-1-1-1-1.aws.com</code>，也有可能就是简单的 <code class="language-plaintext highlighter-rouge">c1.sever.aws.com</code>。所以当接入服务器内网后，我们可能会期望用 c1 来作为这台服务器的标签，而在终端我们也可能通过 <code class="language-plaintext highlighter-rouge">ping c1</code> 来测试通路。实际上只要在启动实例时新增变量 OVPN_DNS_SEARCH_DOMAIN 就可以实现，当然这里变量对应的值也应该变成 <code class="language-plaintext highlighter-rouge">server.aws.com</code>。相当于，有了这个配置后，本地 DNS 解析没有记录时会自动尝试加入后缀来解析。这样一来，是不是方便了很多呢？</p>
 
-<p>  除此之外，该镜像还支持其他一些特性，比如 OTP，请访问 <a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a> 了解更多。</p>
+<p>  除此之外，该镜像还支持其他一些特性，比如 OTP，请访问 <a href="https://github.com/wheelybird/openvpn-server-ldap-otp" rel="nofollow" target="_blank" class="extlinks">wheelybird/openvpn-ldap-otp</a> 了解更多。</p>
 
 <h4 id="生成配置文件">生成配置文件</h4>
 
-<p>  在生成配置文件上，<a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a> 要比 <a href="https://github.com/kylemanna/docker-openvpn">kylemanna/docker-openvpn</a> 更复杂一些，可以手动从 Docker 实例的日志文件或终端输出内容中看到内容，大致内容形式如下所示：</p>
+<p>  在生成配置文件上，<a href="https://github.com/wheelybird/openvpn-server-ldap-otp" rel="nofollow" target="_blank" class="extlinks">wheelybird/openvpn-ldap-otp</a> 要比 <a href="https://github.com/kylemanna/docker-openvpn" rel="nofollow" target="_blank" class="extlinks">kylemanna/docker-openvpn</a> 更复杂一些，可以手动从 Docker 实例的日志文件或终端输出内容中看到内容，大致内容形式如下所示：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#---------- Start of client.ovpn ----------</span>
 
@@ -424,11 +425,11 @@ key-direction 1
 <h2 id="参考资料">参考资料</h2>
 
 <ul>
-  <li><a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a></li>
-  <li><a href="https://github.com/kylemanna/docker-openvpn">kylemanna/docker-openvpn</a></li>
+  <li><a href="https://github.com/wheelybird/openvpn-server-ldap-otp" rel="nofollow" target="_blank" class="extlinks">wheelybird/openvpn-ldap-otp</a></li>
+  <li><a href="https://github.com/kylemanna/docker-openvpn" rel="nofollow" target="_blank" class="extlinks">kylemanna/docker-openvpn</a></li>
 </ul>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 提示 </div> </div> <div class="content"> <p>我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn">加入链接</a>。</p>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 提示 </div> </div> <div class="content"> <p>我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn" rel="nofollow" target="_blank" class="extlinks">加入链接</a>。</p>
 
 
 
@@ -438,7 +439,7 @@ key-direction 1
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -449,14 +450,14 @@ key-direction 1
                 </p>
               
               <p><span>本文标题：</span>《 LDAP 集成之 OpenVPN 篇 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-openvpn.html">https://lisz.me/tech/webmaster/ldap-openvpn.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/ldap-openvpn.html" class="cplink">https://lisz.me/tech/webmaster/ldap-openvpn.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a><ul><li><a href="#easy-connect">Easy Connect</a></li><li><a href="#openvpn">OpenVPN</a></li></ul></li><li><a href="#实践">实践</a><ul><li><a href="#环境要求">环境要求</a></li><li><a href="#启动实例">启动实例</a><ul><li><a href="#生成配置文件">生成配置文件</a></li></ul></li><li><a href="#测试">测试</a></li></ul></li><li><a href="#参考资料">参考资料</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a><ul><li><a onclick="scrollToAdjust('easy-connect')">Easy Connect</a></li><li><a onclick="scrollToAdjust('openvpn')">OpenVPN</a></li></ul></li><li><a onclick="scrollToAdjust('实践')">实践</a><ul><li><a onclick="scrollToAdjust('环境要求')">环境要求</a></li><li><a onclick="scrollToAdjust('启动实例')">启动实例</a><ul><li><a onclick="scrollToAdjust('生成配置文件')">生成配置文件</a></li></ul></li><li><a onclick="scrollToAdjust('测试')">测试</a></li></ul></li><li><a onclick="scrollToAdjust('参考资料')">参考资料</a></li></ul>
         </div>
       </div>
       
@@ -571,56 +572,68 @@ key-direction 1
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -707,6 +720,19 @@ key-direction 1
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

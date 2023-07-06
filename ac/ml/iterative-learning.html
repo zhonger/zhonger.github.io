@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -291,8 +291,9 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
-            <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/">Iterative Machine Learning: A step towards Model Accuracy</a><br />
+          <article class="markdown-body post">
+              
+            <p><strong>原文标题</strong>：<a href="https://hub.packtpub.com/iterative-machine-learning-step-towards-model-accuracy/" rel="nofollow" target="_blank" class="extlinks">Iterative Machine Learning: A step towards Model Accuracy</a><br>
 <strong>原文作者</strong>：Amarabha Benerjee</p>
 
 <p>  通过死记硬背来学习一些东西，比如重复多次，通过一遍又一遍地练习来完善一项技能，或者通过逐步对原型进行细微调整来构建某些东西，这些都是我们人类自然而然发生的事情。机器也可以学习这种方式，这被称为“迭代机器学习”。在大多数情况下，迭代是一种有效的学习方法，有助于更快、更准确地达到预期的最终结果，而不会成为资源紧缩的噩梦。</p>
@@ -310,7 +311,7 @@
   <li>模型训练迭代——外部引入</li>
 </ol>
 
-<p><img src="https://i.lisz.top/blog/19OqPp.webp" alt="迭代机器学习 Iterative Machine Learning" /></p>
+<p><img src="https://i.lisz.top/blog/19OqPp.webp" alt="迭代机器学习 Iterative Machine Learning"></p>
 
 <p>  现在，如果我们没有将结果反馈到系统中，比如说不允许算法迭代学习，而是采用顺序方法，情况会变成怎么呢？算法是否有效，能否提供正确的结果呢？</p>
 
@@ -372,20 +373,24 @@
 
 <p>  为了总结讨论，我们可以大致如下来看一下迭代过程及其实现机器学习模型的阶段：</p>
 
-<p><img src="https://i.lisz.top/blog/WMRZBJ.webp" alt="迭代的不同阶段 Different stages" /></p>
+<p><img src="https://i.lisz.top/blog/WMRZBJ.webp" alt="迭代的不同阶段 Different stages"></p>
 
 <ol>
-  <li><strong>参数迭代</strong>：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。</li>
-  <li><strong>数据迭代</strong>：一旦模型参数最终确定之后，将数据放入系统并模拟模型。将多组数据放入系统中，以检查参数在产生想要的结果方面的有效性。因此，如果数据迭代阶段表明某些参数不适合模型，则将它们带回参数迭代阶段，并添加或修改参数。</li>
-  <li><strong>模型迭代</strong>：在初始参数和数据集最终确定后，进行模型测试/训练。模型测试阶段的迭代是关于使用相同的参数和数据集多次运行相同的模型模拟，然后检查错误量，如果错误在每次迭代中都有很大变化，则数据或参数或两者都有问题。对数据和参数进行迭代，直到模型达到准确性。</li>
-  <li><strong>人工迭代</strong>：此步骤涉及到人工归纳的迭代，其中将不同的模型放在一起以创建功能齐全的智能系统。在这里，多层次的拟合和再拟合恰好可以实现一个连贯的总体目标，比如创建无人驾驶汽车系统或功能完全的人工智能（AI）。</li>
+  <li>
+<strong>参数迭代</strong>：这是任何算法迭代的第一个也是固有的阶段。算法涉及到的参数运行多次，并在此过程中最终确定模型的最佳拟合参数。</li>
+  <li>
+<strong>数据迭代</strong>：一旦模型参数最终确定之后，将数据放入系统并模拟模型。将多组数据放入系统中，以检查参数在产生想要的结果方面的有效性。因此，如果数据迭代阶段表明某些参数不适合模型，则将它们带回参数迭代阶段，并添加或修改参数。</li>
+  <li>
+<strong>模型迭代</strong>：在初始参数和数据集最终确定后，进行模型测试/训练。模型测试阶段的迭代是关于使用相同的参数和数据集多次运行相同的模型模拟，然后检查错误量，如果错误在每次迭代中都有很大变化，则数据或参数或两者都有问题。对数据和参数进行迭代，直到模型达到准确性。</li>
+  <li>
+<strong>人工迭代</strong>：此步骤涉及到人工归纳的迭代，其中将不同的模型放在一起以创建功能齐全的智能系统。在这里，多层次的拟合和再拟合恰好可以实现一个连贯的总体目标，比如创建无人驾驶汽车系统或功能完全的人工智能（AI）。</li>
 </ol>
 
 <p>  迭代对于在不久的将来创建更智能的 AI 系统至关重要。对复杂数据集执行多次迭代的巨大内存需求继续带来重大挑战。但随着人工智能芯片、存储设备和数据传输技术的日益完善，这些挑战变得越来越容易应对。</p>
 
 <p>  我们相信，迭代机器学习技术将在不久的将来继续引领人工智能领域的转型。</p>
 
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 版权声明 </div> </div> <div class="content"> <p>  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。<br />
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 版权声明 </div> </div> <div class="content"> <p>  由于本文是对英文博文的译文，本人对文章内容不享有版权。如有版权争议，可联系撤下本文。<br>
   As this article is a translation of an English blog post, I do not have the copyright of the content in this article. If there is a copyright dispute, please contact me to withdraw this article.</p>
 
 
@@ -396,7 +401,7 @@
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -407,14 +412,14 @@
                 </p>
               
               <p><span>本文标题：</span>《 [译文]迭代机器学习：迈向模型准确性的一步 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/ac/ml/iterative-learning.html">https://lisz.me/ac/ml/iterative-learning.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/ac/ml/iterative-learning.html" class="cplink">https://lisz.me/ac/ml/iterative-learning.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#迭代学习是如何工作的">迭代学习是如何工作的</a></li><li><a href="#提升算法有监督机器学习中的迭代">提升算法：有监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的">它们是如何工作的</a></li><li><a href="#优缺点">优缺点</a></li></ul></li><li><a href="#人工神经网络无监督机器学习中的迭代">人工神经网络：无监督机器学习中的迭代</a><ul><li><a href="#它们是如何工作的-1">它们是如何工作的</a></li><li><a href="#优缺点-1">优缺点</a></li></ul></li><li><a href="#强化学习">强化学习</a></li><li><a href="#迭代的一些实际实现">迭代的一些实际实现</a></li><li><a href="#将其整合在一起">将其整合在一起</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('迭代学习是如何工作的')">迭代学习是如何工作的</a></li><li><a onclick="scrollToAdjust('提升算法有监督机器学习中的迭代')">提升算法：有监督机器学习中的迭代</a><ul><li><a onclick="scrollToAdjust('它们是如何工作的')">它们是如何工作的</a></li><li><a onclick="scrollToAdjust('优缺点')">优缺点</a></li></ul></li><li><a onclick="scrollToAdjust('人工神经网络无监督机器学习中的迭代')">人工神经网络：无监督机器学习中的迭代</a><ul><li><a onclick="scrollToAdjust('它们是如何工作的')">它们是如何工作的</a></li><li><a onclick="scrollToAdjust('优缺点')">优缺点</a></li></ul></li><li><a onclick="scrollToAdjust('强化学习')">强化学习</a></li><li><a onclick="scrollToAdjust('迭代的一些实际实现')">迭代的一些实际实现</a></li><li><a onclick="scrollToAdjust('将其整合在一起')">将其整合在一起</a></li></ul>
         </div>
       </div>
       
@@ -529,56 +534,68 @@
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -665,6 +682,19 @@
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

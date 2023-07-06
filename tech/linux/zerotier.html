@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -291,7 +291,8 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
 <p>  2019年11月27日，通过欧洲网络协调中心（RIPE NCC）的邮件确认，全球所有 43 亿个 IPv4 地址已全部分配完毕。事实上，IPv4 地址的数量是非常有限的，算起来全球 60 多亿人每个人平均不到 1 个。由于 IP 地址是由国际上的几大网络协调中心统一进行分配，必须由单位向所在区域的网络协调中心提出申请，并每年缴纳一定的费用。这笔费用对于单位来说算不了什么，对于个人来说就比较高。因此，在每个国家基本上是由国家网络中心进行国内的 IP 地址分配，分配的单位一般是政府、国家机构、高校、基础通信服务商、数据中心或企业等。我们通常家用的宽带主要是由中国移动、中国联通、中国电信三大基础通信服务商提供的。近年来也有由广播电视提供的家用宽带。在学校、国家科技机构单位，一般使用的是教育网、教育科技网，也有很多学校采用的基础通信服务商提供的商用网络。不管是学校，还是家里，基础通信服务商为了节约 IP 地址的使用，在进行基础通信网络搭建的时候，大部分采用了内部局域网共享一个公网 IP 地址代理上网的方式。现有家用使用的宽带网络基本上无法获取到公网 IPv4 地址，只能获得一个以<code class="language-plaintext highlighter-rouge">100</code>开头的通信专用的局域网地址。</p>
@@ -335,20 +336,20 @@
 
 <h3 id="申请-ipv6-网段">申请 IPv6 网段</h3>
 
-<p>  目前，全球范围内除了由基础通信服务商、数据中心、高校等拥有一大批可用的 IPv6 网段外，基本上无法个人进行申请。唯一可用的无限制 IPv6 网段申请就是 <a href="https://www.tunnelbroker.net/">He.net</a> 提供的 6to4 IPv6 隧道服务。可访问网站进行注册登录，登录后在左上方的 User Functions 里选择 Create Regular Tunnel，然后在 You are viewing from 这个位置会显示出你访问时所用的公网 IP 地址。此处的 IPv4 Endpoint 填的是 ECS 服务器的公网 IPv4 地址，至于以下的 Tunnel Server 应该选择哪个需要在 ECS 服务器上ping 各个服务器来确定延迟，选取延迟最低的一个位置。</p>
+<p>  目前，全球范围内除了由基础通信服务商、数据中心、高校等拥有一大批可用的 IPv6 网段外，基本上无法个人进行申请。唯一可用的无限制 IPv6 网段申请就是 <a href="https://www.tunnelbroker.net/" rel="nofollow" target="_blank" class="extlinks">He.net</a> 提供的 6to4 IPv6 隧道服务。可访问网站进行注册登录，登录后在左上方的 User Functions 里选择 Create Regular Tunnel，然后在 You are viewing from 这个位置会显示出你访问时所用的公网 IP 地址。此处的 IPv4 Endpoint 填的是 ECS 服务器的公网 IPv4 地址，至于以下的 Tunnel Server 应该选择哪个需要在 ECS 服务器上ping 各个服务器来确定延迟，选取延迟最低的一个位置。</p>
 
 <div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 注意 </div> </div> <div class="content"> <p>  由于 He.net 的全球网络与阿里云的全球网络之间的路由不是直接到达的，往往会绕很大一圈，所以建议不要选择<strong>香港</strong>的 Tunnel Server，体验下来 Fremont、CA、US 的 Tunnel Server 效果较好。</p>
 
 
 
  </div> </div>
-<p><img src="https://i.lisz.top/blog/ebV5en.webp" alt="菜单栏 Menu" />
-<img src="https://i.lisz.top/blog/vXS3jk.webp" alt="添加隧道 Add tunnel" /></p>
+<p><img src="https://i.lisz.top/blog/ebV5en.webp" alt="菜单栏 Menu">
+<img src="https://i.lisz.top/blog/vXS3jk.webp" alt="添加隧道 Add tunnel"></p>
 
 <p>  选择好 Tunnel Server 之后，点击最下方的 Create Tunnel 按钮即可获得一个 <strong>::/64</strong> 的 IPv6 网段。以下为创建完成后获得 Tunnel 详情。实际上，He.net 是支持申请 <strong>::/48</strong> 的 IPv6 网段的，只需要点击以下图片的 Assign/48 按钮即可。</p>
 
-<p><img src="https://i.lisz.top/blog/qHbE8a.webp" alt="查看分配的 /64 网段 Check /64 ip blocks" />
-<img src="https://i.lisz.top/blog/1t2OP4.webp" alt="请求分配 /48 网段 Check /48 ip blocks" /></p>
+<p><img src="https://i.lisz.top/blog/qHbE8a.webp" alt="查看分配的 /64 网段 Check /64 ip blocks">
+<img src="https://i.lisz.top/blog/1t2OP4.webp" alt="请求分配 /48 网段 Check /48 ip blocks"></p>
 
 <p>  如上所示，现在获得了<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>网段。</p>
 
@@ -379,7 +380,7 @@ iface he-ipv6 inet6 v4tunnel
 
 <h4 id="安装-zerotier">安装 zerotier</h4>
 
-<p>  zerotier 的安装比较简单，Mac 操作系统、Windows 操作系统可以直接访问<a href="https://zerotier.com/download/">zerotier官网</a>获取安装包。Linux 操作系统上则只需要使用官方提供的一键脚本即可，如下所示。</p>
+<p>  zerotier 的安装比较简单，Mac 操作系统、Windows 操作系统可以直接访问<a href="https://zerotier.com/download/" rel="nofollow" target="_blank" class="extlinks">zerotier官网</a>获取安装包。Linux 操作系统上则只需要使用官方提供的一键脚本即可，如下所示。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-s</span> https://install.zerotier.com | <span class="nb">sudo </span>bash
 </code></pre></div></div>
@@ -388,37 +389,37 @@ iface he-ipv6 inet6 v4tunnel
 
 <h4 id="配置-zerotier-网络">配置 zerotier 网络</h4>
 
-<p>  访问<a href="https://my.zerotier.com/">zerotier web配置面板</a>，注册一个 zerotier 账户并登录。由于 zerotier 的免费套餐允许 100 台设备同时连入到 zerotier 网络中，所以可以放心大胆使用。登录后选择 Networks 创建一个新的网络，并进入开始配置。网络默认是隐秘网络，需要通过验证后才可以加入，这样也比较安全。此处创建完成后会获得一个网络 ID，在 ECS 服务器上执行以下命令申请加入到该 zerotier 网络。</p>
+<p>  访问<a href="https://my.zerotier.com/" rel="nofollow" target="_blank" class="extlinks">zerotier web配置面板</a>，注册一个 zerotier 账户并登录。由于 zerotier 的免费套餐允许 100 台设备同时连入到 zerotier 网络中，所以可以放心大胆使用。登录后选择 Networks 创建一个新的网络，并进入开始配置。网络默认是隐秘网络，需要通过验证后才可以加入，这样也比较安全。此处创建完成后会获得一个网络 ID，在 ECS 服务器上执行以下命令申请加入到该 zerotier 网络。</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zerotier-cli <span class="nb">join </span>159924d6308e1d7e
 </code></pre></div></div>
 
 <p>  以下的配置主要是配置 zerotier 网络的路由和 IPv6 地址分配。网络创建完成后本身会自动创建一个<code class="language-plaintext highlighter-rouge">10.147.17.0/24</code>的局域网 IPv4 网段，并添加默认路由。由于刚才已经在 ECS 服务器上申请加入了，现在需要在 Memebers 里勾选最前面的 Auth 选项。过几秒后，ECS 服务器会被自动分配在设定好的 IPv4  网段中的一个地址，这里也可以自定义某一个段内地址。</p>
 
-<p><img src="https://i.lisz.top/blog/f7aPPA.webp" alt="加入 zerotier" />
-<img src="https://i.lisz.top/blog/SOsz0I.webp" alt="允许加入 zerotier" />
-<img src="https://i.lisz.top/blog/Godokw.webp" alt="查看分配的 ip check ip" /></p>
+<p><img src="https://i.lisz.top/blog/f7aPPA.webp" alt="加入 zerotier">
+<img src="https://i.lisz.top/blog/SOsz0I.webp" alt="允许加入 zerotier">
+<img src="https://i.lisz.top/blog/Godokw.webp" alt="查看分配的 ip check ip"></p>
 
 <p>  接下来需要做的就是配置 zerotier 可用的 IPv6 网段及相关路由。开启 zerotier IPv6，并添加可用网段<code class="language-plaintext highlighter-rouge">2001:470:811d::/48</code>到可分配地址池中，如下图所示。</p>
 
-<p><img src="https://i.lisz.top/blog/psp65s.webp" alt="添加 IPv6 网段 Add IPv6 blocks" />
-<img src="https://i.lisz.top/blog/eQODfX.webp" alt="查看添加结果 Check results" /></p>
+<p><img src="https://i.lisz.top/blog/psp65s.webp" alt="添加 IPv6 网段 Add IPv6 blocks">
+<img src="https://i.lisz.top/blog/eQODfX.webp" alt="查看添加结果 Check results"></p>
 
 <p>  如下图所示，读取 zerotier 根据 RFC4193 文档分配给 ECS 服务器的局域网 IPv6 地址。此处为<code class="language-plaintext highlighter-rouge">fd15:9924:d630:8e1d:7e99:9333:8a13:b4bb</code>。</p>
 
-<p><img src="https://i.lisz.top/blog/pY0uEK.webp" alt="查看主机被分配内网 IPv6 地址 Check internal IPv6 address" /></p>
+<p><img src="https://i.lisz.top/blog/pY0uEK.webp" alt="查看主机被分配内网 IPv6 地址 Check internal IPv6 address"></p>
 
 <p>  接下来添加两条 IPv6 的路由到 zerotier 的默认路由中。一条是设置 ECS 服务器为 zerotier 网络中的网关，如下图所示。</p>
 
-<p><img src="https://i.lisz.top/blog/thidmP.webp" alt="添加 IPv6 网关 Add IPv6 gateway" /></p>
+<p><img src="https://i.lisz.top/blog/thidmP.webp" alt="添加 IPv6 网关 Add IPv6 gateway"></p>
 
 <p>  另一条是添加公网 IPv6 网段的默认路由，如下图所示。</p>
 
-<p><img src="https://i.lisz.top/blog/tPhf5g.webp" alt="添加内网默认路由 Add default route" />
-<img src="https://i.lisz.top/blog/KP6Bc2.webp" alt="查看所有默认路由 Check all default routes" /></p>
+<p><img src="https://i.lisz.top/blog/tPhf5g.webp" alt="添加内网默认路由 Add default route">
+<img src="https://i.lisz.top/blog/KP6Bc2.webp" alt="查看所有默认路由 Check all default routes"></p>
 
 <p>  完成以上步骤可以看到如下图所示的 ECS 服务器也被分配到了一个可用的公网 IPv6 地址。
-<img src="https://i.lisz.top/blog/3Yidfo.webp" alt="查看被分配的公网 IPv6 地址 Check public IPv6 address" /></p>
+<img src="https://i.lisz.top/blog/3Yidfo.webp" alt="查看被分配的公网 IPv6 地址 Check public IPv6 address"></p>
 
 <p>  为了让 zerotier 可以在 ECS 服务器上成功创建公网 IPv6 地址以及添加默认路由，需要在 ECS 服务器上做如下设置。设置成功后会看到网卡上出现上图中分配的公网 IPv6 地址。所有 zerotier 初次连入都需要进行此步骤。</p>
 
@@ -504,7 +505,7 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -515,14 +516,14 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
                 </p>
               
               <p><span>本文标题：</span>《 使用 zerotier 搭建自己的 IPv6 网络 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/zerotier.html">https://lisz.me/tech/linux/zerotier.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/linux/zerotier.html" class="cplink">https://lisz.me/tech/linux/zerotier.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#实践">实践</a><ul><li><a href="#环境">环境</a></li><li><a href="#申请-ipv6-网段">申请 IPv6 网段</a></li><li><a href="#配置-ecs-服务器的-ipv6">配置 ECS 服务器的 IPv6</a></li><li><a href="#配置-zerotier">配置 zerotier</a><ul><li><a href="#安装-zerotier">安装 zerotier</a></li><li><a href="#配置-zerotier-网络">配置 zerotier 网络</a></li></ul></li><li><a href="#配置-ipv6-广播">配置 IPv6 广播</a><ul><li><a href="#配置-ndppd-广播">配置 NDPPD 广播</a></li></ul></li><li><a href="#配置其他客户端">配置其他客户端</a><ul><li><a href="#linux-客户端">Linux 客户端</a></li><li><a href="#mac-客户端">Mac 客户端</a></li></ul></li><li><a href="#测试及问题解决">测试及问题解决</a></li></ul></li><li><a href="#结语">结语</a></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a></li><li><a onclick="scrollToAdjust('实践')">实践</a><ul><li><a onclick="scrollToAdjust('环境')">环境</a></li><li><a onclick="scrollToAdjust('申请-ipv6-网段')">申请 IPv6 网段</a></li><li><a onclick="scrollToAdjust('配置-ecs-服务器的-ipv6')">配置 ECS 服务器的 IPv6</a></li><li><a onclick="scrollToAdjust('配置-zerotier')">配置 zerotier</a><ul><li><a onclick="scrollToAdjust('安装-zerotier')">安装 zerotier</a></li><li><a onclick="scrollToAdjust('配置-zerotier-网络')">配置 zerotier 网络</a></li></ul></li><li><a onclick="scrollToAdjust('配置-ipv6-广播')">配置 IPv6 广播</a><ul><li><a onclick="scrollToAdjust('配置-ndppd-广播')">配置 NDPPD 广播</a></li></ul></li><li><a onclick="scrollToAdjust('配置其他客户端')">配置其他客户端</a><ul><li><a onclick="scrollToAdjust('linux-客户端')">Linux 客户端</a></li><li><a onclick="scrollToAdjust('mac-客户端')">Mac 客户端</a></li></ul></li><li><a onclick="scrollToAdjust('测试及问题解决')">测试及问题解决</a></li></ul></li><li><a onclick="scrollToAdjust('结语')">结语</a></li></ul>
         </div>
       </div>
       
@@ -637,56 +638,68 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -773,6 +786,19 @@ ping6 <span class="nt">-c</span> 2001:470:811d::80
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');

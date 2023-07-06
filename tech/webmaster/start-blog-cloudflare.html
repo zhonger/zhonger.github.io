@@ -68,7 +68,7 @@
   <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
   <![endif]-->
   
-  <div id="all" class="post">
+  <div id="all" class="post" data-theme="default">
   
     <div class="alert-tip" id="no-previous">
       已经是最新一篇文章了！
@@ -76,7 +76,7 @@
     <div class="alert-tip" id="no-next">
       已经是最后一篇文章了！
     </div>
-    <input id="nm-switch" type="hidden" value="false"> <header class="g-header">
+    <input id="nm-switch" type="hidden" value="false"> <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
@@ -299,7 +299,8 @@
       
       <div class="container">  
         <div class="contents">
-          <article class="markdown-body">
+          <article class="markdown-body post">
+              
             <h2 id="前言">前言</h2>
 
 <p>  众所周知，Cloudflare 是一家世界知名的 CDN 网络提供商，其在 DDoS 保护、网页应用程序防火墙、域名服务器、内容分发网络等服务上都有非常优秀。2018 年 4 月 1 日，Cloudflare 与 ASNIC 联合推出了声称“隐私第一”的域名系统解析服务。之后的 11 月 11 日又推出了 1.1.1.1 解析器的手机应用程序、电脑应用程序。并且，Cloudflare 也一直在为 HTTP 协议规范、IPv6 推广部署等方面作出了贡献。Cloudflare 提供了基础的免费服务给广大用户，同时也带来了最新的 Web 服务体验，Cloudflare Pages 就是这样的一款产品。</p>
@@ -310,29 +311,29 @@
 
 <h4 id="登录">登录</h4>
 
-<p>  访问 <a href="https://pages.cloudflare.com/">Cloudflare Pages 官网</a>，点击 Sign Up 按钮使用 Cloudflare 账户登录。</p>
+<p>  访问 <a href="https://pages.cloudflare.com/" rel="nofollow" target="_blank" class="extlinks">Cloudflare Pages 官网</a>，点击 Sign Up 按钮使用 Cloudflare 账户登录。</p>
 
-<p><img src="https://i.lisz.top/blog/a0C23w.webp" alt="登录 Login" /></p>
+<p><img src="https://i.lisz.top/blog/a0C23w.webp" alt="登录 Login"></p>
 
 <h4 id="创建项目">创建项目</h4>
 
 <p>  登录后点击<strong>创建项目</strong>按钮开始创建。</p>
 
-<p><img src="https://i.lisz.top/blog/s12Jkr.webp" alt="创建项目 Create project" /></p>
+<p><img src="https://i.lisz.top/blog/s12Jkr.webp" alt="创建项目 Create project"></p>
 
 <p>  选择一个 Github 的项目，比如 zhonger/zhonger.github.io。</p>
 
-<p><img src="https://i.lisz.top/blog/YwXaml.webp" alt="选择项目 Select project" /></p>
+<p><img src="https://i.lisz.top/blog/YwXaml.webp" alt="选择项目 Select project"></p>
 
 <p>  设置永久访问域名前缀，部署分支，以及所用的静态生成框架，然后点击<strong>保存并部署</strong>。</p>
 
-<p><img src="https://i.lisz.top/blog/Q3uTjI.webp" alt="设置域名前缀 Set domain prefix" /></p>
+<p><img src="https://i.lisz.top/blog/Q3uTjI.webp" alt="设置域名前缀 Set domain prefix"></p>
 
 <h4 id="预览">预览</h4>
 
 <p>  添加完成后等待完成构建与部署，可以看到目前绑定的域名。点击访问站点即可跳转预览</p>
 
-<p><img src="https://i.lisz.top/blog/t8ZdUt.webp" alt="预览 Preview" /></p>
+<p><img src="https://i.lisz.top/blog/t8ZdUt.webp" alt="预览 Preview"></p>
 
 <h3 id="评价">评价</h3>
 
@@ -342,7 +343,7 @@
               <p>
                 <span>版权声明：</span>
                 如无特别声明，本文版权归
-                <a href="https://lisz.me">仲儿的自留地</a>
+                <a href="https://lisz.me" class="cplink">仲儿的自留地</a>
                 所有，转载请注明本文链接。 
               </p>
               
@@ -353,14 +354,14 @@
                 </p>
               
               <p><span>本文标题：</span>《 个人免费博客花式搭建指南 Cloudflare 篇 》</p>
-              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog-cloudflare.html">https://lisz.me/tech/webmaster/start-blog-cloudflare.html</a></p>
+              <p><span>本文链接：</span><a href="https://lisz.me/tech/webmaster/start-blog-cloudflare.html" class="cplink">https://lisz.me/tech/webmaster/start-blog-cloudflare.html</a></p>
               <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！</p>
             </div>
           </article>
         </div>   
         <div class="table-of-contents">
           <h2>目录</h2>
-          <ul><li><a href="#前言">前言</a></li><li><a href="#实现与评价">实现与评价</a><ul><li><a href="#cloudflare">Cloudflare</a><ul><li><a href="#登录">登录</a></li><li><a href="#创建项目">创建项目</a></li><li><a href="#预览">预览</a></li></ul></li><li><a href="#评价">评价</a></li></ul></li></ul>
+          <ul><li><a onclick="scrollToAdjust('前言')">前言</a></li><li><a onclick="scrollToAdjust('实现与评价')">实现与评价</a><ul><li><a onclick="scrollToAdjust('cloudflare')">Cloudflare</a><ul><li><a onclick="scrollToAdjust('登录')">登录</a></li><li><a onclick="scrollToAdjust('创建项目')">创建项目</a></li><li><a onclick="scrollToAdjust('预览')">预览</a></li></ul></li><li><a onclick="scrollToAdjust('评价')">评价</a></li></ul></li></ul>
         </div>
       </div>
       
@@ -475,56 +476,68 @@
 
 
 <footer class="g-footer">
-  <section class="links">仲儿的自留地 ©
-  
-  
-    2015
-    -
-  
-  2023
-  
-    <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
-  
-  </section>
-  <section class="links">
-    本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-     (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.0" target="_blank" class="extlinks">v1.2.0</a>)  
+  <div class="g-container">
+    <div class="g-left">
+      <section class="links">
+        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+        
+      </section>
+      <section class="links">仲儿的自留地 ©
+        
+        
+          2015
+          -
+        
+        2023
+        
+          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks">沪ICP备15014851号</a>
+        
+      </section>
+      
+      <section>
+        <span id="busuanzi_container_site_pv">
+          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+        </span>
+        <span id="busuanzi_container_site_uv">
+          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+        </span>
+      </section>
+      
+      <section>
+        
+          本站已运行 
+          <span class="alivetime_days"></span> 天
+          <span class="alivetime_hours"></span> 小时
+          <span class="alivetime_minutes"></span> 分
+          <span class="alivetime_seconds"></span> 秒
+        
+      </section>
+    </div>
+    <div class="g-right">
+      
+      
+      <section class="badges">
+        
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+            <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
+          </a>
+        
+        
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+            <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          </a>
+        
+        
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+            <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          </a>
+        
+      </section>
+      
+    </div>
     
-  </section>
-  
-  
-  <section>
-    <span id="busuanzi_container_site_pv">
-      👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
-    </span>
-    <span id="busuanzi_container_site_uv">
-      👤 总访问量 <span id="busuanzi_value_site_uv"></span>
-    </span>
-  </section>
-  
-  
-  <section>
-    
-      本站已运行 
-      <span class="alivetime_days"></span> 天
-      <span class="alivetime_hours"></span> 小时
-      <span class="alivetime_minutes"></span> 分
-      <span class="alivetime_seconds"></span> 秒
-    
-    
-    <br/>
-    
-    
-      <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
-        <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
-      </a>
-    
-    
-      <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
-        <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-      </a>
-    
-  </section>
+  </div>
 </footer>
 <div class="cookie-tip">
    为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
@@ -611,6 +624,19 @@
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
   <script>
+    /**
+    * Better Scroll Experience
+    */
+    function scrollToAdjust(id){
+      var element = document.getElementById(id);
+      var headerOffset = 90;
+      var elementPosition = element.getBoundingClientRect().top;
+      var offsetPosition = elementPosition + window.scrollY - headerOffset;
+      window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+      });
+    }
       // 给图片添加链接
       $(document).ready(function() {
           var baseurl = $("meta[property='og:baseurl']").attr('content');
