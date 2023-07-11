@@ -45,10 +45,10 @@ permalink: /logs
 - 2020年2月，由于 lisz.io 面临到期且续费价格比较贵，续费一年几乎可以养好几个别的域名了，成本略高，所以决定用 lisz.me 来替代成为主域名。
 - 2020年8月，完成了日语学习，也有更多时间开展实践，恢复了博客更新。
 - 2020年12月，因博士研究室展示需要，将个人博客进行改版：
-    - 增加双语学术首页，原来博客首页移动到子目录 /blog 下；
-    - 增加归档页面 /archives.html ，集中列表展示所有文章；
-    - 增加图片放大、图片集的功能，提高可阅读性；
-    - 利用 Google Lighthouse 对页面的各项性能进行检测，并进行修复提升各项性能，在 SEO、Accessibility、Best Practices 三方面达到 100 分，在 Performance 上达到 86 分。
+  - 增加双语学术首页，原来博客首页移动到子目录 /blog 下；
+  - 增加归档页面 /archives.html ，集中列表展示所有文章；
+  - 增加图片放大、图片集的功能，提高可阅读性；
+  - 利用 Google Lighthouse 对页面的各项性能进行检测，并进行修复提升各项性能，在 SEO、Accessibility、Best Practices 三方面达到 100 分，在 Performance 上达到 86 分。
 
 ### 2021
 
@@ -75,9 +75,9 @@ permalink: /logs
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
-| 阿里云服务器 | [www.lisz.ink](https://www.lisz.ink) | 是 | 否 | 国内单节点 |
-| 腾讯云服务器 | [luish.cc](https://luish.cc) | 是 | 否 | 国内单节点 |
-| 腾讯云 COS | [lisz.ink](https://lisz.ink) | 是 | 否 | 国内 CDN 节点 |
+| 阿里云服务器 | www.lisz.ink(下线) | 是 | 否 | 国内单节点 |
+| 腾讯云服务器 | luish.cc(下线) | 是 | 否 | 国内单节点 |
+| 腾讯云 COS | lisz.ink(下线) | 是 | 否 | 国内 CDN 节点 |
 | 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
 | 又拍云 CDN | blog.lisz.ink(下线) | 是 | 是 | 国内 CDN 节点 |
 | Vercel | [zhonger.vercel.app](https://zhonger.vercel.app) | 是 | 否 | 美国节点 |
