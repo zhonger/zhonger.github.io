@@ -90,7 +90,7 @@ links:
   PICTL: 'https://github.com/zhonger/pictl'
 
 # Beian 备案号
-beian: '沪ICP备15014851号'
+beian: ''
 
 # CC License
 cclicense: true
