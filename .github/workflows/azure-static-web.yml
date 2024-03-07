@@ -22,7 +22,8 @@ jobs:
         with:
           ruby-version: '3.1.0'
           bundler: 'latest'
-          bundler-cache: true
+          bundler-cache: false
+      - run: bundle install
       - run: bundle exec jekyll build
       - name: Build And Deploy
         id: builddeploy
