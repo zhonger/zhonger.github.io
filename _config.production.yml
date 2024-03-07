@@ -64,7 +64,7 @@ comments:
   disqus: true
   disqus_url: 'https://zhonger.disqus.com/embed.js'
   waline: true
-  waline_url: 'https://lisz-waline.deta.dev/'
+  waline_url: 'https://lisz-waline.lisz.top/'
   waline_reaction: true
   waline_locale: "{reaction0: '赞一个', reaction1: '踩一下', reaction2: '有点酷', reaction3: '看不懂', reaction4: '啥玩意', reaction5: '想睡觉'}"
 
