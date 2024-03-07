@@ -15,13 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1.0'
-          bundler: 'latest'
           bundler-cache: false
       - run: bundle install
       - run: bundle exec jekyll build
