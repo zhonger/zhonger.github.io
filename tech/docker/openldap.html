@@ -129,7 +129,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> about </a>
+                    <a class="dropdown-toggle" href="#"> about </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -168,7 +168,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> collections </a>
+                    <a class="dropdown-toggle" href="#"> collections </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -288,6 +288,10 @@
       
       
       <div class="container">  
+        
+<div class="submenu hidden">
+
+</div>
         <div class="contents">
           <article class="markdown-body post">
               
@@ -389,12 +393,13 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
             </div>
           </article>
         </div>   
+        
         <div class="table-of-contents">
           <h2>目录</h2>
           <ul><li><a onclick="scrollToAdjust('ldap-协议入门')">LDAP 协议入门</a><ul><li><a onclick="scrollToAdjust('如何操作-ldap-服务器？')">如何操作 LDAP 服务器？</a></li></ul></li><li><a onclick="scrollToAdjust('采用-docker-快速部署')">采用 Docker 快速部署</a></li><li><a onclick="scrollToAdjust('访问')">访问</a></li><li><a onclick="scrollToAdjust('参考资料')">参考资料</a></li></ul>
+        
         </div>
       </div>
-      
 
       
       <div class="social-share-wrapper">
@@ -510,7 +515,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.0" target="_blank" class="extlinks">v1.3.0</a>)  
         
       </section>
       <section class="links">仲儿的自留地 ©
@@ -521,16 +526,28 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
         
         2024
         
-          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks"></a>
-        
+        <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-rss"></use>
+          </svg> RSS  
+        </a>
+        <a href="/tos" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-tos"></use>
+          </svg> 使用条款  
+        </a>
       </section>
       
-      <section>
+      <section class="links">
         <span id="busuanzi_container_site_pv">
-          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-pv"></use>
+          </svg> 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
         </span>
         <span id="busuanzi_container_site_uv">
-          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-user"></use>
+          </svg> 总访问量 <span id="busuanzi_value_site_uv"></span>
         </span>
       </section>
       
@@ -549,17 +566,17 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
       
       <section class="badges">
         
-          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog"> 
             <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
           </a>
         
         
-          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole"> 
             <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
           </a>
         
         
-          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI"> 
             <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
           </a>
         
@@ -574,30 +591,27 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 
   <button id="accept-tos">同意</button>
 </div>
-<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
-  <svg class="icon list day" aria-hidden="true">
-    <use xlink:href="#icon-list-day"></use>
-  </svg>
-  <svg class="icon list night" aria-hidden="true">
-    <use xlink:href="#icon-list-night"></use>
-  </svg>
-  <svg class="icon exit day" aria-hidden="true">
-    <use xlink:href="#icon-exit-day"></use>
-  </svg>
-  <svg class="icon exit night" aria-hidden="true">
-    <use xlink:href="#icon-exit-night"></use>
-  </svg>
-</button>
-<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
-  <svg class="icon up day" aria-hidden="true">
-    <use xlink:href="#icon-up-day"></use>
-  </svg>
-  <svg class="icon up night" aria-hidden="true">
-    <use xlink:href="#icon-up-night"></use>
-  </svg>
-</button>
 
-
+<section id="tools">
+  
+  
+  <div class="tool toc">
+    <svg class="icon b1 active" aria-hidden="true">
+      <use xlink:href="#icon-toc"></use>
+    </svg>
+    <svg class="icon b2" aria-hidden="true">
+      <use xlink:href="#icon-exit"></use>
+    </svg>
+  </div>
+  
+</section>
+<section id="bttb" aria-label="Scroll back to top" class="bttb">
+  <div class="tool">
+    <svg class="icon top" aria-hidden="true">
+      <use xlink:href="#icon-top"></use>
+    </svg>
+  </div>
+</section>
     
     <div class="modal">
         <div class="modal-content">
@@ -779,7 +793,7 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
           });
       });
   </script>
-  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+  <script src="https://at.alicdn.com/t/c/font_3046306_9tox63bysiw.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -823,25 +837,21 @@ LDAP 目录树的最顶部就是根，也就是所谓的<span class="s2">"基准
 //     console.log('不支持sw')
 // }
 </script>
-	<!--
-Author: Ray-Eldath
-refer to:
- - http://docs.mathjax.org/en/latest/options/index.html
--->
-
+	
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
 		jax: ["input/TeX", "output/HTML-CSS"],
 		tex2jax: {
-			inlineMath: [ ["$", "$"] ],
-			displayMath: [ ["$$", "$$"] ],
+			inlineMath: [['$', '$'], ["\\(", "\\)"]],
+			processEscapes: true,
 			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
 		},
 		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
       });
     </script>
+
 
    
     <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>

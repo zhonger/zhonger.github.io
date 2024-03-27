@@ -16,6 +16,7 @@
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="仲儿的自留地">
     <meta property="og:gray" content="false">
+    <meta property="og:lang" content="zh-Hans">
     
     <meta name="alivestart" content="08/08/2015">
     
@@ -39,6 +40,9 @@
     
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.css">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
     <link rel="stylesheet" href="/assets/css/app.min.css">
@@ -110,7 +114,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> about </a>
+                    <a class="dropdown-toggle" href="#"> about </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -149,7 +153,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> collections </a>
+                    <a class="dropdown-toggle" href="#"> collections </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -267,7 +271,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -312,7 +316,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -361,7 +365,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -404,7 +408,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -449,7 +453,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -488,7 +492,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -527,7 +531,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -570,7 +574,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -613,7 +617,7 @@
     
         
         
-<article class="article-item keep-top">
+<article class="article-item">
 
     
         <div class="post-cover">
@@ -756,12 +760,49 @@
             </ul>
             
         </section>
-
+        
+            <section class="tags-card">
+    <div class="links">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-calendar"></use>
+        </svg> 日历
+    </div>
+    <div id="cal-heatmap">
+        <div id="ex-ghDay" class="calendar-top">
+            <a id="ex-ghDay-prev" class="button" href="#" aria-label="Prev month">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-left"></use>
+                </svg>       
+            </a>
+            <a id="ex-ghDay-next" class="button" href="#" aria-label="Next month">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-right"></use>
+                </svg>
+            </a>
+            <a id="ex-ghDay-today" class="button" href="#" aria-label="Rotate view to today">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-rotate"></use>
+                </svg>
+            </a>
+            <div class="legends">
+                <span class="text">少</span>
+                <div id="ex-ghDay-legend"></div>
+                <span class="text">多</span>
+            </div>
+        </div>
+    </div>
+</section>
+        
         
         
         
         <section class="tags-card">
-            <div class="links" rel="links">热门标签</div>
+            <div class="links" rel="links">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-tags"></use>
+                </svg>                
+                热门标签
+            </div>
             
             
                 
@@ -3182,7 +3223,12 @@
 
         
         <section class="tags-card">
-            <div class="links" rel="links">链接</div>
+            <div class="links" rel="links">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-links"></use>
+                </svg>       
+                链接
+            </div>
             
                 <a href="https://fortran-tutorial.lisz.me/" target="_blank" class="tag" rel="noreferrer"> Fortran 入门 </a>
             
@@ -3195,7 +3241,12 @@
 
         <section class="tags-card">
             
-            <div class="links">最近更新</div>
+            <div class="links">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-new"></use>
+                </svg>       
+                最近更新
+            </div>
             <ul class="latest-articles">
                 
                     <li>
@@ -3259,7 +3310,7 @@
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.0" target="_blank" class="extlinks">v1.3.0</a>)  
         
       </section>
       <section class="links">仲儿的自留地 ©
@@ -3270,16 +3321,28 @@
         
         2024
         
-          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks"></a>
-        
+        <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-rss"></use>
+          </svg> RSS  
+        </a>
+        <a href="/tos" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-tos"></use>
+          </svg> 使用条款  
+        </a>
       </section>
       
-      <section>
+      <section class="links">
         <span id="busuanzi_container_site_pv">
-          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-pv"></use>
+          </svg> 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
         </span>
         <span id="busuanzi_container_site_uv">
-          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-user"></use>
+          </svg> 总访问量 <span id="busuanzi_value_site_uv"></span>
         </span>
       </section>
       
@@ -3298,17 +3361,17 @@
       
       <section class="badges">
         
-          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog"> 
             <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
           </a>
         
         
-          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole"> 
             <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
           </a>
         
         
-          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI"> 
             <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
           </a>
         
@@ -3323,30 +3386,18 @@
 
   <button id="accept-tos">同意</button>
 </div>
-<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
-  <svg class="icon list day" aria-hidden="true">
-    <use xlink:href="#icon-list-day"></use>
-  </svg>
-  <svg class="icon list night" aria-hidden="true">
-    <use xlink:href="#icon-list-night"></use>
-  </svg>
-  <svg class="icon exit day" aria-hidden="true">
-    <use xlink:href="#icon-exit-day"></use>
-  </svg>
-  <svg class="icon exit night" aria-hidden="true">
-    <use xlink:href="#icon-exit-night"></use>
-  </svg>
-</button>
-<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
-  <svg class="icon up day" aria-hidden="true">
-    <use xlink:href="#icon-up-day"></use>
-  </svg>
-  <svg class="icon up night" aria-hidden="true">
-    <use xlink:href="#icon-up-night"></use>
-  </svg>
-</button>
 
-
+<section id="tools">
+  
+  
+</section>
+<section id="bttb" aria-label="Scroll back to top" class="bttb">
+  <div class="tool">
+    <svg class="icon top" aria-hidden="true">
+      <use xlink:href="#icon-top"></use>
+    </svg>
+  </div>
+</section>
 
       </div>
     </div>
@@ -3360,15 +3411,23 @@
         </div>
     </div>
     
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/Tooltip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/LegendLite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/CalendarLabel.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <script src="/assets/js/app.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
-    <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+    <script src="https://at.alicdn.com/t/c/font_3046306_9tox63bysiw.js"></script>
     
     
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -3413,25 +3472,21 @@
 //     console.log('不支持sw')
 // }
 </script>
-    <!--
-Author: Ray-Eldath
-refer to:
- - http://docs.mathjax.org/en/latest/options/index.html
--->
-
+    
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
 		jax: ["input/TeX", "output/HTML-CSS"],
 		tex2jax: {
-			inlineMath: [ ["$", "$"] ],
-			displayMath: [ ["$$", "$$"] ],
+			inlineMath: [['$', '$'], ["\\(", "\\)"]],
+			processEscapes: true,
 			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
 		},
 		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
       });
     </script>
+
 
      
     <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>

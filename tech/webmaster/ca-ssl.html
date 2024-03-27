@@ -129,7 +129,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> about </a>
+                    <a class="dropdown-toggle" href="#"> about </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -168,7 +168,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle"> collections </a>
+                    <a class="dropdown-toggle" href="#"> collections </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -290,6 +290,10 @@
       
       
       <div class="container">  
+        
+<div class="submenu hidden">
+
+</div>
         <div class="contents">
           <article class="markdown-body post">
               
@@ -549,12 +553,13 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
             </div>
           </article>
         </div>   
+        
         <div class="table-of-contents">
           <h2>目录</h2>
           <ul><li><a onclick="scrollToAdjust('前言')">前言</a><ul><li><a onclick="scrollToAdjust('内网-https-化的必要性')">内网 HTTPS 化的必要性</a></li><li><a onclick="scrollToAdjust('根证书')">根证书</a></li></ul></li><li><a onclick="scrollToAdjust('实践')">实践</a><ul><li><a onclick="scrollToAdjust('生成根证书')">生成根证书</a><ul><li><a onclick="scrollToAdjust('安装-openssl-(可选)')">安装 OpenSSL (可选)</a></li><li><a onclick="scrollToAdjust('创建根密钥')">创建根密钥</a></li><li><a onclick="scrollToAdjust('创建根证书并签名')">创建根证书并签名</a></li><li><a onclick="scrollToAdjust('验证根证书')">验证根证书</a></li><li><a onclick="scrollToAdjust('安装根证书')">安装根证书</a></li></ul></li><li><a onclick="scrollToAdjust('签发证书')">签发证书</a><ul><li><a onclick="scrollToAdjust('安装-minica')">安装 minica</a></li><li><a onclick="scrollToAdjust('签发-ssl-证书')">签发 SSL 证书</a></li></ul></li></ul></li><li><a onclick="scrollToAdjust('其他')">其他</a><ul><li><a onclick="scrollToAdjust('mkcert')">mkcert</a></li><li><a onclick="scrollToAdjust('根证书被伪造')">根证书被伪造</a></li><li><a onclick="scrollToAdjust('其他平台安装根证书')">其他平台安装根证书</a><ul><li><a onclick="scrollToAdjust('linux-server')">Linux Server</a></li><li><a onclick="scrollToAdjust('android-或-harmonyos')">Android 或 HarmonyOS</a></li><li><a onclick="scrollToAdjust('ios-或-ipad-os')">IOS 或 iPad OS</a></li></ul></li></ul></li><li><a onclick="scrollToAdjust('参考资料')">参考资料</a></li></ul>
+        
         </div>
       </div>
-      
 
       
       <div class="social-share-wrapper">
@@ -670,7 +675,7 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v.1.2.1" target="_blank" class="extlinks">v1.2.1</a>)  
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.0" target="_blank" class="extlinks">v1.3.0</a>)  
         
       </section>
       <section class="links">仲儿的自留地 ©
@@ -681,16 +686,28 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
         
         2024
         
-          <a href="https://beian.miit.gov.cn/" target="_blank" class="extlinks"></a>
-        
+        <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-rss"></use>
+          </svg> RSS  
+        </a>
+        <a href="/tos" target="_blank" aria-label="Terms of Service" class="others">
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-tos"></use>
+          </svg> 使用条款  
+        </a>
       </section>
       
-      <section>
+      <section class="links">
         <span id="busuanzi_container_site_pv">
-          👁️ 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-pv"></use>
+          </svg> 总浏览量 <span id="busuanzi_value_site_pv"></span> <b>·</b>
         </span>
         <span id="busuanzi_container_site_uv">
-          👤 总访问量 <span id="busuanzi_value_site_uv"></span>
+          <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-user"></use>
+          </svg> 总访问量 <span id="busuanzi_value_site_uv"></span>
         </span>
       </section>
       
@@ -709,17 +726,17 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
       
       <section class="badges">
         
-          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog"> 
+          <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog"> 
             <img src="https://img.foreverblog.cn/logo_en_default.png" alt=""> 
           </a>
         
         
-          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole"> 
+          <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole"> 
             <img src="https://img.foreverblog.cn/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
           </a>
         
         
-          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI"> 
+          <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI"> 
             <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
           </a>
         
@@ -734,30 +751,27 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 
   <button id="accept-tos">同意</button>
 </div>
-<button id="list" aria-label="Scroll back to top" class="mobile-list" type="button">
-  <svg class="icon list day" aria-hidden="true">
-    <use xlink:href="#icon-list-day"></use>
-  </svg>
-  <svg class="icon list night" aria-hidden="true">
-    <use xlink:href="#icon-list-night"></use>
-  </svg>
-  <svg class="icon exit day" aria-hidden="true">
-    <use xlink:href="#icon-exit-day"></use>
-  </svg>
-  <svg class="icon exit night" aria-hidden="true">
-    <use xlink:href="#icon-exit-night"></use>
-  </svg>
-</button>
-<button id="bttb" aria-label="Scroll back to top" class="bttb" type="button">
-  <svg class="icon up day" aria-hidden="true">
-    <use xlink:href="#icon-up-day"></use>
-  </svg>
-  <svg class="icon up night" aria-hidden="true">
-    <use xlink:href="#icon-up-night"></use>
-  </svg>
-</button>
 
-
+<section id="tools">
+  
+  
+  <div class="tool toc">
+    <svg class="icon b1 active" aria-hidden="true">
+      <use xlink:href="#icon-toc"></use>
+    </svg>
+    <svg class="icon b2" aria-hidden="true">
+      <use xlink:href="#icon-exit"></use>
+    </svg>
+  </div>
+  
+</section>
+<section id="bttb" aria-label="Scroll back to top" class="bttb">
+  <div class="tool">
+    <svg class="icon top" aria-hidden="true">
+      <use xlink:href="#icon-top"></use>
+    </svg>
+  </div>
+</section>
     
     <div class="modal">
         <div class="modal-content">
@@ -939,7 +953,7 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
           });
       });
   </script>
-  <script src="https://at.alicdn.com/t/font_3046306_skfh9jzzbbf.js"></script>
+  <script src="https://at.alicdn.com/t/c/font_3046306_9tox63bysiw.js"></script>
   
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
@@ -983,25 +997,21 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
 //     console.log('不支持sw')
 // }
 </script>
-	<!--
-Author: Ray-Eldath
-refer to:
- - http://docs.mathjax.org/en/latest/options/index.html
--->
-
+	
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
 		jax: ["input/TeX", "output/HTML-CSS"],
 		tex2jax: {
-			inlineMath: [ ["$", "$"] ],
-			displayMath: [ ["$$", "$$"] ],
+			inlineMath: [['$', '$'], ["\\(", "\\)"]],
+			processEscapes: true,
 			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
 		},
 		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
       });
     </script>
+
 
    
     <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
