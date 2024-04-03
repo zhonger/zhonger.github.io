@@ -1,15 +1,27 @@
 
 <!DOCTYPE html>
 <html lang="zh-Hans">
-<head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>仲儿的自留地 - 仲儿的自留地</title>
-    <meta name="author"  content="zhonger">
+    <meta name="author" content="zhonger">
+    
     <meta name="description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
-    <meta name="keywords"  content="zhonger，zhonger的博客，nodejs，kvm">
+    <meta name="keywords" content="zhonger，zhonger的博客，nodejs，kvm">
+    
+    <meta property="post-date-format" content="0">
+    
+    <meta property="post-date" content="" />
+    
+    
+    <meta property="calendar-scale" content="year" />
+    <meta property="calendar-scheme" content="null" />
+    <meta property="calendar-color" content="null" />
+    
     <!-- Open Graph -->
-    <meta property="og:title" content="仲儿的自留地 - 仲儿的自留地">
+    <meta property="og:title"
+        content="仲儿的自留地 - 仲儿的自留地">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://lisz.me/blog/index.html">
     <meta property="og:baseurl" content="">
@@ -24,48 +36,60 @@
     <meta name="google-site-verification" content="v729JR7Zs4nX-YvgaPeo3p1ise9vTA-6cMhamSu6N5c" />
     
     <meta name="theme-color" content="#81BBFF" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/assets/img/touch/apple-touch-icon.png" />
+    <link rel="manifest" href=" /manifest.json" />
+    <link rel="apple-touch-icon" href=" /assets/img/touch/apple-touch-icon.png" />
     <link rel="Shortcut Icon" href="/assets/icons/favicon.ico">
     <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" async>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
     
     
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.css">
+
     
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.css">
+
+
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+
+
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client/dist/waline.css" />
-    <link rel="stylesheet" href="/assets/css/app.min.css">
+
+    <link rel="stylesheet" href=" /assets/css/app.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
-
-
-
-<body class="line-numbers" ontouchstart="">
-
+    
+    <body class="line-numbers" ontouchstart="">
+    
     <!--[if lt IE 10]>
     <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
     <![endif]-->
-    
-    <div id="all" data-theme="default">
-    
-      <input id="nm-switch" type="hidden" value="false">
-      <div class="visible">
-        <header class="g-header" data-theme="default">
+        
+            
+                <div id="all" data-theme="default">
+            
+        
+            <input id="nm-switch" type="hidden" value="false">
+            <header class="g-header" data-theme="default">
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    
+    <div id="travelling-toggle">
+        <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-train-subway"></use>
+            </svg>
+        </a>
+    </div>
+    
     <div id="mode-toggle">
         <svg class="icon icon-day" aria-hidden="true">
             <use xlink:href="#icon-day"></use>
@@ -178,6 +202,15 @@
                 </li>
                 
             
+            
+            <li class="travelling">
+                <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-train-subway"></use>
+                    </svg>
+                </a>
+            </li>
+            
             <li class="mode">
                 <svg class="icon day" aria-hidden="true">
                     <use xlink:href="#icon-day"></use>
@@ -190,8 +223,7 @@
     </nav>
 </header>
 
-
-<div
+            <div
     class="g-banner home-banner banner-theme-default"
     data-theme="default"
     style=""
@@ -225,7 +257,14 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/new-theme-h2o-ac.html" title="H2O-ac theme for Jekyll"></a>
-        <h2 class="post-title"><span class="keep-top">[置顶]</span> H2O-ac theme for Jekyll</h2>
+        <h2 class="post-title">
+            
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-pin"></use>
+                </svg>
+            
+            H2O-ac theme for Jekyll
+        </h2>
         
         <h3 class="post-subtitle">基于或许是最漂亮的 Jekyll 主题 H2O 的学术版</h3>
         
@@ -281,7 +320,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/project/pictl.html" title="图片处理及上传命令行工具 —— PICTL"></a>
-        <h2 class="post-title">图片处理及上传命令行工具 —— PICTL</h2>
+        <h2 class="post-title">
+            
+            图片处理及上传命令行工具 —— PICTL
+        </h2>
         
         <h3 class="post-subtitle">适合开发者提升静态博客撰文效率</h3>
         
@@ -326,7 +368,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/asdf.html" title="通用运行环境版本管理神器 ASDF"></a>
-        <h2 class="post-title">通用运行环境版本管理神器 ASDF</h2>
+        <h2 class="post-title">
+            
+            通用运行环境版本管理神器 ASDF
+        </h2>
         
         <h3 class="post-subtitle">利用 ASDF 一键管理各种软件开发运行环境</h3>
         
@@ -375,7 +420,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/modules-python.html" title="Modules 配置之 Python"></a>
-        <h2 class="post-title">Modules 配置之 Python</h2>
+        <h2 class="post-title">
+            
+            Modules 配置之 Python
+        </h2>
         
         <h3 class="post-subtitle">利用 Modules 动态管理集群中的 Python 环境</h3>
         
@@ -418,7 +466,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/modules.html" title="集群动态环境管理神器 Modules"></a>
-        <h2 class="post-title">集群动态环境管理神器 Modules</h2>
+        <h2 class="post-title">
+            
+            集群动态环境管理神器 Modules
+        </h2>
         
         <h3 class="post-subtitle">利用 Modules 动态管理集群中的基础软件环境</h3>
         
@@ -463,7 +514,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/ldap-openvpn.html" title="LDAP 集成之 OpenVPN 篇"></a>
-        <h2 class="post-title">LDAP 集成之 OpenVPN 篇</h2>
+        <h2 class="post-title">
+            
+            LDAP 集成之 OpenVPN 篇
+        </h2>
         
         <h3 class="post-subtitle">利用 LDAP 为 OpenVPN 提供用户认证服务</h3>
         
@@ -502,7 +556,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/ldap-squid.html" title="LDAP 集成之 Squid 篇"></a>
-        <h2 class="post-title">LDAP 集成之 Squid 篇</h2>
+        <h2 class="post-title">
+            
+            LDAP 集成之 Squid 篇
+        </h2>
         
         <h3 class="post-subtitle">利用 LDAP 为 Squid 提供用户认证服务</h3>
         
@@ -541,7 +598,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/internal-dns.html" title="内网私有域名解析"></a>
-        <h2 class="post-title">内网私有域名解析</h2>
+        <h2 class="post-title">
+            
+            内网私有域名解析
+        </h2>
         
         <h3 class="post-subtitle">如何为团队内部提供免费、可靠的私有域名解析解决方案</h3>
         
@@ -584,7 +644,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/ca-ssl.html" title="内网 HTTPS 可信证书"></a>
-        <h2 class="post-title">内网 HTTPS 可信证书</h2>
+        <h2 class="post-title">
+            
+            内网 HTTPS 可信证书
+        </h2>
         
         <h3 class="post-subtitle">如何为团队内部提供免费的可信证书解决方案</h3>
         
@@ -627,7 +690,10 @@
     
     <section class="post-preview">
         <a class="post-link" href="/tech/webmaster/ldap-nextcloud.html" title="LDAP 集成之 Nextcloud 篇"></a>
-        <h2 class="post-title">LDAP 集成之 Nextcloud 篇</h2>
+        <h2 class="post-title">
+            
+            LDAP 集成之 Nextcloud 篇
+        </h2>
         
         <h3 class="post-subtitle">利用 LDAP 为 Nextcloud 提供用户认证服务</h3>
         
@@ -656,6 +722,7 @@
     
 
 
+
         
             <nav class="pagination">
     <input type="hidden" id="total_pages" value="8">
@@ -672,7 +739,6 @@
 
         
     </div>
-
     
 
 
@@ -772,7 +838,7 @@
             <a id="ex-ghDay-prev" class="button" href="#" aria-label="Prev month">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-left"></use>
-                </svg>       
+                </svg>
             </a>
             <a id="ex-ghDay-next" class="button" href="#" aria-label="Next month">
                 <svg class="icon" aria-hidden="true">
@@ -3299,10 +3365,8 @@
     
 
 </aside>
-
 </main>
-
-
+            
 
 
 <footer class="g-footer">
@@ -3310,7 +3374,7 @@
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.0" target="_blank" class="extlinks">v1.3.0</a>)  
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.1" target="_blank" class="extlinks">v1.3.1</a>)  
         
       </section>
       <section class="links">仲儿的自留地 ©
@@ -3371,6 +3435,11 @@
           </a>
         
         
+          <a href="https://www.travellings.cn/go.html" target="_blank" class="travelling-badge" aria-label="Travelling" rel="noopener" title="开往-友链接力">
+            <img src="https://www.travellings.cn/assets/logo.gif" alt="开往-友链接力">
+          </a>
+        
+        
           <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI"> 
             <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
           </a>
@@ -3398,55 +3467,152 @@
     </svg>
   </div>
 </section>
-
-      </div>
-    </div>
-    
-    <div class="modal">
-        <div class="modal-content">
-          <header>
-            <span class="close">&times;</span>
-          </header>
-          <div class="container"></div>
         </div>
+        
+<div class="modal">
+    <div class="modal-content">
+        <header>
+            <span class="close">&times;</span>
+        </header>
+        <div class="container"></div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/Tooltip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/LegendLite.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/CalendarLabel.min.js"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-    <script src="/assets/js/app.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
-    <script src="https://at.alicdn.com/t/c/font_3046306_9tox63bysiw.js"></script>
-    
-    
+</div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+        
+            
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/Tooltip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/LegendLite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/CalendarLabel.min.js"></script>
+
+        
+        <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
+        <script>
+            /**
+            * Better Scroll Experience
+            */
+            function scrollToAdjust(id){
+              var element = document.getElementById(id);
+              var headerOffset = 90;
+              var elementPosition = element.getBoundingClientRect().top;
+              var offsetPosition = elementPosition + window.scrollY - headerOffset;
+              window.scrollTo({
+                  top: offsetPosition,
+                  behavior: "smooth"
+              });
+            }
+        </script>
+        <script src=" /assets/js/app.min.js"></script>
+        <script src="https://at.alicdn.com/t/c/font_3046306_ujr2yq34hw.js"></script>
+        
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-9E8SEJ5JNY"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
+    function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-
     gtag('config', 'G-9E8SEJ5JNY');
 </script>
 
-    
+
 <script async defer data-website-id="90ea4822-8012-444e-837a-757ea473e087" src="https://umami.lisz.top/pwiki.js"></script>
 
-    
+
 <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
-    <script>
+        
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [['$', '$'], ["\\(", "\\)"]],
+			processEscapes: true,
+			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+		},
+		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+      });
+    </script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var previous_url = $("meta[property='og:previous_url']").attr('content');
+        var next_url = $("meta[property='og:next_url']").attr('content');
+
+        hotkeys('left', function (event, handler) {
+            // Prevent the default refresh event under WINDOWS system
+            event.preventDefault();
+            if (previous_url) {
+                console.log('you pressed left!');
+                window.location.href = previous_url;
+            } else {
+                $("#no-previous").addClass("active");
+                setTimeout(function () { $("#no-previous").removeClass("active"); }, 1500);
+            }
+        });
+
+        hotkeys('right', function (event, handler) {
+            // Prevent the default refresh event under WINDOWS system
+            event.preventDefault();
+            if (next_url) {
+                console.log('you pressed right!');
+                window.location.href = next_url;
+            } else {
+                $("#no-next").addClass("active");
+                setTimeout(function () { $("#no-next").removeClass("active"); }, 1500);
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+<script>
+    $(document).ready(function () {
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: "default",
+        });
+        mermaid.init(undefined, $('.mermaid2'));
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+        
+
+<script>
+    $(document).ready(function () {
+        if ($("#comments-switch").length > 0) {
+            var comment_status = $("#cmn-toggle-4")[0].checked;
+            if (comment_status) {
+                $("#waline").addClass("active");
+            } else {
+                $("#disqus_thread").addClass("active");
+            }
+            $("#cmn-toggle-4").click(function () {
+                $("#disqus_thread").toggleClass("active");
+                $("#waline").toggleClass("active");
+            })
+        } else {
+            if ($("#disqus_thread").length > 0) {
+                $("#disqus_thread").addClass("active");
+            } else if ($("#waline").length > 0) {
+                $("#waline").addClass("active");
+            }
+        }
+    })
+</script>
+        <script>
     if ("serviceWorker" in navigator) {
         if (navigator.serviceWorker.controller) {
             console.log("An active service worker found, no need to register");
@@ -3472,62 +3638,9 @@
 //     console.log('不支持sw')
 // }
 </script>
-    
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-		jax: ["input/TeX", "output/HTML-CSS"],
-		tex2jax: {
-			inlineMath: [['$', '$'], ["\\(", "\\)"]],
-			processEscapes: true,
-			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-		},
-		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-      });
-    </script>
-
-
-     
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
-    <script>
-        $(document).ready(function (){
-            mermaid.initialize({
-                startOnLoad:true,
-                theme: "default",
-            });
-            mermaid.init(undefined, $('.mermaid2'));
-        });
-    </script>
-
-    
+        
 <!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
- 
-    
 
-<script>
-    $(document).ready(function(){
-    
+  </body>
 
-    if($("#comments-switch").length > 0){
-        var comment_status = $("#cmn-toggle-4")[0].checked;
-        if(comment_status){
-        $("#waline").addClass("active");
-        }else {
-        $("#disqus_thread").addClass("active");
-        }
-        $("#cmn-toggle-4").click(function(){
-        $("#disqus_thread").toggleClass("active");
-        $("#waline").toggleClass("active");
-        })
-    }else {
-        if($("#disqus_thread").length > 0) {
-        $("#disqus_thread").addClass("active");
-        }else if($("#waline").length > 0) {
-        $("#waline").addClass("active");
-        }
-    }
-    })
-</script>     
-</body>
 </html>
