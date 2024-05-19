@@ -52,6 +52,11 @@ permalink: /:categories/:title.html
 
 # Search
 search: true
+search_type: docsearch  # "default", "docsearch" are supported.
+docsearch:
+  appId: SFGDUYE6XB
+  apiKey: 0f353764aa52c81dd2d893bc669b4f7b
+  indexName: lisz
 
 # MathJax
 mathjax: true
