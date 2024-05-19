@@ -68,6 +68,9 @@
 
     
 
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
+
     <link rel="stylesheet" href=" /assets/css/app.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
@@ -92,6 +95,9 @@
       <a href="/" aria-label="logo"></a>
     </div>
     <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
+    
+        <div id="search-toggle"></div>
+    
     
     <div id="travelling-toggle">
         <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
@@ -230,6 +236,9 @@
                     <use xlink:href="#icon-night"></use>
                 </svg>
             </li>
+            
+            <li id="search"></li>
+            
         </ul>
     </nav>
 </header>
@@ -676,7 +685,7 @@
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.1" target="_blank" class="extlinks">v1.3.1</a>)  
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.2" target="_blank" class="extlinks">v1.3.2</a>)  
         
       </section>
       <section class="links">仲儿的自留地 ©
@@ -1029,6 +1038,25 @@
 </script>
         
 <!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
+
+        
+<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+<script type="text/javascript">
+    docsearch({
+        appId: "SFGDUYE6XB",
+        apiKey: "0f353764aa52c81dd2d893bc669b4f7b",
+        indexName: "lisz",
+        container: 'li#search',
+        debug: true,
+    });
+    docsearch({
+        appId: "SFGDUYE6XB",
+        apiKey: "0f353764aa52c81dd2d893bc669b4f7b",
+        indexName: "lisz",
+        container: '#search-toggle',
+        debug: true,
+    });
+</script>
 
   </body>
 
