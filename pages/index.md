@@ -34,6 +34,7 @@ lang: "zh-Hans"
 
 ## 论文发表
 
+- **S Li**, A Nakata. CSIML: a cost-sensitive and iterative machine-learning method for small and imbalanced materials data sets[J]. *Chemistry Letters*, 2024, 53(5).[[DOI]](https://doi.org/10.1093/chemle/upae090)
 - **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136)
 - Wei X, Zhang Y, Liu X, J Peng, **S Li**, R Che, H Zhang. A domain knowledge enhanced machine learning method to predict the properties of halide double perovskite $$A_2B^+B^{3+}X_6$$ [J]. *Journal of Materials Chemistry A*, 2023.[[DOI]](https://doi.org/10.1039/D3TA03600F)
 - H Zhang, X Liu, G Zhang, Y Zhu, **S Li**, Q Qian, D Dai, R Che, T Xu, Deriving equation from data via knowledge discovery and machine learning: A study of Young’s modulus of Ti-Nb alloys[J]. *Computational Materials Science*, 2023, 228:112349.[[DOI]](https://doi.org/10.1016/j.commatsci.2023.112349)
