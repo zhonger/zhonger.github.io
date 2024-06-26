@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "命令行工具开发指南——入门篇",
+    "tags"     : "command line 命令行 develop 开发 tool 工具",
+    "url"      : "/tech/cli/introduction.html"
+  } ,
+
+  {
     "title"    : "图片处理及上传命令行工具 —— PICTL",
     "tags"     : "pictl 命令行 工具 cli tool",
     "url"      : "/tech/project/pictl.html"
