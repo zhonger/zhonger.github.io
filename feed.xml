@@ -1,4 +1,185 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2024-06-26T11:59:01+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">命令行工具开发指南——入门篇</title><link href="https://lisz.me/tech/cli/introduction.html" rel="alternate" type="text/html" title="命令行工具开发指南——入门篇" /><published>2024-05-29T17:15:00+09:00</published><updated>2024-05-29T17:15:00+09:00</updated><id>https://lisz.me/tech/cli/introduction</id><content type="html" xml:base="https://lisz.me/tech/cli/introduction.html"><![CDATA[<h2 id="前言">前言</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2024-07-05T18:02:35+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">生活中的小问题——公交计费问题</title><link href="https://lisz.me/tech/algorithm/bus-ticket.html" rel="alternate" type="text/html" title="生活中的小问题——公交计费问题" /><published>2024-07-02T15:15:00+09:00</published><updated>2024-07-02T15:15:00+09:00</updated><id>https://lisz.me/tech/algorithm/bus-ticket</id><content type="html" xml:base="https://lisz.me/tech/algorithm/bus-ticket.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  谈到生活中经常坐的公交车，比较常见的算法问题可能是寻找“耗时最少公交路线”、“最少换乘公交路线”、“最便宜公交路线”、“综合最优公交路线”等。这些算法由于在地图软件中经常被使用，已经被大家研究得非常透彻，比如 Dijkstra 算法就可以用来计算“最短距离公交路线”。如想了解更多，可以阅读参考资料 2 给出的中文文献。</p>
+
+<p>  相比这些常见的算法问题，不如让我们来一起看看不大被人提及的“公交计费问题”。笔者经常在下雨的时候乘坐公交车，每次上车前会先取一张票，然后下车前可以看屏幕显示来知道票价。于是笔者就有了一个小问题：票价是如何正确显示的，是否可以对其建模并写个小程序模拟一下。</p>
+
+<h2 id="问题描述">问题描述</h2>
+
+<p>  如图 1 所示为公交计费问题描述。</p>
+
+<ul>
+  <li><strong>(a) 公交路线图</strong>（图中为右循环路线，但对应的左循环路线也存在），0~20 为站点编号，且 1~3 与 20~18 分别对应相同。公交从站点 0 出发，按照箭头所指的方向依次行进，最终回到站点 0 并停止运行。</li>
+  <li><strong>(b) 相邻站点间距离</strong>，以 km 为距离计算单位，给出的数值为公交在站点间实际行进距离。</li>
+  <li><strong>(c) 公交票价计算方式</strong>，距离不足 2 km 为基本票价 190 日元，超过 2 km 的话每超过 1 km 加收 50 日元，如不足 1 km 按照 1 km 计算。注意，此处的距离为循环线路中上车站点与下车站点的<strong>有效距离</strong>，即站点间在循环线路上的最短距离而非实际运行距离。比如，即使从站点 0 上车，经过一圈循环后再从站点 0 下车，也只能收取基本票价 190 日元，因为有效距离为 0 km。（以上计算方式参考自资料 3）</li>
+  <li><strong>(d) 公交最后返回起始站点时计费状态</strong>，灰底色为站点编号，白底色为票价。</li>
+</ul>
+
+<p><img src="https://i.lisz.top/blog/GTgvbN.webp" alt="图 1. 公交计费问题描述。 The description of bus ticket problem." /></p>
+
+<h3 id="问题目标">问题目标</h3>
+
+<ol>
+  <li>打印欢迎消息，提示是否从站点 0 发车；</li>
+  <li>发车后，通过回车或其他操作在下一站点停车，打印当前票价状态，尚未抵达站点票价为空；</li>
+  <li>经过循环后回到站点 0，通过回车或其他操作停车，打印当前票价状态，如图 1(d) 所示。</li>
+</ol>
+
+<h2 id="解决方案">解决方案</h2>
+
+<h3 id="问题分析">问题分析</h3>
+
+<p>  解决公交计费问题，首先要将图 1 中给出的信息进行集成，可得如下图 2。其中，站点间的橙色数字为相邻站点间距离，红色数字为几个关键（0~2 km，2~3 km 和 3~4 km 的阈值站点）站点与出发站点 0 之间的<strong>有效距离</strong>。</p>
+
+<p><img src="https://i.lisz.top/blog/DD2KNn.webp" alt="图 2. 信息集成后的公交路线图。 The route including the distances and some importance valid distances." /></p>
+
+<p>  其实整个问题的核心就在于对<strong>有效距离</strong>的理解。从题干可知，有效距离并非是实际行进距离。这主要是因为给出的公交路线是环线而非直线，即出发站点与结束站点为同一站点。除此之外，刚开始的 1~3 与最后的 20~18 三个站点是重合的。根据给出的例子解释，我们可以将这里的“<strong>有效距离</strong>”粗略定义为“<strong>上车站点与下车站点在公交路线上正反距离的最小值</strong>”。我们不妨从以下示例中进一步加深对于“<strong>有效距离</strong>”的理解：（~ 表示“大约”）</p>
+
+<ul>
+  <li><strong>例 1</strong>：上车站点为站点 3，下车站点为站点 17。因为站点 3 与站点 18 重合，所以有效距离等同于站点 17 和 18 之间的距离 0.45 km。</li>
+  <li><strong>例 2</strong>：上车站点为站点 5，下车站点为站点 18。如例 1 方式计算可得有效距离为 0.85 km。</li>
+  <li><strong>例 3</strong>：上车站点为站点 4，下车站点为站点 17。虽然按照路线实际行进距离很远，但是实际两站之间路线上最短距离大约为 0.45 km，即有效距离为 ~0.45 km。</li>
+  <li><strong>例 4</strong>：上车站点为站点 5，下车站点为站点 15。如例 2 方式计算可得有效距离为 ~1.6 km。</li>
+  <li><strong>例 5</strong>：上车站点为站点 6，下车站点为站点 14。按照图中方向实际行进距离计算，可知正向距离为 2.75 km，按照路线上最短反向距离为 ~2.25 km，因此有效距离为 ~2.25 km。</li>
+</ul>
+
+<p>得出总结：</p>
+
+<ul>
+  <li>从例 1、2 可以看出，当上车站点和下车站点分别在重合直线和循环圈上时，位于重合直线上的站点需要注意切换到对应站点进行双重计算正反向距离，从而得到正确的有效距离。</li>
+  <li>从例 3~5 可以看出，当上车站点和下车站点均在循环圈上时，计算反向距离不涉及直线站点（即跨过出发站点 0）。即使站点 17 到站点 4 的实际行进路线不存在，也需以站点 17 到站点 4 闭合的循环圈来进行计算反向距离。</li>
+</ul>
+
+<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 为何不跨过出发站点 0 计算反向距离？ </div> </div> <div class="content"> <p>  题干中给出信息“<strong>公交从站点 0 出发最终回到站点 0 并停止运行</strong>”，鉴于任何跨过出发站点 0 计算的距离实际上只可能由两辆公交车完成，不可能出现在一辆公交的票价计算方式中，当只在循环圈上的站点上下车时应该不考虑直线上的站点（0~3、18~20）。</p>
+
+<p>  说句题外话，如例 3~5 所示，可能直接走过去还更快更方便，而非坐这趟公交。</p>
+
+
+
+ </div> </div>
+<h3 id="算法描述">算法描述</h3>
+
+<h4 id="变量声明">变量声明</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">变量名</th>
+      <th style="text-align: center">变量类型</th>
+      <th style="text-align: left">描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">distances</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">站点列表，[0, 0.2, 0.3, …]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">currentStop</td>
+      <td style="text-align: center">int</td>
+      <td style="text-align: left">当前站点编号，0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">lineStops</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">直线站点，[1, 2, 3, 18, 19, 20]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">circleStops</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">循环圈站点，[4, 5, …, 17]</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ticketBase</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: left">基础票价，190.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ticketStep</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: left">票价梯度，50.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ticketUnit</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: left">票价单位，JPY</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">baseDistance</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: left">基础距离，2.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">stepDistance</td>
+      <td style="text-align: center">float</td>
+      <td style="text-align: left">基础距离，1.00</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">distanceUnit</td>
+      <td style="text-align: center">str</td>
+      <td style="text-align: left">距离单位，km</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">validDistances</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">有效距离，长度为 21，默认值为 None</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">prices</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">票价，长度为 21，默认值为 None</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">validStops</td>
+      <td style="text-align: center">list</td>
+      <td style="text-align: left">有效站点，经过站点时将编号添加到列表里，默认为 [0]</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="步骤描述">步骤描述</h4>
+
+<p>  程序整体步骤：</p>
+
+<ol>
+  <li>初始化变量，当前站点编号为 0，询问是否启动；接受到启动指令（回车）后开始行进（提示）。</li>
+  <li>遇到停车指令（回车）后，切换站点编号为下一站点（+1），添加站点编号到 validStops。</li>
+  <li>循环计算 validStops 中各站点的有效距离 validDistances（具体见下）。</li>
+  <li>循环计算各站点的票价同时更新 prices。</li>
+  <li>打印计费矩阵。</li>
+  <li>接受到启动指令（回车）后继续行进（提示），重复 2~5 步骤直至重新回到站点 0。</li>
+  <li>打印到达终点站提示信息，结束程序。</li>
+</ol>
+
+<p>  计算任意两个上下车站点间的有效距离的步骤：</p>
+
+<ol>
+  <li>已知上车站点 a 和下车站点 b，当两站点相同时有效距离为 0，如不同进入下一步骤。</li>
+  <li>利用 lineStops 和 circleStops 两个变量判断 a 和 b 位于直线部分或循环圈部分。</li>
+  <li>如果两站点都是直线部分，利用对称方式标准化为 1~3 的站点编号，直接计算之间距离为有效距离。</li>
+  <li>如果两站点都是循环圈部分，利用 circleStops 进行循环遍历叠加计算正反距离，取较小的值为有效距离。</li>
+  <li>如果一站点在直线部分、一站点在循环圈部分，对直线部分的站点（标准化后的 1~3 站点）计算正反距离，取较小的值为有效距离。</li>
+  <li>返回有效距离。</li>
+</ol>
+
+<h3 id="程序模拟">程序模拟</h3>
+
+<p>  根据以上思路，笔者采用 Python 实现了解决方案。源代码请见 <a href="https://gist.github.com/zhonger/3546f08c0fe5b3e4ea360288a6b15d42">Github Gist</a>。以下为程序模拟运行效果：</p>
+
+<script src="https://asciinema.org/a/666775.js" id="asciicast-666775" async="true"></script>
+
+<h2 id="结语">结语</h2>
+
+<p>  虽然现有的公交线路大部分还是很规则的，不同时存在循环圈和直线的情况，计费也较为简单，但是思考特殊公交线路的计费方式也不失为一件有趣的事情。上面给出的分析和算法描述，也可以用其他编程语言实现，比如用前端编程语言就可以直接可视化整个公交计费过程。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ol>
+  <li><a href="https://www.freecodecamp.org/chinese/news/dijkstras-shortest-path-algorithm-visual-introduction/">图文详解 Dijkstra 最短路径算法</a></li>
+  <li><a href="https://zhangroup.aporc.org/images/files/1.pdf">周文峰等，《运筹与管理》，<strong>最优公交线路选择问题的数学模型及算法</strong>，2018</a></li>
+  <li><a href="https://www.kantetsu.co.jp/cms/wp-content/uploads/2024/02/801e8420390b8e91fa42443e742d6c27.pdf">筑波大学循环线票价表</a></li>
+</ol>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="algorithm" /><category term="algorithm" /><category term="算法" /><category term="program" /><category term="代码实现" /><category term="python" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">命令行工具开发指南——入门篇</title><link href="https://lisz.me/tech/cli/introduction.html" rel="alternate" type="text/html" title="命令行工具开发指南——入门篇" /><published>2024-05-29T17:15:00+09:00</published><updated>2024-05-29T17:15:00+09:00</updated><id>https://lisz.me/tech/cli/introduction</id><content type="html" xml:base="https://lisz.me/tech/cli/introduction.html"><![CDATA[<h2 id="前言">前言</h2>
 
 <p>  <strong>命令行工具</strong>（Command Line，Cli）作为我们日常开发常用的辅助性工具，几乎遍布于各种操作中。根据<strong>使用目的</strong>的不同大致可以分为以下几类：</p>
 
@@ -1799,55 +1980,4 @@ minica <span class="nt">-ca-cert</span> zhongerca.pem <span class="nt">-ca-key</
   <li><a href="https://docs.microsoft.com/zh-cn/azure/application-gateway/self-signed-certificates">使用自定义根 CA 生成 Azure 应用程序网关自签名证书</a></li>
   <li><a href="https://qiita.com/k_kind/items/b87777efa3d29dcc4467">開発環境を https 化する mkcert の仕組み</a></li>
   <li><a href="https://zhuanlan.zhihu.com/p/379501905">mkcert 使用指南：如何快速创建自签名 SSL 证书</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="CA" /><category term="SSL" /><category term="证书" /><category term="内网" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">LDAP 集成之 Nextcloud 篇</title><link href="https://lisz.me/tech/webmaster/ldap-nextcloud.html" rel="alternate" type="text/html" title="LDAP 集成之 Nextcloud 篇" /><published>2022-06-24T14:40:00+09:00</published><updated>2022-06-24T14:40:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-nextcloud</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-nextcloud.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<h3 id="nextcloud-vs-owncloud">Nextcloud vs ownCloud</h3>
-
-<p>  <a href="https://nextcloud.com">Nextcloud</a> 是一款非常适合个人或者团队使用的开源网盘软件，也有一款和其名字非常相似的 <a href="https://owncloud.com">ownCloud</a>。实际上这两款开源网盘是出自一个人之手，只不过在发展的过程中（2016年），ownCloud 团队内部产生了一些意见分歧，造成了核心开发人员出走创建了 Nextcloud。与 ownCloud 相比，Nextcloud 更加在乎宽广的功能多样性以及安全性，比如说视频会议、在线协作、提供对密码暴力破解的保护、限制密码错误登录的次数等。ownCloud 中可能也有这些功能，但并不包含在开源版本中，而是需要企业订阅版本才能享受这些功能。从这些看来，Nextcloud 似乎更加适合个人或团队使用。</p>
-
-<p>  据笔者所知，国内 F 搜团队所提供的网盘文档-<a href="https:/fdocs.cn">F 文档</a> 实际上就是用 Nextcloud 搭建的。其提供的在线文档编辑采用的是开源的 <a href="https://www.onlyoffice.com">OnlyOffice</a>。</p>
-
-<h3 id="nextcloud-vs-seafile">Nextcloud vs Seafile</h3>
-
-<p>  除了 Nextcloud，国内也有一款也比较好用的开源网盘 <a href="https://www.seafile.com">Seafile</a>。Nextcloud 与 Seafile 虽然都是网盘，但是关注点不大一样。正如上面讲到的 Nextcloud 更在乎协作、功能多样化，而 Seafile 则更在乎稳定和安全。举个例子，Nextcloud 如果不设置服务端加密，所有的文件都会直接存在文件系统中。如果可以访问服务器的文件系统，那么意味着无须任何用户自身的许可就可以查看所有文件。Seafile 默认就将所有文件都分成小块存储，这样一来你是无法直接通过服务器的文件系统读取文件内容的。当然，这样分块存储也有一个好处，在客户端设置同步时会分块进行增量同步，提升了同步的速度和可靠性。不至于一个几个 G 的大文件传到一半中断后又要从头开始上传。不过，这样也有一个比较明显的坏处，如果不借助 Seafile 或其支持团队的帮助，无法自行从分块数据恢复原始文件内容。</p>
-
-<h3 id="ldap-认证集成">LDAP 认证集成</h3>
-
-<p>  从 Nextcloud、ownCloud、Seafile 的官网来看，三者都支持 LDAP/AD 认证集成，但实际上 Seafile 是需要专业版订阅才能有这个功能的，包括 Office 文件预览和编辑、全文检索、断点续传等功能也是需要专业版订阅的。Nextcloud 和 ownCloud 都在开源版本提供了 LDAP 认证集成功能。所以这里也不考虑 Seafile，只以 Nextcloud 为例介绍 LDAP 集成到网盘中。</p>
-
-<h2 id="实践">实践</h2>
-
-<p>  由于之前笔者也曾写过<a href="../docker/nextcloud.html">《Nextcloud 搭建自己的云盘》</a>和<a href="nextcloud-upgrade.html">《Nextcloud 升级那些事儿》</a>两篇文章介绍如何安装和升级 Nextcloud ，所以这里就不再对此进行赘述了。当前开始的环境即是已正常运行的 Nextcloud 实例。</p>
-
-<h3 id="启用-ldap-插件">启用 LDAP 插件</h3>
-
-<p>  在 Nextcloud 的<strong>应用捆绑包</strong>的<strong>企业捆绑包</strong>里就有我们想要用的 LDAP 认证集成插件，点击右侧<strong>启用</strong>按钮即可正常启用。</p>
-
-<p><img src="https://i.lisz.top/blog/nFyWzS.webp" alt="nFyWzS" /></p>
-
-<h3 id="配置-ldap-连接">配置 LDAP 连接</h3>
-
-<p>  在启用 LDAP 插件后，我们就可以在管理员的设置中看见相应的选项。如下图所示，点击用户头像弹出菜单中的<strong>设置</strong>链接。</p>
-
-<p><img src="https://i.lisz.top/blog/8FCrL0.webp" alt="8FCrL0" /></p>
-
-<p>  由于这个设置会同时包含个人用户设置和管理员设置，可以将左侧的导航栏往下拉，看到<strong>管理</strong>中的 <strong>LDAP/AD 集成</strong> 点击进入。</p>
-
-<p><img src="https://i.lisz.top/blog/WiwcTt.webp" alt="WiwcTt" /></p>
-
-<p>  下面是 LDAP/AD 集成的基本设置，主要填写四个信息：LDAP 服务器地址、LDAP 管理员 DN、LDAP 管理员密码、查询基础 DN。由于此处填写的是非真实信息，所以下面会显示<strong>配置错误</strong>的提示。如果填写的 LDAP 信息无误，会自动变成<strong>配置成功</strong>的提示。然后点击<strong>继续</strong>按钮，后面的设置可以保留默认选项即可。当然如果 LDAP 服务与一般的设置有些不同，也要根据实际情况对后面的用户、登录属性、群组信息进行调整，这里就不一一介绍了。</p>
-
-<p><img src="https://i.lisz.top/blog/Lr00tl.webp" alt="Lr00tl" /></p>
-
-<p>  以上配置均完成之后，即可退出登录即可使用 LDAP 账户和密码登录验证是否配置成功（登录界面不会有任何改变）。</p>
-
-<h3 id="其他">其他</h3>
-
-<p>  可能和 Gitlab 的情况有点类似，Nextcloud 本身就有用户体系，然后才接入的 LDAP 认证。其实，我们还是希望 LDAP 用户和原有用户能够自动识别成同一用户，无感完成合并。这里 Nextcloud 和 Gitlab 一样都是凭借着邮箱来判断的。当 LDAP 用户邮箱与 Nextcloud 原有用户邮箱一致时，自动合并成一个用户，并且不再拥有修改用户密码的权利。虽然已经集成了 LDAP 认证，但是我们依然可以用 Nextcloud 自身的用户体系去创建新用户，这其实也是两个用户体系、一个软件系统。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://news.gandi.net/zh-hans/2021/05/nextcloud-vs-owncloud-which-cloud-solution-should-you-choose/">Nextcloud vs ownCloud? 该选择哪一个云端代管方案呢？</a></li>
-  <li><a href="https://wzfou.com/nextcloud-seafile/">NextCloud与Seafile对比使用-NextCloud各项全能 Seafile优势突出</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="Nextcloud" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="CA" /><category term="SSL" /><category term="证书" /><category term="内网" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>

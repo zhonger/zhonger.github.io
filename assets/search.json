@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "生活中的小问题——公交计费问题",
+    "tags"     : "algorithm 算法 program 代码实现 python",
+    "url"      : "/tech/algorithm/bus-ticket.html"
+  } ,
+
+  {
     "title"    : "命令行工具开发指南——入门篇",
     "tags"     : "command line 命令行 develop 开发 tool 工具",
     "url"      : "/tech/cli/introduction.html"
