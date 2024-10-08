@@ -34,8 +34,10 @@ lang: "en"
 
 ## Publications
 
+- **(Cover Paper)** **S Li**, T Miyazaki, A Nakata. Theoretical search for characteristic atoms in supported gold nanoparticles: a large-scale DFT study[J]. *Physical Chemistry Chemical Physics*, 2024, 26: 20251-20260 [[DOI]](https://doi.org/10.1039/D4CP01094A)
 - **S Li**, A Nakata. CSIML: a cost-sensitive and iterative machine-learning method for small and imbalanced materials data sets[J]. *Chemistry Letters*, 2024, 53(5).[[DOI]](https://doi.org/10.1093/chemle/upae090)
 - **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136)
+- D Dai, G Zhang, X Wei, Y Lin, M Dai, J Peng, N Song, Z Tang, **S Li**, J Liu, Y Xu, R Che, H Zhang. A GPT-assisted iterative method for extracting domain knowledge from a large volume of literature of electromagnetic wave absorbing materials with limited manually annotated data[J]. *Computational Materials Science*, 2025, 246: 113431.[[DOI]](https://doi.org/10.1016/j.commatsci.2024.113431)
 - Wei X, Zhang Y, Liu X, J Peng, **S Li**, R Che, H Zhang. A domain knowledge enhanced machine learning method to predict the properties of halide double perovskite $$A_2B^+B^{3+}X_6$$ [J]. *Journal of Materials Chemistry A*, 2023.[[DOI]](https://doi.org/10.1039/D3TA03600F)
 - H Zhang, X Liu, G Zhang, Y Zhu, **S Li**, Q Qian, D Dai, R Che, T Xu, Deriving equation from data via knowledge discovery and machine learning: A study of Young’s modulus of Ti-Nb alloys[J]. *Computational Materials Science*, 2023, 228:112349.[[DOI]](https://doi.org/10.1016/j.commatsci.2023.112349)
 - H Zhang, R Hu, X Liu, **S Li**, G Zhang, Q Qian, G Ding, D Dai. An end-to-end machine learning framework exploring phase formation for high entropy alloys[J]. *Transactions of Nonferrous Metals Society of China*, 2022, [[DOI]](https://oversea.cnki.net/kcms/detail/43.1239.TG.20220908.1626.028.html)
