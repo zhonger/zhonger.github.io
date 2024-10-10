@@ -5,9 +5,567 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 08 Oct 2024 16:45:18 +0900</pubDate>
-    <lastBuildDate>Tue, 08 Oct 2024 16:45:18 +0900</lastBuildDate>
+    <pubDate>Thu, 10 Oct 2024 18:38:32 +0900</pubDate>
+    <lastBuildDate>Thu, 10 Oct 2024 18:38:32 +0900</lastBuildDate>
     <generator>Jekyll v4.3.4</generator>
+    
+      <item>
+        <title>Kubernetes 不完全入门</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  Web 应用的生产环境部署随着技术的发展不断地发生改变，如下图所示，从最早期的单机环境到多机环境，再发展到复杂环境：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;单机环境&lt;/strong&gt;指的是代码、运行环境、文件存储、数据库服务都在同一台服务器上的应用部署方式。通常来说，个人应用或者早期 Demo 应用大多采用这类方式。单机环境的优点在于不需要太多服务器资源，缺点在于过分依赖本地资源而没有高可用性、高可扩展性以及数据的安全保障。如果是云服务器作为单机环境，可以通过升级配置的方式来提高 CPU、内存和存储资源。至于数据则可以通过异机备份或本地备份的方式来保障数据的可靠性。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;多机环境&lt;/strong&gt;指的是同一应用所需的运行环境、数据库服务、文件存储服务分布在不同的节点或集群中的应用部署方式。这类方式的优点自然是具备高可用性、高可扩展性以及完备的数据安全保障，缺点则是需要大量的服务器资源。因此，多机环境通常是对外大量用户提供服务时常用的方式。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;复杂环境&lt;/strong&gt;打破了原有的瓶瓶罐罐，是多机环境的一种的超级形态。在复杂环境中，不再拘泥于服务器节点本身，而是利用 Web 应用将已有的云资源联系在一起。说得更直白一点，就是应用开发者不再需要关心应用运行环境、数据库服务、文件存储等基础环境的配置和管理，唯一需要关心的只有应用代码本身。这也是现在大部分 Web 应用的真实部署方式。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;  自从代码版本跟踪软件 Git 横空出世以来，逐步形成了以 Git 为中心的&lt;strong&gt;持续开发、持续集成和持续部署&lt;/strong&gt;的现代应用开发方式。这与复杂环境的部署方式完全契合，由云服务提供商来提供和维护各类运行环境、数据库服务和文件存储，开发团队只需要专注于对代码存储库的管理。&lt;/p&gt;
+
+&lt;p&gt;  举个例子，当某个开发成员完成了某个模块的开发并推送到某个分支，该分支创建后会自动触发持续集成进行自动 Review。自动 Review 通过后，开发团队负责人可以对该分支的代码更改进行审核，通过后允许将该分支与其他某个指定分支进行合并（合并操作也是通过持续集成自动进行）。当所有代码开发完毕后，由总负责人审核汇入最终部署的分支。审核通过后持续集成会自动合并代码并通过持续部署将完整的代码部署到真实的运行环境中。如今的 GitHub、GitLab 均能完成持续开发、持续集成和持续部署的全过程。当然，也有一些软件（比如 &lt;a href=&quot;https://www.jenkins.io/&quot;&gt;Jenkins&lt;/a&gt; 等）可以完成持续集成和持续部署两步，而持续开发则可以依托任意的 Git 托管服务。&lt;/p&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 友情提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  以上叙述非专业解释，仅为个人看法，不喜勿喷。Kubernetes 官方将部署方式分为&lt;strong&gt;传统部署&lt;/strong&gt;、&lt;strong&gt;虚拟化部署&lt;/strong&gt;和&lt;strong&gt;容器部署&lt;/strong&gt;三类。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/79is8s.webp&quot; alt=&quot;(a) 单机环境和多机环境。(b) 复杂环境。(c)以 Git 为中心的持续开发、持续集成、持续部署的现代应用开发方式。&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;实例解析&quot;&gt;实例解析&lt;/h3&gt;
+
+&lt;p&gt;  假设一个 Web 应用同时需要使用：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;运行环境&lt;/strong&gt;：PHP 运行环境、Python 运行环境、NodeJS 运行环境。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;数据库服务&lt;/strong&gt;：关系型数据库（比如 MySQL）、非关系型数据库（比如 MongoDB）、缓存数据库（比如 Redis）。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;文件存储&lt;/strong&gt;：用于存储用户头像、上传文件的对象存储（S3）、用于存储运行代码的文件存储（比如 NFS）。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;高可用应用入口&lt;/strong&gt;：比如 Nginx、HaProxy 等。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;  在单机环境中，按照以前我们碰见这种要求可能就要头大了，毕竟同时配置这么多环境难免会有不可预知的问题。不过现在，容器化技术（比如 &lt;a href=&quot;https://www.docker.com/&quot;&gt;Docker&lt;/a&gt;）可以帮助我们将所有的需求都拆分成独立的 container 实例。不但可以让它们之间在内部网络中互通，还可以对外只暴露必要的应用入口所需的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;80&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;443&lt;/code&gt; 端口。这样一来，既将各项服务进行了合理拆分，又能保证应用服务的安全性。即使是需要对某个运行环境或者数据库服务进行版本升级，也可以很容易做到。&lt;/p&gt;
+
+&lt;p&gt;  在多机环境中，我们如果还想用容器化技术，那就必须用容器化集群。很久以前，Docker 官方就提供了一种 Swarm 模式来组成容器化集群。这种方式的好处是非常简单配置、轻量易用，对于熟悉使用 Docker 的开发者来说只需要花很少的时间就能搞明白。缺点也很明显，Docker Swarm 依赖于 Docker API。也就是说，Docker 本身不支持的东西还是不支持，比如更加高效安全的网络、花式多样的存储等。为了能够更好跨主机集群地自动部署、扩展以及运行应用程序容器，我们选择使用 &lt;a href=&quot;https://kubernetes.io/zh-cn/&quot;&gt;Kubernetes&lt;/a&gt;（缩写为 &lt;strong&gt;K8S&lt;/strong&gt;）。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小知识 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  在 2014 年 Google 开源了 Kubenetes 项目，后来又贡献给了云原生计算基金会 &lt;a href=&quot;https://www.cncf.io/&quot;&gt;CNCF&lt;/a&gt;。很多公司以 Kubernetes 为基础开发了自家的容器化集群平台，比如 RedHat 的 &lt;a href=&quot;https://www.redhat.com/en/technologies/cloud-computing/openshift&quot;&gt;OpenShift&lt;/a&gt;，AWS 的 &lt;a href=&quot;https://aws.amazon.com/cn/eks/&quot;&gt;Elastic Kubenetes Services, EKS&lt;/a&gt;，Azure 的 &lt;a href=&quot;https://azure.microsoft.com/zh-cn/products/kubernetes-service&quot;&gt;Azure Kubernetes Services, AKS&lt;/a&gt;，阿里云的 &lt;a href=&quot;https://www.aliyun.com/product/kubernetes&quot;&gt;Aliyun Container Service for Kubernetes, ACK&lt;/a&gt;，腾讯云的 &lt;a href=&quot;https://cloud.tencent.com/product/tke&quot;&gt;Tencent Kubernetes Engine, TKE&lt;/a&gt; 等。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;kubernetes-架构&quot;&gt;Kubernetes 架构&lt;/h2&gt;
+
+&lt;p&gt;  虽然 Kubernetes 官方文档已经将架构图以及相关概念介绍得非常清楚，但还是想说说自己的理解。类似于一般集群平台，K8S 也需要有至少一个控制节点（官方称之为“控制平面”）和一个工作节点。默认来说，K8S &lt;strong&gt;不推荐控制节点同时作为工作节点&lt;/strong&gt;，因为这会影响集群调度的可靠性和可用性。从下面的重绘架构图可以看出，K8S 集群会对外提供 API 以供用户从集群外进行调度。在集群内部，工作节点通过 kubelet 服务与控制节点直接连接，控制节点也通过 kubelet 服务向工作节点下达调度指令来管理工作节点上的 pod。&lt;/p&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Pod 的概念 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  Pod 可以理解为 K8S 中应用的最小单位，一个 Pod 中可能会包括一个或多个 container (容器)，这些容器间可以互通，但对外只有 Pod 有资格拥有 IP。这有点类似于进程与线程之间的关系，进程是拥有资源的最小单位，线程依赖于进程而存在，同一进程间的线程间可以无障碍通信，而不同进程间的通信则需要通过端口或 socket 来进行。&lt;/p&gt;
+
+&lt;p&gt;  同一个工作节点上的 Pod 的 IP 属于同一个子网，不同工作节点的子网又属于同一个大子网 (podSubnet，一般需要在初始化集群时定义)。这样的设计在很大程度上减少了 IP 管理的难度，并且能够最大程度上减少容器暴露的风险。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/BV7Jqo.webp&quot; alt=&quot;重绘 Kubernetes 官方文档架构图&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; CRI 的概念 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  CRI，全名为 Container Runtime Interface（容器运行时接口），是 K8S 架构中 kubelet和容器运行时通信的主要协议。我们所熟知的 Docker 就是一种容器运行时，但是自从 K8S 1.20 版本弃用 Docker 自带的容器运行时接口 Dockershim 以来，我们只能使用额外的 CRI – &lt;a href=&quot;https://github.com/Mirantis/cri-dockerd&quot;&gt;cri-dockerd&lt;/a&gt; 来调用 Docker。因此推荐使用包含 CRI 的容器运行时 &lt;a href=&quot;https://containerd.io/&quot;&gt;containerd&lt;/a&gt; 或者 &lt;a href=&quot;https://cri-o.io/&quot;&gt;cri-o&lt;/a&gt; 来替代 Docker。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h3 id=&quot;组成部分&quot;&gt;组成部分&lt;/h3&gt;
+
+&lt;p&gt;  由于 K8S 是一款平台无关的容器集群方案，所以官方提供的方案只是一个整体，我们需要自行选择以下各项组件：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;容器运行时 (CRI)&lt;/strong&gt;：如上所述，推荐使用 containerd 或者 cri-o 来替代 docker。下面实践部分将以 containerd 为例。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;网络组件 (CNI, Container Network Interface)&lt;/strong&gt;：K8S 中网络有三种 Node、Pod、Service，其中 Node IP 是节点的 IP，用于连通或者暴露端口。Pod IP 是 Pod 的独立内网 IP，只能在 K8S 集群间访问。Service IP 是多个 Pod 共同组成 Service 后需要互通时使用的，一般仅在 Service 内部可访问，不能被用户访问。K8S 官方文档中 &lt;a href=&quot;https://kubernetes.io/zh-cn/docs/concepts/cluster-administration/addons/#networking-and-network-policy&quot;&gt;联网和网络策略&lt;/a&gt; 列举了很多可用的 CNI，这里我们选用 &lt;a href=&quot;https://www.tigera.io/project-calico/&quot;&gt;Calico&lt;/a&gt; 来进行实践。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;服务发现 (DNS)&lt;/strong&gt;：默认为 &lt;a href=&quot;https://coredns.io/&quot;&gt;CoreDNS&lt;/a&gt;，在配置完网络组件后自动创建，为 Pod 提供 DNS 解析服务，包括公网域名解析和 Service 别名解析。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;容器存储接口 (CSI, Container Storage Interface)&lt;/strong&gt;：目前 K8S 基本上移除了大部分的第三方软件相关存储插件，转而通过第三方自行维护的 CSI 来扩充存储类的支持。可以通过查看 K8S 官网文档的 &lt;a href=&quot;https://kubernetes.io/zh-cn/docs/concepts/storage/storage-classes/#provisioner&quot;&gt;存储制备器&lt;/a&gt; 和 kubernetes-csi 的 &lt;a href=&quot;https://kubernetes-csi.github.io/docs/drivers.html&quot;&gt;Drivier&lt;/a&gt; 来了解更多。这里我们选用 NFS 的 CSI Driver 作为例子进行实践。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;搭建-k8s-集群&quot;&gt;搭建 K8S 集群&lt;/h2&gt;
+
+&lt;p&gt;  在学习环境中，我们可以使用 &lt;a href=&quot;https://kind.sigs.k8s.io/&quot;&gt;kind&lt;/a&gt;、&lt;a href=&quot;https://minikube.sigs.k8s.io/&quot;&gt;minikube&lt;/a&gt; 或者 kubeadm 在本地快速部署 K8S 集群；在生产环境中，我们可以使用 &lt;a href=&quot;https://kops.sigs.k8s.io/&quot;&gt;kops&lt;/a&gt;、&lt;a href=&quot;https://kubespray.io/&quot;&gt;Kubespray&lt;/a&gt; 或者 kubeadm 在多节点上快速部署 K8S 集群。所以这里我们采用了通用的 kubeadm 来搭建 K8S 集群。&lt;/p&gt;
+
+&lt;p&gt;  在正式部署之前需要规划实际架构、做一些基本准确以及安装必要的软件和工具 – &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubelet&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt;。下图为本实践规划的 NodeSubset、PodSubset 和 ServiceSubset。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/Z0hCRO.webp&quot; alt=&quot;K8S 集群实际架构和网络规划&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;基本准备&quot;&gt;基本准备&lt;/h3&gt;
+
+&lt;h4 id=&quot;关闭-swap-交换分区&quot;&gt;关闭 SWAP 交换分区&lt;/h4&gt;
+
+&lt;p&gt;  K8S 为了性能考虑默认必须关闭 SWAP 交换分区，而通常实体服务器安装后会有 SWAP 交换分区，云服务器或 VPS 没有。通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo swapoff -a&lt;/code&gt; 命令可以临时关闭 SWAP 分区，或者通过注释 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/fstab&lt;/code&gt; 文件中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;swap.img&lt;/code&gt; 这一行并重启服务器永久关闭 SWAP 交换分区。&lt;/p&gt;
+
+&lt;h4 id=&quot;开启-ipv4-转发&quot;&gt;开启 IPv4 转发&lt;/h4&gt;
+
+&lt;p&gt;  由于 K8S 集群中同一个 Service 的 Pod 可能被分配到不同节点，那么不同节点间的 Pod 通信是非常必要的，即不同 PodSubnet 之间的通信需要通过 Node IP 来进行 IPv4 转发。执行以下命令添加允许 IPv4 转发到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/sysctl.d/k8s.conf&lt;/code&gt; 文件里，并且立即生效：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加配置&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/sysctl.d/k8s.conf &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 立即生效&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;sysctl &lt;span class=&quot;nt&quot;&gt;--system&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;配置主机名对应&quot;&gt;配置主机名对应&lt;/h4&gt;
+
+&lt;p&gt;  K8S 集群初始化时会自动搜索主机名的 DNS 解析，目前测试的主机名没有完整的 FQDN 或 PTR 解析，因此有必要设置好主机名和 IP 对应信息到本地静态 DNS 解析文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/hosts&lt;/code&gt; 中。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 分别在不同节点根据规划设置好主机名&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;hostnamectl set-hostname vm01
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;hostnamectl set-hostname vm02
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;hostnamectl set-hostname vm03
+
+&lt;span class=&quot;c&quot;&gt;# 修改所有节点的 /etc/hosts&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/hosts &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+192.168.120.1  vm01
+192.168.120.2  vm02
+192.168.120.3  vm03
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;同步时间&quot;&gt;同步时间&lt;/h4&gt;
+
+&lt;p&gt;  K8S 集群的运行必须保证节点的时间是完全同步的，否则容易造成某些未知的 Bug。比如证书的过期时间将会被某些时间不同步的节点错误判断。推荐使用同一时区和同一 NTP 服务器，如下即可完成设置。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 设置相同时区并查看&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;timedatectl set-timezone Asia/Shanghai
+timedatectl
+timedatectl status
+
+&lt;span class=&quot;c&quot;&gt;# 修改 NTP 服务器&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;timedatectl set-ntp &lt;span class=&quot;nb&quot;&gt;false
+sudo sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;s/#NTP=/NTP=ntp.lisz.top/&apos;&lt;/span&gt; /etc/systemd/timesyncd.conf
+&lt;span class=&quot;nb&quot;&gt;sudo sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;s/#FallbackNTP=ntp.ubuntu.com/FallbackNTP=ntp.aliyun.com/&apos;&lt;/span&gt; /etc/systemd/timesyncd.conf
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;timedatectl set-ntp &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 重启服务使配置生效、同步时间并查看信息&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl restart systemd-timesyncd
+timedatectl show-timesync &lt;span class=&quot;nt&quot;&gt;--all&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;date&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;安装必要软件和工具&quot;&gt;安装必要软件和工具&lt;/h3&gt;
+
+&lt;h4 id=&quot;安装-containerd&quot;&gt;安装 containerd&lt;/h4&gt;
+
+&lt;p&gt;  containerd 虽然是由  containerd 开发团队负责发布，但是 APT 或 YUM 镜像源仍然是由 Docker 官方负责，所以当我们添加 docker-ce 的镜像源后可以直接下载 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;containerd.io&lt;/code&gt; 来安装 containerd。当然， 我们可以从 &lt;a href=&quot;https://github.com/containerd/containerd/releases&quot;&gt;containerd/containerd&lt;/a&gt; 直接下载二进制可执行文件。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加镜像源&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu/gpg | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gpg &lt;span class=&quot;nt&quot;&gt;--dearmor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /etc/apt/trusted.gpg.d/docker.gpg
+&lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/apt/sources.list.d/docker.list &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+    deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/ubuntu/ &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;lsb_release &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--short&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt; stable
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 更新软件列表缓存并安装 containerd&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt upgrade &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; containerd.io
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小建议 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  个人推荐使用 APT 或 YUM 方式安装 containerd。原因有二：一是国内有 docker-ce 镜像安装比较快，二是想要更新时非常容易。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;配置-containerd&quot;&gt;配置 containerd&lt;/h4&gt;
+
+&lt;p&gt;  containerd 安装后默认没有配置文件也不会自动启动后台程序，所以需要准备配置文件并复制到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/containerd/config.toml&lt;/code&gt; 再启动。由于 K8S 集群默认使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registry.k8s.io&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registry-1.docker.io&lt;/code&gt; 源下载容器镜像，为了提升速度建议切换到阿里云和 DaoCloud 的加速器。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;containerd config default &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; containerd_config.toml
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;s#registry.k8s.io#registry.cn-hangzhou.aliyuncs.com/google_containers#g&quot;&lt;/span&gt; containerd_config.toml
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/containerd.runtimes.runc.options/a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\ \ \ \ \ \ \ \ \ \ \ \ &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;SystemdCgroup = true&quot;&lt;/span&gt; containerd_config.toml
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;s#https://registry-1.docker.io#https://docker.m.daocloud.io#g&quot;&lt;/span&gt; containerd_config.toml
+
+&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /etc/containerd
+&lt;span class=&quot;nb&quot;&gt;cp &lt;/span&gt;containerd_config.toml /etc/containerd/config.toml
+
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;containerd
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl restart containerd
+
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl status containerd.service &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;ctr &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctr&lt;/code&gt; 命令连接的 containerd 的 socket 文件只有 root 用户组有权限访问，所以目前只能使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo ctr&lt;/code&gt;。如果想要直接使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ctr&lt;/code&gt; 命令，可以使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo usermod -aG root ubuntu&lt;/code&gt; 来将当前用户添加到 root 用户组。赋权之后需退出登录后再次登录才能生效。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;安装-kubeadm-等&quot;&gt;安装 kubeadm 等&lt;/h4&gt;
+
+&lt;p&gt;  国内清华大学 TUNA 镜像源、阿里云镜像源等都提供了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm&lt;/code&gt; 等三件套工具的 APT 或 YUM 源，通过以下命令可以很容易完全安装。&lt;/p&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 友情提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 kubernetes 不同版本可能会存在较大差异，并且为了避免节点 kubernetes 版本在不自觉的时候升级造成兼容性问题，这里推荐固定 kubeadm 等三件套版本号，即不启用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apt upgrade&lt;/code&gt; 自动升级。管理员关闭 K8S 集群手动升级版本时不受影响。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 添加镜像源&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://mirrors.tuna.tsinghua.edu.cn/kubernetes/core:/stable:/v1.30/deb/Release.key | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gpg &lt;span class=&quot;nt&quot;&gt;--dearmor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /etc/apt/keyrings/kubernetes-apt-keyring.gpg 
+&lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/apt/sources.list.d/kubernetes.list &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/kubernetes/core:/stable:/v1.30/deb/ / 
+# deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://mirrors.tuna.tsinghua.edu.cn/kubernetes/addons:/cri-o:/stable:/v1.30/deb/ / 
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# 更新软件列表缓存并安装 kubeadm 三件套&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; kubeadm kubelet kubectl 
+
+&lt;span class=&quot;c&quot;&gt;# 固定 kubeadm 等三件套版本&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-mark hold kubeadm 
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-mark hold kubelet 
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-mark hold kubectl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;初始化集群&quot;&gt;初始化集群&lt;/h3&gt;
+
+&lt;h4 id=&quot;预下载镜像&quot;&gt;预下载镜像&lt;/h4&gt;
+
+&lt;p&gt;  在所有节点上使用以下命令提前下载好 K8S 集群所需的基本镜像，避免初始化时一直在等待各个节点下载镜像。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm config images list | &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;s/^/sudo ctr image pull /g&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;s#registry.k8s.io#registry.cn-hangzhou.aliyuncs.com/google_containers#g&apos;&lt;/span&gt; | sh &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;初始化控制节点&quot;&gt;初始化控制节点&lt;/h4&gt;
+
+&lt;p&gt;  下载完所需的容器镜像后，在控制节点上使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo kubeadm init --config=kubeadm_config.yaml&lt;/code&gt; 命令初始化控制节点。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubeadm_config.yaml&lt;/code&gt; 的内容如下所示：（建议将配置文件放置在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/k8s&lt;/code&gt; 目录下，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cd ~/k8s&lt;/code&gt; 目录后执行初始化命令。）&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubeadm.k8s.io/v1beta3&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;InitConfiguration&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;localAPIEndpoint&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;advertiseAddress&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.120.1&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;bindPort&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;6443&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;nodeRegistration&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;criSocket&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;unix:///run/containerd/containerd.sock&quot;&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubeadm.k8s.io/v1beta3&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ClusterConfiguration&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kubernetesVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;stable&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;imageRepository&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;registry.cn-hangzhou.aliyuncs.com/google_containers&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;networking&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;podSubnet&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.144.0/20&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;serviceSubnet&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.244.0/24&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 友情提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  如果没有配置主机名对应的话，这里初始化会一直卡在 API Health 检测的步骤，实际上是因为没有主机名和 IP 对应而无法启动 API Server。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;  kubeadm 初始化成功后需要复制验证文件才能在控制节点管理 K8S 集群，如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 复制验证文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube
+&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; /etc/kubernetes/admin.conf &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+&lt;span class=&quot;nb&quot;&gt;sudo chown&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;:&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/.kube/config
+
+&lt;span class=&quot;c&quot;&gt;# 查询节点状态&lt;/span&gt;
+kubectl get nodes &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; wide
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;工作节点加入集群&quot;&gt;工作节点加入集群&lt;/h4&gt;
+
+&lt;p&gt;  刚才初始化集群后会出现工作节点加入集群的命令，形如：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubeadm &lt;span class=&quot;nb&quot;&gt;join &lt;/span&gt;192.168.120.1:6443 &lt;span class=&quot;nt&quot;&gt;--token&lt;/span&gt; z9sdsdi.tdeu74psxqi8rhdt &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;--discovery-token-ca-cert-hash&lt;/span&gt; sha256:87c4f8dd9dabaf2e5e793c0404c74dd8f9f56153000dad3c1a3238a3e8b0beff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  注意这里需要加上 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo&lt;/code&gt; 之后再在工作节点上执行加入集群操作。加入完成后可以在控制节点上使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl get nodes -o wide&lt;/code&gt; 查看是否有了刚加入的工作节点的信息。由于目前还没有配置网络组件，除了控制节点外，其他工作节点应该均为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NotReady&lt;/code&gt; 状态。如果使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl get pods --all-namespaces&lt;/code&gt; 命令查看所有启动的 Pod，应该看到除两个 CordDNS 的 Pod (比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0/1&lt;/code&gt;) 以外的所有 Pod 的状态都是完成启动 (比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1/1&lt;/code&gt;)。&lt;/p&gt;
+
+&lt;p&gt;  工作节点加入后可以配置不同的标签，比如如下是配置为工作节点和添加 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gputype&lt;/code&gt; 字段标签：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;kubectl label node vm02 node-role.kubernetes.io/worker&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+kubectl label node vm03 node-role.kubernetes.io/worker&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+kubectl label node vm02 &lt;span class=&quot;nv&quot;&gt;gputype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;P100
+kubectl label node vm03 &lt;span class=&quot;nv&quot;&gt;gputype&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;A100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;添加组件&quot;&gt;添加组件&lt;/h3&gt;
+
+&lt;h4 id=&quot;配置-calico-网络&quot;&gt;配置 Calico 网络&lt;/h4&gt;
+
+&lt;p&gt;  Calico 支持一套灵活的网络选项，可以根据情况选择最有效的选项，包括非覆盖和覆盖网络，带或不带 BGP。Calico 使用相同的引擎为主机、Pod 和应用程序在服务网格层执行网络策略。如下所示可以很简单地为 K8S 集群启用 Calico 网络：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;创建 Calico 所需的 operator（需要镜像 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;quay.io/tigera/operator:v1.34.5&lt;/code&gt;，可提前下载），仅在控制节点创建 Pod；&lt;/li&gt;
+  &lt;li&gt;创建和初始化 K8S 集群时对应的网络规划，主要是 PodSubset 配置，如下面修改过的 yaml 配置文件。这里为了加速创建过程，还添加了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registry&lt;/code&gt; 字段来使用 DaoCloud 加速器。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/k8s/calico &amp;amp; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/k8s/calico
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/tigera-operator.yaml
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://raw.githubusercontent.com/projectcalico/calico/v3.28.1/manifests/custom-resources.yaml 
+kubectl create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; tigera-operator.yaml 
+kubectl create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; custom-resources.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# This section includes base Calico installation configuration.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.Installation&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;operator.tigera.io/v1&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Installation&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Configures Calico networking.&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;calicoNetwork&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ipPools&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default-ipv4-ippool&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;blockSize&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;26&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;cidr&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;192.168.144.0/20&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;encapsulation&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;VXLANCrossSubnet&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;natOutgoing&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Enabled&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;nodeSelector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;all()&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;registry&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;m.daocloud.io&lt;/span&gt;
+&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# This section configures the Calico API server.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# For more information, see: https://docs.tigera.io/calico/latest/reference/installation/api#operator.tigera.io/v1.APIServer&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;operator.tigera.io/v1&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;APIServer&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;spec&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  如果通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl get pod --all-namespaces&lt;/code&gt; 发现哪个相关 Pod 卡在了拉取镜像的步骤，可以手动镜像。一般来说，使用修改的 DaoCloud 加速器下载应该没什么太大问题。创建 Calico 网络完成后会多出来 3 个命名空间: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tigera-operator&lt;/code&gt;、 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;calico-system&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;calico-apiserver&lt;/code&gt;。新增的 Pod 应该如下所示：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;节点主机名&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;新增 Pod&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;备注&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;tigera-operator&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络所需的描述子&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-kube-controller&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络控制器&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-apiserver&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络 API，一般有两个 Pod&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-typha&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;优化和减少 Calico 对 K8S API 服务器的负载&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-node&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络节点客户端&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm01&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;csi-node-driver&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CSI 驱动&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm02&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-typha&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;优化和减少 Calico 对 K8S API 服务器的负载&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm02&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-node&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络节点客户端&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm02&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;csi-node-driver&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CSI 驱动&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm03&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;calico-node&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Calico 网络节点客户端&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;vm03&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;csi-node-driver&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CSI 驱动&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;配置-nfs-csi-驱动和存储类&quot;&gt;配置 NFS CSI 驱动和存储类&lt;/h4&gt;
+
+&lt;p&gt;  NFS CSI 驱动由 &lt;a href=&quot;https://github.com/kubernetes-csi/csi-driver-nfs&quot;&gt;kubernetes-csi/csi-driver-nfs&lt;/a&gt; 项目提供支持。不过在正式安装驱动之前需要先安装 NFS 客户端，否则 NFS CSI 驱动也无法正常启用。为了加速下载容器镜像，这里推荐将配置中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;registry.k8s.io&lt;/code&gt; 源切换到 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;k8s.m.daocloud.io&lt;/code&gt; 加速器。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 在所有节点安装 NFS 客户端支持&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; nfs-common
+
+&lt;span class=&quot;c&quot;&gt;# 下载 NFS CSI Driver 配置文件&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/k8s/csi &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/k8s/csi
+git clone https://github.com/kubernetes-csi/csi-driver-nfs.git 
+
+&lt;span class=&quot;c&quot;&gt;# 修改容器镜像为 DaoCloud 加速器&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;csi-driver-nfs/deploy/v4.9.0
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;s/registry.k8s.io/k8s.m.daocloud.io/&quot;&lt;/span&gt; ./&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 返回上上层目录，并安装 NFS CSI 驱动&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ../../
+./deploy/install-driver.sh v4.9.0 &lt;span class=&quot;nb&quot;&gt;local&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  安装 NFS CSI 驱动后会在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kube-system&lt;/code&gt; 命名空间中多出四个 Pod，其中一个 Pod 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csi-nfs-controller&lt;/code&gt;，其他每个节点一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csi-nfs-node&lt;/code&gt; 的 Pod。然后需要使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl apply -f nfs.yaml&lt;/code&gt; 命令创建一个 NFS 的存储类用于提供给应用程序，配置文件 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nfs.yaml&lt;/code&gt; 内容如下所示：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;apiVersion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;storage.k8s.io/v1&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;kind&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;StorageClass&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;metadata&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nfs-csi&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;annotations&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;storageclass.kubernetes.io/is-default-class&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;true&quot;&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;provisioner&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nfs.csi.k8s.io&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nfs_server_ip&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/home/data&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;reclaimPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Retain&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;volumeBindingMode&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Immediate&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;allowVolumeExpansion&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;mountOptions&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;async&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;rsize=32768&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;wsize=32768&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nconnect=8&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nfsvers=4.1&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;hard&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看新增的存储类&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl get sc
+NAME                PROVISIONER      RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+nfs-csi &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;default&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;   nfs.csi.k8s.io   Retain          Immediate           &lt;span class=&quot;nb&quot;&gt;true                   &lt;/span&gt;4d1h
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;gpu-支持&quot;&gt;GPU 支持&lt;/h4&gt;
+
+&lt;p&gt;  K8S 的 GPU 支持是由 NVIDIA 提供的，需要工作节点先安装 NVIDIA 驱动和容器驱动，再在控制节点上部署 nvidia-device 插件支持。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看可安装 NVIDIA 驱动&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ubuntu-drivers devices
+modalias : pci:v000010DEd000026BAsv000010DEsd00001957bc03sc02i00
+vendor   : NVIDIA Corporation
+driver   : nvidia-driver-550-open - distro non-free
+driver   : nvidia-driver-550 - distro non-free recommended
+driver   : nvidia-driver-535-server - distro non-free
+driver   : nvidia-driver-535-server-open - distro non-free
+driver   : nvidia-driver-535-open - distro non-free
+driver   : nvidia-driver-535 - distro non-free
+driver   : xserver-xorg-video-nouveau - distro free &lt;span class=&quot;nb&quot;&gt;builtin&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 安装 NVIDIA 驱动，并重启生效&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; nvidia-driver-535
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-mark hold nvidia-driver-535
+
+&lt;span class=&quot;c&quot;&gt;# 添加 NVIDIA Container Toolkit 源&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-fsSL&lt;/span&gt; https://mirrors.ustc.edu.cn/libnvidia-container/gpgkey | &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gpg &lt;span class=&quot;nt&quot;&gt;--dearmor&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; https://mirrors.ustc.edu.cn/libnvidia-container/stable/deb/nvidia-container-toolkit.list | &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;s#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g&apos;&lt;/span&gt; | &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
+&lt;span class=&quot;c&quot;&gt;# 更新软件列表缓存，安装 nvidia-container-toolkit&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; nvidia-container-toolkit
+
+&lt;span class=&quot;c&quot;&gt;# 为 containerd 容器运行时增加 NVIDIA 选项&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nvidia-ctk runtime configure &lt;span class=&quot;nt&quot;&gt;--runtime&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;containerd
+
+&lt;span class=&quot;c&quot;&gt;# 修改 /etc/containerd/config.toml 配置文件中默认运行时为 NVIDIA&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 原来的默认运行时是 runc&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;plugins.&lt;span class=&quot;s2&quot;&gt;&quot;io.containerd.grpc.v1.cri&quot;&lt;/span&gt;.containerd]
+      default_runtime_name &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;nvidia&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 重新加载 containerd 配置文件并重启服务生效&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl daemon-reload
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl restart containerd
+
+&lt;span class=&quot;c&quot;&gt;# 在控制节点为 K8S 集群创建 NVIDIA device 插件支持&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/k8s
+wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.16.2/deployments/static/nvidia-device-plugin.yml
+
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;s/nvcr.io/nvcr.m.daocloud.io/&quot;&lt;/span&gt; nvidia-device-plugin.yml
+kubectl create &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; nvidia-device-plugin.yml
+
+&lt;span class=&quot;c&quot;&gt;# 验证 GPU 是否被 K8S 识别&lt;/span&gt;
+kubectl describe node vm02 | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;nvidia.com/gpu:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  NVIDIA GPU 驱动和容器驱动只需在有 NVIDIA GPU 的工作节点上配置，并且&lt;strong&gt;一定要修改默认运行时为 NVIDIA&lt;/strong&gt;，否则无法被 K8S 识别。NVIDIA device 插件支持在控制节点上提交安装请求但会在每一个工作节点上安装，即使没有 NVIDIA GPU 存在。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;可能遇到的问题和解答&quot;&gt;可能遇到的问题和解答&lt;/h2&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 如果各节点本身没有任何网络，需要使用内部 HTTP 代理上网怎么办？ &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这种情况下需要为 kubelet 和 containerd 的 service 设置代理。kubelet 的配置文件为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf&lt;/code&gt;，containerd 的配置文件为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/lib/systemd/system/containerd.service&lt;/code&gt;。配置内容如下所示。配置完后需要使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl daemon-reload&lt;/code&gt; 来应用配置更改，并且使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl restart kubelet&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo systemctl restart containerd&lt;/code&gt; 重启服务。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# sudo vim /usr/lib/systemd/system/containerd.service&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# sudo vim /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Service]
+...
+&lt;span class=&quot;nv&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HTTP_PROXY=http://proxy.ip:3128&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;HTTPS_PROXY=http://proxy.ip:3128&quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;Environment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;NO_PROXY=localhost,127.0.0.1&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;结语&quot;&gt;结语&lt;/h2&gt;
+
+&lt;p&gt;  K8S 集群的搭建并非一件十分复杂的事情，比较复杂的是根据实际的需求和自己对于 K8S 的理解来搭建出更合适的 K8S 集群。虽然 K8S 集群已经逐步开始取代一般的 Docker 单机应用服务部署方案，但是就个人实际的应用规模或者应用本身而言，K8S 集群本身的维护和调整的代价要远高于 Docker 单机应用服务部署。如果是有高可用性、高可靠性等的需求，那么 K8S 可能是目前最好的需求。&lt;/p&gt;
+
+&lt;p&gt;  正如在前言中所述，有了 K8S 持续开发、持续集成和持续部署成为了现实，开发者可以把更多的注意力都放在应用代码开发。同时，类似于 JupyterHub 这类会有动态扩展和分配资源需求的应用，最佳的部署方式可能就是 K8S 了。当然，听说现在的大模型 ChatGPT 等也都是在 K8S 上训练出来的。&lt;/p&gt;
+
+&lt;p&gt;  K8S 的确是大有可为！&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.blackduck.com/en-us/glossary/what-is-continuous-development.html&quot;&gt;Continuous Development&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/cn/devops/continuous-integration/&quot;&gt;AWS – 什么是持续集成？&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ibm.com/topics/continuous-deployment&quot;&gt;IBM – What is continuous deployment?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://circleci.com/blog/docker-swarm-vs-kubernetes/&quot;&gt;Docker Swarm vs Kubernetes: how to choose a container orchestration tool&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://zh.wikipedia.org/zh-cn/Kubernetes&quot;&gt;维基百科 – Kubernetes&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ibm.com/blogs/solutions/jp-ja/container-cocreation-center-05/&quot;&gt;IBM – 第5回 『Red Hat OpenShift と Kubernetes の違い』&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kubernetes.io/zh-cn/docs/concepts/architecture/&quot;&gt;Kubernetes 文档 - 概念 - Kubernetes 架构&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1852347&quot;&gt;基于 Containerd 运行时搭建 Kubernetes 集群实践&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 08 Oct 2024 16:50:00 +0900</pubDate>
+        <link>https://lisz.me/tech/k8s/k8s-introduction.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/k8s/k8s-introduction.html</guid>
+        
+        <category>Kubernetes</category>
+        
+        <category>K8S</category>
+        
+        <category>kubeadm</category>
+        
+        <category>calico</category>
+        
+        <category>flannel</category>
+        
+        <category>csi-driver</category>
+        
+        <category>NFS</category>
+        
+        
+        <category>tech</category>
+        
+        <category>k8s</category>
+        
+      </item>
     
       <item>
         <title>生活中的小问题——公交计费问题</title>
@@ -1962,263 +2520,6 @@ www.wshifen.com.        192     IN      A       45.113.192.101
         <category>DNS</category>
         
         <category>私有域名</category>
-        
-        <category>内网</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>内网 HTTPS 可信证书</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;h3 id=&quot;内网-https-化的必要性&quot;&gt;内网 HTTPS 化的必要性&lt;/h3&gt;
-
-&lt;p&gt;  开发团队或者公司内部一般会采用内外网隔离、上网行为过滤等措施，比较可靠地保证了内部设备无法被外部网络所侦测，从而可能认为 HTTP 内网站点是一个相对安全的存在。即使在 HTTPS 证书如此盛行的今天，也还暂时不考虑内部站点的 HTTPS 化。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;IP + Port&lt;/code&gt; 或者 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://本地域名&lt;/code&gt; 的访问方式依旧是座上宾。当然，如果考虑到购买 HTTPS 证书的成本或者团队内网站点采用 Letsencrypt 等免费证书过于麻烦（只能采用 DNS 验证的方式每三个月申请一次新证书），那么自签名 SSL 证书则成为首选了。不过，如果为每一个内网站点都生成一个 SSL 证书，然后让大家都手动把 HTTPS 标为可信，那么当面临大量内网站点时，大家可能要被搞崩溃。更为可行的办法是，&lt;strong&gt;生成一个内网用的根证书，只标记该根证书可信&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;h3 id=&quot;根证书&quot;&gt;根证书&lt;/h3&gt;
-
-&lt;p&gt;  与其相信别人根证书生成的 SSL 证书，不如相信自己根证书生成的。我们的目的毕竟不是要任何一个人都把我们自签名的证书标为可信，只要在内网内使用内网站点的设备能够信任即可。而且成为一个受到公众信任的根证书是非常困难的一件事，即使经过几十年可能也没有办法做到。如今现有的根证书实际上有限，像我们平常熟悉的 Letsencrypt、ZeroSSL、Cloudflare 等等并不是根证书而是中间证书。有点类似总代理和分代理的感觉，根证书在业界具有广泛的公信力，但是让根证书去给个人或者企业生成证书可能有点忙不过来。于是根证书生成若干个中间证书，再由中间证书来为个人或者企业生成实际的证书。&lt;/p&gt;
-
-&lt;p&gt;  一般来说，操作系统或浏览器的产商会预置国际上认可的根证书。如下所示，为 Mac OS 上预置的根证书列表。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/SfWsIJ.webp&quot; alt=&quot;Mac OS 预置根证书 Root Certificate&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;p&gt;  话不多说，让我们来实践一下如何生成自己的根证书和签发 SSL 证书吧。&lt;/p&gt;
-
-&lt;h3 id=&quot;生成根证书&quot;&gt;生成根证书&lt;/h3&gt;
-
-&lt;h4 id=&quot;安装-openssl-可选&quot;&gt;安装 OpenSSL (可选)&lt;/h4&gt;
-
-&lt;p&gt;  此处只考虑 Mac OS 和 Ubuntu，其他环境如何安装可以自行搜索。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Mac OS&lt;/span&gt;
-brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openssl
-
-&lt;span class=&quot;c&quot;&gt;# Ubuntu&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; openssl
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;创建根密钥&quot;&gt;创建根密钥&lt;/h4&gt;
-
-&lt;p&gt;  使用以下命令创建根密钥 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zhonger-key.pem&lt;/code&gt;。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl genrsa &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; zhonger-key.pem 4096
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;创建根证书并签名&quot;&gt;创建根证书并签名&lt;/h4&gt;
-
-&lt;p&gt;  使用刚创建好的根密钥 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zhonger-key.pem&lt;/code&gt; 生成根证书，并输入相关信息。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;openssl req &lt;span class=&quot;nt&quot;&gt;-new&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x509&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-days&lt;/span&gt; 3600 &lt;span class=&quot;nt&quot;&gt;-key&lt;/span&gt; zhonger-key.pem &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; zhongerca.pem
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;openssl req &lt;span class=&quot;nt&quot;&gt;-new&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x509&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-days&lt;/span&gt; 3600 &lt;span class=&quot;nt&quot;&gt;-key&lt;/span&gt; zhonger-key.pem &lt;span class=&quot;nt&quot;&gt;-out&lt;/span&gt; zhongerca.pem 
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter &lt;span class=&quot;s1&quot;&gt;&apos;.&apos;&lt;/span&gt;, the field will be left blank.
-&lt;span class=&quot;nt&quot;&gt;-----&lt;/span&gt;
-Country Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2 letter code&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;AU]:CN
-State or Province Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;full name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Some-State]:Shanghai
-Locality Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, city&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:Shanghai
-Organization Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, company&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Internet Widgits Pty Ltd]:zhonger
-Organizational Unit Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;eg, section&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:zhonger
-Common Name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;e.g. server FQDN or YOUR name&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:lisz.me
-Email Address &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;:contact@lisz.me
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;验证根证书&quot;&gt;验证根证书&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;openssl x509 &lt;span class=&quot;nt&quot;&gt;-text&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-in&lt;/span&gt; zhongerca.pem &lt;span class=&quot;nt&quot;&gt;-noout&lt;/span&gt;
-Certificate:
-    Data:
-        Version: 3 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        Serial Number:
-            44:48:03:56:ff:15:57:03:00:34:1f:85:61:ca:f7:7a:1e:4f:38:8f
-        Signature Algorithm: sha256WithRSAEncryption
-        Issuer: C &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; CN, ST &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Shanghai, L &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Shanghai, O &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; zhonger, OU &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; zhonger, CN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; lisz.me, emailAddress &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; contact@lisz.me
-        Validity
-            Not Before: Aug  3 05:25:47 2022 GMT
-            Not After : Jun 11 05:25:47 2032 GMT
-        Subject: C &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; CN, ST &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Shanghai, L &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; Shanghai, O &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; zhonger, OU &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; zhonger, CN &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; lisz.me, emailAddress &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; contact@lisz.me
-        Subject Public Key Info:
-            Public Key Algorithm: rsaEncryption
-                RSA Public-Key: &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4096 bit&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-                Modulus:
-                    00:b2:d1:47:73:8a:83:48:e3:47:1a:41:01:f6:63:
-                    69:43:39:71:eb:2b:74:be:dc:63:f3:df:79:66:ee:
-                    00:30:65:b3:4f:7e:58:88:00:13:09:e6:4f:74:57:
-                    fa:a3:56:24:cd:b6:1f:53:25:77:98:bf:9f:45:64:
-                    7c:6c:04:23:c4:8f:0f:bf:2e:b3:d1:2e:4c:05:4d:
-                    4c:e6:65:54:ad:0c:35:b7:d9:c8:74:97:19:c7:a5:
-                    &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt;:9a:a4:73:37:13:71:80:34:7c:bc:b3:41:5a:34:
-                    bb:16:82:44:18:a1:0a:a5:f5:f1:07:ca:8d:b3:9a:
-                    ef:74:fb:a0:6c:72:4a:53:5c:59:74:6f:aa:c7:bc:
-                    48:26:af:1b:70:f3:5f:7f:c7:df:8d:e5:da:e4:f4:
-                    d2:fa:90:d3:e2:67:e1:9a:df:c7:c4:c7:53:6f:62:
-                    25:ed:ff:0a:17:cf:8d:4d:84:6b:38:cb:49:e7:3d:
-                    c5:2b:15:76:e6:eb:cc:17:94:40:20:7d:ee:8c:36:
-                    6d:cf:9c:d7:1f:a6:41:20:9d:45:cd:57:8f:a8:61:
-                    f8:8b:e9:31:6a:a9:96:c1:db:57:64:0b:09:da:ca:
-                    b3:07:d9:55:ed:fe:69:a0:9c:78:5b:59:a5:7b:a1:
-                    2b:4d:68:22:b4:7f:db:c6:c1:12:ee:eb:9b:29:38:
-                    ae:7b:4c:0d:2a:ab:33:3f:af:a8:7b:ca:89:2c:62:
-                    0f:a8:ef:89:60:9e:fd:a2:df:36:6d:70:82:8b:fa:
-                    b3:ee:79:7e:fd:3f:e7:90:84:58:85:7e:7e:69:07:
-                    1e:50:05:0b:87:4d:66:e4:17:6b:c2:97:03:48:e4:
-                    7d:08:b4:81:a6:05:80:60:5c:eb:8d:53:db:7c:62:
-                    a8:6d:a7:75:f1:56:b6:d9:0d:6b:3b:be:8b:72:39:
-                    8d:e7:2d:77:74:e3:4d:a1:fd:8b:44:f9:ee:fd:0d:
-                    04:ec:6a:fc:f3:d2:15:fc:18:ff:7d:33:44:2b:6d:
-                    7f:3c:33:21:e1:d8:5f:08:fa:53:fd:26:fb:6e:74:
-                    d7:4b:51:62:d3:15:1b:3b:44:78:78:9b:91:c7:ba:
-                    82:2b:12:d7:b2:83:0a:39:ec:5e:a9:a9:c1:04:a6:
-                    2e:64:a5:ea:15:c3:85:e9:ac:38:6b:22:eb:3b:08:
-                    b8:0a:31:10:df:45:1d:76:81:e0:0f:88:e4:00:ef:
-                    6e:90:59:8c:d8:36:e9:77:bf:4a:0e:3d:03:02:4d:
-                    5d:a7:90:16:81:11:e0:81:bb:e0:18:a3:bb:dc:8d:
-                    7d:c6:cf:c6:0b:d2:80:53:ea:d0:27:e6:6a:cc:8e:
-                    2b:b3:72:e4:ab:84:88:e2:e9:a5:bb:72:9a:c6:a2:
-                    0e:5a:cb
-                Exponent: 65537 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x10001&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        X509v3 extensions:
-            X509v3 Subject Key Identifier:
-                EE:EF:AE:DB:73:45:9A:6E:82:00:3C:A7:05:0D:60:E4:20:81:3B:02
-            X509v3 Authority Key Identifier:
-                keyid:EE:EF:AE:DB:73:45:9A:6E:82:00:3C:A7:05:0D:60:E4:20:81:3B:02
-
-            X509v3 Basic Constraints: critical
-                CA:TRUE
-    Signature Algorithm: sha256WithRSAEncryption
-         98:cf:f4:23:61:d2:2a:64:ce:51:57:1d:fb:61:2f:34:68:86:
-         c9:02:5a:c8:97:80:58:c1:7f:04:e1:97:f5:0b:35:d5:c4:91:
-         fa:98:8c:73:16:43:b3:af:63:af:2c:30:cf:6a:8e:10:99:bc:
-         fd:3d:84:c7:3d:01:e0:8d:8d:d8:76:74:12:69:1a:f5:e5:ec:
-         ef:eb:dc:f8:08:0c:c7:03:19:de:c5:e8:c7:4e:b4:5c:67:39:
-         9f:33:11:6f:29:e1:03:d8:4e:70:09:7a:69:bd:3a:db:96:71:
-         2b:38:c4:46:87:f6:59:34:f9:dc:5c:6d:34:9a:ba:ea:36:13:
-         d8:e3:e3:91:ea:70:3b:ea:39:cb:fc:fd:08:0f:73:e5:16:c3:
-         0d:9a:62:20:3f:5a:28:90:e6:b2:65:23:a1:ba:d0:77:c0:8e:
-         16:51:55:44:f6:4b:16:b9:a1:97:bc:f8:95:70:af:a6:d4:07:
-         27:21:96:78:0b:58:18:51:45:a6:ea:07:c8:09:1b:ad:f3:e1:
-         16:be:64:bf:8f:b7:4c:d1:e6:d0:c6:c1:db:cd:3d:e9:88:ec:
-         e2:87:ff:bd:c3:7b:31:23:00:c3:71:53:90:68:46:99:7d:1d:
-         e1:78:26:76:6a:41:8d:9e:9a:55:97:63:a5:df:86:fc:03:9b:
-         28:13:55:ff:74:f2:56:d9:20:02:e8:c9:90:4f:b1:5d:1b:66:
-         57:4e:f7:c6:50:4f:c9:8b:ff:39:a1:9e:b4:ee:2b:8a:bf:46:
-         b4:3e:65:cb:34:12:73:bc:ae:ba:a5:41:20:d4:b9:c5:c4:da:
-         89:bd:50:83:27:71:7a:9f:2c:3e:cf:de:db:13:b1:39:cf:4a:
-         39:62:68:b3:f5:dc:49:44:3e:c1:cf:0c:a4:9a:4b:cb:5e:ec:
-         aa:33:a5:57:ae:c6:f3:4f:69:01:d1:6a:a7:12:90:88:05:e9:
-         18:d8:3a:a7:89:70:55:ab:18:ba:4f:28:74:5b:5f:21:8e:66:
-         bc:ae:ff:1b:c7:ed:42:73:c1:1c:a4:97:f2:e6:c7:5a:8f:a8:
-         44:a5:ed:b7:76:ac:cf:40:f0:a4:4f:22:03:d0:db:db:6e:18:
-         32:33:4a:79:c2:bb:98:20:71:03:a7:9c:ea:4e:7e:0a:28:79:
-         30:f3:3f:ef:03:b2:e0:00:b0:2b:71:27:8b:fc:f9:a0:e5:b9:
-         a0:9e:6f:93:3a:f3:d3:1c:87:8a:b7:2d:5c:38:ab:f9:ff:39:
-         8b:52:a5:9a:95:2f:a0:82:b9:b6:f8:9a:c3:e3:55:dd:4b:b5:
-         e4:e3:fb:f8:8b:10:50:f8:42:7d:03:fe:72:40:c1:d3:f7:26:
-         a7:f9:de:b9:9d:30:26:94
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;安装根证书&quot;&gt;安装根证书&lt;/h4&gt;
-
-&lt;p&gt;  首次打开刚刚生成的根证书 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zhongerca.pem&lt;/code&gt; 会像下面这样显示“此根证书不被信任”，我们可以将下面的使用此证书时的&lt;strong&gt;使用系统默认&lt;/strong&gt;改成&lt;strong&gt;始终信任&lt;/strong&gt;，然后输入操作系统用户密码即可保存修改。改完之后再次打开如下下图所示，显示“此证书已标记为受此账户信任”。这样一来，由该根证书签发的证书就都会被信任了。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/gkni75.webp&quot; alt=&quot;打开根证书 Open Root Certificate file&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/zJ5dNm.webp&quot; alt=&quot;始终信任根证书 Always trust Root Certificate file&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;签发证书&quot;&gt;签发证书&lt;/h3&gt;
-
-&lt;p&gt;  这里我们打算采用 &lt;a href=&quot;https://github.com/jsha/minica&quot;&gt;jsha/minica&lt;/a&gt; 来辅助快速签发证书。&lt;/p&gt;
-
-&lt;h4 id=&quot;安装-minica&quot;&gt;安装 minica&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Mac OS&lt;/span&gt;
-brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;minica
-
-&lt;span class=&quot;c&quot;&gt;# Other OS&lt;/span&gt;
-go &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;github.com/jsha/minica@latest
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;签发-ssl-证书&quot;&gt;签发 SSL 证书&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 给域名签发 SSL 证书&lt;/span&gt;
-minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;span class=&quot;nt&quot;&gt;-ca-key&lt;/span&gt; zhonger-key.pem &lt;span class=&quot;nt&quot;&gt;--domains&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;sni.lisz.me,zhonger.io,*.zhonger.io&quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 给 IP 签发 SSL 证书&lt;/span&gt;
-minica &lt;span class=&quot;nt&quot;&gt;-ca-cert&lt;/span&gt; zhongerca.pem &lt;span class=&quot;nt&quot;&gt;-ca-key&lt;/span&gt; zhonger-key.pem &lt;span class=&quot;nt&quot;&gt;--ip-addresses&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  minica 提供了非常简单的方式来签发 SSL 证书，比如说指定根证书和根密钥、指定单个或多个域名、通配符域名以及 IP。minica 签发的证书默认时效为 2年30天（相信可能是考虑到 30天 的缓冲期所以多了一个月）。这里，我们模仿了 Cloudflare 的 SSL 证书生成方式，第一个域名是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sni.根证书域名&lt;/code&gt;，第二个开始才是真正想要签发的域名。由于 minica 默认会将第一个域名作为文件夹的名字生成 SSL 证书 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cert.pem&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;key.pem&lt;/code&gt; 文件，如果采取这种方式在同一目录执行以上签发命令势必会使得旧文件被覆盖，因此推荐像 Certonly 或者 acme.sh 那样修改目录名来区分。&lt;/p&gt;
-
-&lt;h2 id=&quot;其他&quot;&gt;其他&lt;/h2&gt;
-
-&lt;h3 id=&quot;mkcert&quot;&gt;mkcert&lt;/h3&gt;
-
-&lt;p&gt;  除了 minica 之外，&lt;a href=&quot;https://github.com/FiloSottile/mkcert&quot;&gt;FiloSottile/mkcert&lt;/a&gt; 提供的 mkcert 工具也非常简单方便。mkcert 会自行生成根证书，然后签发证书。个人觉得，相比 minica 而言，mkcert 更适合个人本地开发 HTTPS 化，而非团队内网 HTTPS 化。&lt;/p&gt;
-
-&lt;h3 id=&quot;根证书被伪造&quot;&gt;根证书被伪造&lt;/h3&gt;
-
-&lt;p&gt;  自生成根证书比较令人担心的地方可能就是任何人都可以用同样的方法伪造出相似的根证书。实际上，根证书是独一无二的，即使所有的信息都设置成一样，还是两个根证书。我们需要做的是:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;保护好根证书密钥，因为采用同一个密钥是可以生成比较相似的根证书的。当然两个根证书的&lt;strong&gt;序列 ID&lt;/strong&gt;、&lt;strong&gt;有效时间&lt;/strong&gt;是不会完全一样的。如果密钥不同，自然两个根证书的密钥 ID 也不会相同。&lt;/li&gt;
-  &lt;li&gt;告诉用户真的根证书是什么样的（序列 ID、密钥 ID、有效时间等）、应该从哪里下载到。这里需要在内网建立一个用于提供下载根证书的站点，而这个站点的SSL 证书最好采用购买的或申请的证书。也就是说，从可靠站点下载的内网 HTTPS 化根证书也是可靠的。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;  如下所示，是上面生成的根证书和签发的 SSL 证书的密钥 ID 对比。可以看到，两者完全一样，即可信任的 SSL 证书。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/9ieYYm.webp&quot; alt=&quot;根证书密钥 ID Root Certificate Key ID&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/sMYzVn.webp&quot; alt=&quot;SSL 证书密钥 ID the Key ID in SSL Certificate&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;其他平台安装根证书&quot;&gt;其他平台安装根证书&lt;/h3&gt;
-
-&lt;p&gt;  上面已经提到了在 Mac OS 中如何安装根证书，其他平台比如 Windows、Linux、Android、IOS 等也是可以按照类似的方式，略微有些差别。考虑到 Windows 和 Linux 桌面版安装根证书的步骤几乎与 Mac OS 一样就不再赘述，这里主要讲一下 Linux Server、Android、IOS 平台的安装方法。&lt;/p&gt;
-
-&lt;h4 id=&quot;linux-server&quot;&gt;Linux Server&lt;/h4&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp &lt;/span&gt;zhongerca.pem /usr/local/share/ca-certificates/zhongerca.pem
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;update-ca-certificates
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;android-或-harmonyos&quot;&gt;Android 或 HarmonyOS&lt;/h4&gt;
-
-&lt;p&gt;  以华为鸿蒙系统（HarmonyOS）为例，首先下载根证书到设备上，然后在 &lt;strong&gt;设置 &amp;gt; 安全 &amp;gt; 更多安全设置 &amp;gt; 加密和凭据 &amp;gt; 从存储设备上安装&lt;/strong&gt; 中选择已下载的根证书完成安装。安装完成之后可以在同级别的 &lt;strong&gt;受信任的凭据 &amp;gt; 用户&lt;/strong&gt; 下面看到安装好的根证书。&lt;/p&gt;
-
-&lt;h4 id=&quot;ios-或-ipad-os&quot;&gt;IOS 或 iPad OS&lt;/h4&gt;
-
-&lt;p&gt;  首先下载根证书到设备上，在&lt;strong&gt;文件&lt;/strong&gt;中点击打开（会自动跳转到 &lt;strong&gt;设置 &amp;gt; 通用 &amp;gt; VPN与设备管理&lt;/strong&gt;）。可以在 &lt;strong&gt;配置描述文件&lt;/strong&gt; 列表中看到根证书，点击进去&lt;strong&gt;输入密码并验证&lt;/strong&gt;即可。&lt;/p&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://cloud.tencent.com/developer/article/1458151&quot;&gt;根证书和中间证书的区别&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.microsoft.com/zh-cn/azure/application-gateway/self-signed-certificates&quot;&gt;使用自定义根 CA 生成 Azure 应用程序网关自签名证书&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://qiita.com/k_kind/items/b87777efa3d29dcc4467&quot;&gt;開発環境を https 化する mkcert の仕組み&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/379501905&quot;&gt;mkcert 使用指南：如何快速创建自签名 SSL 证书&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 03 Aug 2022 11:30:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/ca-ssl.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ca-ssl.html</guid>
-        
-        <category>CA</category>
-        
-        <category>SSL</category>
-        
-        <category>证书</category>
         
         <category>内网</category>
         

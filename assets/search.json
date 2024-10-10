@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "Kubernetes 不完全入门",
+    "tags"     : "Kubernetes K8S kubeadm calico flannel csi-driver NFS",
+    "url"      : "/tech/k8s/k8s-introduction.html"
+  } ,
+
+  {
     "title"    : "生活中的小问题——公交计费问题",
     "tags"     : "algorithm 算法 program 代码实现 python",
     "url"      : "/tech/algorithm/bus-ticket.html"
