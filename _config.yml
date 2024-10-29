@@ -111,6 +111,7 @@ umami:
 
 # Busuanzi
 busuanzi: true
+busuanzi_url: https://busuanzi.lisz.top/js
 
 # Google Analytics
 # google_analytics: UA-164207041-1
