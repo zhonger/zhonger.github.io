@@ -49,25 +49,26 @@
     <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" async>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown-light.min.css">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
 
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css">
     
     
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    href="https://cdn.jsdelivr.net/npm/prism-themes/themes/prism-one-light.min.css" />
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
 
     
 
+    
     
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
 
@@ -99,6 +100,9 @@
         <div id="search-toggle"></div>
     
     
+    <div id="random-toggle">
+        <a href="#" aria-label="Random Article" target="_blank">🎲</a>
+    </div>
     <div id="travelling-toggle">
         <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
             <svg class="icon" aria-hidden="true">
@@ -155,7 +159,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> about </a>
+                    <a class="dropdown-toggle" href="javascript:void(0);"> about </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -194,7 +198,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> collections </a>
+                    <a class="dropdown-toggle" href="javascript:void(0);"> collections </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -219,6 +223,9 @@
                 </li>
                 
             
+            <li class="random">
+                <a href="#" aria-label="Random Article" target="_blank">🎲</a>
+            </li>
             
             <li class="travelling">
                 <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
@@ -357,7 +364,7 @@
  </div> </div>
 <p>  我所说的<strong>经验效用</strong>是指一种综合衡量方法，它考虑了一种方法的适用性广度、实施的难易程度，最重要的是：它在现实世界中的有用程度。一些具有高实用性的方法具有更广泛的适用性，而另一些则更强大，但仅限于狭窄的领域。可靠、可预测且没有重大缺陷的方法也被认为具有更高的效用。</p>
 
-<p>  我所说的<strong>理论理解</strong>是指一种综合衡量方法（比如，输入和输出之间的关系如何？如何可以获得预期的结果？这种技术的内部机制是什么？），它考虑了直观可解释性（interpretability）和理论可解释性（explainability），以及其文献的深度和完整性。<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup>理解程度低的方法通常在实施时采用启发式方法或大量试错。理解程度高的方法往往具有公式化的实现，具有强大的理论基础和可预测的结果。更简单的方法（例如线性回归）具有较低的理论上限，而更复杂的方法（例如深度学习）具有更高的理论上限。当谈到一个领域的文献的深度和完整性时，我已经更具其假设的理论上限来评估该领域——一个来自直觉的想象值。</p>
+<p>  我所说的<strong>理论理解</strong>是指一种综合衡量方法（比如，输入和输出之间的关系如何？如何可以获得预期的结果？这种技术的内部机制是什么？），它考虑了直观可解释性（interpretability）和理论可解释性（explainability），以及其文献的深度和完整性。<sup id="fnref:1"><a href="#fn:1" class="footnote" rel="footnote" role="doc-noteref">1</a></sup>理解程度低的方法通常在实施时采用启发式方法或大量试错。理解程度高的方法往往具有公式化的实现，具有强大的理论基础和可预测的结果。更简单的方法（例如线性回归）具有较低的理论上限，而更复杂的方法（例如深度学习）具有更高的理论上限。当谈到一个领域的文献的深度和完整性时，我已经更具其假设的理论上限来评估该领域——一个来自直觉的想象值。</p>
 
 <p>  我们可以将矩阵构造为四个象限，轴的交点代表一个假设的、半成熟的参考领域，具有平均理解和平均效用。这让我们能够以定性的方式解释矩阵中的领域，具体取决于领域所在的象限，如下图所示。给定象限中的领域可能具有部分或全部这些普遍特征。</p>
 
@@ -406,7 +413,7 @@
 
 <p>  领域可以通过三种主要机制来遍历理论理解与经验效用矩阵（图2）。</p>
 
-<p>  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的<strong>有监督机器学习</strong>就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。</p>
+<p>  渐进式进展是缓慢而稳定的进展，它在矩阵的右侧向上移动。过去几十年的<strong>有监督机器学习</strong>就是一个很好的例子，在此期间，越来越有效的预测算法得到改进和采用，为我们提供了很强大的工具箱。<sup id="fnref:2"><a href="#fn:2" class="footnote" rel="footnote" role="doc-noteref">2</a></sup>渐进式进展是所有成熟领域的现状，除非由于技术飞跃和范式转变才会经历了更强烈的变化。</p>
 
 <p><img src="https://i.lisz.top/blog/lR1g7Q.webp" alt="领域发展机制 The steps of development">
 <strong><center>图2. 领域可以遍历矩阵的方式的说明性示例。</center></strong></p>
@@ -482,10 +489,10 @@
 
 <div class="footnotes" role="doc-endnotes">
   <ol>
-    <li id="fn:1" role="doc-endnote">
+    <li id="fn:1">
       <p>机器学习中的术语“直观可解释性”（interpretability）和“理论可解释性”（explainability）没有统一的定义，许多研究人员互换使用它们。 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
-    <li id="fn:2" role="doc-endnote">
+    <li id="fn:2">
       <p>例如随机森林算法的出现不会增加对之前的支持向量机算法的理解或实用性，但它确实推进了有监督机器学习的总体领域。 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">↩</a></p>
     </li>
   </ol>
@@ -625,11 +632,42 @@
     
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
 
-    
     
 
 </section>
@@ -641,17 +679,14 @@
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.6"
-          target="_blank" class="extlinks">v1.3.6</a>)
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.5.1"
+          target="_blank" class="extlinks">v1.5.1</a>)
         
       </section>
       <section class="links">仲儿的自留地 ©
+        <input type="hidden" id="footer-since" value="2015">
+        <span id="footer-year"></span>
         
-        
-        2015
-        -
-        
-        2024
         
         <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
           <svg class="icon" aria-hidden="true">
@@ -701,24 +736,43 @@
       
       <section class="badges">
         
+        <a href="https://netlify.com" target="_blank" class="netlify" aria-label="netlify">
+          <img src="/assets/icons/netlify-icon-light.svg" alt="netlify">
+        </a>
+        
+        
+        <a href="https://vercel.com" target="_blank" class="vercel" aria-label="vercel">
+          <img src="/assets/icons/vercel-logotype-dark.png" alt="vercel">
+        </a>
+        
+        
+        <a href="https://www.cloudflare.com" target="_blank" class="cloudflare" aria-label="cloudflare">
+          <img src="/assets/icons/cloudflare-logo.webp" alt="cloudflare">
+        </a>
+        
+      </section>
+      
+      
+      <section class="badges">
+        
         <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog">
-          <img src=" /assets/icons/forever_en_default.png" alt="foreverblog">
+          <img src="/assets/icons/forever_en_default.png" alt="foreverblog">
         </a>
         
         
         <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole">
-          <img src=" /assets/icons/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          <img src="/assets/icons/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
         </a>
         
         
         <a href="https://www.travellings.cn/go.html" target="_blank" class="travelling-badge" aria-label="Travelling"
           rel="noopener" title="开往-友链接力">
-          <img src=" /assets/icons/travellings.gif" alt="开往-友链接力">
+          <img src="/assets/icons/travellings.gif" alt="开往-友链接力">
         </a>
         
         
         <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI">
-          <img src=" /assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
         </a>
         
       </section>
@@ -766,11 +820,11 @@
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+        <script src="https://cdn.jsdelivr.net/npm/lazysizes/lazysizes.min.js" async></script>
         
-            <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/customParseFormat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/relativeTime.js"></script>
 <script>
     $(document).ready(function () {
         var time_formats = ['YYYY-MM-DD HH:mm:ss ZZ', 'YYYY DD MMM HH:mm:ss ZZ', 'YYYY年MM月DD日 HH:mm:ss ZZ'];
@@ -863,12 +917,16 @@
 
 
 
+
+
+
+
+
 <script async src="https://busuanzi.lisz.top/js"></script>
 
 
         
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full/es5/tex-mml-svg.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
 		jax: ["input/TeX", "output/HTML-CSS"],
@@ -883,7 +941,7 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script>
 <script>
     $(document).ready(function () {
         var baseurl = $("meta[property='og:baseurl']").attr('content');
@@ -940,7 +998,7 @@
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
     $(document).ready(function () {
         mermaid.initialize({
@@ -951,29 +1009,30 @@
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
         
+
+
+
 
 <script>
     $(document).ready(function () {
-        if ($("#comments-switch").length > 0) {
+        if ($(".comment").length == 3) {
             var comment_status = $("#cmn-toggle-4")[0].checked;
             if (comment_status) {
-                $("#waline").addClass("active");
+                $(".comment:last > div").addClass("active");
             } else {
-                $("#disqus_thread").addClass("active");
+                $(".comment:nth-last-child(2) > div").addClass("active");
             }
             $("#cmn-toggle-4").click(function () {
-                $("#disqus_thread").toggleClass("active");
-                $("#waline").toggleClass("active");
+                $(".comment:nth-last-child(2) > div").toggleClass("active");
+                $(".comment:last > div").toggleClass("active");
             })
         } else {
-            if ($("#disqus_thread").length > 0) {
-                $("#disqus_thread").addClass("active");
-            } else if ($("#waline").length > 0) {
-                $("#waline").addClass("active");
+            if ($(".comment").length == 2) {
+                $(".comment:last > div").addClass("active")
             }
         }
     })

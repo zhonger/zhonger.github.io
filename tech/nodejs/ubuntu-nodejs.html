@@ -49,25 +49,26 @@
     <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" async>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown-light.min.css">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css">
 
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css">
     
     
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    href="https://cdn.jsdelivr.net/npm/prism-themes/themes/prism-one-light.min.css" />
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
 
     
 
+    
     
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
 
@@ -99,6 +100,9 @@
         <div id="search-toggle"></div>
     
     
+    <div id="random-toggle">
+        <a href="#" aria-label="Random Article" target="_blank">🎲</a>
+    </div>
     <div id="travelling-toggle">
         <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
             <svg class="icon" aria-hidden="true">
@@ -155,7 +159,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> about </a>
+                    <a class="dropdown-toggle" href="javascript:void(0);"> about </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -194,7 +198,7 @@
             
                 
                 <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> collections </a>
+                    <a class="dropdown-toggle" href="javascript:void(0);"> collections </a>
                     <ul class="dropdown-menu">
                     
                         <li>
@@ -219,6 +223,9 @@
                 </li>
                 
             
+            <li class="random">
+                <a href="#" aria-label="Random Article" target="_blank">🎲</a>
+            </li>
             
             <li class="travelling">
                 <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
@@ -561,11 +568,42 @@ node <span class="nt">-v</span>
     
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
 
-    
     
 
 </section>
@@ -577,17 +615,14 @@ node <span class="nt">-v</span>
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.6"
-          target="_blank" class="extlinks">v1.3.6</a>)
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.5.1"
+          target="_blank" class="extlinks">v1.5.1</a>)
         
       </section>
       <section class="links">仲儿的自留地 ©
+        <input type="hidden" id="footer-since" value="2015">
+        <span id="footer-year"></span>
         
-        
-        2015
-        -
-        
-        2024
         
         <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
           <svg class="icon" aria-hidden="true">
@@ -637,24 +672,43 @@ node <span class="nt">-v</span>
       
       <section class="badges">
         
+        <a href="https://netlify.com" target="_blank" class="netlify" aria-label="netlify">
+          <img src="/assets/icons/netlify-icon-light.svg" alt="netlify">
+        </a>
+        
+        
+        <a href="https://vercel.com" target="_blank" class="vercel" aria-label="vercel">
+          <img src="/assets/icons/vercel-logotype-dark.png" alt="vercel">
+        </a>
+        
+        
+        <a href="https://www.cloudflare.com" target="_blank" class="cloudflare" aria-label="cloudflare">
+          <img src="/assets/icons/cloudflare-logo.webp" alt="cloudflare">
+        </a>
+        
+      </section>
+      
+      
+      <section class="badges">
+        
         <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog">
-          <img src=" /assets/icons/forever_en_default.png" alt="foreverblog">
+          <img src="/assets/icons/forever_en_default.png" alt="foreverblog">
         </a>
         
         
         <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole">
-          <img src=" /assets/icons/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
+          <img src="/assets/icons/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
         </a>
         
         
         <a href="https://www.travellings.cn/go.html" target="_blank" class="travelling-badge" aria-label="Travelling"
           rel="noopener" title="开往-友链接力">
-          <img src=" /assets/icons/travellings.gif" alt="开往-友链接力">
+          <img src="/assets/icons/travellings.gif" alt="开往-友链接力">
         </a>
         
         
         <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI">
-          <img src=" /assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
+          <img src="/assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
         </a>
         
       </section>
@@ -702,11 +756,11 @@ node <span class="nt">-v</span>
 
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
+        <script src="https://cdn.jsdelivr.net/npm/lazysizes/lazysizes.min.js" async></script>
         
-            <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/dayjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/customParseFormat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.2/plugin/relativeTime.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/customParseFormat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dayjs/plugin/relativeTime.js"></script>
 <script>
     $(document).ready(function () {
         var time_formats = ['YYYY-MM-DD HH:mm:ss ZZ', 'YYYY DD MMM HH:mm:ss ZZ', 'YYYY年MM月DD日 HH:mm:ss ZZ'];
@@ -799,12 +853,16 @@ node <span class="nt">-v</span>
 
 
 
+
+
+
+
+
 <script async src="https://busuanzi.lisz.top/js"></script>
 
 
         
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full/es5/tex-mml-svg.min.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
 		jax: ["input/TeX", "output/HTML-CSS"],
@@ -819,7 +877,7 @@ node <span class="nt">-v</span>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script>
 <script>
     $(document).ready(function () {
         var baseurl = $("meta[property='og:baseurl']").attr('content');
@@ -876,7 +934,7 @@ node <span class="nt">-v</span>
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <script>
     $(document).ready(function () {
         mermaid.initialize({
@@ -887,29 +945,30 @@ node <span class="nt">-v</span>
     });
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
         
+
+
+
 
 <script>
     $(document).ready(function () {
-        if ($("#comments-switch").length > 0) {
+        if ($(".comment").length == 3) {
             var comment_status = $("#cmn-toggle-4")[0].checked;
             if (comment_status) {
-                $("#waline").addClass("active");
+                $(".comment:last > div").addClass("active");
             } else {
-                $("#disqus_thread").addClass("active");
+                $(".comment:nth-last-child(2) > div").addClass("active");
             }
             $("#cmn-toggle-4").click(function () {
-                $("#disqus_thread").toggleClass("active");
-                $("#waline").toggleClass("active");
+                $(".comment:nth-last-child(2) > div").toggleClass("active");
+                $(".comment:last > div").toggleClass("active");
             })
         } else {
-            if ($("#disqus_thread").length > 0) {
-                $("#disqus_thread").addClass("active");
-            } else if ($("#waline").length > 0) {
-                $("#waline").addClass("active");
+            if ($(".comment").length == 2) {
+                $(".comment:last > div").addClass("active")
             }
         }
     })

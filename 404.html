@@ -42,8 +42,8 @@
     <link rel="icon" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="bookmark" href="/assets/icons/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.min.css" async>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont@1.1.0/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-screen-webfont/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown-light.min.css">
     
     
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.css">
@@ -53,346 +53,36 @@
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-one-light.min.css" />
+    href="https://cdn.jsdelivr.net/npm/prism-themes/themes/prism-one-light.min.css" />
 
 
 <link rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/prismjs@1.28.0/plugins/line-numbers/prism-line-numbers.min.css">
+    href="https://cdn.jsdelivr.net/npm/prismjs/plugins/line-numbers/prism-line-numbers.min.css">
 
     
 
+    
     
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
 
     <link rel="stylesheet" href="/assets/css/app.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 </head>
-    
-    <body class="line-numbers" ontouchstart="">
-    
+    <body ontouchstart="">
     <!--[if lt IE 10]>
     <div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
     <![endif]-->
-        
-            
-                <div id="all" data-theme="default">
-            
-        
+    
+        <div id="all" data-theme="default">
+    
             <input id="nm-switch" type="hidden" value="false">
-            <header class="g-header" data-theme="default">
-    <div class="g-logo">
-      <a href="/" aria-label="logo"></a>
-    </div>
-    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
-    
-        <div id="search-toggle"></div>
-    
-    
-    <div id="travelling-toggle">
-        <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-train-subway"></use>
-            </svg>
-        </a>
-    </div>
-    
-    <div id="mode-toggle">
-        <svg class="icon icon-day" aria-hidden="true">
-            <use xlink:href="#icon-day"></use>
-        </svg>
-        <svg class="icon icon-night" aria-hidden="true">
-            <use xlink:href="#icon-night"></use>
-        </svg>
-    </div>
-    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
-        <use xlink:href="#icon-menu"></use>
-    </svg>
-    <nav class="g-nav">
-        <ul>
-            
-                
-                <li>
-                    <a href="/" aria-label="home">
-                        home
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="/blog/index.html" aria-label="blog">
-                        blog
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="/archives.html" aria-label="archives">
-                        archives
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a href="/tags.html" aria-label="tags">
-                        tags
-                    </a>
-                </li>
-                
-            
-                
-                <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> about </a>
-                    <ul class="dropdown-menu">
-                    
-                        <li>
-                            <a href="/feed.xml" aria-label="RSS">
-                                RSS
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/logs.html" aria-label="logs">
-                                logs
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/tos.html" aria-label="tos">
-                                tos
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/cv.html" aria-label="CV">
-                                CV
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/links.html" aria-label="links">
-                                links
-                            </a>
-                        </li>
-                    
-                    </ul> 
-                </li>
-                
-            
-                
-                <li class="dropdown">
-                    <a class="dropdown-toggle" href="#"> collections </a>
-                    <ul class="dropdown-menu">
-                    
-                        <li>
-                            <a href="/tags.html#CONQUEST" aria-label="CONQUEST">
-                                CONQUEST
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/tags.html#LDAP" aria-label="LDAP">
-                                LDAP
-                            </a>
-                        </li>
-                    
-                        <li>
-                            <a href="/tags.html#blog" aria-label="博客">
-                                博客
-                            </a>
-                        </li>
-                    
-                    </ul> 
-                </li>
-                
-            
-            
-            <li class="travelling">
-                <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
-                    <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-train-subway"></use>
-                    </svg>
-                </a>
-            </li>
-            
-            <li class="mode">
-                <svg class="icon day" aria-hidden="true">
-                    <use xlink:href="#icon-day"></use>
-                </svg>
-                <svg class="icon night" aria-hidden="true">
-                    <use xlink:href="#icon-night"></use>
-                </svg>
-            </li>
-            
-            <li id="search"></li>
-            
-        </ul>
-    </nav>
-</header>
-
-            <header class="g-banner np-banner post-pattern-food" data-theme="default">
-    <div class="post-wrapper">
-        <h1>404</h1>
-        <span class="subheading"></span>
-        <a href="/" class="btn">Back to home</a>
-    </div>
-</header>
-
-
-
-            
-
-
-<footer class="g-footer">
-  <div class="g-container">
-    <div class="g-left">
-      <section class="links">
-        本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.3.6"
-          target="_blank" class="extlinks">v1.3.6</a>)
-        
-      </section>
-      <section class="links">仲儿的自留地 ©
-        
-        
-        2015
-        -
-        
-        2024
-        
-        <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-rss"></use>
-          </svg> RSS
-        </a>
-        <a href="/tos" target="_blank" aria-label="Terms of Service" class="others">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-tos"></use>
-          </svg> 使用条款
-        </a>
-      </section>
-      
-      <section class="links">
-        <span id="busuanzi_container_site_pv">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-pv"></use>
-          </svg> 总浏览量
-          
-          <span id="busuanzi_site_pv">
-            
-            <b>·</b>
-          </span>
-        </span>
-        <span id="busuanzi_container_site_uv">
-          <svg class="icon" aria-hidden="true">
-            <use xlink:href="#icon-user"></use>
-          </svg> 总访问量
-          
-          <span id="busuanzi_site_uv"></span>
-          
-        </span>
-      </section>
-      
-      <section>
-        
-        本站已运行
-        <span class="alivetime_days"></span> 天
-        <span class="alivetime_hours"></span> 小时
-        <span class="alivetime_minutes"></span> 分
-        <span class="alivetime_seconds"></span> 秒
-        
-      </section>
-    </div>
-    <div class="g-right">
-      
-      
-      <section class="badges">
-        
-        <a href="https://www.foreverblog.cn/" target="_blank" class="foreverblog" aria-label="foreverblog">
-          <img src=" /assets/icons/forever_en_default.png" alt="foreverblog">
-        </a>
-        
-        
-        <a href="https://www.foreverblog.cn/go.html" target="_blank" class="wormhole" aria-label="wormhole">
-          <img src=" /assets/icons/wormhole_3.gif" alt="" title="穿梭虫洞-随机访问十年之约友链博客">
-        </a>
-        
-        
-        <a href="https://www.travellings.cn/go.html" target="_blank" class="travelling-badge" aria-label="Travelling"
-          rel="noopener" title="开往-友链接力">
-          <img src=" /assets/icons/travellings.gif" alt="开往-友链接力">
-        </a>
-        
-        
-        <a href="https://notbyai.fyi/" target="_blank" class="notbyAI" aria-label="notbyAI">
-          <img src=" /assets/icons/notbyAI-white.png" alt="Written by Human, Not by AI">
-        </a>
-        
-      </section>
-      
-    </div>
-    
-  </div>
-</footer>
-<div class="cookie-tip">
-   为了提升本站的使用体验和必要功能的正常使用，本站会使用本地 Cookie。详细请查看「 <a href="/tos.html">本站使用条款</a> 」了解更多。
-
-  <button id="accept-tos">同意</button>
-</div>
-
-<section id="tools">
-  
-  
-</section>
-<section id="bttb" aria-label="Scroll back to top" class="bttb">
-  <div class="tool">
-    <svg class="icon top" aria-hidden="true">
-      <use xlink:href="#icon-top"></use>
-    </svg>
-  </div>
-</section>
+            <div class="np-banner">
+                <h1>404</h1>
+                <span class="subheading"></span>
+                <a href="/" class="btn">Back to Home</a>
+            </div>
         </div>
-        
-<div class="modal">
-    <div class="modal-content">
-        <header>
-            <span class="close">&times;</span>
-        </header>
-        <div class="container"></div>
-    </div>
-</div>
-
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" async></script>
-        
-            
-<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/cal-heatmap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/Tooltip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/LegendLite.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/cal-heatmap@4.2.4/dist/plugins/CalendarLabel.min.js"></script>
-
-        
-        <script src="https://cdn.jsdelivr.net/npm/clipboard/dist/clipboard.min.js"></script>
-        <script>
-            /**
-            * Better Scroll Experience
-            */
-            function scrollToAdjust(id){
-              var element = document.getElementById(id);
-              var headerOffset = 90;
-              var elementPosition = element.getBoundingClientRect().top;
-              var offsetPosition = elementPosition + window.scrollY - headerOffset;
-              window.scrollTo({
-                  top: offsetPosition,
-                  behavior: "smooth"
-              });
-            }
-        </script>
         <script src="/assets/js/app.min.js"></script>
         <script src="https://at.alicdn.com/t/c/font_3046306_ujr2yq34hw.js"></script>
         
@@ -410,96 +100,14 @@
 
 
 
+
+
+
+
+
 <script async src="https://busuanzi.lisz.top/js"></script>
 
 
-        
-	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax-full@3.2.2/es5/tex-mml-svg.min.js"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-		jax: ["input/TeX", "output/HTML-CSS"],
-		tex2jax: {
-			inlineMath: [['$', '$'], ["\\(", "\\)"]],
-			processEscapes: true,
-			skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-		},
-		"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-      });
-    </script>
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/hotkeys-js/dist/hotkeys.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var previous_url = $("meta[property='og:previous_url']").attr('content');
-        var next_url = $("meta[property='og:next_url']").attr('content');
-
-        hotkeys('left', function (event, handler) {
-            // Prevent the default refresh event under WINDOWS system
-            event.preventDefault();
-            if (previous_url) {
-                console.log('you pressed left!');
-                window.location.href = previous_url;
-            } else {
-                $("#no-previous").addClass("active");
-                setTimeout(function () { $("#no-previous").removeClass("active"); }, 1500);
-            }
-        });
-
-        hotkeys('right', function (event, handler) {
-            // Prevent the default refresh event under WINDOWS system
-            event.preventDefault();
-            if (next_url) {
-                console.log('you pressed right!');
-                window.location.href = next_url;
-            } else {
-                $("#no-next").addClass("active");
-                setTimeout(function () { $("#no-next").removeClass("active"); }, 1500);
-            }
-        });
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/mermaid@9.1.6/dist/mermaid.min.js"></script>
-<script>
-    $(document).ready(function () {
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: "default",
-        });
-        mermaid.init(undefined, $('.mermaid2'));
-    });
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
-        
-
-<script>
-    $(document).ready(function () {
-        if ($("#comments-switch").length > 0) {
-            var comment_status = $("#cmn-toggle-4")[0].checked;
-            if (comment_status) {
-                $("#waline").addClass("active");
-            } else {
-                $("#disqus_thread").addClass("active");
-            }
-            $("#cmn-toggle-4").click(function () {
-                $("#disqus_thread").toggleClass("active");
-                $("#waline").toggleClass("active");
-            })
-        } else {
-            if ($("#disqus_thread").length > 0) {
-                $("#disqus_thread").addClass("active");
-            } else if ($("#waline").length > 0) {
-                $("#waline").addClass("active");
-            }
-        }
-    })
-</script>
         <script>
     if ("serviceWorker" in navigator) {
         if (navigator.serviceWorker.controller) {
@@ -529,25 +137,5 @@
         
 <!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BF0y1f49JPDkjSmUYtUb-gRzcVY72squyl0hE2xo7YTA4q7Ch2DAZ0WOZCNktfyakgPlDov92CafKw9ZPAwIDrc' });</script><!-- end webpushr code -->
 
-        
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-<script type="text/javascript">
-    docsearch({
-        appId: "SFGDUYE6XB",
-        apiKey: "0f353764aa52c81dd2d893bc669b4f7b",
-        indexName: "lisz",
-        container: 'li#search',
-        debug: true,
-    });
-    docsearch({
-        appId: "SFGDUYE6XB",
-        apiKey: "0f353764aa52c81dd2d893bc669b4f7b",
-        indexName: "lisz",
-        container: '#search-toggle',
-        debug: true,
-    });
-</script>
-
   </body>
-
 </html>
