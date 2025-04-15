@@ -11,7 +11,7 @@ lang: "en"
 
 ## About me
 
-&emsp;&emsp;I'm Li Shengzhou. Nowadays, I am a PhD student of Computer Science in University of Tsukuba. My research topic is "Data-Driven and Machine Learning Based Material Science Research" under the supervision of Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba.
+&emsp;&emsp;I'm Li Shengzhou and obtained the PhD degree for Computer Science from University of Tsukuba in March 2025. My PhD thesis is "Machine Learning for the Prediction and Analysis of Material Electronic Structures" which is supervised by Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba. From April 2025, I start my work in Nationa Institute for Materials Science (NIMS) as a NIMS Postdoctor Researcher.
 
 ## Interests
 
@@ -30,7 +30,11 @@ lang: "en"
 - Shanghai University (China), School of Computer Engineering and Science, Bachelor degree. (2012/09~2016/06)
 - Shanghai University (China), School of Computer Engineering and Science, Master degree. (2016/09~2019/04)
 - Northeast Normal University (China), Learning Japanese. (2019/10~2020/08)
-- University of Tsukuba (Japan), Graduate School of Science and Technology, Degree Programs in Systems and Information Engineering, Doctoral Program in Computer Science. (2020/10~Now) (MEXT Scholarship)
+- University of Tsukuba (Japan), Graduate School of Science and Technology, Degree Programs in Systems and Information Engineering, Doctoral degree. (2020/10~2025/03) (MEXT Scholarship)
+
+## Work
+
+- National Institute for Materials Science (Japan), Research Center for Materials Nanoarchtectonics (MANA), Semiconductor Materials Field, Quantum Materials Group, NIMS Postdoctor Researcher (2025/04~Now) [[Website]](https://www.nims.go.jp/cmsc/fps1/cmsu_fps_member.html)
 
 ## Publications
 
