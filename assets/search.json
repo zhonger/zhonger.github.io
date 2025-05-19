@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "《手解量子化学》练习题 1-1",
+    "tags"     : "Quantum Chemistry By hand Solution Exercise",
+    "url"      : "/ac/qc/solve-quantum-chemistry-by-hand-1-1.html"
+  } ,
+
+  {
     "title"    : "Kubernetes 不完全入门",
     "tags"     : "Kubernetes K8S kubeadm calico flannel csi-driver NFS",
     "url"      : "/tech/k8s/k8s-introduction.html"
