@@ -4,22 +4,20 @@
     <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>《手解量子化学》练习题 1-1 - 仲儿的自留地</title>
+    <title>《手解量子化学》练习题 1-2 - 仲儿的自留地</title>
     <meta name="author" content="zhonger">
     
-    <meta name="description" content="《手解量子化学》练习题 1-1">
+    <meta name="description" content="《手解量子化学》练习题 1-2">
     <meta name="keywords"
         content="Quantum Chemistry, By hand, Solution, Exercise">
     
-    <meta property="og:previous_url" content="/ac/qc/solve-quantum-chemistry-by-hand-1-2.html">
     
-    
-    <meta property="og:next_url" content="/tech/k8s/k8s-introduction.html">
+    <meta property="og:next_url" content="/ac/qc/solve-quantum-chemistry-by-hand-1-1.html">
     
     
     <meta property="post-date-format" content="0">
     
-    <meta property="post-date" content="2025-05-14 16:52:00 +0900" />
+    <meta property="post-date" content="2025-05-19 16:16:00 +0900" />
     
     
     <meta property="calendar-scale" content="year" />
@@ -28,9 +26,9 @@
     
     <!-- Open Graph -->
     <meta property="og:title"
-        content="《手解量子化学》练习题 1-1 - 仲儿的自留地">
+        content="《手解量子化学》练习题 1-2 - 仲儿的自留地">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html">
+    <meta property="og:url" content="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html">
     <meta property="og:baseurl" content="">
     <meta property="og:description" content="个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。">
     <meta property="og:site_name" content="仲儿的自留地">
@@ -269,7 +267,7 @@
             
             
         </div>
-        <h1>《手解量子化学》练习题 1-1</h1>
+        <h1>《手解量子化学》练习题 1-2</h1>
         <div class="post-meta">
             <span class="post-meta-item">
                 <svg class="icon" aria-hidden="true">
@@ -277,13 +275,13 @@
                 </svg>
                 zhonger
             </span>
-            <time class="post-meta-item" datetime=" 25-05-14">
+            <time class="post-meta-item" datetime=" 25-05-19">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-calendar"></use>
                 </svg>
                 <span class="create-at"></span>
             </time>
-            <time class="post-meta-item" datetime=" 25-05-14">
+            <time class="post-meta-item" datetime=" 25-05-19">
                 <svg class="icon" aria-hidden="true">
                     <use xlink:href="#icon-update"></use>
                 </svg>
@@ -294,12 +292,12 @@
                     <use xlink:href="#icon-words"></use>
                 </svg>
                 
-                本文总共  2.9k  字 </span>
+                本文总共  5.4k  字 </span>
                     <span class="post-meta-item">
                         <svg class="icon time" aria-hidden="true">
                             <use xlink:href="#icon-time"></use>
                         </svg>
-                        阅读全文大约需要 9 分钟
+                        阅读全文大约需要 16 分钟
                     </span>
                     
                     <span class="post-meta-item">
@@ -319,7 +317,7 @@
                             <use xlink:href="#icon-image"></use>
                         </svg>
                         
-                        封面图片提供者 <a href="https://unsplash.com/@uconrad" target="_blank">Uwe Conrad</a>
+                        封面图片提供者 <a href="https://unsplash.com/@mrnuclear" target="_blank">ZHENYU LUO</a>
                         
                     </span>
                     
@@ -328,7 +326,7 @@
     
     <div class="filter"></div>
     <div class="post-cover"
-        style="background: url('https://i.lisz.top/cover/Hqx2QN.webp') center no-repeat; background-size: cover;"></div>
+        style="background: url('https://i.lisz.top/cover/Xdjv9V.webp') center no-repeat; background-size: cover;"></div>
     
 </div>
 
@@ -349,107 +347,147 @@
                 
 
 
-                <div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-1 </div> </div> <div class="content"> <p><strong>判断下面的算子是否厄米（Hermitian）或为厄米算子（Hermite Operator）。</strong></p>
+                <div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-2 </div> </div> <div class="content"> <p>判断下列算子是否<strong>可交换</strong>？</p>
 
-\[[1]\ {d \over dx} \quad [2]\ {\mathrm{i}{d \over dx}} \quad [3]\ {d^2 \over dx^2}\]
-
-
-
- </div> </div>
-<p>解答本题首先要理解厄米的判断条件：</p>
-
-\[\int\psi_{i}^*(\boldsymbol{r}) \hat{f}\psi_{j}(\boldsymbol{r})d\boldsymbol{r}=\int\psi_{j}(\boldsymbol{r}) \hat{f}^*\psi_{i}^*(\boldsymbol{r})d\boldsymbol{r}\]
-
-<p>其中 \(\hat{f}^*\) 是 \(\hat{f}\) 的复共轭或伴随算子， \(\psi_{i}(\boldsymbol{r})\) 和 \(\psi_{j}(\boldsymbol{r})\) 为基底函数，其对应的复共轭函数为 \(\psi_{i}^*(\boldsymbol{r})\) 和 \(\psi_{j}^*(\boldsymbol{r})\)。</p>
-
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 知识点补充一 </div> </div> <div class="content"> <p>  基底函数符合<strong>正交归一化条件</strong>，即“<strong>任意两个不同基底函数正交</strong>”和“<strong>任意一个基底函数在全空间上的积分为 1</strong>”。形式化可以表示为
-\(\int\psi_{i}^*(\boldsymbol{r})\psi_{j}(\boldsymbol{r})d\boldsymbol{r}=0\)
-和
-\(\int|\psi(\boldsymbol{r})|^2 d\boldsymbol{r}=1\)。</p>
+\[[1]\ [\hat{x},\hat{p}_x] \quad [2]\ [\hat{l}_x, \hat{l_y}] \quad [3]\ [\hat{\boldsymbol{l}}^2, \hat{l}_z]\]
 
 
 
  </div> </div>
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 知识点补充二 </div> </div> <div class="content"> <p>  求导数时的链式法则：\((uv)'=u'v+uv'\)。转换为积分形式： \(uv=\int{u'v}d\boldsymbol{r}+\int{uv'}d\boldsymbol{r}\)，将右边的第一项移到左边于是有 \(\int{uv'}d\boldsymbol{r}=uv-\int{u'v}d\boldsymbol{r}\)。</p>
+<p>解决本题首先要了解<strong>可交换</strong>的定义，对于任意两个算子有：</p>
 
+\[\hat{f}\hat{g}\psi(\boldsymbol{r})=\hat{g}\hat{f}\psi(\boldsymbol{r})\ 或\ (\hat{f}\hat{g}-\hat{g}\hat{f})\psi(\boldsymbol{r})=0\]
 
+<p>那么这两个算子<strong>可交换</strong>，否则<strong>不可交换</strong>。其中下列式子称为交换子：</p>
 
- </div> </div>
-<h2 id="算子一">算子一</h2>
+\[[\hat{f}, \hat{g}] \equiv \hat{f}\hat{g}-\hat{g}\hat{f}\]
 
-<p>现在开始考虑第一个算子 \(\hat{f}={d \over dx}\)，显然这个算子就是求导算子（这里是<strong>对后面的函数微分求导</strong>），于是</p>
+<p>除此之外，还需要了解以下观测量在古典力学中的变量和量子力学中的算子对应：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">观测量</th>
+      <th style="text-align: center">变量</th>
+      <th style="text-align: center">算子</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">位置</td>
+      <td style="text-align: center">\(x\ (\boldsymbol{r})\)</td>
+      <td style="text-align: center">\(\hat{x}\ (\hat{\boldsymbol{x}})\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">动量</td>
+      <td style="text-align: center">\(p_x\ (\boldsymbol{p})\)</td>
+      <td style="text-align: center">\(\hat{p}_x=-\mathrm{i}\hbar{d \over dx}\ (\hat{\boldsymbol{p}})\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">角动量</td>
+      <td style="text-align: center">\(\boldsymbol{l}^2=l_x^2+l_y^2+l_z^2\)</td>
+      <td style="text-align: center">\(\hat{\boldsymbol{l}}^2=\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_x=-\mathrm{i}\hbar\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right)\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_y=-\mathrm{i}\hbar\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right)\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_z=-\mathrm{i}\hbar\left(x\frac{\partial}{\partial y}-y\frac{\partial}{\partial x}\right)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="算子组一">算子组一</h2>
+
+<p>将 \(\hat{p}_x=-\mathrm{i}\hbar{d \over dx}\) 代入可得</p>
 
 \[\begin{align}
-左边&amp;= \int\psi_{i}^*(x)\left({d \over dx}\psi_{j}(x)\right)dx \\\\
-&amp;=[\psi_{i}^*(x)\psi_{j}(x)]_{-\infty}^{+\infty}-\int\left({d \over dx}\psi_{i}^*(x)\right)\psi_{j}(x)dx
+[\hat{x}, \hat{p}_x]\psi(x)&amp;=(\hat{x}\hat{p}_x-\hat{p}_x\hat{x})\psi(x) \\\\
+&amp;= -\mathrm{i}\hbar x \frac{d}{dx}\psi(x)-(-\mathrm{i}\hbar)\frac{d}{dx}[x\psi(x)]
 \end{align}\]
 
-<p>由于 \(\displaystyle \lim_{x \to \pm\infty} \psi_{i}^*(x)=0\) 和 \(\displaystyle \lim_{x \to \pm\infty }\psi_{j}(x)=0\)（有限，作为波函数的基底函数在无穷处必须快速衰减），所以有</p>
-
-\[[\psi_{i}^*(x)\psi_{j}(x)]_{-\infty}^{+\infty}=0\]
-
-<p>即</p>
+<p>这里需要注意算子 \(\frac{d}{dx}\) 是求导算子，根据链式法则应该对 \([x\psi(x)]\) 分别对 \(x\) 求导，于是：</p>
 
 \[\begin{align}
-左边&amp;=-\int\left({d \over dx}\psi_{i}^*(x)\right)\psi_{j}(x)dx \\\\
-&amp;=-\int\psi_{j}(x){d \over dx}\psi_{i}^*(x)dx \\\\
-&amp;≠右边
+原式&amp;=-\mathrm{i}\hbar x \frac{d}{dx}\psi(x) + \mathrm{i}\hbar\left[x\frac{d}{dx}\psi(x)+\psi(x)\right] \\\\
+&amp;= \mathrm{i}\hbar\psi(x) ≠ 0
 \end{align}\]
 
-<p>因此<strong>第一个算子不是厄米算子</strong>。</p>
+<p>因此，这两个算子<strong>不可交换</strong>。</p>
 
-<h2 id="算子二">算子二</h2>
+<h2 id="算子组二">算子组二</h2>
 
-<p>类似第一个算子，对于第二个算子 \(\hat{f}=\mathrm{i}{d \over dx}\) 有</p>
+<p>将 \(\hat{l}_x\) 和 \(\hat{l}_y\) 代入可得 (注意 \(\mathrm{(-i)}^2=-1\))</p>
 
 \[\begin{align}
-左边&amp;=\int\psi_{i}^*(x)\left(\mathrm{i}{d \over dx}\psi_{j}(x)\right)dx \\\\
-&amp;=\mathrm{i}[\psi_{i}^*(x)\psi_{j}(x)]_{-\infty}^{+\infty}-\int\left(\mathrm{i}{d \over dx}\psi_{i}^*(x)\right)\psi_{j}(x)dx
+\hat{l}_x\hat{l}_y&amp;=(-\mathrm{i}\hbar)^2\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right)\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right) \\\\
+&amp;=-\hbar^2\left(y\frac{\partial}{\partial z}z\frac{\partial}{\partial x}-z\frac{\partial}{\partial y}z\frac{\partial}{\partial x}-y\frac{\partial}{\partial z}x\frac{\partial}{\partial z}+z\frac{\partial}{\partial y}x\frac{\partial}{\partial z}\right)
 \end{align}\]
 
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 知识点补充三 </div> </div> <div class="content"> 
-\[\left(\mathrm{i}{d \over dx}\right)^*=-\mathrm{i}{d \over dx}\]
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 求偏导中的注意点 </div> </div> <div class="content"> <p>  这里需要注意“求偏导的函数中是否包含了偏导的对象”，如果不包含则可以直接将变量左移，如果包含则需要根据链式法则分别求导。</p>
 
 
 
  </div> </div>
-<p>应用<strong>基底函数的有限条件</strong>和上述的<strong>伴随算子</strong>可得</p>
+<p>接着有</p>
 
 \[\begin{align}
-左边&amp;=0-\int\left(-\left(\mathrm{i}{d \over dx}\right)^*\psi_{i}^*(x)\right)\psi_{j}(x)dx \\\\
-&amp;=\int\left(\left(\mathrm{i}{d \over dx}\right)^*\psi_{i}^*(x)\right)\psi_{j}(x)dx=右边
+\hat{l}_x\hat{l}_y&amp;=-\hbar^2\left[y\left(z\frac{\partial^2}{\partial z \partial x}+\frac{\partial}{\partial x}\right)-z^2\frac{\partial^2}{\partial y \partial x}-xy\frac{\partial^2}{\partial z^2}+xz\frac{\partial^2}{\partial y \partial z}\right] \\\\
+&amp;=-\hbar^2\left[yz\frac{\partial^2}{\partial z \partial x}+y\frac{\partial}{\partial x}-z^2\frac{\partial^2}{\partial y \partial x}-xy\frac{\partial^2}{\partial z^2}+xz\frac{\partial^2}{\partial y \partial z}\right]
 \end{align}\]
 
-<p>因此<strong>第二个算子是厄米算子</strong>。</p>
-
-<h2 id="算子三">算子三</h2>
-
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 知识点补充四 </div> </div> <div class="content"> <p><strong>二阶导的伴随算子还是它本身</strong>，于是有</p>
-
-\[\left( {d^2 \over dx^2} \right)^*={d^2 \over dx^2}\]
-
-
-
- </div> </div>
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 知识点补充四 </div> </div> <div class="content"> <p>根据链式法则，求一阶导有：
-\((uv')'=u'v'+uv''\) 和 \((u'v)'=u'v'+u''v\)。
-对应的积分形式：\(\int{uv''}=uv'-\int{u'v'}\) 和 \(\int{u'v'}=u'v-\int{u''v}\)。</p>
-
-
-
- </div> </div>
-<p>第三个算子是二阶导数，有</p>
+<p>同理</p>
 
 \[\begin{align}
-左边 &amp;=\int\psi_{i}^*(x){d^2 \over dx^2}\psi_{j}(x)dx \\\\
-&amp;=[\psi_{i}^*(x){d \over dx}\psi_{j}(x)]_{-\infty}^{+\infty}-\int\left({d \over dx}\psi_{i}^*(x)\right)\left({d \over dx}\psi_{j}(x)\right)dx \\\\
-&amp;=-\int\left({d \over dx}\psi_{i}^*(x)\right)\left({d \over dx}\psi_{j}(x)\right)dx \\\\
-&amp;=-\left(\left[\left({d \over dx}\psi_{i}^*(x)\right)\psi_{j}(x)\right]_{-\infty}^{+\infty}-\int\left({d^2 \over dx^2}\psi_{i}^*(x)\right)\psi_{j}(x)dx\right) \\\\
-&amp;=0+\int\left({d^2 \over dx^2}\psi_{i}^*(x)\right)\psi_{j}(x)dx \\\\
-&amp;=\int\left(\left({d^2 \over dx^2}\right)^*\psi_{i}^*(x)\right)\psi_{j}(x)dx=右边
+\hat{l}_y\hat{l}_x&amp;=(-\mathrm{i}\hbar)^2\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right)\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right) \\\\
+&amp;=-\hbar^2\left(z\frac{\partial}{\partial x}y\frac{\partial}{\partial z}-x\frac{\partial}{\partial z}y\frac{\partial}{\partial z}-z\frac{\partial}{\partial x}z\frac{\partial}{\partial y}+x\frac{\partial}{\partial z}z\frac{\partial}{\partial y}\right) \\\\
+&amp;=-\hbar^2\left[yz\frac{\partial^2}{\partial x \partial z}-xy\frac{\partial^2}{\partial z^2}-z^2\frac{\partial^2}{\partial x \partial y}+x\left(\frac{\partial}{\partial y}+z\frac{\partial^2}{\partial z \partial y}\right)\right] \\\\
+&amp;=-\hbar^2\left(yz\frac{\partial^2}{\partial x \partial z}-xy\frac{\partial^2}{\partial z^2}-z^2\frac{\partial^2}{\partial x \partial y}+x\frac{\partial}{\partial y}+xz\frac{\partial^2}{\partial z \partial y}\right)
 \end{align}\]
 
-<p>因此，<strong>第三个算子是厄米算子</strong>。</p>
+<p>因此交换子为（减法抵消相同项）</p>
+
+\[\begin{align}
+[\hat{l}_x, \hat{l}_y]&amp;=\hat{l}_x\hat{l}_y-\hat{l}_y\hat{l}_x \\\\
+&amp;=-\hbar^2\left(y\frac{\partial}{\partial x}-x\frac{\partial}{\partial y}\right) \\\\
+&amp;=\mathrm{i}^2\hbar^2\left(y\frac{\partial}{\partial x}-x\frac{\partial}{\partial y}\right) \\\\
+&amp;=\mathrm{i}\hbar\left[-\mathrm{i}\hbar\left(x\frac{\partial}{\partial y}-y\frac{\partial}{\partial x}\right)\right] \\\\
+&amp;=\mathrm{i}\hbar\hat{l}_z≠0
+\end{align}\]
+
+<p>因此，这两个算子<strong>不可交换</strong>。</p>
+
+<h2 id="算子组三">算子组三</h2>
+
+<p>通过算子组二可以类似推理得到：</p>
+
+\[[\hat{l}_y, \hat{l}_z]=\mathrm{i}\hbar\hat{l}_x\]
+
+\[[\hat{l}_z, \hat{l}_x]=\mathrm{i}\hbar\hat{l}_y\]
+
+<p>将其代入可得：</p>
+
+\[\begin{align}
+[\hat{\boldsymbol{l}}^2, \hat{l}_z]&amp;=\hat{\boldsymbol{l}}^2\hat{l}_z-\hat{\boldsymbol{l}}^2\hat{l}_z \\\\
+&amp;=(\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2)\hat{l}_z-\hat{l}_z(\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2) \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\hat{l}_y\hat{l}_y\hat{l}_z+\hat{l}_z\hat{l}_z\hat{l}_z-\hat{l}_z\hat{l}_x\hat{l}_x-\hat{l}_z\hat{l}_y\hat{l}_y-\hat{l}_z\hat{l}_z\hat{l}_z \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\hat{l}_y\hat{l}_y\hat{l}_z+\bcancel{\hat{l}_z\hat{l}_z\hat{l}_z}-\hat{l}_z\hat{l}_x\hat{l}_x-\hat{l}_z\hat{l}_y\hat{l}_y-\bcancel{\hat{l}_z\hat{l}_z\hat{l}_z} \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\color{red}{\hat{l}_x\hat{l}_z\hat{l}_x-\hat{l}_x\hat{l}_z\hat{l}_x}\color{black}{-\hat{l}_z\hat{l}_x\hat{l}_x}+\hat{l}_y\hat{l}_y\hat{l}_z+\color{red}{\hat{l}_y\hat{l}_z\hat{l}_y-\hat{l}_y\hat{l}_z\hat{l}_y}\color{black}{-\hat{l}_z\hat{l}_y\hat{l}_y} \\\\
+&amp;=\hat{l}_x(\hat{l}_x\hat{l}_z-\hat{l}_z\hat{l}_x)+(\hat{l}_x\hat{l}_z-\hat{l}_z\hat{l}_x)\hat{l}_x+\hat{l}_y(\hat{l}_y\hat{l}_z-\hat{l}_z\hat{l}_y)+(\hat{l}_y\hat{l}_z-\hat{l}_z\hat{l}_y)\hat{l}_y \\\\
+&amp;=\hat{l}_x(-[\hat{l}_z, \hat{l}_x])+(-[\hat{l}_z, \hat{l}_x])\hat{l}_x+\hat{l}_y[\hat{l}_y, \hat{l}_z]+[\hat{l}_y, \hat{l}_z]\hat{l}_y \\\\
+&amp;=-\mathrm{i}\hbar\hat{l}_x\hat{l}_y-\mathrm{i}\hbar\hat{l}_y\hat{l}_x+\mathrm{i}\hbar\hat{l}_y\hat{l}_x+\mathrm{i}\hbar\hat{l}_x\hat{l}_y = 0
+\end{align}\]
+
+<p>因此，这两个算子<strong>可交换</strong>。</p>
 
                 <div class="post-copyright">
                     <p>
@@ -466,8 +504,8 @@
                         许可协议进行授权）
                     </p>
                     
-                    <p><span>本文标题：</span>《 《手解量子化学》练习题 1-1 》</p>
-                    <p><span>本文链接：</span><a href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html" class="cplink">https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html</a></p>
+                    <p><span>本文标题：</span>《 《手解量子化学》练习题 1-2 》</p>
+                    <p><span>本文链接：</span><a href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html" class="cplink">https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html</a></p>
                     <p class="tips">本文最后一次更新为 <span></span> 天前，文章中的某些内容可能已过时！
                     </p>
                 </div>
@@ -477,7 +515,7 @@
             <div class="table-of-contents">
                 <div class="toc-header"><h2>目录</h2></div>
                 <div class="toc-body">
-                    <ul><li><a onclick="scrollToAdjust('算子一')">算子一</a></li><li><a onclick="scrollToAdjust('算子二')">算子二</a></li><li><a onclick="scrollToAdjust('算子三')">算子三</a></li></ul>
+                    <ul><li><a onclick="scrollToAdjust('算子组一')">算子组一</a></li><li><a onclick="scrollToAdjust('算子组二')">算子组二</a></li><li><a onclick="scrollToAdjust('算子组三')">算子组三</a></li></ul>
                 </div>
         
             </div>
@@ -554,30 +592,18 @@
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/ac/qc/solve-quantum-chemistry-by-hand-1-2.html" class="read-next-link" aria-label="《手解量子化学》练习题 1-2"></a>
-            <section>
-                <span>《手解量子化学》练习题 1-2</span>
-                <p>  note “练习题1-2”判断下列算子是否可交换？\[[1]\ [\hat{x},\hat{p}_x] \qu...</p>
-            </section>
-            
-            <div class="filter"></div>
-            <img src="https://i.lisz.top/cover/Xdjv9V.webp" alt="">
-            
-        </div>
-        
 
         
         <div class="read-next-item">
-            <a href="/tech/k8s/k8s-introduction.html" class="read-next-link"
-                aria-label="Kubernetes 不完全入门"></a>
+            <a href="/ac/qc/solve-quantum-chemistry-by-hand-1-1.html" class="read-next-link"
+                aria-label="《手解量子化学》练习题 1-1"></a>
             <section>
-                <span>Kubernetes 不完全入门</span>
-                <p>前言</p>
+                <span>《手解量子化学》练习题 1-1</span>
+                <p>  note “练习题1-1”判断下面的算子是否厄米（Hermitian）或为厄米算子（Hermite Opera...</p>
             </section>
             
             <div class="filter"></div>
-            <img src="https://i.lisz.top/cover/mkLyvk.webp" alt="">
+            <img src="https://i.lisz.top/cover/Hqx2QN.webp" alt="">
             
         </div>
         
@@ -795,7 +821,7 @@
 
         $(".post time span.create-at").html(local_post_date["date"]);
 
-        fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/qc/2025-05-14-solve-quantum-chemistry-by-hand-1-1.md").then((response) => {
+        fetch("https://api.github.com/repos/zhonger/zhonger.github.io/commits?path=_posts/qc/2025-05-19-solve-quantum-chemistry-by-hand-1-2.md").then((response) => {
             return response.json();
         }).then((commits) => {
             if (commits.length != 0) {

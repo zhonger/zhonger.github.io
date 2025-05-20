@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-05-19T16:13:15+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">《手解量子化学》练习题 1-1</title><link href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html" rel="alternate" type="text/html" title="《手解量子化学》练习题 1-1" /><published>2025-05-14T16:52:00+09:00</published><updated>2025-05-14T16:52:00+09:00</updated><id>https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1</id><content type="html" xml:base="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html"><![CDATA[<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-1 </div> </div> <div class="content"> <p><strong>判断下面的算子是否厄米（Hermitian）或为厄米算子（Hermite Operator）。</strong></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-05-20T10:48:01+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">《手解量子化学》练习题 1-2</title><link href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html" rel="alternate" type="text/html" title="《手解量子化学》练习题 1-2" /><published>2025-05-19T16:16:00+09:00</published><updated>2025-05-19T16:16:00+09:00</updated><id>https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2</id><content type="html" xml:base="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html"><![CDATA[<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-2 </div> </div> <div class="content"> <p>判断下列算子是否<strong>可交换</strong>？</p>
+
+\[[1]\ [\hat{x},\hat{p}_x] \quad [2]\ [\hat{l}_x, \hat{l_y}] \quad [3]\ [\hat{\boldsymbol{l}}^2, \hat{l}_z]\]
+
+
+
+ </div> </div>
+<p>解决本题首先要了解<strong>可交换</strong>的定义，对于任意两个算子有：</p>
+
+\[\hat{f}\hat{g}\psi(\boldsymbol{r})=\hat{g}\hat{f}\psi(\boldsymbol{r})\ 或\ (\hat{f}\hat{g}-\hat{g}\hat{f})\psi(\boldsymbol{r})=0\]
+
+<p>那么这两个算子<strong>可交换</strong>，否则<strong>不可交换</strong>。其中下列式子称为交换子：</p>
+
+\[[\hat{f}, \hat{g}] \equiv \hat{f}\hat{g}-\hat{g}\hat{f}\]
+
+<p>除此之外，还需要了解以下观测量在古典力学中的变量和量子力学中的算子对应：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">观测量</th>
+      <th style="text-align: center">变量</th>
+      <th style="text-align: center">算子</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">位置</td>
+      <td style="text-align: center">\(x\ (\boldsymbol{r})\)</td>
+      <td style="text-align: center">\(\hat{x}\ (\hat{\boldsymbol{x}})\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">动量</td>
+      <td style="text-align: center">\(p_x\ (\boldsymbol{p})\)</td>
+      <td style="text-align: center">\(\hat{p}_x=-\mathrm{i}\hbar{d \over dx}\ (\hat{\boldsymbol{p}})\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">角动量</td>
+      <td style="text-align: center">\(\boldsymbol{l}^2=l_x^2+l_y^2+l_z^2\)</td>
+      <td style="text-align: center">\(\hat{\boldsymbol{l}}^2=\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_x=-\mathrm{i}\hbar\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right)\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_y=-\mathrm{i}\hbar\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right)\)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">\(\hat{l}_z=-\mathrm{i}\hbar\left(x\frac{\partial}{\partial y}-y\frac{\partial}{\partial x}\right)\)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="算子组一">算子组一</h2>
+
+<p>将 \(\hat{p}_x=-\mathrm{i}\hbar{d \over dx}\) 代入可得</p>
+
+\[\begin{align}
+[\hat{x}, \hat{p}_x]\psi(x)&amp;=(\hat{x}\hat{p}_x-\hat{p}_x\hat{x})\psi(x) \\\\
+&amp;= -\mathrm{i}\hbar x \frac{d}{dx}\psi(x)-(-\mathrm{i}\hbar)\frac{d}{dx}[x\psi(x)]
+\end{align}\]
+
+<p>这里需要注意算子 \(\frac{d}{dx}\) 是求导算子，根据链式法则应该对 \([x\psi(x)]\) 分别对 \(x\) 求导，于是：</p>
+
+\[\begin{align}
+原式&amp;=-\mathrm{i}\hbar x \frac{d}{dx}\psi(x) + \mathrm{i}\hbar\left[x\frac{d}{dx}\psi(x)+\psi(x)\right] \\\\
+&amp;= \mathrm{i}\hbar\psi(x) ≠ 0
+\end{align}\]
+
+<p>因此，这两个算子<strong>不可交换</strong>。</p>
+
+<h2 id="算子组二">算子组二</h2>
+
+<p>将 \(\hat{l}_x\) 和 \(\hat{l}_y\) 代入可得 (注意 \(\mathrm{(-i)}^2=-1\))</p>
+
+\[\begin{align}
+\hat{l}_x\hat{l}_y&amp;=(-\mathrm{i}\hbar)^2\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right)\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right) \\\\
+&amp;=-\hbar^2\left(y\frac{\partial}{\partial z}z\frac{\partial}{\partial x}-z\frac{\partial}{\partial y}z\frac{\partial}{\partial x}-y\frac{\partial}{\partial z}x\frac{\partial}{\partial z}+z\frac{\partial}{\partial y}x\frac{\partial}{\partial z}\right)
+\end{align}\]
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 求偏导中的注意点 </div> </div> <div class="content"> <p>  这里需要注意“求偏导的函数中是否包含了偏导的对象”，如果不包含则可以直接将变量左移，如果包含则需要根据链式法则分别求导。</p>
+
+
+
+ </div> </div>
+<p>接着有</p>
+
+\[\begin{align}
+\hat{l}_x\hat{l}_y&amp;=-\hbar^2\left[y\left(z\frac{\partial^2}{\partial z \partial x}+\frac{\partial}{\partial x}\right)-z^2\frac{\partial^2}{\partial y \partial x}-xy\frac{\partial^2}{\partial z^2}+xz\frac{\partial^2}{\partial y \partial z}\right] \\\\
+&amp;=-\hbar^2\left[yz\frac{\partial^2}{\partial z \partial x}+y\frac{\partial}{\partial x}-z^2\frac{\partial^2}{\partial y \partial x}-xy\frac{\partial^2}{\partial z^2}+xz\frac{\partial^2}{\partial y \partial z}\right]
+\end{align}\]
+
+<p>同理</p>
+
+\[\begin{align}
+\hat{l}_y\hat{l}_x&amp;=(-\mathrm{i}\hbar)^2\left(z\frac{\partial}{\partial x}-x\frac{\partial}{\partial z}\right)\left(y\frac{\partial}{\partial z}-z\frac{\partial}{\partial y}\right) \\\\
+&amp;=-\hbar^2\left(z\frac{\partial}{\partial x}y\frac{\partial}{\partial z}-x\frac{\partial}{\partial z}y\frac{\partial}{\partial z}-z\frac{\partial}{\partial x}z\frac{\partial}{\partial y}+x\frac{\partial}{\partial z}z\frac{\partial}{\partial y}\right) \\\\
+&amp;=-\hbar^2\left[yz\frac{\partial^2}{\partial x \partial z}-xy\frac{\partial^2}{\partial z^2}-z^2\frac{\partial^2}{\partial x \partial y}+x\left(\frac{\partial}{\partial y}+z\frac{\partial^2}{\partial z \partial y}\right)\right] \\\\
+&amp;=-\hbar^2\left(yz\frac{\partial^2}{\partial x \partial z}-xy\frac{\partial^2}{\partial z^2}-z^2\frac{\partial^2}{\partial x \partial y}+x\frac{\partial}{\partial y}+xz\frac{\partial^2}{\partial z \partial y}\right)
+\end{align}\]
+
+<p>因此交换子为（减法抵消相同项）</p>
+
+\[\begin{align}
+[\hat{l}_x, \hat{l}_y]&amp;=\hat{l}_x\hat{l}_y-\hat{l}_y\hat{l}_x \\\\
+&amp;=-\hbar^2\left(y\frac{\partial}{\partial x}-x\frac{\partial}{\partial y}\right) \\\\
+&amp;=\mathrm{i}^2\hbar^2\left(y\frac{\partial}{\partial x}-x\frac{\partial}{\partial y}\right) \\\\
+&amp;=\mathrm{i}\hbar\left[-\mathrm{i}\hbar\left(x\frac{\partial}{\partial y}-y\frac{\partial}{\partial x}\right)\right] \\\\
+&amp;=\mathrm{i}\hbar\hat{l}_z≠0
+\end{align}\]
+
+<p>因此，这两个算子<strong>不可交换</strong>。</p>
+
+<h2 id="算子组三">算子组三</h2>
+
+<p>通过算子组二可以类似推理得到：</p>
+
+\[[\hat{l}_y, \hat{l}_z]=\mathrm{i}\hbar\hat{l}_x\]
+
+\[[\hat{l}_z, \hat{l}_x]=\mathrm{i}\hbar\hat{l}_y\]
+
+<p>将其代入可得：</p>
+
+\[\begin{align}
+[\hat{\boldsymbol{l}}^2, \hat{l}_z]&amp;=\hat{\boldsymbol{l}}^2\hat{l}_z-\hat{\boldsymbol{l}}^2\hat{l}_z \\\\
+&amp;=(\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2)\hat{l}_z-\hat{l}_z(\hat{l}_x^2+\hat{l}_y^2+\hat{l}_z^2) \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\hat{l}_y\hat{l}_y\hat{l}_z+\hat{l}_z\hat{l}_z\hat{l}_z-\hat{l}_z\hat{l}_x\hat{l}_x-\hat{l}_z\hat{l}_y\hat{l}_y-\hat{l}_z\hat{l}_z\hat{l}_z \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\hat{l}_y\hat{l}_y\hat{l}_z+\bcancel{\hat{l}_z\hat{l}_z\hat{l}_z}-\hat{l}_z\hat{l}_x\hat{l}_x-\hat{l}_z\hat{l}_y\hat{l}_y-\bcancel{\hat{l}_z\hat{l}_z\hat{l}_z} \\\\
+&amp;=\hat{l}_x\hat{l}_x\hat{l}_z+\color{red}{\hat{l}_x\hat{l}_z\hat{l}_x-\hat{l}_x\hat{l}_z\hat{l}_x}\color{black}{-\hat{l}_z\hat{l}_x\hat{l}_x}+\hat{l}_y\hat{l}_y\hat{l}_z+\color{red}{\hat{l}_y\hat{l}_z\hat{l}_y-\hat{l}_y\hat{l}_z\hat{l}_y}\color{black}{-\hat{l}_z\hat{l}_y\hat{l}_y} \\\\
+&amp;=\hat{l}_x(\hat{l}_x\hat{l}_z-\hat{l}_z\hat{l}_x)+(\hat{l}_x\hat{l}_z-\hat{l}_z\hat{l}_x)\hat{l}_x+\hat{l}_y(\hat{l}_y\hat{l}_z-\hat{l}_z\hat{l}_y)+(\hat{l}_y\hat{l}_z-\hat{l}_z\hat{l}_y)\hat{l}_y \\\\
+&amp;=\hat{l}_x(-[\hat{l}_z, \hat{l}_x])+(-[\hat{l}_z, \hat{l}_x])\hat{l}_x+\hat{l}_y[\hat{l}_y, \hat{l}_z]+[\hat{l}_y, \hat{l}_z]\hat{l}_y \\\\
+&amp;=-\mathrm{i}\hbar\hat{l}_x\hat{l}_y-\mathrm{i}\hbar\hat{l}_y\hat{l}_x+\mathrm{i}\hbar\hat{l}_y\hat{l}_x+\mathrm{i}\hbar\hat{l}_x\hat{l}_y = 0
+\end{align}\]
+
+<p>因此，这两个算子<strong>可交换</strong>。</p>]]></content><author><name>zhonger</name></author><category term="ac" /><category term="qc" /><category term="Quantum Chemistry" /><category term="By hand" /><category term="Solution" /><category term="Exercise" /><summary type="html"><![CDATA[note “练习题1-2” 判断下列算子是否可交换？ \[[1]\ [\hat{x},\hat{p}_x] \quad [2]\ [\hat{l}_x, \hat{l_y}] \quad [3]\ [\hat{\boldsymbol{l}}^2, \hat{l}_z]\]]]></summary></entry><entry><title type="html">《手解量子化学》练习题 1-1</title><link href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html" rel="alternate" type="text/html" title="《手解量子化学》练习题 1-1" /><published>2025-05-14T16:52:00+09:00</published><updated>2025-05-14T16:52:00+09:00</updated><id>https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1</id><content type="html" xml:base="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-1.html"><![CDATA[<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-1 </div> </div> <div class="content"> <p><strong>判断下面的算子是否厄米（Hermitian）或为厄米算子（Hermite Operator）。</strong></p>
 
 \[[1]\ {d \over dx} \quad [2]\ {\mathrm{i}{d \over dx}} \quad [3]\ {d^2 \over dx^2}\]
 
@@ -1977,75 +2117,4 @@ key-direction 1
 
 
 
- </div> </div>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="OpenVPN" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">LDAP 集成之 Squid 篇</title><link href="https://lisz.me/tech/webmaster/ldap-squid.html" rel="alternate" type="text/html" title="LDAP 集成之 Squid 篇" /><published>2022-09-28T15:00:00+09:00</published><updated>2022-09-28T15:00:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-squid</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-squid.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<p>  Squid cache，简称 Squid，是一款高性能的代理缓存软件。Squid 本身支持包括 HTTP、HTTPS、FTP、SSH 在内的多种协议，且采用一个单独的、非模块化的、I/O 驱动的进程来处理所有的客户端请求，从而提供<strong>主动缓存加速</strong>的功能。除此之外，Squid 还可以提供<strong>应用层过滤控制</strong>的功能，也可与其他的<strong>防病毒</strong>软件一起使用。在一些大公司、学校、研究机构内部，一般采用 Squid 代理上网的方式，可以过滤危险内容或操作、节省网络带宽、提升访问速度。</p>
-
-<p>  但实际上 Squid 代理也可用于正向代理，即为外来用户访问内网应用提速。这也是 CDN（内容分发网络）的加速原理，利用位于全球网络边缘的节点提供服务，而实际上的应用内容则通过边缘节点间的内网来缓存提速。</p>
-
-<p>  虽然 Squid 一般部署在团队或公司网络内部，但是由于用户的权限不同可能需要应用不同的规则，所以能够与 LDAP 认证服务结合就变得非常重要了。</p>
-
-<h2 id="实践">实践</h2>
-
-<h3 id="环境要求">环境要求</h3>
-
-<p>  在进行正式的实践之前，务必确保已有以下环境：</p>
-
-<ul>
-  <li>Docker</li>
-  <li>docker-compose</li>
-</ul>
-
-<h3 id="启动实例">启动实例</h3>
-
-<p>  笔者已经编译并公开了在多种体系架构上可用的 Docker 镜像 <a href="https://github.com/zhonger/docker-squid">zhonger/squid</a>。这里直接使用以下 docker-compose.yml 配置文件和 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令启动实例。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
-<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3.2'</span>
-
-<span class="na">services</span><span class="pi">:</span> 
-  <span class="na">squid</span><span class="pi">:</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">zhonger/squid</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">squid</span>
-    <span class="na">hostname</span><span class="pi">:</span> <span class="s">squid</span>
-    <span class="na">ports</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">3128:3128"</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">/etc/timezone:/etc/timezone:ro</span>
-      <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
-    <span class="na">environment</span><span class="pi">:</span> 
-      <span class="pi">-</span> <span class="s">SQUID_SSH=true</span>
-      <span class="pi">-</span> <span class="s">SQUID_RSYNC=false</span>
-      <span class="pi">-</span> <span class="s">LDAP_ENABLE=true</span>
-      <span class="pi">-</span> <span class="s">LDAP_HOST=yourldap.domain.com</span>
-      <span class="pi">-</span> <span class="s">LDAP_PORT=389</span>
-      <span class="pi">-</span> <span class="s">LDAP_BindDN="cn=admin,dc=yourdomain,dc=com"</span>
-      <span class="pi">-</span> <span class="s">LDAP_BindPass="********"</span>
-      <span class="pi">-</span> <span class="s">LDAP_DN="ou=Users,dc=yourdomain,dc=com"</span>
-      <span class="pi">-</span> <span class="s">LDAP_ATTRIBUT="uid=%s"</span>
-      <span class="pi">-</span> <span class="s">PROXY_NAME="Proxy Display Name"</span>
-    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
-</code></pre></div></div>
-
-<p>  上面有关的配置变量及其含义可以访问 <a href="https://github.com/zhonger/docker-squid">zhonger/squid</a> 了解更多。</p>
-
-<h4 id="测试">测试</h4>
-
-<p>  通过浏览器访问 http://ip:3128 并输入对应的用户名和密码可以看到类似下面的内容。</p>
-
-<p><img src="https://i.lisz.top/blog/nUOnpb.webp" alt="nUOnpb" /></p>
-
-<h3 id="客户端连接">客户端连接</h3>
-
-<p>  由于我们未指定实际需要访问的地址，Squid 会直接报错。一般使用时，需要使用操作系统的网络设置中的代理来配置好 Squid。如下图所示，勾选“网页代理（HTTP）”并填写相关的 IP、端口、用户名及密码。如果想要同样应用在访问 HTTPS 站点，则还需要勾选“安全网页代理（HTTPS）”及填写相关信息。然后点击保存生效。</p>
-
-<p><img src="https://i.lisz.top/blog/oXWsLE.webp" alt="oXWsLE" /></p>
-
-<p>  这样一来就可以将访问的流量完全交给 Squid 来控制了。当然，如果不确定客户端连接是否成功，可以通过访问 <a href="https://ip.sb">ip.sb</a> 来确认当前客户端流量出口 IP 是否为 Squid 服务器 IP。</p>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="http://www.squid-cache.org/">Squid cache</a></li>
-  <li><a href="https://zh.wikipedia.org/zh-cn/Squid_(%E8%BD%AF%E4%BB%B6)">Squid 软件</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="Squid" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+ </div> </div>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="OpenVPN" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
