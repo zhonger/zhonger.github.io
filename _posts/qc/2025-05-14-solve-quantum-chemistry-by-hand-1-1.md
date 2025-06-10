@@ -13,6 +13,7 @@ tags:
 - By hand
 - Solution
 - Exercise
+submenu: "QM-by-hand"
 ---
 
 > note "练习题1-1"

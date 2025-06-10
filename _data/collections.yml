@@ -1,0 +1,7 @@
+- id: "QM-by-hand"
+  name: "手解量子化学系列"
+  articles:
+  - name: "问题 1.1"
+    url: "/ac/qc/solve-quantum-chemistry-by-hand-1-1.html"
+  - name: "问题 1.2"
+    url: "/ac/qc/solve-quantum-chemistry-by-hand-1-2.html"
