@@ -5,9 +5,440 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 20 May 2025 10:48:01 +0900</pubDate>
-    <lastBuildDate>Tue, 20 May 2025 10:48:01 +0900</lastBuildDate>
+    <pubDate>Mon, 16 Jun 2025 18:28:49 +0900</pubDate>
+    <lastBuildDate>Mon, 16 Jun 2025 18:28:49 +0900</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>Kubernetes 应用之 JupyterHub 搭建和运维</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  之前在&lt;a href=&quot;/tech/docker/jupyterlab.html&quot;&gt;《JupyterLab 的搭建与运维》&lt;/a&gt;一文中，尝试了在单机上搭建部署 JupyterHub。不得不说，的确方便了团队内部共同使用同一台 GPU 服务器。但也有比较大的限制：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;运行中的实例对于 CPU、GPU、内存、硬盘等资源完全共享&lt;/strong&gt;。当所有用户都申请的资源总和超出服务器所拥有的资源时，任务的运行效率将会大打折扣。甚至可能会容易出现內存溢出的问题，造成宿主机出现 BUG。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;难以同时管理多台服务器&lt;/strong&gt;。在有多台不同 CPU/GPU 服务器时，单机部署的方案会造成多个入口，且很难实现用户数据在多机间的实时同步。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;资源回收和重置存在一定的难度&lt;/strong&gt;。在单机部署方案中虽然也可以通过 JupyterHub 来限制闲置时间不超过多久，但是实例只会被关闭，而非销毁。如果用户实例出现了某些未知的配置问题，只能依靠管理员手动销毁实例来解决。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;  其实，JupyterHub 官方很早就意识到了这些，并通过拥抱 Kubernetes （以下简称“K8S”）来解决以上限制。可以说 K8S 天然是为 JupyterHub 多机资源管理调度而生，可以：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;对运行实例的资源进行&lt;strong&gt;严格地限制&lt;/strong&gt;，防止运行实例申请资源总和超出节点资源。&lt;/li&gt;
+  &lt;li&gt;根据集群实际运行情况来&lt;strong&gt;自动分布部署&lt;/strong&gt;运行实例，在具有很大的节点池的情况下非常有效。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;共享持久化存储&lt;/strong&gt;，平稳迁移运行实例到任一节点，自由切换 CPU/GPU 节点。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;自动销毁&lt;/strong&gt;超过一定闲置时间的实例，并且在每次启动运行实例时都会拉取&lt;strong&gt;最新镜像&lt;/strong&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.lisz.top/blog/sDLThq.webp&quot; alt=&quot;JupyterHub for K8S 架构图（来自 https://z2jh.jupyter.org/）&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;搭建&quot;&gt;搭建&lt;/h2&gt;
+
+&lt;p&gt;  这里我们以一个简单的 CPU/GPU 科学计算集群为例：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;登录节点 l0&lt;/strong&gt;：提供服务入口（Web）&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;CPU/GPU 共用节点 l1、l2&lt;/strong&gt;：运行实例部署池（可以根据实际情况和需求扩充或缩小）&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;存储节点 nas&lt;/strong&gt;：提供持久化存储（独立存储方案优于登录节点 NFS 服务）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;网络规划&quot;&gt;网络规划&lt;/h3&gt;
+
+&lt;p&gt;  以下为集群节点对应的 IP 地址信息：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;节点主机名&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;IP 地址&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;备注&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;l0&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;192.168.120.100&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;登录节点，K8S 控制节点&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;l1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;192.168.120.101&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;CPU/GPU 节点，K8S 工作节点&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;l2&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;192.168.120.102&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;CPU/GPU 节点，K8S 工作节点&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;nas&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;192.168.120.99&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;存储节点，NFS 服务&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;K8S 集群节点子网为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;192.168.120.0/24&lt;/code&gt;。另外&lt;strong&gt;Pod 子网&lt;/strong&gt;设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;192.168.144.0/20&lt;/code&gt;、&lt;strong&gt;Service 子网&lt;/strong&gt;设置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;192.168.244.0/20&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;k8s-集群搭建&quot;&gt;K8S 集群搭建&lt;/h3&gt;
+
+&lt;p&gt;  集群搭建过程请见&lt;a href=&quot;/tech/k8s/k8s-introduction.html&quot;&gt;《Kubernetes 不完全入门》&lt;/a&gt;一文，需配置好节点识别 NVIDIA 显卡和 NFS CSI 存储。&lt;/p&gt;
+
+&lt;h3 id=&quot;helm-部署-jupyterhub&quot;&gt;Helm 部署 JupyterHub&lt;/h3&gt;
+
+&lt;h4 id=&quot;安装-helm&quot;&gt;安装 Helm&lt;/h4&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Helm 是什么？ &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  类似于操作系统的 APT 等包管理器，Helm 是 Kubernetes 的包管理器，一般定义了部署在 K8S 集群中的应用所需的所有配置文件。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;p&gt;  Helm 可以通过系统包管理工具安装或者直接下载二进制文件使用。Ubuntu 系统如下操作：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl https://baltocdn.com/helm/signing.asc | gpg &lt;span class=&quot;nt&quot;&gt;--dearmor&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /usr/share/keyrings/helm.gpg &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /dev/null
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;apt-transport-https &lt;span class=&quot;nt&quot;&gt;--yes&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deb [arch=&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;dpkg &lt;span class=&quot;nt&quot;&gt;--print-architecture&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; /etc/apt/sources.list.d/helm-stable-debian.list
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get update
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;helm &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;二进制文件请自行前往 &lt;a href=&quot;https://github.com/helm/helm/releases&quot;&gt;https://github.com/helm/helm/releases&lt;/a&gt; 下载。&lt;/p&gt;
+
+&lt;h4 id=&quot;添加-chart&quot;&gt;添加 Chart&lt;/h4&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; Chart 是什么？ &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  Chart 是 Helm 使用的包格式，可以被认为是“软件源中的软件名”（实际是多种软件的集合）。这主要是因为如果要编写部署一整套应用所需的配置文件实在太复杂、耗时了，使用 Chart 只需要写一个&lt;strong&gt;自定义配置文件&lt;/strong&gt;来覆盖想要修改的默认配置即可。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
+helm repo update
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;准备自定义配置文件&quot;&gt;准备自定义配置文件&lt;/h4&gt;
+
+&lt;p&gt;  自定义配置文件可以是任意文件名，但必须是 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yaml&lt;/code&gt; 格式，比如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;config.yaml&lt;/code&gt;。对于以下配置我们可能需要进行自定义：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;对外代理服务&lt;/strong&gt;：一般来说，JupyterHub 只有 Web 访问端口需要由 K8S 集群在控制节点暴露给反向代理服务（比如 Nginx）。这里的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proxy.service.nodePorts.http&lt;/code&gt; 配置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;34567&lt;/code&gt; 端口。另外，我们可以将 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proxy.chp.networkPolicy.enabled&lt;/code&gt; 置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt; 来取消 K8S 网络限制。为了安全,在 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;1.0.0&lt;/code&gt; 版本之前也许手动设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proxy.secretToken&lt;/code&gt; 字段(使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;openssl rand -hex 32&lt;/code&gt; 命令生成)。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;hub 配置&lt;/strong&gt;：(1)设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hub.networkPolicy.enabled&lt;/code&gt; 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt; 取消网络限制；(2)(可选)使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hub.extraVolumes&lt;/code&gt; 字段来添加指定的持久化卷名；(3)(可选，推荐)配置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hub.config&lt;/code&gt; 来启用 Oauth2 认证登录，目前官方支持 Github、Gitlab 在内的多款认证方式，详细请见 &lt;a href=&quot;https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html&quot;&gt;The OAuthenticator&lt;/a&gt;。这里我们使用自建 Gitlab 来测试。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;全局配置&lt;/strong&gt;：(1)(可选)可以修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prePuller.hook.enabled&lt;/code&gt; 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;false&lt;/code&gt; 来禁用节点预拉取运行实例镜像。启用的情况下，当有新节点加入可用集群时可以自动拉取，以避免第一次在新节点部署实例时用户需要等待一段时间。(2)(可选)限制实例最长可运行时间 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cull.maxAge&lt;/code&gt;和最长闲置时间&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cull.timeout&lt;/code&gt;，通过自动销毁来提升集群的可用率。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cull.enabled&lt;/code&gt;字段也需要置为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;true&lt;/code&gt; 从而生效。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cull.every&lt;/code&gt; 字段可以设置每分钟检查是否超出限制。&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;用户实例配置&lt;/strong&gt;：(1)&lt;strong&gt;NFS 持久化&lt;/strong&gt;，通过设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;singleuser.extraPodConfig.securityContext&lt;/code&gt; 中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fsGroup&lt;/code&gt; (值为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;100&lt;/code&gt;) 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fsGroupChangePolicy&lt;/code&gt; (值为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OnRootMismatch&lt;/code&gt;) 来实现启动实例&lt;strong&gt;跳过每次修改文件夹权限&lt;/strong&gt;，仅当文件夹父目录不为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root&lt;/code&gt; 用户 (id 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;100&lt;/code&gt;) 拥有时才会修改文件夹权限。(2)&lt;strong&gt;基本配置&lt;/strong&gt;，包括网络策略、环境变量、启动超时最长限制（即最长等待启动时间）。(3)&lt;strong&gt;动态存储卷配置&lt;/strong&gt;，设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;singleuser.storage.dynamic.storageClass&lt;/code&gt; 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nfs-csi&lt;/code&gt; 来启用自动动态存储卷，可以用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;singleuser.storage.capacity&lt;/code&gt; 来设置默认卷大小限制。由于实例中默认的缓冲区较小，在內存有限的情况下某些任务可能用缓冲区，因此可以挂载较大的本地临时卷来充当 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/shm&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/dev/fuse&lt;/code&gt;。(4)&lt;strong&gt;可用资源配置方案&lt;/strong&gt;，相比单机部署的单一选择，K8S 部署方案可以提供多样化的资源配置方案，不仅包括 CPU、内存资源的集合，还有 GPU 资源。甚至于还可以通过 K8S 的节点标签来由用户手动选择哪个节点（当然仅在资源满足的情况下会成功创建）。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以下为一个样例：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;proxy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;chp&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;networkPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;nodePorts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;34567&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;secretToken&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;GENERATE&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;SECRET&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;TOKEN&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;BY&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;YOURSELF&amp;gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;hub&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;networkPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;extraVolumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;hub-db-dir&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;persistentVolumeClaim&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;claimName&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;hub-db-dir&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;JupyterHub&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;authenticator_class&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;oauthenticator.gitlab.GitLabOAuthenticator&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;GitLabOAuthenticator&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;client_id&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;COPY&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;IT&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;YOUR&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;OAUTH2&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;SERVER&amp;gt;&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;client_secret&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;COPY&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;IT&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;FROM&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;YOUR&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;OAUTH2&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;SERVER&amp;gt;&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;oauth_callback_url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://jupyter.lisz.me/hub/oauth_callback&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;gitlab_url&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://git.lisz.me&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;login_service&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Gitlab&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;scope&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;read_user&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;read_api&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;api&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;openid&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;profile&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;email&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;admin_users&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;adminer_username&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;allowed_gitlab_groups&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;group_name&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;prePuller&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;hook&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;cull&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;maxAge&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;172800&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;600&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;every&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;60&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;singleuser&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;na&quot;&gt;extraPodConfig&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;securityContext&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;fsGroup&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;fsGroupChangePolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;OnRootMismatch&quot;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;networkPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;extraEnv&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;EDITOR&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;vim&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;SHELL&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/bin/zsh&quot;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;PYTHONUNBUFFERED&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;startTimeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;300&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;storage&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;capacity&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;100Gi&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;dynamic&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;storageClass&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;nfs-csi&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;extraVolumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;shm-volume&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;emptyDir&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;medium&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Memory&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;sizeLimit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;20Gi&quot;&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;fuse-device&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;hostPath&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/dev/fuse&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CharDevice&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;extraVolumeMounts&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;shm-volume&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;mountPath&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/dev/shm&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;fuse-device&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;mountPath&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/dev/fuse&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;quay.io/zhonger/base-notebook&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;v3&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;pullPolicy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Always&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;profileList&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CPU&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;分区&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;包含&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Conda、Python&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;环境（8核16G）&apos;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;cpu_gurantee&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;memo_gurantee&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1G&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;cpu_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;16G&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;profile_options&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;主机&quot;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;lab6&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;l1&quot;&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;node_selector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;kubernetes.io/hostname&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;l1&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;lab9&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;l2&quot;&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;node_selector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;kubernetes.io/hostname&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;l2&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;GPU&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;分区&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;description&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;包含&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Conda、Python、CUDA&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;环境（8核16G）&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;quay.io/zhonger/gpu-notebook:v3&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image_pull_policy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Always&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;cpu_gurantee&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;mem_gurantee&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1G&quot;&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;cpu_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;mem_limit&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;16G&quot;&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;profile_options&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;资源配置&quot;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;A100x1&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;A100&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;(Python&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.11,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CUDA&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;12)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;GPU&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;x1&quot;&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;node_selector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;gputype&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;A100&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;extra_resource_limits&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                  &lt;span class=&quot;na&quot;&gt;nvidia.com/gpu&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;P100x1&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;display_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;P100&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;(Python&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3.11,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CUDA&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;12)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;GPU&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;x1&quot;&lt;/span&gt;
+              &lt;span class=&quot;na&quot;&gt;kubespawner_override&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;node_selector&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;gputype&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;P100&apos;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;}&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;extra_resource_limits&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                  &lt;span class=&quot;na&quot;&gt;nvidia.com/gpu&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  如果用标签来选择节点的话，需要通过类似 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl label node l1 gputype=A100&lt;/code&gt; 命令预先配置好标签。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;启动-jupyterhub&quot;&gt;启动 JupyterHub&lt;/h4&gt;
+
+&lt;p&gt;  准备好以上配置文件后，可以使用以下命令启动。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;helm upgrade &lt;span class=&quot;nt&quot;&gt;--cleanup-on-fail&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--install&lt;/span&gt; &amp;lt;helm-release-name&amp;gt; jupyterhub/jupyterhub &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--namespace&lt;/span&gt; &amp;lt;k8s-namespace&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--create-namespace&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&amp;lt;chart-version&amp;gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--values&lt;/span&gt; config.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  建议先下载好 JupyterHub 所需的镜像，可以通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;helm show values jupyterhub&lt;/code&gt; 来查看所有的镜像列表。或者可以用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;helm pull jupyterhub/jupyterhub --version 4.2.0&lt;/code&gt; 来下载原始 Chart 文件，解压后查看 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values.yaml&lt;/code&gt; 文件即可。如果想要使用国内镜像的话，就修改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;values.yaml&lt;/code&gt; 文件里的镜像名再启动 JupyterHub。这里可以用本地的文件夹名称或压缩包名称来替代 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;jupyterhub/jupyterhub&lt;/code&gt; 。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h4 id=&quot;配置-nginx&quot;&gt;配置 Nginx&lt;/h4&gt;
+
+&lt;p&gt;  当 JupyterHub 启动后，默认用户还是无法从本地访问服务器上部署的 JupyterHub 的，还需要使用 Nginx 代理一下。以下是 Nginx 虚拟主机配置样例。这样一来，就可以在用户端通过域名来直接访问部署好的 JupyterHub 了。&lt;/p&gt;
+
+&lt;div class=&quot;language-conf highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; {
+    &lt;span class=&quot;n&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;443&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ssl&lt;/span&gt;;
+    &lt;span class=&quot;n&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jupyter&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;lisz&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;;
+
+    &lt;span class=&quot;n&quot;&gt;ssl_certificate&lt;/span&gt; /&lt;span class=&quot;n&quot;&gt;home&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;ubuntu&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;ssl&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;jupyter&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;lisz&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;cert&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;pem&lt;/span&gt;;
+    &lt;span class=&quot;n&quot;&gt;ssl_certificate_key&lt;/span&gt; /&lt;span class=&quot;n&quot;&gt;home&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;ubuntu&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;ssl&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;jupyter&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;lisz&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;key&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;pem&lt;/span&gt;;
+
+    &lt;span class=&quot;c&quot;&gt;# SSL settings (optional but recommended)
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;ssl_protocols&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TLSv1&lt;/span&gt;.&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TLSv1&lt;/span&gt;.&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;;
+    &lt;span class=&quot;n&quot;&gt;ssl_ciphers&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HIGH&lt;/span&gt;:!&lt;span class=&quot;n&quot;&gt;aNULL&lt;/span&gt;:!&lt;span class=&quot;n&quot;&gt;MD5&lt;/span&gt;;
+
+    &lt;span class=&quot;n&quot;&gt;client_max_body_size&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;G&lt;/span&gt;;
+
+    &lt;span class=&quot;c&quot;&gt;# Logging
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;access_log&lt;/span&gt; /&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;nginx&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;jupyter_access&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;;
+    &lt;span class=&quot;n&quot;&gt;error_log&lt;/span&gt; /&lt;span class=&quot;n&quot;&gt;var&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;nginx&lt;/span&gt;/&lt;span class=&quot;n&quot;&gt;jupyter_error&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;;
+
+    &lt;span class=&quot;n&quot;&gt;location&lt;/span&gt; / {
+        &lt;span class=&quot;n&quot;&gt;proxy_pass&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;://&lt;span class=&quot;n&quot;&gt;localhost&lt;/span&gt;:&lt;span class=&quot;m&quot;&gt;30000&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Host&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;Real&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;IP&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;remote_addr&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;Forwarded&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;For&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;proxy_add_x_forwarded_for&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;X&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;Forwarded&lt;/span&gt;-&lt;span class=&quot;n&quot;&gt;Proto&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;scheme&lt;/span&gt;;
+
+        &lt;span class=&quot;c&quot;&gt;# WebSocket support
+&lt;/span&gt;        &lt;span class=&quot;n&quot;&gt;proxy_http_version&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;.&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Upgrade&lt;/span&gt; $&lt;span class=&quot;n&quot;&gt;http_upgrade&lt;/span&gt;;
+        &lt;span class=&quot;n&quot;&gt;proxy_set_header&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Connection&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;upgrade&quot;&lt;/span&gt;;
+    }
+}
+
+&lt;span class=&quot;c&quot;&gt;# Redirect HTTP to HTTPS
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt; {
+    &lt;span class=&quot;n&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;80&lt;/span&gt;;
+    &lt;span class=&quot;n&quot;&gt;server_name&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jupyter&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;lisz&lt;/span&gt;.&lt;span class=&quot;n&quot;&gt;me&lt;/span&gt;;
+
+    &lt;span class=&quot;n&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;301&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;https&lt;/span&gt;://$&lt;span class=&quot;n&quot;&gt;host&lt;/span&gt;$&lt;span class=&quot;n&quot;&gt;request_uri&lt;/span&gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 小提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  JupyterHub 的 proxy 本身也可以提供对外访问的 HTTPS，详见 &lt;a href=&quot;https://z2jh.jupyter.org/en/stable/administrator/security.html#https&quot;&gt;JupyterHub for Kubernetes – Administrator Guide/Security/HTTPS&lt;/a&gt;。其他反向代理软件也都适用。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 如果 Nginx 不在控制节点能反向代理 JupyterHub 吗？ &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  由于 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proxy&lt;/code&gt; 配置使用了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nodePorts&lt;/code&gt; 来创建端口映射，默认是可以在其他节点访问到指定的端口的。如果想要仅允许 Nginx 代理所在主机访问，可以通过 ingress 来支持更精细的访问控制，详见 &lt;a href=&quot;https://z2jh.jupyter.org/en/stable/resources/reference.html#ingress&quot;&gt;JupyterHub for Kubernetes – Resources/ingress&lt;/a&gt;。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h2 id=&quot;运维&quot;&gt;运维&lt;/h2&gt;
+
+&lt;h3 id=&quot;基本管理&quot;&gt;基本管理&lt;/h3&gt;
+
+&lt;p&gt;  部署完成后，我们需要通过 K8S 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl&lt;/code&gt; 命令来查看、管理 JupyterHub 应用。以下为一些常见的命令：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## 假设为 JupyterHub 创建的 namespace 为 jhub&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 查看 JupyterHub 所有 Pod 状态&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl get pod &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; jhub
+NAME                             READY   STATUS    RESTARTS        AGE
+continuous-image-puller-76bkq    1/1     Running   0               5d1h
+continuous-image-puller-hntww    1/1     Running   0               5d1h
+hub-6867b9b6c7-slg9c             1/1     Running   0               5d1h
+proxy-cc45cd6f6-g2t24            1/1     Running   0               5d1h
+user-scheduler-7b465896b-bq4l6   1/1     Running   0               5d1h
+user-scheduler-7b465896b-rvqgx   1/1     Running   0               5d1h
+
+&lt;span class=&quot;c&quot;&gt;# 查看节点资源使用情况&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl describe node l1
+
+&lt;span class=&quot;c&quot;&gt;# 查看用户实例状态或启动问题&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl descirbe &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; jhub pod jupyter-zhonger
+
+&lt;span class=&quot;c&quot;&gt;# 查看用户动态存储卷情况&lt;/span&gt;
+╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;kubectl get &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; jhub pvc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;备份和恢复存储卷&quot;&gt;备份和恢复存储卷&lt;/h3&gt;
+
+&lt;p&gt;  由于使用动态存储卷，卷配置显得尤为重要。（毕竟 NFS 存储在远端，独立于 K8S 集群。）可以通过以下命令备份和恢复存储卷。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 备份所有 PV 和 PVC&lt;/span&gt;
+kubectl get pv &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; yaml &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; all_pvs.yaml
+kubectl get pvc &lt;span class=&quot;nt&quot;&gt;--all-namespaces&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; yaml &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; all_pvc_by_namespace.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 从备份文件中恢复所有 PV 和 PVC&lt;/span&gt;
+kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; all_pvs.yaml
+kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; all_pvc_by_namespace.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;更改存储卷大小&quot;&gt;更改存储卷大小&lt;/h3&gt;
+
+&lt;p&gt;  从查阅的资料来看，NFS 存储是无法动态更新存储卷大小的。换句话说，&lt;strong&gt;重新定义存储卷&lt;/strong&gt;就可以手动更改存储大小。举个例子，现在想要为用户 zhonger 从默认的存储卷大小 100G 更改到 1T。那么我们先要获得用户 zhonger 的存储卷配置文件 pvc 和 pv。&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 保存 PVC 配置到 YAML 文件&lt;/span&gt;
+kubectl get pvc claim-zhonger &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; jhub &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; yaml &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; claim-zhonger-pvc.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 从 claim-zhonger-pvc.yaml 获知 PV_NAME&lt;/span&gt;
+kubectl get pv &amp;lt;PV_NAM&amp;gt; &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; yaml &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; claim-zhonger-pv.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 确保实例已经被销毁后，删除 PVC 和 PV&lt;/span&gt;
+kubectl delete &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; claim-zhonger-pvc.yaml
+kubectl delete &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; claim-zhonger-pv.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 修改存储卷大小&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;s/100Gi/1Ti/&quot;&lt;/span&gt; claim-zhonger-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.yaml
+
+&lt;span class=&quot;c&quot;&gt;# 重新定义存储卷&lt;/span&gt;
+kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; claim-zhonger-pv.yaml
+kubectl apply &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; claim-zhonger-pvc.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 注意 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  这里需要注意的是，&lt;strong&gt;PV 和 PVC 之间的依赖关系&lt;/strong&gt;。PV 是先定义的，不属于任何命名空间。PVC 是依托于 PV 定义的，必须属于某个命名空间。所以删除的时候要先 PVC 再 PV，定义的时候要先 PV 再 PVC。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+&lt;h3 id=&quot;资源配置方案&quot;&gt;资源配置方案&lt;/h3&gt;
+
+&lt;p&gt;  对于资源配置方案，我们可以根据&lt;strong&gt;镜像&lt;/strong&gt;、&lt;strong&gt;CPU 核数&lt;/strong&gt;、&lt;strong&gt;内存大小&lt;/strong&gt;、&lt;strong&gt;GPU 块数&lt;/strong&gt;的不同来创建出多样化方案。可以参考 Amazon 提供的丰富示例 &lt;a href=&quot;https://github.com/awslabs/data-on-eks/blob/main/ai-ml/jupyterhub/helm/jupyterhub/jupyterhub-values-dummy.yaml&quot;&gt;jupyterhub-values-dummy.yaml&lt;/a&gt; 了解更多。&lt;/p&gt;
+
+&lt;h3 id=&quot;利用情况监控与统计&quot;&gt;利用情况监控与统计&lt;/h3&gt;
+
+&lt;p&gt;  目前可以使用 Grafana + Prometheus 的方式来对 K8S 集群中所有的资源利用情况进行监控，也可以自行设计一个 Grafana 面板来展示当前 JupyterHub 应用中启动的用户实例情况。但对于更加进一步详细、细致的监控与统计还有待设计（类似于“单个用户的利用报告”、“全平台的利用报告”等）。&lt;/p&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;p&gt;  JupyterHub 在 K8S 平台上散发出越来越强大的魅力，使得研究团队搭建自己的科学计算平台越来越容易。当然目前依然还是有一些挑战，比如“多节点 GPU 的调用”。类似于“机器学习模型训练任务”通常需要调试后再放在大规模的 GPU 集群上训练，而 JupyterHub 长于调试代码，是否可以调试完成后直接提交给更大规模的 GPU 集群后台计算呢？&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://z2jh.jupyter.org/en/stable/jupyterhub/installation.html&quot;&gt;JupyterHub for Kubernetes – Installation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jupyterhub/kubespawner/issues/478&quot;&gt;Let pod’s securityContext fsGroupChangePolicy default to OnRootMismatch?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aws.amazon.com/cn/blogs/containers/building-multi-tenant-jupyterhub-platforms-on-amazon-eks/&quot;&gt;Building multi-tenant JupyterHub Platforms on Amazon EKS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 16 Jun 2025 13:42:00 +0900</pubDate>
+        <link>https://lisz.me/tech/k8s/k8s-jupyterhub.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/k8s/k8s-jupyterhub.html</guid>
+        
+        <category>Kubernetes</category>
+        
+        <category>K8S</category>
+        
+        <category>Helm</category>
+        
+        <category>JupyterHub</category>
+        
+        
+        <category>tech</category>
+        
+        <category>k8s</category>
+        
+      </item>
     
       <item>
         <title>《手解量子化学》练习题 1-2</title>
@@ -2205,169 +2636,6 @@ module use &lt;span class=&quot;nt&quot;&gt;--append&lt;/span&gt; &lt;span class
         <category>Modules</category>
         
         <category>软件环境</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>LDAP 集成之 OpenVPN 篇</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;h3 id=&quot;easy-connect&quot;&gt;Easy Connect&lt;/h3&gt;
-
-&lt;p&gt;  公司、学校、云服务等一般需要将内外网进行分离，如果想要从外部网络访问某些内部应用，通常需要使用公司、学校、云服务提供的专用网络接入服务。国内公司、学校比较常用的是由深信服开发的 Easy Connect，一种 SSL VPN 技术的实现。虽然每年需要支付一定的费用来维护、升级 Easy Connect 服务，但是毕竟它能够提供比较细粒度的权限控制，比如说对目标 IP、目标端口的特别指定，能够有效保护内网服务器只有 Web 应用本身能被用户接入，而类似于 SSH 等服务及端口则可以通过单独申请和配置来实现。总而言之，除了需要付费，似乎没有什么不好的地方。&lt;/p&gt;
-
-&lt;p&gt;  实际上如果是在大公司或者学校的话，可能在内网里面还会有更深的内网存在。举个例子，正常的内网是日常的办公或开发网络，服务器所处的内网是独立的网络，即使是已经连接了办公网络，还是需要通过专用网络接入服务器内网才能进行服务器的维护。如果是以数据中心的模式运营的话，甚至说每一次访问服务器都是需要经过临时审批和登录密码发放的。一旦过了有效时间或者完成了任务，访问都将会被拒绝。&lt;/p&gt;
-
-&lt;h3 id=&quot;openvpn&quot;&gt;OpenVPN&lt;/h3&gt;
-
-&lt;p&gt;  虽然 Easy Connect 可以用于上述的场景，但是似乎显得有些大材小用了，毕竟还是要支付一定费用的。为了尽量降低成本，开源的 OpenVPN 或许是一种不错的选择。据笔者所知，Easy Connect 根据购买的许可不同允许的同时在线人数可能也会不同，实际上可能存在“需大于供”的问题。为了缓解这一可能存在的问题，还是会搭建一套 OpenVPN 来作为冗余接入方式。其实 OpenVPN 的商业版本许可也是会有人数限制的，只不过因为只是备份方式也没有太大关系。&lt;/p&gt;
-
-&lt;p&gt;  OpenVPN 除了开源免费之外，还支持大部分主流的认证方式，比如说 LDAP 认证、微软的商业级目录服务 Active Directory（简称 AD）认证等。近年来，基于 Identify Provider（简称 IdP）、Single Sign On（简称 SSO）、Central Authentication Service（简称 CAS）等的国产化的一站式登录服务解决方案也在逐渐替换原来的 LDAP 或 AD 直接认证，LDAP 或 AD 将作为底层的基础认证方式存在。所以说，开源免费的 LDAP 目录服务在一般的团队中还是足够的，作为 OpenVPN 的认证方式也是完全能满足要求的。&lt;/p&gt;
-
-&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  在公网上搭建专用网络接入服务是需要有工信部颁发的专门资格许可的，一般公司、学校、云服务都是有该类资格许可，所以可以对外提供该项服务。而个人是无法获得这类许可，除非注册公司并申请该类许可。如果个人在云服务上搭建该类服务，将会面临被云服务提供商警告甚至单方面停止服务的风险。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;h3 id=&quot;环境要求&quot;&gt;环境要求&lt;/h3&gt;
-
-&lt;p&gt;  在实践前请务必保证具备以下环境：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Docker&lt;/li&gt;
-  &lt;li&gt;docker-compose&lt;/li&gt;
-  &lt;li&gt;可用的 LDAP 目录服务&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;启动实例&quot;&gt;启动实例&lt;/h3&gt;
-
-&lt;p&gt;  为了方便部署和测试，这里采用 &lt;a href=&quot;https://hub.docker.com/r/wheelybird/openvpn-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 提供的 Docker 镜像。这个镜像比较小，同时也支持 x64 和 arm 两种体系架构，能满足大部分主流服务器平台。&lt;/p&gt;
-
-&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# docker-compose.yml&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;3&apos;&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;openvpn&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;cap_add&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;NET_ADMIN&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;openvpn&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1194:1194/udp&quot;&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;restart&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;always&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/localtime:/etc/localtime:ro&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;/etc/timezone:/etc/timezone:ro&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./openvpn-data:/etc/openvpn&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OVPN_SERVER_CN=oc-vpn.example.com&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_URI=ldap://ldap.example.com&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BASE_DN=ou=users,dc=example,dc=com&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BIND_USER_DN=cn=admin,dc=example,dc=com&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_BIND_USER_PASS=password&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LDAP_LOGIN_ATTRIBUTE=uid&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;LOG_TO_STDOUT=false&lt;/span&gt;
-     &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OVPN_DNS_SEARCH_DOMAIN=example.com&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  使用以下 docker-compose.yml 文件和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker-compose up -d&lt;/code&gt; 命令启动实例。为了能够避免实例在重新创建后证书发生改变，将 Docker 实例中 /etc/openvpn 的目录持久化（与本地目录绑定）是非常重要的。在这里给出的环境变量（environment）中，前三项 OVPN_SERVER_CN、LDAP_URI、LDAP_BASE_DN 是必须要有的。如果 LDAP 目录服务默认是不能被匿名查找的，也必须包含 LDAP_BIND_USER_DN 和 LDAP_BIND_USER_PASS 变量的（即管理员账户名和密码）。当然，如果你想要指定匹配登录用户名字段，则需要新增 LDAP_LOGIN_ATTRIBUTE 变量。该变量默认是 uid 字段，也可以指定为其他 LDAP 目录服务中包含的字段，比如 email。这个镜像默认是会将服务的实时输出打印在终端，如果想要以日志文件的形式保存下来，则将变量 LOG_TO_STDOUT 置为 false 即可。&lt;/p&gt;
-
-&lt;p&gt;  一般来说，服务器内网为了管理方便，会根据服务器的 ip 和编号来配置对应的域名解析及反向域名解析，形如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ec2-1-1-1-1.aws.com&lt;/code&gt;，也有可能就是简单的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;c1.sever.aws.com&lt;/code&gt;。所以当接入服务器内网后，我们可能会期望用 c1 来作为这台服务器的标签，而在终端我们也可能通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ping c1&lt;/code&gt; 来测试通路。实际上只要在启动实例时新增变量 OVPN_DNS_SEARCH_DOMAIN 就可以实现，当然这里变量对应的值也应该变成 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;server.aws.com&lt;/code&gt;。相当于，有了这个配置后，本地 DNS 解析没有记录时会自动尝试加入后缀来解析。这样一来，是不是方便了很多呢？&lt;/p&gt;
-
-&lt;p&gt;  除此之外，该镜像还支持其他一些特性，比如 OTP，请访问 &lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 了解更多。&lt;/p&gt;
-
-&lt;h4 id=&quot;生成配置文件&quot;&gt;生成配置文件&lt;/h4&gt;
-
-&lt;p&gt;  在生成配置文件上，&lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt; 要比 &lt;a href=&quot;https://github.com/kylemanna/docker-openvpn&quot;&gt;kylemanna/docker-openvpn&lt;/a&gt; 更复杂一些，可以手动从 Docker 实例的日志文件或终端输出内容中看到内容，大致内容形式如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#---------- Start of client.ovpn ----------&lt;/span&gt;
-
-client
-tls-client
-dev tun
-persist-key
-persist-tun
-remote-cert-tls server
-key-direction 1
-auth SHA512
-proto tcp
-reneg-sec 0
-
-comp-lzo
-redirect-gateway def1
-auth-user-pass
-
-&lt;span class=&quot;c&quot;&gt;# Set log file verbosity&lt;/span&gt;
-verb 3
-
-&amp;lt;connection&amp;gt;
-remote oc-vpn.example.com 1194 udp
-float
-nobind
-&amp;lt;/connection&amp;gt;
-
-&amp;lt;ca&amp;gt;
-&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; CERTIFICATE-----
-.........
-.........
-&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; CERTIFICATE-----
-&amp;lt;/ca&amp;gt;
-&amp;lt;tls-auth&amp;gt;
-&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 2048 bit OpenVPN static key&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;-----BEGIN&lt;/span&gt; OpenVPN Static key V1-----
-.........
-.........
-&lt;span class=&quot;nt&quot;&gt;-----END&lt;/span&gt; OpenVPN Static key V1-----
-&amp;lt;/tls-auth&amp;gt;
-key-direction 1
-&lt;span class=&quot;c&quot;&gt;#----------  End of client.ovpn  ----------&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  将以上内容复制保存在 oc-vpn.example.com.ovpn 文件中即可。&lt;/p&gt;
-
-&lt;h3 id=&quot;测试&quot;&gt;测试&lt;/h3&gt;
-
-&lt;p&gt;  通常来说使用 OpenVPN 专用或者兼容客户端来加载配置文件 oc-vpn.example.com.ovpn，当然也可以用终端命令连接，如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;openvpn &lt;span class=&quot;nt&quot;&gt;--config&lt;/span&gt; oc-vpn.example.com.ovpn
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  执行上述命令后会提示输入用户名和密码进行认证，认证通过后会建立连接。默认分配的是 10.50.50.0/24 段中的某个 IP，网关为 10.50.50.254，当然这个也可以在启动实例时自行设置。&lt;/p&gt;
-
-&lt;div class=&quot;premonition warning&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon warning&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-warning&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 再次提醒 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  以上内容比较适用于团队办公或开发网络与服务器网络独立分离的情况（&lt;strong&gt;内网环境&lt;/strong&gt;）。请勿在未获得工信部的资质许可的情况下在公网部署类似服务，一旦被云服务提供商监测到，云服务提供商有权进行警告、断网、关停等操作，并且无法申诉。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/wheelybird/openvpn-server-ldap-otp&quot;&gt;wheelybird/openvpn-ldap-otp&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/kylemanna/docker-openvpn&quot;&gt;kylemanna/docker-openvpn&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;premonition note&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon note&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-note&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：&lt;a href=&quot;https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn&quot;&gt;加入链接&lt;/a&gt;。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;/div&gt;
-</description>
-        <pubDate>Wed, 28 Sep 2022 15:04:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/ldap-openvpn.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-openvpn.html</guid>
-        
-        <category>LDAP</category>
-        
-        <category>OpenVPN</category>
         
         
         <category>tech</category>

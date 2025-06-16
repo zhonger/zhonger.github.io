@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "Kubernetes 应用之 JupyterHub 搭建和运维",
+    "tags"     : "Kubernetes K8S Helm JupyterHub",
+    "url"      : "/tech/k8s/k8s-jupyterhub.html"
+  } ,
+
+  {
     "title"    : "《手解量子化学》练习题 1-2",
     "tags"     : "Quantum Chemistry By hand Solution Exercise",
     "url"      : "/ac/qc/solve-quantum-chemistry-by-hand-1-2.html"

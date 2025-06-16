@@ -1,4 +1,412 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-05-20T10:48:01+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">《手解量子化学》练习题 1-2</title><link href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html" rel="alternate" type="text/html" title="《手解量子化学》练习题 1-2" /><published>2025-05-19T16:16:00+09:00</published><updated>2025-05-19T16:16:00+09:00</updated><id>https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2</id><content type="html" xml:base="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html"><![CDATA[<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-2 </div> </div> <div class="content"> <p>判断下列算子是否<strong>可交换</strong>？</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-06-16T18:28:49+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">Kubernetes 应用之 JupyterHub 搭建和运维</title><link href="https://lisz.me/tech/k8s/k8s-jupyterhub.html" rel="alternate" type="text/html" title="Kubernetes 应用之 JupyterHub 搭建和运维" /><published>2025-06-16T13:42:00+09:00</published><updated>2025-06-16T13:42:00+09:00</updated><id>https://lisz.me/tech/k8s/k8s-jupyterhub</id><content type="html" xml:base="https://lisz.me/tech/k8s/k8s-jupyterhub.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  之前在<a href="/tech/docker/jupyterlab.html">《JupyterLab 的搭建与运维》</a>一文中，尝试了在单机上搭建部署 JupyterHub。不得不说，的确方便了团队内部共同使用同一台 GPU 服务器。但也有比较大的限制：</p>
+
+<ul>
+  <li><strong>运行中的实例对于 CPU、GPU、内存、硬盘等资源完全共享</strong>。当所有用户都申请的资源总和超出服务器所拥有的资源时，任务的运行效率将会大打折扣。甚至可能会容易出现內存溢出的问题，造成宿主机出现 BUG。</li>
+  <li><strong>难以同时管理多台服务器</strong>。在有多台不同 CPU/GPU 服务器时，单机部署的方案会造成多个入口，且很难实现用户数据在多机间的实时同步。</li>
+  <li><strong>资源回收和重置存在一定的难度</strong>。在单机部署方案中虽然也可以通过 JupyterHub 来限制闲置时间不超过多久，但是实例只会被关闭，而非销毁。如果用户实例出现了某些未知的配置问题，只能依靠管理员手动销毁实例来解决。</li>
+</ul>
+
+<p>  其实，JupyterHub 官方很早就意识到了这些，并通过拥抱 Kubernetes （以下简称“K8S”）来解决以上限制。可以说 K8S 天然是为 JupyterHub 多机资源管理调度而生，可以：</p>
+
+<ul>
+  <li>对运行实例的资源进行<strong>严格地限制</strong>，防止运行实例申请资源总和超出节点资源。</li>
+  <li>根据集群实际运行情况来<strong>自动分布部署</strong>运行实例，在具有很大的节点池的情况下非常有效。</li>
+  <li><strong>共享持久化存储</strong>，平稳迁移运行实例到任一节点，自由切换 CPU/GPU 节点。</li>
+  <li><strong>自动销毁</strong>超过一定闲置时间的实例，并且在每次启动运行实例时都会拉取<strong>最新镜像</strong>。</li>
+</ul>
+
+<p><img src="https://i.lisz.top/blog/sDLThq.webp" alt="JupyterHub for K8S 架构图（来自 https://z2jh.jupyter.org/）" /></p>
+
+<h2 id="搭建">搭建</h2>
+
+<p>  这里我们以一个简单的 CPU/GPU 科学计算集群为例：</p>
+
+<ul>
+  <li><strong>登录节点 l0</strong>：提供服务入口（Web）</li>
+  <li><strong>CPU/GPU 共用节点 l1、l2</strong>：运行实例部署池（可以根据实际情况和需求扩充或缩小）</li>
+  <li><strong>存储节点 nas</strong>：提供持久化存储（独立存储方案优于登录节点 NFS 服务）</li>
+</ul>
+
+<h3 id="网络规划">网络规划</h3>
+
+<p>  以下为集群节点对应的 IP 地址信息：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">节点主机名</th>
+      <th style="text-align: center">IP 地址</th>
+      <th style="text-align: center">备注</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">l0</td>
+      <td style="text-align: center">192.168.120.100</td>
+      <td style="text-align: center">登录节点，K8S 控制节点</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">l1</td>
+      <td style="text-align: center">192.168.120.101</td>
+      <td style="text-align: center">CPU/GPU 节点，K8S 工作节点</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">l2</td>
+      <td style="text-align: center">192.168.120.102</td>
+      <td style="text-align: center">CPU/GPU 节点，K8S 工作节点</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">nas</td>
+      <td style="text-align: center">192.168.120.99</td>
+      <td style="text-align: center">存储节点，NFS 服务</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>K8S 集群节点子网为 <code class="language-plaintext highlighter-rouge">192.168.120.0/24</code>。另外<strong>Pod 子网</strong>设置为 <code class="language-plaintext highlighter-rouge">192.168.144.0/20</code>、<strong>Service 子网</strong>设置为 <code class="language-plaintext highlighter-rouge">192.168.244.0/20</code>。</p>
+
+<h3 id="k8s-集群搭建">K8S 集群搭建</h3>
+
+<p>  集群搭建过程请见<a href="/tech/k8s/k8s-introduction.html">《Kubernetes 不完全入门》</a>一文，需配置好节点识别 NVIDIA 显卡和 NFS CSI 存储。</p>
+
+<h3 id="helm-部署-jupyterhub">Helm 部署 JupyterHub</h3>
+
+<h4 id="安装-helm">安装 Helm</h4>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> Helm 是什么？ </div> </div> <div class="content"> <p>  类似于操作系统的 APT 等包管理器，Helm 是 Kubernetes 的包管理器，一般定义了部署在 K8S 集群中的应用所需的所有配置文件。</p>
+
+
+
+ </div> </div>
+<p>  Helm 可以通过系统包管理工具安装或者直接下载二进制文件使用。Ubuntu 系统如下操作：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl https://baltocdn.com/helm/signing.asc | gpg <span class="nt">--dearmor</span> | <span class="nb">sudo tee</span> /usr/share/keyrings/helm.gpg <span class="o">&gt;</span> /dev/null
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>apt-transport-https <span class="nt">--yes</span>
+<span class="nb">echo</span> <span class="s2">"deb [arch=</span><span class="si">$(</span>dpkg <span class="nt">--print-architecture</span><span class="si">)</span><span class="s2"> signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"</span> | <span class="nb">sudo tee</span> /etc/apt/sources.list.d/helm-stable-debian.list
+<span class="nb">sudo </span>apt-get update
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>helm <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>二进制文件请自行前往 <a href="https://github.com/helm/helm/releases">https://github.com/helm/helm/releases</a> 下载。</p>
+
+<h4 id="添加-chart">添加 Chart</h4>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> Chart 是什么？ </div> </div> <div class="content"> <p>  Chart 是 Helm 使用的包格式，可以被认为是“软件源中的软件名”（实际是多种软件的集合）。这主要是因为如果要编写部署一整套应用所需的配置文件实在太复杂、耗时了，使用 Chart 只需要写一个<strong>自定义配置文件</strong>来覆盖想要修改的默认配置即可。</p>
+
+
+
+ </div> </div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm repo add jupyterhub https://hub.jupyter.org/helm-chart/
+helm repo update
+</code></pre></div></div>
+
+<h4 id="准备自定义配置文件">准备自定义配置文件</h4>
+
+<p>  自定义配置文件可以是任意文件名，但必须是 <code class="language-plaintext highlighter-rouge">yaml</code> 格式，比如 <code class="language-plaintext highlighter-rouge">config.yaml</code>。对于以下配置我们可能需要进行自定义：</p>
+
+<ul>
+  <li><strong>对外代理服务</strong>：一般来说，JupyterHub 只有 Web 访问端口需要由 K8S 集群在控制节点暴露给反向代理服务（比如 Nginx）。这里的 <code class="language-plaintext highlighter-rouge">proxy.service.nodePorts.http</code> 配置为 <code class="language-plaintext highlighter-rouge">34567</code> 端口。另外，我们可以将 <code class="language-plaintext highlighter-rouge">proxy.chp.networkPolicy.enabled</code> 置为 <code class="language-plaintext highlighter-rouge">false</code> 来取消 K8S 网络限制。为了安全,在 <code class="language-plaintext highlighter-rouge">1.0.0</code> 版本之前也许手动设置 <code class="language-plaintext highlighter-rouge">proxy.secretToken</code> 字段(使用 <code class="language-plaintext highlighter-rouge">openssl rand -hex 32</code> 命令生成)。</li>
+  <li><strong>hub 配置</strong>：(1)设置 <code class="language-plaintext highlighter-rouge">hub.networkPolicy.enabled</code> 为 <code class="language-plaintext highlighter-rouge">false</code> 取消网络限制；(2)(可选)使用 <code class="language-plaintext highlighter-rouge">hub.extraVolumes</code> 字段来添加指定的持久化卷名；(3)(可选，推荐)配置 <code class="language-plaintext highlighter-rouge">hub.config</code> 来启用 Oauth2 认证登录，目前官方支持 Github、Gitlab 在内的多款认证方式，详细请见 <a href="https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html">The OAuthenticator</a>。这里我们使用自建 Gitlab 来测试。</li>
+  <li><strong>全局配置</strong>：(1)(可选)可以修改 <code class="language-plaintext highlighter-rouge">prePuller.hook.enabled</code> 为 <code class="language-plaintext highlighter-rouge">false</code> 来禁用节点预拉取运行实例镜像。启用的情况下，当有新节点加入可用集群时可以自动拉取，以避免第一次在新节点部署实例时用户需要等待一段时间。(2)(可选)限制实例最长可运行时间 <code class="language-plaintext highlighter-rouge">cull.maxAge</code>和最长闲置时间<code class="language-plaintext highlighter-rouge">cull.timeout</code>，通过自动销毁来提升集群的可用率。<code class="language-plaintext highlighter-rouge">cull.enabled</code>字段也需要置为 <code class="language-plaintext highlighter-rouge">true</code> 从而生效。<code class="language-plaintext highlighter-rouge">cull.every</code> 字段可以设置每分钟检查是否超出限制。</li>
+  <li><strong>用户实例配置</strong>：(1)<strong>NFS 持久化</strong>，通过设置 <code class="language-plaintext highlighter-rouge">singleuser.extraPodConfig.securityContext</code> 中的 <code class="language-plaintext highlighter-rouge">fsGroup</code> (值为 <code class="language-plaintext highlighter-rouge">100</code>) 和 <code class="language-plaintext highlighter-rouge">fsGroupChangePolicy</code> (值为 <code class="language-plaintext highlighter-rouge">OnRootMismatch</code>) 来实现启动实例<strong>跳过每次修改文件夹权限</strong>，仅当文件夹父目录不为 <code class="language-plaintext highlighter-rouge">root</code> 用户 (id 为 <code class="language-plaintext highlighter-rouge">100</code>) 拥有时才会修改文件夹权限。(2)<strong>基本配置</strong>，包括网络策略、环境变量、启动超时最长限制（即最长等待启动时间）。(3)<strong>动态存储卷配置</strong>，设置 <code class="language-plaintext highlighter-rouge">singleuser.storage.dynamic.storageClass</code> 为 <code class="language-plaintext highlighter-rouge">nfs-csi</code> 来启用自动动态存储卷，可以用 <code class="language-plaintext highlighter-rouge">singleuser.storage.capacity</code> 来设置默认卷大小限制。由于实例中默认的缓冲区较小，在內存有限的情况下某些任务可能用缓冲区，因此可以挂载较大的本地临时卷来充当 <code class="language-plaintext highlighter-rouge">/dev/shm</code> 和 <code class="language-plaintext highlighter-rouge">/dev/fuse</code>。(4)<strong>可用资源配置方案</strong>，相比单机部署的单一选择，K8S 部署方案可以提供多样化的资源配置方案，不仅包括 CPU、内存资源的集合，还有 GPU 资源。甚至于还可以通过 K8S 的节点标签来由用户手动选择哪个节点（当然仅在资源满足的情况下会成功创建）。</li>
+</ul>
+
+<p>以下为一个样例：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">proxy</span><span class="pi">:</span>
+  <span class="na">chp</span><span class="pi">:</span>
+    <span class="na">networkPolicy</span><span class="pi">:</span>
+      <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="na">service</span><span class="pi">:</span>
+    <span class="na">nodePorts</span><span class="pi">:</span>
+      <span class="na">http</span><span class="pi">:</span> <span class="m">34567</span>
+  <span class="na">secretToken</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&lt;GENERATE</span><span class="nv"> </span><span class="s">SECRET</span><span class="nv"> </span><span class="s">TOKEN</span><span class="nv"> </span><span class="s">BY</span><span class="nv"> </span><span class="s">YOURSELF&gt;"</span>
+
+<span class="na">hub</span><span class="pi">:</span>
+  <span class="na">networkPolicy</span><span class="pi">:</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="na">extraVolumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">hub-db-dir</span>
+      <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+        <span class="na">claimName</span><span class="pi">:</span> <span class="s">hub-db-dir</span>
+  <span class="na">config</span><span class="pi">:</span>
+    <span class="na">JupyterHub</span><span class="pi">:</span>
+      <span class="na">authenticator_class</span><span class="pi">:</span> <span class="s">oauthenticator.gitlab.GitLabOAuthenticator</span>
+    <span class="na">GitLabOAuthenticator</span><span class="pi">:</span>
+      <span class="na">client_id</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&lt;COPY</span><span class="nv"> </span><span class="s">IT</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">YOUR</span><span class="nv"> </span><span class="s">OAUTH2</span><span class="nv"> </span><span class="s">SERVER&gt;"</span>
+      <span class="na">client_secret</span><span class="pi">:</span> <span class="s2">"</span><span class="s">&lt;COPY</span><span class="nv"> </span><span class="s">IT</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">YOUR</span><span class="nv"> </span><span class="s">OAUTH2</span><span class="nv"> </span><span class="s">SERVER&gt;"</span>
+      <span class="na">oauth_callback_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://jupyter.lisz.me/hub/oauth_callback"</span>
+      <span class="na">gitlab_url</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://git.lisz.me"</span>
+      <span class="na">login_service</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Gitlab"</span>
+      <span class="na">scope</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">read_user</span>
+        <span class="pi">-</span> <span class="s">read_api</span>
+        <span class="pi">-</span> <span class="s">api</span>
+        <span class="pi">-</span> <span class="s">openid</span>
+        <span class="pi">-</span> <span class="s">profile</span>
+        <span class="pi">-</span> <span class="s">email</span>
+      <span class="na">admin_users</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">&lt;adminer_username&gt;</span>
+      <span class="na">allowed_gitlab_groups</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">&lt;group_name&gt;</span>
+
+<span class="na">prePuller</span><span class="pi">:</span>
+  <span class="na">hook</span><span class="pi">:</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+
+<span class="na">cull</span><span class="pi">:</span>
+  <span class="na">enabled</span><span class="pi">:</span> <span class="kc">true</span>
+  <span class="na">maxAge</span><span class="pi">:</span> <span class="m">172800</span>
+  <span class="na">timeout</span><span class="pi">:</span> <span class="m">600</span>
+  <span class="na">every</span><span class="pi">:</span> <span class="m">60</span>
+
+<span class="na">singleuser</span><span class="pi">:</span>
+   <span class="na">extraPodConfig</span><span class="pi">:</span>
+    <span class="na">securityContext</span><span class="pi">:</span>
+      <span class="na">fsGroup</span><span class="pi">:</span> <span class="m">100</span>
+      <span class="na">fsGroupChangePolicy</span><span class="pi">:</span> <span class="s2">"</span><span class="s">OnRootMismatch"</span>
+<span class="err">  </span><span class="na">networkPolicy</span><span class="pi">:</span>
+    <span class="na">enabled</span><span class="pi">:</span> <span class="kc">false</span>
+  <span class="na">extraEnv</span><span class="pi">:</span>
+    <span class="na">EDITOR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">vim"</span>
+    <span class="na">SHELL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/bin/zsh"</span>
+    <span class="na">PYTHONUNBUFFERED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+  <span class="na">startTimeout</span><span class="pi">:</span> <span class="m">300</span>
+  <span class="na">storage</span><span class="pi">:</span>
+    <span class="na">capacity</span><span class="pi">:</span> <span class="s">100Gi</span>
+    <span class="na">dynamic</span><span class="pi">:</span>
+      <span class="na">storageClass</span><span class="pi">:</span> <span class="s">nfs-csi</span>
+    <span class="na">extraVolumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">shm-volume</span>
+        <span class="na">emptyDir</span><span class="pi">:</span>
+          <span class="na">medium</span><span class="pi">:</span> <span class="s">Memory</span>
+          <span class="na">sizeLimit</span><span class="pi">:</span> <span class="s2">"</span><span class="s">20Gi"</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fuse-device</span>
+        <span class="na">hostPath</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/dev/fuse</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">CharDevice</span>
+    <span class="na">extraVolumeMounts</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">shm-volume</span>
+        <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/dev/shm</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">fuse-device</span>
+        <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/dev/fuse</span>
+  <span class="na">image</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">quay.io/zhonger/base-notebook</span>
+    <span class="na">tag</span><span class="pi">:</span> <span class="s">v3</span>
+    <span class="na">pullPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+  <span class="na">profileList</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">CPU</span><span class="nv"> </span><span class="s">分区"</span>
+      <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">包含</span><span class="nv"> </span><span class="s">Conda、Python</span><span class="nv"> </span><span class="s">环境（8核16G）'</span>
+      <span class="na">default</span><span class="pi">:</span> <span class="kc">true</span>
+      <span class="na">kubespawner_override</span><span class="pi">:</span>
+        <span class="na">cpu_gurantee</span><span class="pi">:</span> <span class="m">1</span>
+        <span class="na">memo_gurantee</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1G"</span>
+        <span class="na">cpu_limit</span><span class="pi">:</span> <span class="m">8</span>
+        <span class="na">mem_limit</span><span class="pi">:</span> <span class="s2">"</span><span class="s">16G"</span>
+      <span class="na">profile_options</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">主机"</span>
+          <span class="na">choices</span><span class="pi">:</span>
+            <span class="na">lab6</span><span class="pi">:</span>
+              <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">l1"</span>
+              <span class="na">kubespawner_override</span><span class="pi">:</span>
+                <span class="na">node_selector</span><span class="pi">:</span> <span class="pi">{</span><span class="s1">'</span><span class="s">kubernetes.io/hostname'</span><span class="pi">:</span> <span class="s1">'</span><span class="s">l1'</span><span class="pi">}</span>
+            <span class="na">lab9</span><span class="pi">:</span>
+              <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">l2"</span>
+              <span class="na">kubespawner_override</span><span class="pi">:</span>
+                <span class="na">node_selector</span><span class="pi">:</span> <span class="pi">{</span><span class="s1">'</span><span class="s">kubernetes.io/hostname'</span><span class="pi">:</span> <span class="s1">'</span><span class="s">l2'</span><span class="pi">}</span>
+    <span class="pi">-</span> <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">GPU</span><span class="nv"> </span><span class="s">分区"</span>
+      <span class="na">description</span><span class="pi">:</span> <span class="s2">"</span><span class="s">包含</span><span class="nv"> </span><span class="s">Conda、Python、CUDA</span><span class="nv"> </span><span class="s">环境（8核16G）"</span>
+      <span class="na">kubespawner_override</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">quay.io/zhonger/gpu-notebook:v3</span>
+        <span class="na">image_pull_policy</span><span class="pi">:</span> <span class="s">Always</span>
+        <span class="na">cpu_gurantee</span><span class="pi">:</span> <span class="m">1</span>
+        <span class="na">mem_gurantee</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1G"</span>
+        <span class="na">cpu_limit</span><span class="pi">:</span> <span class="m">8</span>
+        <span class="na">mem_limit</span><span class="pi">:</span> <span class="s2">"</span><span class="s">16G"</span>
+      <span class="na">profile_options</span><span class="pi">:</span>
+        <span class="na">image</span><span class="pi">:</span>
+          <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">资源配置"</span>
+          <span class="na">choices</span><span class="pi">:</span>
+            <span class="na">A100x1</span><span class="pi">:</span>
+              <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">A100</span><span class="nv"> </span><span class="s">(Python</span><span class="nv"> </span><span class="s">3.11,</span><span class="nv"> </span><span class="s">CUDA</span><span class="nv"> </span><span class="s">12)</span><span class="nv"> </span><span class="s">GPU</span><span class="nv"> </span><span class="s">x1"</span>
+              <span class="na">kubespawner_override</span><span class="pi">:</span>
+                <span class="na">node_selector</span><span class="pi">:</span> <span class="pi">{</span><span class="s1">'</span><span class="s">gputype'</span><span class="pi">:</span> <span class="s1">'</span><span class="s">A100'</span><span class="pi">}</span>
+                <span class="na">extra_resource_limits</span><span class="pi">:</span>
+                  <span class="na">nvidia.com/gpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+            <span class="na">P100x1</span><span class="pi">:</span>
+              <span class="na">display_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">P100</span><span class="nv"> </span><span class="s">(Python</span><span class="nv"> </span><span class="s">3.11,</span><span class="nv"> </span><span class="s">CUDA</span><span class="nv"> </span><span class="s">12)</span><span class="nv"> </span><span class="s">GPU</span><span class="nv"> </span><span class="s">x1"</span>
+              <span class="na">kubespawner_override</span><span class="pi">:</span>
+                <span class="na">node_selector</span><span class="pi">:</span> <span class="pi">{</span><span class="s1">'</span><span class="s">gputype'</span><span class="pi">:</span> <span class="s1">'</span><span class="s">P100'</span><span class="pi">}</span>
+                <span class="na">extra_resource_limits</span><span class="pi">:</span>
+                  <span class="na">nvidia.com/gpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">1"</span>
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  如果用标签来选择节点的话，需要通过类似 <code class="language-plaintext highlighter-rouge">kubectl label node l1 gputype=A100</code> 命令预先配置好标签。</p>
+
+
+
+ </div> </div>
+<h4 id="启动-jupyterhub">启动 JupyterHub</h4>
+
+<p>  准备好以上配置文件后，可以使用以下命令启动。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>helm upgrade <span class="nt">--cleanup-on-fail</span> <span class="se">\</span>
+  <span class="nt">--install</span> &lt;helm-release-name&gt; jupyterhub/jupyterhub <span class="se">\</span>
+  <span class="nt">--namespace</span> &lt;k8s-namespace&gt; <span class="se">\</span>
+  <span class="nt">--create-namespace</span> <span class="se">\</span>
+  <span class="nt">--version</span><span class="o">=</span>&lt;chart-version&gt; <span class="se">\</span>
+  <span class="nt">--values</span> config.yaml
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  建议先下载好 JupyterHub 所需的镜像，可以通过 <code class="language-plaintext highlighter-rouge">helm show values jupyterhub</code> 来查看所有的镜像列表。或者可以用 <code class="language-plaintext highlighter-rouge">helm pull jupyterhub/jupyterhub --version 4.2.0</code> 来下载原始 Chart 文件，解压后查看 <code class="language-plaintext highlighter-rouge">values.yaml</code> 文件即可。如果想要使用国内镜像的话，就修改 <code class="language-plaintext highlighter-rouge">values.yaml</code> 文件里的镜像名再启动 JupyterHub。这里可以用本地的文件夹名称或压缩包名称来替代 <code class="language-plaintext highlighter-rouge">jupyterhub/jupyterhub</code> 。</p>
+
+
+
+ </div> </div>
+<h4 id="配置-nginx">配置 Nginx</h4>
+
+<p>  当 JupyterHub 启动后，默认用户还是无法从本地访问服务器上部署的 JupyterHub 的，还需要使用 Nginx 代理一下。以下是 Nginx 虚拟主机配置样例。这样一来，就可以在用户端通过域名来直接访问部署好的 JupyterHub 了。</p>
+
+<div class="language-conf highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">443</span> <span class="n">ssl</span>;
+    <span class="n">server_name</span> <span class="n">jupyter</span>.<span class="n">lisz</span>.<span class="n">me</span>;
+
+    <span class="n">ssl_certificate</span> /<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">ssl</span>/<span class="n">jupyter</span>.<span class="n">lisz</span>.<span class="n">me</span>.<span class="n">cert</span>.<span class="n">pem</span>;
+    <span class="n">ssl_certificate_key</span> /<span class="n">home</span>/<span class="n">ubuntu</span>/<span class="n">ssl</span>/<span class="n">jupyter</span>.<span class="n">lisz</span>.<span class="n">me</span>.<span class="n">key</span>.<span class="n">pem</span>;
+
+    <span class="c"># SSL settings (optional but recommended)
+</span>    <span class="n">ssl_protocols</span> <span class="n">TLSv1</span>.<span class="m">2</span> <span class="n">TLSv1</span>.<span class="m">3</span>;
+    <span class="n">ssl_ciphers</span> <span class="n">HIGH</span>:!<span class="n">aNULL</span>:!<span class="n">MD5</span>;
+
+    <span class="n">client_max_body_size</span> <span class="m">10</span><span class="n">G</span>;
+
+    <span class="c"># Logging
+</span>    <span class="n">access_log</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">nginx</span>/<span class="n">jupyter_access</span>.<span class="n">log</span>;
+    <span class="n">error_log</span> /<span class="n">var</span>/<span class="n">log</span>/<span class="n">nginx</span>/<span class="n">jupyter_error</span>.<span class="n">log</span>;
+
+    <span class="n">location</span> / {
+        <span class="n">proxy_pass</span> <span class="n">http</span>://<span class="n">localhost</span>:<span class="m">30000</span>;
+        <span class="n">proxy_set_header</span> <span class="n">Host</span> $<span class="n">host</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Real</span>-<span class="n">IP</span> $<span class="n">remote_addr</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">For</span> $<span class="n">proxy_add_x_forwarded_for</span>;
+        <span class="n">proxy_set_header</span> <span class="n">X</span>-<span class="n">Forwarded</span>-<span class="n">Proto</span> $<span class="n">scheme</span>;
+
+        <span class="c"># WebSocket support
+</span>        <span class="n">proxy_http_version</span> <span class="m">1</span>.<span class="m">1</span>;
+        <span class="n">proxy_set_header</span> <span class="n">Upgrade</span> $<span class="n">http_upgrade</span>;
+        <span class="n">proxy_set_header</span> <span class="n">Connection</span> <span class="s2">"upgrade"</span>;
+    }
+}
+
+<span class="c"># Redirect HTTP to HTTPS
+</span><span class="n">server</span> {
+    <span class="n">listen</span> <span class="m">80</span>;
+    <span class="n">server_name</span> <span class="n">jupyter</span>.<span class="n">lisz</span>.<span class="n">me</span>;
+
+    <span class="n">return</span> <span class="m">301</span> <span class="n">https</span>://$<span class="n">host</span>$<span class="n">request_uri</span>;
+}
+</code></pre></div></div>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>  JupyterHub 的 proxy 本身也可以提供对外访问的 HTTPS，详见 <a href="https://z2jh.jupyter.org/en/stable/administrator/security.html#https">JupyterHub for Kubernetes – Administrator Guide/Security/HTTPS</a>。其他反向代理软件也都适用。</p>
+
+
+
+ </div> </div>
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 如果 Nginx 不在控制节点能反向代理 JupyterHub 吗？ </div> </div> <div class="content"> <p>  由于 <code class="language-plaintext highlighter-rouge">proxy</code> 配置使用了 <code class="language-plaintext highlighter-rouge">nodePorts</code> 来创建端口映射，默认是可以在其他节点访问到指定的端口的。如果想要仅允许 Nginx 代理所在主机访问，可以通过 ingress 来支持更精细的访问控制，详见 <a href="https://z2jh.jupyter.org/en/stable/resources/reference.html#ingress">JupyterHub for Kubernetes – Resources/ingress</a>。</p>
+
+
+
+ </div> </div>
+<h2 id="运维">运维</h2>
+
+<h3 id="基本管理">基本管理</h3>
+
+<p>  部署完成后，我们需要通过 K8S 的 <code class="language-plaintext highlighter-rouge">kubectl</code> 命令来查看、管理 JupyterHub 应用。以下为一些常见的命令：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">## 假设为 JupyterHub 创建的 namespace 为 jhub</span>
+
+<span class="c"># 查看 JupyterHub 所有 Pod 状态</span>
+╰─<span class="nv">$ </span>kubectl get pod <span class="nt">-n</span> jhub
+NAME                             READY   STATUS    RESTARTS        AGE
+continuous-image-puller-76bkq    1/1     Running   0               5d1h
+continuous-image-puller-hntww    1/1     Running   0               5d1h
+hub-6867b9b6c7-slg9c             1/1     Running   0               5d1h
+proxy-cc45cd6f6-g2t24            1/1     Running   0               5d1h
+user-scheduler-7b465896b-bq4l6   1/1     Running   0               5d1h
+user-scheduler-7b465896b-rvqgx   1/1     Running   0               5d1h
+
+<span class="c"># 查看节点资源使用情况</span>
+╰─<span class="nv">$ </span>kubectl describe node l1
+
+<span class="c"># 查看用户实例状态或启动问题</span>
+╰─<span class="nv">$ </span>kubectl descirbe <span class="nt">-n</span> jhub pod jupyter-zhonger
+
+<span class="c"># 查看用户动态存储卷情况</span>
+╰─<span class="nv">$ </span>kubectl get <span class="nt">-n</span> jhub pvc
+</code></pre></div></div>
+
+<h3 id="备份和恢复存储卷">备份和恢复存储卷</h3>
+
+<p>  由于使用动态存储卷，卷配置显得尤为重要。（毕竟 NFS 存储在远端，独立于 K8S 集群。）可以通过以下命令备份和恢复存储卷。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 备份所有 PV 和 PVC</span>
+kubectl get pv <span class="nt">-o</span> yaml <span class="o">&gt;</span> all_pvs.yaml
+kubectl get pvc <span class="nt">--all-namespaces</span> <span class="nt">-o</span> yaml <span class="o">&gt;</span> all_pvc_by_namespace.yaml
+
+<span class="c"># 从备份文件中恢复所有 PV 和 PVC</span>
+kubectl apply <span class="nt">-f</span> all_pvs.yaml
+kubectl apply <span class="nt">-f</span> all_pvc_by_namespace.yaml
+</code></pre></div></div>
+
+<h3 id="更改存储卷大小">更改存储卷大小</h3>
+
+<p>  从查阅的资料来看，NFS 存储是无法动态更新存储卷大小的。换句话说，<strong>重新定义存储卷</strong>就可以手动更改存储大小。举个例子，现在想要为用户 zhonger 从默认的存储卷大小 100G 更改到 1T。那么我们先要获得用户 zhonger 的存储卷配置文件 pvc 和 pv。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 保存 PVC 配置到 YAML 文件</span>
+kubectl get pvc claim-zhonger <span class="nt">-n</span> jhub <span class="nt">-o</span> yaml <span class="o">&gt;</span> claim-zhonger-pvc.yaml
+
+<span class="c"># 从 claim-zhonger-pvc.yaml 获知 PV_NAME</span>
+kubectl get pv &lt;PV_NAM&gt; <span class="nt">-o</span> yaml <span class="o">&gt;</span> claim-zhonger-pv.yaml
+
+<span class="c"># 确保实例已经被销毁后，删除 PVC 和 PV</span>
+kubectl delete <span class="nt">-f</span> claim-zhonger-pvc.yaml
+kubectl delete <span class="nt">-f</span> claim-zhonger-pv.yaml
+
+<span class="c"># 修改存储卷大小</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s2">"s/100Gi/1Ti/"</span> claim-zhonger-<span class="k">*</span>.yaml
+
+<span class="c"># 重新定义存储卷</span>
+kubectl apply <span class="nt">-f</span> claim-zhonger-pv.yaml
+kubectl apply <span class="nt">-f</span> claim-zhonger-pvc.yaml
+</code></pre></div></div>
+
+<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 注意 </div> </div> <div class="content"> <p>  这里需要注意的是，<strong>PV 和 PVC 之间的依赖关系</strong>。PV 是先定义的，不属于任何命名空间。PVC 是依托于 PV 定义的，必须属于某个命名空间。所以删除的时候要先 PVC 再 PV，定义的时候要先 PV 再 PVC。</p>
+
+
+
+ </div> </div>
+<h3 id="资源配置方案">资源配置方案</h3>
+
+<p>  对于资源配置方案，我们可以根据<strong>镜像</strong>、<strong>CPU 核数</strong>、<strong>内存大小</strong>、<strong>GPU 块数</strong>的不同来创建出多样化方案。可以参考 Amazon 提供的丰富示例 <a href="https://github.com/awslabs/data-on-eks/blob/main/ai-ml/jupyterhub/helm/jupyterhub/jupyterhub-values-dummy.yaml">jupyterhub-values-dummy.yaml</a> 了解更多。</p>
+
+<h3 id="利用情况监控与统计">利用情况监控与统计</h3>
+
+<p>  目前可以使用 Grafana + Prometheus 的方式来对 K8S 集群中所有的资源利用情况进行监控，也可以自行设计一个 Grafana 面板来展示当前 JupyterHub 应用中启动的用户实例情况。但对于更加进一步详细、细致的监控与统计还有待设计（类似于“单个用户的利用报告”、“全平台的利用报告”等）。</p>
+
+<h2 id="总结">总结</h2>
+
+<p>  JupyterHub 在 K8S 平台上散发出越来越强大的魅力，使得研究团队搭建自己的科学计算平台越来越容易。当然目前依然还是有一些挑战，比如“多节点 GPU 的调用”。类似于“机器学习模型训练任务”通常需要调试后再放在大规模的 GPU 集群上训练，而 JupyterHub 长于调试代码，是否可以调试完成后直接提交给更大规模的 GPU 集群后台计算呢？</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://z2jh.jupyter.org/en/stable/jupyterhub/installation.html">JupyterHub for Kubernetes – Installation</a></li>
+  <li><a href="https://github.com/jupyterhub/kubespawner/issues/478">Let pod’s securityContext fsGroupChangePolicy default to OnRootMismatch?</a></li>
+  <li><a href="https://aws.amazon.com/cn/blogs/containers/building-multi-tenant-jupyterhub-platforms-on-amazon-eks/">Building multi-tenant JupyterHub Platforms on Amazon EKS</a></li>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="k8s" /><category term="Kubernetes" /><category term="K8S" /><category term="Helm" /><category term="JupyterHub" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">《手解量子化学》练习题 1-2</title><link href="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html" rel="alternate" type="text/html" title="《手解量子化学》练习题 1-2" /><published>2025-05-19T16:16:00+09:00</published><updated>2025-05-19T16:16:00+09:00</updated><id>https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2</id><content type="html" xml:base="https://lisz.me/ac/qc/solve-quantum-chemistry-by-hand-1-2.html"><![CDATA[<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 练习题1-2 </div> </div> <div class="content"> <p>判断下列算子是否<strong>可交换</strong>？</p>
 
 \[[1]\ [\hat{x},\hat{p}_x] \quad [2]\ [\hat{l}_x, \hat{l_y}] \quad [3]\ [\hat{\boldsymbol{l}}^2, \hat{l}_z]\]
 
@@ -1973,148 +2381,4 @@ module use <span class="nt">--append</span> <span class="nv">$ownmoddir</span>
 
 <ul>
   <li><a href="https://modules.readthedocs.io/en/latest/index.html">Environment Modules 官方文档</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="集群" /><category term="Cluster" /><category term="Modules" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">LDAP 集成之 OpenVPN 篇</title><link href="https://lisz.me/tech/webmaster/ldap-openvpn.html" rel="alternate" type="text/html" title="LDAP 集成之 OpenVPN 篇" /><published>2022-09-28T15:04:00+09:00</published><updated>2022-09-28T15:04:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-openvpn</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-openvpn.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<h3 id="easy-connect">Easy Connect</h3>
-
-<p>  公司、学校、云服务等一般需要将内外网进行分离，如果想要从外部网络访问某些内部应用，通常需要使用公司、学校、云服务提供的专用网络接入服务。国内公司、学校比较常用的是由深信服开发的 Easy Connect，一种 SSL VPN 技术的实现。虽然每年需要支付一定的费用来维护、升级 Easy Connect 服务，但是毕竟它能够提供比较细粒度的权限控制，比如说对目标 IP、目标端口的特别指定，能够有效保护内网服务器只有 Web 应用本身能被用户接入，而类似于 SSH 等服务及端口则可以通过单独申请和配置来实现。总而言之，除了需要付费，似乎没有什么不好的地方。</p>
-
-<p>  实际上如果是在大公司或者学校的话，可能在内网里面还会有更深的内网存在。举个例子，正常的内网是日常的办公或开发网络，服务器所处的内网是独立的网络，即使是已经连接了办公网络，还是需要通过专用网络接入服务器内网才能进行服务器的维护。如果是以数据中心的模式运营的话，甚至说每一次访问服务器都是需要经过临时审批和登录密码发放的。一旦过了有效时间或者完成了任务，访问都将会被拒绝。</p>
-
-<h3 id="openvpn">OpenVPN</h3>
-
-<p>  虽然 Easy Connect 可以用于上述的场景，但是似乎显得有些大材小用了，毕竟还是要支付一定费用的。为了尽量降低成本，开源的 OpenVPN 或许是一种不错的选择。据笔者所知，Easy Connect 根据购买的许可不同允许的同时在线人数可能也会不同，实际上可能存在“需大于供”的问题。为了缓解这一可能存在的问题，还是会搭建一套 OpenVPN 来作为冗余接入方式。其实 OpenVPN 的商业版本许可也是会有人数限制的，只不过因为只是备份方式也没有太大关系。</p>
-
-<p>  OpenVPN 除了开源免费之外，还支持大部分主流的认证方式，比如说 LDAP 认证、微软的商业级目录服务 Active Directory（简称 AD）认证等。近年来，基于 Identify Provider（简称 IdP）、Single Sign On（简称 SSO）、Central Authentication Service（简称 CAS）等的国产化的一站式登录服务解决方案也在逐渐替换原来的 LDAP 或 AD 直接认证，LDAP 或 AD 将作为底层的基础认证方式存在。所以说，开源免费的 LDAP 目录服务在一般的团队中还是足够的，作为 OpenVPN 的认证方式也是完全能满足要求的。</p>
-
-<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 提醒 </div> </div> <div class="content"> <p>  在公网上搭建专用网络接入服务是需要有工信部颁发的专门资格许可的，一般公司、学校、云服务都是有该类资格许可，所以可以对外提供该项服务。而个人是无法获得这类许可，除非注册公司并申请该类许可。如果个人在云服务上搭建该类服务，将会面临被云服务提供商警告甚至单方面停止服务的风险。</p>
-
-
-
- </div> </div>
-<h2 id="实践">实践</h2>
-
-<h3 id="环境要求">环境要求</h3>
-
-<p>  在实践前请务必保证具备以下环境：</p>
-
-<ul>
-  <li>Docker</li>
-  <li>docker-compose</li>
-  <li>可用的 LDAP 目录服务</li>
-</ul>
-
-<h3 id="启动实例">启动实例</h3>
-
-<p>  为了方便部署和测试，这里采用 <a href="https://hub.docker.com/r/wheelybird/openvpn-ldap-otp">wheelybird/openvpn-ldap-otp</a> 提供的 Docker 镜像。这个镜像比较小，同时也支持 x64 和 arm 两种体系架构，能满足大部分主流服务器平台。</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># docker-compose.yml</span>
-
-<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
-<span class="na">services</span><span class="pi">:</span>
-  <span class="na">openvpn</span><span class="pi">:</span>
-    <span class="na">cap_add</span><span class="pi">:</span>
-     <span class="pi">-</span> <span class="s">NET_ADMIN</span>
-    <span class="na">image</span><span class="pi">:</span> <span class="s">wheelybird/openvpn-ldap-otp</span>
-    <span class="na">container_name</span><span class="pi">:</span> <span class="s">openvpn</span>
-    <span class="na">ports</span><span class="pi">:</span>
-     <span class="pi">-</span> <span class="s2">"</span><span class="s">1194:1194/udp"</span>
-    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
-    <span class="na">volumes</span><span class="pi">:</span>
-     <span class="pi">-</span> <span class="s">/etc/localtime:/etc/localtime:ro</span>
-     <span class="pi">-</span> <span class="s">/etc/timezone:/etc/timezone:ro</span>
-     <span class="pi">-</span> <span class="s">./openvpn-data:/etc/openvpn</span>
-    <span class="na">environment</span><span class="pi">:</span>
-     <span class="pi">-</span> <span class="s">OVPN_SERVER_CN=oc-vpn.example.com</span>
-     <span class="pi">-</span> <span class="s">LDAP_URI=ldap://ldap.example.com</span>
-     <span class="pi">-</span> <span class="s">LDAP_BASE_DN=ou=users,dc=example,dc=com</span>
-     <span class="pi">-</span> <span class="s">LDAP_BIND_USER_DN=cn=admin,dc=example,dc=com</span>
-     <span class="pi">-</span> <span class="s">LDAP_BIND_USER_PASS=password</span>
-     <span class="pi">-</span> <span class="s">LDAP_LOGIN_ATTRIBUTE=uid</span>
-     <span class="pi">-</span> <span class="s">LOG_TO_STDOUT=false</span>
-     <span class="pi">-</span> <span class="s">OVPN_DNS_SEARCH_DOMAIN=example.com</span>
-</code></pre></div></div>
-
-<p>  使用以下 docker-compose.yml 文件和 <code class="language-plaintext highlighter-rouge">docker-compose up -d</code> 命令启动实例。为了能够避免实例在重新创建后证书发生改变，将 Docker 实例中 /etc/openvpn 的目录持久化（与本地目录绑定）是非常重要的。在这里给出的环境变量（environment）中，前三项 OVPN_SERVER_CN、LDAP_URI、LDAP_BASE_DN 是必须要有的。如果 LDAP 目录服务默认是不能被匿名查找的，也必须包含 LDAP_BIND_USER_DN 和 LDAP_BIND_USER_PASS 变量的（即管理员账户名和密码）。当然，如果你想要指定匹配登录用户名字段，则需要新增 LDAP_LOGIN_ATTRIBUTE 变量。该变量默认是 uid 字段，也可以指定为其他 LDAP 目录服务中包含的字段，比如 email。这个镜像默认是会将服务的实时输出打印在终端，如果想要以日志文件的形式保存下来，则将变量 LOG_TO_STDOUT 置为 false 即可。</p>
-
-<p>  一般来说，服务器内网为了管理方便，会根据服务器的 ip 和编号来配置对应的域名解析及反向域名解析，形如 <code class="language-plaintext highlighter-rouge">ec2-1-1-1-1.aws.com</code>，也有可能就是简单的 <code class="language-plaintext highlighter-rouge">c1.sever.aws.com</code>。所以当接入服务器内网后，我们可能会期望用 c1 来作为这台服务器的标签，而在终端我们也可能通过 <code class="language-plaintext highlighter-rouge">ping c1</code> 来测试通路。实际上只要在启动实例时新增变量 OVPN_DNS_SEARCH_DOMAIN 就可以实现，当然这里变量对应的值也应该变成 <code class="language-plaintext highlighter-rouge">server.aws.com</code>。相当于，有了这个配置后，本地 DNS 解析没有记录时会自动尝试加入后缀来解析。这样一来，是不是方便了很多呢？</p>
-
-<p>  除此之外，该镜像还支持其他一些特性，比如 OTP，请访问 <a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a> 了解更多。</p>
-
-<h4 id="生成配置文件">生成配置文件</h4>
-
-<p>  在生成配置文件上，<a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a> 要比 <a href="https://github.com/kylemanna/docker-openvpn">kylemanna/docker-openvpn</a> 更复杂一些，可以手动从 Docker 实例的日志文件或终端输出内容中看到内容，大致内容形式如下所示：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#---------- Start of client.ovpn ----------</span>
-
-client
-tls-client
-dev tun
-persist-key
-persist-tun
-remote-cert-tls server
-key-direction 1
-auth SHA512
-proto tcp
-reneg-sec 0
-
-comp-lzo
-redirect-gateway def1
-auth-user-pass
-
-<span class="c"># Set log file verbosity</span>
-verb 3
-
-&lt;connection&gt;
-remote oc-vpn.example.com 1194 udp
-float
-nobind
-&lt;/connection&gt;
-
-&lt;ca&gt;
-<span class="nt">-----BEGIN</span> CERTIFICATE-----
-.........
-.........
-<span class="nt">-----END</span> CERTIFICATE-----
-&lt;/ca&gt;
-&lt;tls-auth&gt;
-<span class="c">#</span>
-<span class="c"># 2048 bit OpenVPN static key</span>
-<span class="c">#</span>
-<span class="nt">-----BEGIN</span> OpenVPN Static key V1-----
-.........
-.........
-<span class="nt">-----END</span> OpenVPN Static key V1-----
-&lt;/tls-auth&gt;
-key-direction 1
-<span class="c">#----------  End of client.ovpn  ----------</span>
-</code></pre></div></div>
-
-<p>  将以上内容复制保存在 oc-vpn.example.com.ovpn 文件中即可。</p>
-
-<h3 id="测试">测试</h3>
-
-<p>  通常来说使用 OpenVPN 专用或者兼容客户端来加载配置文件 oc-vpn.example.com.ovpn，当然也可以用终端命令连接，如下所示：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>openvpn <span class="nt">--config</span> oc-vpn.example.com.ovpn
-</code></pre></div></div>
-
-<p>  执行上述命令后会提示输入用户名和密码进行认证，认证通过后会建立连接。默认分配的是 10.50.50.0/24 段中的某个 IP，网关为 10.50.50.254，当然这个也可以在启动实例时自行设置。</p>
-
-<div class="premonition warning"> <div class="header"> <svg class="icon warning" aria-hidden="true"> <use xlink:href="#icon-warning"></use> </svg> <div class="title"> 再次提醒 </div> </div> <div class="content"> <p>  以上内容比较适用于团队办公或开发网络与服务器网络独立分离的情况（<strong>内网环境</strong>）。请勿在未获得工信部的资质许可的情况下在公网部署类似服务，一旦被云服务提供商监测到，云服务提供商有权进行警告、断网、关停等操作，并且无法申诉。</p>
-
-
-
- </div> </div>
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://github.com/wheelybird/openvpn-server-ldap-otp">wheelybird/openvpn-ldap-otp</a></li>
-  <li><a href="https://github.com/kylemanna/docker-openvpn">kylemanna/docker-openvpn</a></li>
-</ul>
-
-<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 提示 </div> </div> <div class="content"> <p>我的博客即将同步至腾讯云开发者社区，邀请大家一同入驻：<a href="https://cloud.tencent.com/developer/support-plan?invite_code=1jkj42lj2m4nn">加入链接</a>。</p>
-
-
-
- </div> </div>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="OpenVPN" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="集群" /><category term="Cluster" /><category term="Modules" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
