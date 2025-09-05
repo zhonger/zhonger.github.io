@@ -1,4 +1,105 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-06-16T18:28:49+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">Kubernetes 应用之 JupyterHub 搭建和运维</title><link href="https://lisz.me/tech/k8s/k8s-jupyterhub.html" rel="alternate" type="text/html" title="Kubernetes 应用之 JupyterHub 搭建和运维" /><published>2025-06-16T13:42:00+09:00</published><updated>2025-06-16T13:42:00+09:00</updated><id>https://lisz.me/tech/k8s/k8s-jupyterhub</id><content type="html" xml:base="https://lisz.me/tech/k8s/k8s-jupyterhub.html"><![CDATA[<h2 id="前言">前言</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2025-09-05T12:22:12+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">LDAP 集成之 Gitlab + Keycloak 篇</title><link href="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html" rel="alternate" type="text/html" title="LDAP 集成之 Gitlab + Keycloak 篇" /><published>2025-09-05T11:30:00+09:00</published><updated>2025-09-05T11:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-gitlab-keycloak</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  在之前的<a href="./2022-06-23-ldap-gitlab.md">《LDAP 集成之 Gitlab 篇》</a> 和 <a href="./2022-04-27-ldap-integration.md">《基于 LDAP 的统一认证服务 Keycloak》</a> 中，分别探索了 LDAP 与 Gitlab、Keycloak 的集成。实际上，Gitlab 天然支持三者合一的认证方式，即 “<strong>LDAP 为 Gitlab 提供最底层的用户认证</strong>“和”<strong>Keycloak 提供统一的用户认证入口</strong>“。这样一来，</p>
+
+<ul>
+  <li>管理员不再需要在 Gitlab <strong>手动创建</strong>用户匹配 LDAP 账户；</li>
+  <li>用户也不再需要在 Gitlab 中<strong>手动绑定</strong> Keycloak 账户之后才能使用 Keycloak 统一认证。</li>
+</ul>
+
+<h2 id="实践">实践</h2>
+
+<h3 id="预先准备">预先准备</h3>
+
+<ul>
+  <li>已架设好 LDAP 服务</li>
+  <li>已架设好 Keycloak 服务，并配置 LDAP 集成认证</li>
+  <li>已架设好 Gitlab 服务（使用 <a href="https://github.com/sameersbn/docker-gitlab">sameersbn/gitlab</a> 镜像）</li>
+</ul>
+
+<h3 id="配置">配置</h3>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="s">...</span>
+  <span class="s">gitlab</span><span class="err">:</span>
+    <span class="s">...</span>
+    <span class="s">environment</span><span class="err">:</span>
+    <span class="s">...</span>
+    <span class="s">- LDAP_ENABLED=true</span>
+    <span class="s">- LDAP_PREVENT_LDAP_SIGN_IN=true</span>
+    <span class="s">...</span>
+    <span class="s">- OAUTH_AUTO_LINK_LDAP_USER=true</span>
+    <span class="s">- OAUTH_AUTO_LINK_USER=IDP</span>
+    <span class="s">- OAUTH_OIDC_LABEL=IDP</span>
+    <span class="s">- OAUTH_OIDC_ISSUE=https://&lt;Keycloak domain&gt;/realms/master</span>
+    <span class="s">- OAUTH_ODIC_CLIENT_ID=&lt;id&gt;</span>
+    <span class="s">- OAUTH_ODIC_CLIENT_SECRET=&lt;secret&gt;</span>
+</code></pre></div></div>
+
+<p>  这里比较关键的配置就是要<strong>启用自动链接 LDAP 用户</strong>（<code class="language-plaintext highlighter-rouge">OAUTH_AUTO_LINK_LDAP_USER</code>）和<strong>指定自动链接的第三方认证方式</strong>（<code class="language-plaintext highlighter-rouge">OAUTH_AUTO_LINK_USER</code>）。为了规避用户直接使用 LDAP 认证登录，可以通过设置 <code class="language-plaintext highlighter-rouge">LDAP_PREVENT_LDAP_SIGN_IN</code> 来隐藏 LDAP 登录界面。</p>
+
+<h3 id="可能存在的问题">可能存在的问题</h3>
+
+<h4 id="ldap-用户被自动封禁">LDAP 用户被自动封禁</h4>
+
+<p>  通过以上设置就可以让用户使用 Keycloak 作为统一入口登录 Gitlab，但是因为 Gitlab 会自动处理 LDAP 后台用户和自动链接，当后台 LDAP 发生变化时（比如修改 RDN 但保持邮件不变）， Gitlab 会自动将用户的状态修改为 <code class="language-plaintext highlighter-rouge">禁用 LDAP</code>。由于 Gitlab 界面上不提供对于这种特殊情况的<strong>解禁操作</strong>，所以必须通过<strong>后台手动修正</strong>。</p>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 提示 </div> </div> <div class="content"> <p>  在后台手动修正之前，先通过界面进入后台手动将用户原先绑定的 RDN 修改为 LDAP 服务中正确的 RDN。</p>
+
+
+
+ </div> </div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 进入 Gitlab 容器</span>
+docker <span class="nb">exec</span> <span class="nt">-ti</span> gitlab-gitlab-1 bash
+
+<span class="c"># 进入 Gitlab 控制台，可能需要等待 1 分钟</span>
+root@gitlab:/home/git/gitlab# <span class="nv">RAILS_ENV</span><span class="o">=</span>production bundle <span class="nb">exec </span>rails console
+<span class="nt">--------------------------------------------------------------------------------</span>
+ Ruby:         ruby 3.2.9 <span class="o">(</span>2025-07-24 revision 8f611e0c46<span class="o">)</span> <span class="o">[</span>x86_64-linux]
+ GitLab:       18.3.1 <span class="o">(</span>bccd1993b5d<span class="o">)</span> FOSS
+ GitLab Shell: 14.44.0
+ PostgreSQL:   16.9
+<span class="nt">------------------------------------------------------------</span><span class="o">[</span> booted <span class="k">in </span>41.09s <span class="o">]</span>
+Loading production environment <span class="o">(</span>Rails 7.1.5.1<span class="o">)</span>
+irb<span class="o">(</span>main<span class="o">)</span>:001&gt;
+
+<span class="c"># 查看被禁用 LDAP 的用户</span>
+irb<span class="o">(</span>main<span class="o">)</span>:002&gt; User.where<span class="o">(</span>state: <span class="s1">'ldap_blocked'</span><span class="o">)</span>
+
+<span class="c"># 解禁单个用户</span>
+irb<span class="o">(</span>main<span class="o">)</span>:003&gt; u <span class="o">=</span> User.find_by_username<span class="o">(</span><span class="s1">'username'</span><span class="o">)</span>
+irb<span class="o">(</span>main<span class="o">)</span>:004&gt; u.activate!
+irb<span class="o">(</span>main<span class="o">)</span>:005&gt; u.save!
+
+<span class="c"># 退出控制台</span>
+irb<span class="o">(</span>main<span class="o">)</span>:006&gt; <span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>如果想要批量解禁 LDAP 用户可以在控制台执行以下命令：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 批量解禁</span>
+User.where<span class="o">(</span>state: <span class="s1">'ldap_blocked'</span><span class="o">)</span>.find_each <span class="k">do</span> |u|
+  u.activate!
+  u.save!
+  puts <span class="s2">"✅ Activated #{u.username}"</span>
+end
+</code></pre></div></div>
+
+<h4 id="自定义-gravatar">自定义 Gravatar</h4>
+
+<p>  由于 Gitlab 默认使用 Gravatar 为用户提供头像，且 Gravatar 访问一直不稳定，推荐使用自定义的 Gravatar 地址，如下设置：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">services</span><span class="pi">:</span>
+  <span class="s">...</span>
+  <span class="s">gitlab</span><span class="err">:</span>
+    <span class="s">...</span>
+    <span class="s">environment</span><span class="err">:</span>
+    <span class="s">...</span>
+    <span class="s">- GITLAB_GRAVATAR_ENABLED=true</span>
+    <span class="s">- GITLAB_GRAVATAR_HTTP_URL=https://weavatar.com/avatar/%{hash}?s=%{size}&amp;d=identicon</span>
+    <span class="s">- GITLAB_GRAVATAR_HTTPS_URL=https://weavatar.com/avatar/%{hash}?s=%{size}&amp;d=identicon</span>
+</code></pre></div></div>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="LDAP" /><category term="Gitlab" /><category term="Keycloak" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">Kubernetes 应用之 JupyterHub 搭建和运维</title><link href="https://lisz.me/tech/k8s/k8s-jupyterhub.html" rel="alternate" type="text/html" title="Kubernetes 应用之 JupyterHub 搭建和运维" /><published>2025-06-16T13:42:00+09:00</published><updated>2025-06-16T13:42:00+09:00</updated><id>https://lisz.me/tech/k8s/k8s-jupyterhub</id><content type="html" xml:base="https://lisz.me/tech/k8s/k8s-jupyterhub.html"><![CDATA[<h2 id="前言">前言</h2>
 
 <p>  之前在<a href="/tech/docker/jupyterlab.html">《JupyterLab 的搭建与运维》</a>一文中，尝试了在单机上搭建部署 JupyterHub。不得不说，的确方便了团队内部共同使用同一台 GPU 服务器。但也有比较大的限制：</p>
 
@@ -2195,190 +2296,4 @@ lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python3.10 -&gt; python3
   <li><a href="https://docs.python.org/zh-cn/3/using/configure.html#configure-options">Python 官方文档 - 性能选项</a></li>
   <li><a href="https://docs.python.org/zh-cn/3/tutorial/venv.html">Python 官方文档 - 虚拟环境和包</a></li>
   <li><a href="https://www.python.jp/install/ubuntu/index.html">Ubuntu 環境の Python</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="Modules" /><category term="Python" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">集群动态环境管理神器 Modules</title><link href="https://lisz.me/tech/webmaster/modules.html" rel="alternate" type="text/html" title="集群动态环境管理神器 Modules" /><published>2022-10-26T15:48:00+09:00</published><updated>2022-10-26T15:48:00+09:00</updated><id>https://lisz.me/tech/webmaster/modules</id><content type="html" xml:base="https://lisz.me/tech/webmaster/modules.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<div class="premonition citation"> <div class="header"> <svg class="icon citation" aria-hidden="true"> <use xlink:href="#icon-citation"></use> </svg> </div> <div class="content"> <p>  Modules 包是一款简化 shell 初始化的工具，允许用户在会话期间使用模块文件轻松切换环境。</p>
-
-
-
- </div> <div class="ref"> ------ Environment Modules 官网 </div> </div>
-<p>  在高性能集群或者超算中，我们可以经常看到 Modules 的身影。它可以帮助我们轻松加载运行程序所需的各类环境，比如说笔者之前写过的第一性原理计算软件 CONQUEST 的运行，就需要包括 Intel OneAPI HPCKit、FFTW3、LibXC 在内的多种环境；又比如说运行大规模的机器学习模型时，可能需要 Python、GPU 环境和 PyTorch 等依赖库。</p>
-
-<p>  由于集群往往是面向很多人服务的，如果管理员将软件安装到全局环境，则只能安装某个软件的某个特定版本，而不能同时为不同的用户提供所需的同款软件的不同版本。举个例子，笔者编写的代码只能在 Python 3.10 环境下运行，而其他用户编写的代码所支持的 Python 版本是 3.0，那么可能最简单的解决方法是笔者自行编译一个 Python 3.10 的环境，然后利用 PATH 等变量的配置来提升优先级。或许之后有一天，另外一个用户也要使用 Python 3.10 环境，那么是不是让他再自行编译配置一遍呢？哈哈哈，听起来有点无奈，但是<strong>千万不要高估集群的使用用户</strong>，可能自行编译并配置 Python 3.10 对他们来说也有点困难。因此，Modules 成为了集群动态管理软件环境的最佳选择。集群管理员可以预先编译和配置好各种环境的各种版本，用户使用时只需要执行类似 <code class="language-plaintext highlighter-rouge">module load py/3.10.6</code> 的命令就可以轻松加载 Python 3.10.6 环境。</p>
-
-<p>  Modules 所支持的模块不仅仅可以是编程语言的多版本，还可以是其他任意的基础环境，比如说 gcc、openmpi 等编译环境。这样一来，不仅可以为用户提供足够的编程环境直接使用，还可以为一些想要自行编译运行环境的用户提供了便利。</p>
-
-<h2 id="实践">实践</h2>
-
-<h3 id="源码编译安装-modules">源码编译安装 Modules</h3>
-
-<p>  Modules 可以在 Linux、Windows、MacOS 任一操作系统上安装运行，这里仅介绍类 Unix 操作系统下的编译安装过程。由于 Modules 需要使用 tcl 工具来解析 modulefiles，所以系统必须预先安装 tcl 及其开发者库。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 根据实际情况三者选其一</span>
-<span class="c"># Debian/Ubuntu 等 APT 系列操作系统上安装 tcl</span>
-<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> tcl tcl-dev
-<span class="c"># CentOS 等 YUM 系列操作系统上安装 tcl</span>
-<span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> tcl tcl-devel
-<span class="c"># MacOS 操作系统上安装 tcl （需有 brew 工具）</span>
-brew <span class="nb">install </span>tcl-tk
-
-<span class="c"># 下载源代码并解压</span>
-wget <span class="nt">-c</span> https://github.com/cea-hpc/modules/releases/download/v5.1.1/modules-5.1.1.tar.gz
-<span class="nb">tar </span>xfz modules-5.1.1.tar.gz
-
-<span class="c"># 创建安装目录</span>
-<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/modules
-
-<span class="c"># 进入目录并配置安装目录</span>
-<span class="nb">cd </span>modules-5.1.1
-./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/modules
-<span class="c"># MacOS 可能需要如下另外指定 tclConfig.sh 文件所在的位置</span>
-./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/modules <span class="nt">--with-tcl</span><span class="o">=</span>/opt/homebrew/opt/tcl-tk/lib
-
-<span class="c"># 编译并安装到 /opt/modules 目录</span>
-make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
-</code></pre></div></div>
-
-<h3 id="使-modules-生效">使 Modules 生效</h3>
-
-<p>  并非是编译完了之后就可以直接使用 Modules，还有至关重要的一步–<strong>添加生效命令</strong>。首先需要确认当前使用的 Shell 是什么，一般来说默认是 Bash，当然也有 Zsh 等等。然后，在对应的 Shell 配置文件中增加一行生效命令。操作如下所示：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 确认当前使用的 Shell</span>
-╰─<span class="nv">$ </span><span class="nb">echo</span> <span class="nv">$SHELL</span>
-/bin/zsh
-
-<span class="c"># 查看 Modules 支持的 Shell</span>
-╰─<span class="nv">$ </span><span class="nb">ls</span> /opt/modules/init
-bash            cmake           fish            ksh             lisp            profile.csh     python.py       ruby.rb         tcl             tcsh_completion zsh-functions
-bash_completion csh             fish_completion ksh-functions   perl.pm         profile.sh      r.R             sh              tcsh            zsh
-<span class="c"># 如上所示，大部分流行的 Shell 都在支持列表中</span>
-
-<span class="c"># 使 Modules 生效</span>
-vim ~/.zshrc
-<span class="c"># 添加以下内容</span>
-<span class="nb">source</span> /opt/modules/init/zsh
-</code></pre></div></div>
-
-<h3 id="源码编译安装-tcl">源码编译安装 tcl</h3>
-
-<p>  Modules 的编译安装是不是很简单？不过如果 tcl 工具无法使用命令安装的话，就只能从源码编译安装，也比较方便，如下所示：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载源码并解压</span>
-wget <span class="nt">-c</span> https://prdownloads.sourceforge.net/tcl/tcl8.6.12-src.tar.gz
-<span class="nb">tar </span>xfz tcl8.6.12-src.tar.gz
-
-<span class="c"># 创建安装目录</span>
-<span class="nb">sudo mkdir</span> /opt/tcl
-
-<span class="c"># 进入目录并配置安装目录</span>
-<span class="nb">cd </span>tcl8.6.12/unix
-./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/tcl
-
-<span class="c"># 编译并安装</span>
-make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
-</code></pre></div></div>
-
-<h3 id="modules-相关命令">Modules 相关命令</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看所有可用模块</span>
-module avail / module ava
-
-<span class="c"># 加载指定模块（支持同时加载多个模块）</span>
-module load py/3.10.6 mpi
-
-<span class="c"># 查看已加载模块</span>
-module list
-
-<span class="c"># 查看指定模块</span>
-module show py/3.10.6
-
-<span class="c"># 添加自定义模块配置目录</span>
-module use <span class="nt">--apend</span> ~/opt/modulefiles
-</code></pre></div></div>
-
-<h2 id="添加软件环境">添加软件环境</h2>
-
-<h3 id="modulefiles-库">Modulefiles 库</h3>
-
-<p>  Modules 编译安装后默认会有一些环境，它们的配置文件都被存储在安装目录的 modulefiles 文件夹中，如下所示：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>module ava
-<span class="nt">---------------------------</span> /opt/modules/modulefiles <span class="nt">---------------------------</span>
-dot  module-git  module-info  modules  null  use.own
-
-Key:
-modulepath
-
-╰─<span class="nv">$ </span><span class="nb">ls</span> /opt/modules/modulefiles
-dot         module-git  module-info modules     null        use.own
-</code></pre></div></div>
-
-<p>  一般来说，打算提供给所有用户的环境配置都可以放在这个目录里，这样任何用户都可以查看到。</p>
-
-<h3 id="modulefiles-模板">Modulefiles 模板</h3>
-
-<p>  这里我们可以把 <code class="language-plaintext highlighter-rouge">use.own</code> 文件作为模板来学习一下如何编写 Modulefiles 文件。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#%Module1.0#####################################################################</span>
-<span class="c">##</span>
-<span class="c">## use.own modulefile</span>
-<span class="c">##</span>
-proc ModulesHelp <span class="o">{</span> <span class="o">}</span> <span class="o">{</span>
-    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">This module file will add </span><span class="se">\$</span><span class="s2">HOME/privatemodules to the"</span>
-    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">list of directories that the module command will search"</span>
-    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">for modules.  Place your own module files here."</span>
-    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">This module, when loaded, will create this directory"</span>
-    puts stderr <span class="s2">"</span><span class="se">\t</span><span class="s2">if necessary."</span>
-<span class="o">}</span>
-
-module-whatis   <span class="s2">"adds your own modulefiles directory to MODULEPATH"</span>
-
-<span class="nb">eval set</span>  <span class="o">[</span> array get <span class="nb">env </span>HOME <span class="o">]</span>
-<span class="nb">set </span>ownmoddir   <span class="nv">$HOME</span>/privatemodules
-
-<span class="c"># create directory if necessary</span>
-<span class="k">if</span> <span class="o">[</span> module-info mode load <span class="o">]</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">{</span> <span class="o">!</span> <span class="o">[</span> file exists <span class="nv">$ownmoddir</span> <span class="o">]</span> <span class="o">}</span> <span class="o">{</span>
-        file <span class="nb">mkdir</span> <span class="nv">$ownmoddir</span>
-        <span class="nb">set </span>null <span class="o">[</span>open <span class="nv">$ownmoddir</span>/null w]
-        puts <span class="nv">$null</span> <span class="s2">"#%Module########################################################################"</span>
-        puts <span class="nv">$null</span> <span class="s2">"##"</span>
-        puts <span class="nv">$null</span> <span class="s2">"## null modulefile"</span>
-        puts <span class="nv">$null</span> <span class="s2">"##"</span>
-        puts <span class="nv">$null</span> <span class="s2">"proc ModulesHelp { } {"</span>
-        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">This module does absolutely nothing.</span><span class="se">\"</span><span class="s2">"</span>
-        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">It's meant simply as a place holder in your</span><span class="se">\"</span><span class="s2">"</span>
-        puts <span class="nv">$null</span> <span class="s2">"    puts stderr </span><span class="se">\"\t</span><span class="s2">dot file initialization.</span><span class="se">\"</span><span class="s2">"</span>
-        puts <span class="nv">$null</span> <span class="s2">"}"</span>
-        puts <span class="nv">$null</span> <span class="s2">""</span>
-        puts <span class="nv">$null</span> <span class="s2">"module-whatis   </span><span class="se">\"</span><span class="s2">does absolutely nothing</span><span class="se">\"</span><span class="s2">"</span>
-    <span class="o">}</span>
-<span class="o">}</span>
-
-module use <span class="nt">--append</span> <span class="nv">$ownmoddir</span>
-</code></pre></div></div>
-
-<p>  Modulefiles 文件一般符合以下规则：</p>
-
-<ul>
-  <li>Modulefiles 文件必须以 <code class="language-plaintext highlighter-rouge">#%Module1.0</code> 开头；</li>
-  <li>使用 <code class="language-plaintext highlighter-rouge">proc ModulesHelp {}</code> 函数来添加模块详细描述；</li>
-  <li>使用 <code class="language-plaintext highlighter-rouge">module-whatis</code> 字段来添加一句话简短描述；</li>
-  <li>使用 <code class="language-plaintext highlighter-rouge">eval set [ array get env HOME]</code> 来获取系统变量 <code class="language-plaintext highlighter-rouge">$HOME</code>；</li>
-  <li>使用 <code class="language-plaintext highlighter-rouge">set ownmoddir</code> 来定义变量 <code class="language-plaintext highlighter-rouge">ownmoddir</code>；</li>
-  <li>后续脚本可以根据需求进行添加内容。</li>
-</ul>
-
-<p>  这里先开个坑，后续打算补充 Modules 配置系列文章：</p>
-
-<ul>
-  <li><a href="modules-python.html">《Modules 配置之 Python》</a></li>
-  <li><a href="modules-conda.html">《Modules 配置之 Anaconda》</a></li>
-  <li><a href="modules-intel.html">《Modules 配置之 Intel OneAPI》</a></li>
-</ul>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://modules.readthedocs.io/en/latest/index.html">Environment Modules 官方文档</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="集群" /><category term="Cluster" /><category term="Modules" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="Modules" /><category term="Python" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>

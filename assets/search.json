@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "LDAP 集成之 Gitlab + Keycloak 篇",
+    "tags"     : "LDAP Gitlab Keycloak",
+    "url"      : "/tech/webmaster/ldap-gitlab-keycloak.html"
+  } ,
+
+  {
     "title"    : "Kubernetes 应用之 JupyterHub 搭建和运维",
     "tags"     : "Kubernetes K8S Helm JupyterHub",
     "url"      : "/tech/k8s/k8s-jupyterhub.html"

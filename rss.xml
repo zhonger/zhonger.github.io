@@ -5,9 +5,131 @@
     <description>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</description>
     <link>https://lisz.me//</link>
     <atom:link href="https://lisz.me/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Mon, 16 Jun 2025 18:28:49 +0900</pubDate>
-    <lastBuildDate>Mon, 16 Jun 2025 18:28:49 +0900</lastBuildDate>
+    <pubDate>Fri, 05 Sep 2025 12:22:12 +0900</pubDate>
+    <lastBuildDate>Fri, 05 Sep 2025 12:22:12 +0900</lastBuildDate>
     <generator>Jekyll v4.4.1</generator>
+    
+      <item>
+        <title>LDAP 集成之 Gitlab + Keycloak 篇</title>
+        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;  在之前的&lt;a href=&quot;./2022-06-23-ldap-gitlab.md&quot;&gt;《LDAP 集成之 Gitlab 篇》&lt;/a&gt; 和 &lt;a href=&quot;./2022-04-27-ldap-integration.md&quot;&gt;《基于 LDAP 的统一认证服务 Keycloak》&lt;/a&gt; 中，分别探索了 LDAP 与 Gitlab、Keycloak 的集成。实际上，Gitlab 天然支持三者合一的认证方式，即 “&lt;strong&gt;LDAP 为 Gitlab 提供最底层的用户认证&lt;/strong&gt;“和”&lt;strong&gt;Keycloak 提供统一的用户认证入口&lt;/strong&gt;“。这样一来，&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;管理员不再需要在 Gitlab &lt;strong&gt;手动创建&lt;/strong&gt;用户匹配 LDAP 账户；&lt;/li&gt;
+  &lt;li&gt;用户也不再需要在 Gitlab 中&lt;strong&gt;手动绑定&lt;/strong&gt; Keycloak 账户之后才能使用 Keycloak 统一认证。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
+
+&lt;h3 id=&quot;预先准备&quot;&gt;预先准备&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;已架设好 LDAP 服务&lt;/li&gt;
+  &lt;li&gt;已架设好 Keycloak 服务，并配置 LDAP 集成认证&lt;/li&gt;
+  &lt;li&gt;已架设好 Gitlab 服务（使用 &lt;a href=&quot;https://github.com/sameersbn/docker-gitlab&quot;&gt;sameersbn/gitlab&lt;/a&gt; 镜像）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;配置&quot;&gt;配置&lt;/h3&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;gitlab&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- LDAP_ENABLED=true&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- LDAP_PREVENT_LDAP_SIGN_IN=true&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_AUTO_LINK_LDAP_USER=true&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_AUTO_LINK_USER=IDP&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_OIDC_LABEL=IDP&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_OIDC_ISSUE=https://&amp;lt;Keycloak domain&amp;gt;/realms/master&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_ODIC_CLIENT_ID=&amp;lt;id&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- OAUTH_ODIC_CLIENT_SECRET=&amp;lt;secret&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;  这里比较关键的配置就是要&lt;strong&gt;启用自动链接 LDAP 用户&lt;/strong&gt;（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OAUTH_AUTO_LINK_LDAP_USER&lt;/code&gt;）和&lt;strong&gt;指定自动链接的第三方认证方式&lt;/strong&gt;（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OAUTH_AUTO_LINK_USER&lt;/code&gt;）。为了规避用户直接使用 LDAP 认证登录，可以通过设置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LDAP_PREVENT_LDAP_SIGN_IN&lt;/code&gt; 来隐藏 LDAP 登录界面。&lt;/p&gt;
+
+&lt;h3 id=&quot;可能存在的问题&quot;&gt;可能存在的问题&lt;/h3&gt;
+
+&lt;h4 id=&quot;ldap-用户被自动封禁&quot;&gt;LDAP 用户被自动封禁&lt;/h4&gt;
+
+&lt;p&gt;  通过以上设置就可以让用户使用 Keycloak 作为统一入口登录 Gitlab，但是因为 Gitlab 会自动处理 LDAP 后台用户和自动链接，当后台 LDAP 发生变化时（比如修改 RDN 但保持邮件不变）， Gitlab 会自动将用户的状态修改为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;禁用 LDAP&lt;/code&gt;。由于 Gitlab 界面上不提供对于这种特殊情况的&lt;strong&gt;解禁操作&lt;/strong&gt;，所以必须通过&lt;strong&gt;后台手动修正&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;div class=&quot;premonition info&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon info&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-info&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;div class=&quot;title&quot;&gt; 提示 &lt;/div&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  在后台手动修正之前，先通过界面进入后台手动将用户原先绑定的 RDN 修改为 LDAP 服务中正确的 RDN。&lt;/p&gt;
+
+
+
+ &lt;/div&gt; &lt;/div&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 进入 Gitlab 容器&lt;/span&gt;
+docker &lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ti&lt;/span&gt; gitlab-gitlab-1 bash
+
+&lt;span class=&quot;c&quot;&gt;# 进入 Gitlab 控制台，可能需要等待 1 分钟&lt;/span&gt;
+root@gitlab:/home/git/gitlab# &lt;span class=&quot;nv&quot;&gt;RAILS_ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;rails console
+&lt;span class=&quot;nt&quot;&gt;--------------------------------------------------------------------------------&lt;/span&gt;
+ Ruby:         ruby 3.2.9 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2025-07-24 revision 8f611e0c46&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;x86_64-linux]
+ GitLab:       18.3.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bccd1993b5d&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; FOSS
+ GitLab Shell: 14.44.0
+ PostgreSQL:   16.9
+&lt;span class=&quot;nt&quot;&gt;------------------------------------------------------------&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; booted &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;41.09s &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+Loading production environment &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Rails 7.1.5.1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:001&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# 查看被禁用 LDAP 的用户&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:002&amp;gt; User.where&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;state: &lt;span class=&quot;s1&quot;&gt;&apos;ldap_blocked&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 解禁单个用户&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:003&amp;gt; u &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; User.find_by_username&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;username&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:004&amp;gt; u.activate!
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:005&amp;gt; u.save!
+
+&lt;span class=&quot;c&quot;&gt;# 退出控制台&lt;/span&gt;
+irb&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;main&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:006&amp;gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;如果想要批量解禁 LDAP 用户可以在控制台执行以下命令：&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 批量解禁&lt;/span&gt;
+User.where&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;state: &lt;span class=&quot;s1&quot;&gt;&apos;ldap_blocked&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.find_each &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; |u|
+  u.activate!
+  u.save!
+  puts &lt;span class=&quot;s2&quot;&gt;&quot;✅ Activated #{u.username}&quot;&lt;/span&gt;
+end
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;自定义-gravatar&quot;&gt;自定义 Gravatar&lt;/h4&gt;
+
+&lt;p&gt;  由于 Gitlab 默认使用 Gravatar 为用户提供头像，且 Gravatar 访问一直不稳定，推荐使用自定义的 Gravatar 地址，如下设置：&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;gitlab&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;...&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- GITLAB_GRAVATAR_ENABLED=true&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- GITLAB_GRAVATAR_HTTP_URL=https://weavatar.com/avatar/%{hash}?s=%{size}&amp;amp;d=identicon&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;- GITLAB_GRAVATAR_HTTPS_URL=https://weavatar.com/avatar/%{hash}?s=%{size}&amp;amp;d=identicon&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</description>
+        <pubDate>Fri, 05 Sep 2025 11:30:00 +0900</pubDate>
+        <link>https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html</link>
+        <guid isPermaLink="true">https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html</guid>
+        
+        <category>LDAP</category>
+        
+        <category>Gitlab</category>
+        
+        <category>Keycloak</category>
+        
+        
+        <category>tech</category>
+        
+        <category>webmaster</category>
+        
+      </item>
     
       <item>
         <title>Kubernetes 应用之 JupyterHub 搭建和运维</title>
@@ -2423,217 +2545,6 @@ lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python3.10 -&amp;gt; python3
         <category>Modules</category>
         
         <category>Python</category>
-        
-        <category>软件环境</category>
-        
-        
-        <category>tech</category>
-        
-        <category>webmaster</category>
-        
-      </item>
-    
-      <item>
-        <title>集群动态环境管理神器 Modules</title>
-        <description>&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
-
-&lt;div class=&quot;premonition citation&quot;&gt; &lt;div class=&quot;header&quot;&gt; &lt;svg class=&quot;icon citation&quot; aria-hidden=&quot;true&quot;&gt; &lt;use xlink:href=&quot;#icon-citation&quot;&gt;&lt;/use&gt; &lt;/svg&gt; &lt;/div&gt; &lt;div class=&quot;content&quot;&gt; &lt;p&gt;  Modules 包是一款简化 shell 初始化的工具，允许用户在会话期间使用模块文件轻松切换环境。&lt;/p&gt;
-
-
-
- &lt;/div&gt; &lt;div class=&quot;ref&quot;&gt; ------ Environment Modules 官网 &lt;/div&gt; &lt;/div&gt;
-&lt;p&gt;  在高性能集群或者超算中，我们可以经常看到 Modules 的身影。它可以帮助我们轻松加载运行程序所需的各类环境，比如说笔者之前写过的第一性原理计算软件 CONQUEST 的运行，就需要包括 Intel OneAPI HPCKit、FFTW3、LibXC 在内的多种环境；又比如说运行大规模的机器学习模型时，可能需要 Python、GPU 环境和 PyTorch 等依赖库。&lt;/p&gt;
-
-&lt;p&gt;  由于集群往往是面向很多人服务的，如果管理员将软件安装到全局环境，则只能安装某个软件的某个特定版本，而不能同时为不同的用户提供所需的同款软件的不同版本。举个例子，笔者编写的代码只能在 Python 3.10 环境下运行，而其他用户编写的代码所支持的 Python 版本是 3.0，那么可能最简单的解决方法是笔者自行编译一个 Python 3.10 的环境，然后利用 PATH 等变量的配置来提升优先级。或许之后有一天，另外一个用户也要使用 Python 3.10 环境，那么是不是让他再自行编译配置一遍呢？哈哈哈，听起来有点无奈，但是&lt;strong&gt;千万不要高估集群的使用用户&lt;/strong&gt;，可能自行编译并配置 Python 3.10 对他们来说也有点困难。因此，Modules 成为了集群动态管理软件环境的最佳选择。集群管理员可以预先编译和配置好各种环境的各种版本，用户使用时只需要执行类似 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module load py/3.10.6&lt;/code&gt; 的命令就可以轻松加载 Python 3.10.6 环境。&lt;/p&gt;
-
-&lt;p&gt;  Modules 所支持的模块不仅仅可以是编程语言的多版本，还可以是其他任意的基础环境，比如说 gcc、openmpi 等编译环境。这样一来，不仅可以为用户提供足够的编程环境直接使用，还可以为一些想要自行编译运行环境的用户提供了便利。&lt;/p&gt;
-
-&lt;h2 id=&quot;实践&quot;&gt;实践&lt;/h2&gt;
-
-&lt;h3 id=&quot;源码编译安装-modules&quot;&gt;源码编译安装 Modules&lt;/h3&gt;
-
-&lt;p&gt;  Modules 可以在 Linux、Windows、MacOS 任一操作系统上安装运行，这里仅介绍类 Unix 操作系统下的编译安装过程。由于 Modules 需要使用 tcl 工具来解析 modulefiles，所以系统必须预先安装 tcl 及其开发者库。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 根据实际情况三者选其一&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# Debian/Ubuntu 等 APT 系列操作系统上安装 tcl&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; tcl tcl-dev
-&lt;span class=&quot;c&quot;&gt;# CentOS 等 YUM 系列操作系统上安装 tcl&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; tcl tcl-devel
-&lt;span class=&quot;c&quot;&gt;# MacOS 操作系统上安装 tcl （需有 brew 工具）&lt;/span&gt;
-brew &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;tcl-tk
-
-&lt;span class=&quot;c&quot;&gt;# 下载源代码并解压&lt;/span&gt;
-wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://github.com/cea-hpc/modules/releases/download/v5.1.1/modules-5.1.1.tar.gz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xfz modules-5.1.1.tar.gz
-
-&lt;span class=&quot;c&quot;&gt;# 创建安装目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; /opt/modules
-
-&lt;span class=&quot;c&quot;&gt;# 进入目录并配置安装目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;modules-5.1.1
-./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/modules
-&lt;span class=&quot;c&quot;&gt;# MacOS 可能需要如下另外指定 tclConfig.sh 文件所在的位置&lt;/span&gt;
-./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/modules &lt;span class=&quot;nt&quot;&gt;--with-tcl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/homebrew/opt/tcl-tk/lib
-
-&lt;span class=&quot;c&quot;&gt;# 编译并安装到 /opt/modules 目录&lt;/span&gt;
-make &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;使-modules-生效&quot;&gt;使 Modules 生效&lt;/h3&gt;
-
-&lt;p&gt;  并非是编译完了之后就可以直接使用 Modules，还有至关重要的一步–&lt;strong&gt;添加生效命令&lt;/strong&gt;。首先需要确认当前使用的 Shell 是什么，一般来说默认是 Bash，当然也有 Zsh 等等。然后，在对应的 Shell 配置文件中增加一行生效命令。操作如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 确认当前使用的 Shell&lt;/span&gt;
-╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$SHELL&lt;/span&gt;
-/bin/zsh
-
-&lt;span class=&quot;c&quot;&gt;# 查看 Modules 支持的 Shell&lt;/span&gt;
-╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/modules/init
-bash            cmake           fish            ksh             lisp            profile.csh     python.py       ruby.rb         tcl             tcsh_completion zsh-functions
-bash_completion csh             fish_completion ksh-functions   perl.pm         profile.sh      r.R             sh              tcsh            zsh
-&lt;span class=&quot;c&quot;&gt;# 如上所示，大部分流行的 Shell 都在支持列表中&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 使 Modules 生效&lt;/span&gt;
-vim ~/.zshrc
-&lt;span class=&quot;c&quot;&gt;# 添加以下内容&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt; /opt/modules/init/zsh
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;源码编译安装-tcl&quot;&gt;源码编译安装 tcl&lt;/h3&gt;
-
-&lt;p&gt;  Modules 的编译安装是不是很简单？不过如果 tcl 工具无法使用命令安装的话，就只能从源码编译安装，也比较方便，如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 下载源码并解压&lt;/span&gt;
-wget &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; https://prdownloads.sourceforge.net/tcl/tcl8.6.12-src.tar.gz
-&lt;span class=&quot;nb&quot;&gt;tar &lt;/span&gt;xfz tcl8.6.12-src.tar.gz
-
-&lt;span class=&quot;c&quot;&gt;# 创建安装目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;sudo mkdir&lt;/span&gt; /opt/tcl
-
-&lt;span class=&quot;c&quot;&gt;# 进入目录并配置安装目录&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;tcl8.6.12/unix
-./configure &lt;span class=&quot;nt&quot;&gt;--prefix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/opt/tcl
-
-&lt;span class=&quot;c&quot;&gt;# 编译并安装&lt;/span&gt;
-make &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;make &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;modules-相关命令&quot;&gt;Modules 相关命令&lt;/h3&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 查看所有可用模块&lt;/span&gt;
-module avail / module ava
-
-&lt;span class=&quot;c&quot;&gt;# 加载指定模块（支持同时加载多个模块）&lt;/span&gt;
-module load py/3.10.6 mpi
-
-&lt;span class=&quot;c&quot;&gt;# 查看已加载模块&lt;/span&gt;
-module list
-
-&lt;span class=&quot;c&quot;&gt;# 查看指定模块&lt;/span&gt;
-module show py/3.10.6
-
-&lt;span class=&quot;c&quot;&gt;# 添加自定义模块配置目录&lt;/span&gt;
-module use &lt;span class=&quot;nt&quot;&gt;--apend&lt;/span&gt; ~/opt/modulefiles
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;添加软件环境&quot;&gt;添加软件环境&lt;/h2&gt;
-
-&lt;h3 id=&quot;modulefiles-库&quot;&gt;Modulefiles 库&lt;/h3&gt;
-
-&lt;p&gt;  Modules 编译安装后默认会有一些环境，它们的配置文件都被存储在安装目录的 modulefiles 文件夹中，如下所示：&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;module ava
-&lt;span class=&quot;nt&quot;&gt;---------------------------&lt;/span&gt; /opt/modules/modulefiles &lt;span class=&quot;nt&quot;&gt;---------------------------&lt;/span&gt;
-dot  module-git  module-info  modules  null  use.own
-
-Key:
-modulepath
-
-╰─&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /opt/modules/modulefiles
-dot         module-git  module-info modules     null        use.own
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  一般来说，打算提供给所有用户的环境配置都可以放在这个目录里，这样任何用户都可以查看到。&lt;/p&gt;
-
-&lt;h3 id=&quot;modulefiles-模板&quot;&gt;Modulefiles 模板&lt;/h3&gt;
-
-&lt;p&gt;  这里我们可以把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;use.own&lt;/code&gt; 文件作为模板来学习一下如何编写 Modulefiles 文件。&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#%Module1.0#####################################################################&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;##&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;## use.own modulefile&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;##&lt;/span&gt;
-proc ModulesHelp &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module file will add &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;HOME/privatemodules to the&quot;&lt;/span&gt;
-    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;list of directories that the module command will search&quot;&lt;/span&gt;
-    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;for modules.  Place your own module files here.&quot;&lt;/span&gt;
-    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module, when loaded, will create this directory&quot;&lt;/span&gt;
-    puts stderr &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;if necessary.&quot;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-module-whatis   &lt;span class=&quot;s2&quot;&gt;&quot;adds your own modulefiles directory to MODULEPATH&quot;&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;eval set&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; array get &lt;span class=&quot;nb&quot;&gt;env &lt;/span&gt;HOME &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;ownmoddir   &lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;/privatemodules
-
-&lt;span class=&quot;c&quot;&gt;# create directory if necessary&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; module-info mode load &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; file exists &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-        file &lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;
-        &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;null &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;open &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;/null w]
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;#%Module########################################################################&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;## null modulefile&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;##&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;proc ModulesHelp { } {&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;This module does absolutely nothing.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;It&apos;s meant simply as a place holder in your&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;    puts stderr &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;dot file initialization.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;}&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;
-        puts &lt;span class=&quot;nv&quot;&gt;$null&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;module-whatis   &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;does absolutely nothing&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-module use &lt;span class=&quot;nt&quot;&gt;--append&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ownmoddir&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;  Modulefiles 文件一般符合以下规则：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Modulefiles 文件必须以 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#%Module1.0&lt;/code&gt; 开头；&lt;/li&gt;
-  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;proc ModulesHelp {}&lt;/code&gt; 函数来添加模块详细描述；&lt;/li&gt;
-  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;module-whatis&lt;/code&gt; 字段来添加一句话简短描述；&lt;/li&gt;
-  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eval set [ array get env HOME]&lt;/code&gt; 来获取系统变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;$HOME&lt;/code&gt;；&lt;/li&gt;
-  &lt;li&gt;使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;set ownmoddir&lt;/code&gt; 来定义变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ownmoddir&lt;/code&gt;；&lt;/li&gt;
-  &lt;li&gt;后续脚本可以根据需求进行添加内容。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;  这里先开个坑，后续打算补充 Modules 配置系列文章：&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;modules-python.html&quot;&gt;《Modules 配置之 Python》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;modules-conda.html&quot;&gt;《Modules 配置之 Anaconda》&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;modules-intel.html&quot;&gt;《Modules 配置之 Intel OneAPI》&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://modules.readthedocs.io/en/latest/index.html&quot;&gt;Environment Modules 官方文档&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 26 Oct 2022 15:48:00 +0900</pubDate>
-        <link>https://lisz.me/tech/webmaster/modules.html</link>
-        <guid isPermaLink="true">https://lisz.me/tech/webmaster/modules.html</guid>
-        
-        <category>Linux</category>
-        
-        <category>集群</category>
-        
-        <category>Cluster</category>
-        
-        <category>Modules</category>
         
         <category>软件环境</category>
         
