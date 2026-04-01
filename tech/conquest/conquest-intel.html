@@ -437,51 +437,51 @@ git clone https://github.com/OrderN/CONQUEST-release conquest
 <p>修改 conquest/src/system.make 文件如下所示：</p>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For Docker (2021/01/27 zhonger)
-</span>
-<span class="c"># Set compilers
+</span><span class="w">
+</span><span class="c"># Set compilers
 </span><span class="py">FC</span><span class="p">=</span><span class="s">mpif90</span>
 <span class="py">F77</span><span class="p">=</span><span class="s">mpif77</span>
-
-<span class="c"># Linking flags
-</span><span class="py">LINKFLAGS</span> <span class="p">=</span> <span class="s">-L$(MKLROOT)/lib/intel64 $(MKLROOT)/lib/intel64/libmkl_blacs_openmpi_lp64.a $(MKLROOT)/lib/intel64/libmkl_lapack95_lp64.a -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64  -lpthread -lm</span>
+<span class="w">
+</span><span class="c"># Linking flags
+</span><span class="py">LINKFLAGS</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">-L$(MKLROOT)/lib/intel64 $(MKLROOT)/lib/intel64/libmkl_blacs_openmpi_lp64.a $(MKLROOT)/lib/intel64/libmkl_lapack95_lp64.a -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64  -lpthread -lm</span>
 <span class="c">#LINKFLAGS= -L/usr/local/lib
 </span><span class="py">ARFLAGS</span><span class="p">=</span>
-
-<span class="c"># Compilation flags
-</span><span class="py">COMPFLAGS</span><span class="p">=</span> <span class="s">-I$(MKLROOT)/include/intel64/lp64 -I$(MKLROOT)/include</span>
+<span class="w">
+</span><span class="c"># Compilation flags
+</span><span class="py">COMPFLAGS</span><span class="p">=</span><span class="w"> </span><span class="s">-I$(MKLROOT)/include/intel64/lp64 -I$(MKLROOT)/include</span>
 <span class="c">#COMPFLAGS= -O3 $(XC_COMPFLAGS)
-</span><span class="py">COMPFLAGS_F77</span><span class="p">=</span> <span class="s">$(COMPFLAGS)</span>
-
-<span class="c"># Set BLAS and LAPACK libraries
+</span><span class="py">COMPFLAGS_F77</span><span class="p">=</span><span class="w"> </span><span class="s">$(COMPFLAGS)</span>
+<span class="w">
+</span><span class="c"># Set BLAS and LAPACK libraries
 #BLAS= -lvecLibFort
-</span>
-<span class="c"># Full library call; remove scalapack if using dummy diag module
-</span><span class="py">LIBS</span><span class="p">=</span> <span class="s">$(FFT_LIB) $(XC_LIB) $(BLAS)</span>
+</span><span class="w">
+</span><span class="c"># Full library call; remove scalapack if using dummy diag module
+</span><span class="py">LIBS</span><span class="p">=</span><span class="w"> </span><span class="s">$(FFT_LIB) $(XC_LIB) $(BLAS)</span>
 <span class="c">#LIBS= $(FFT_LIB) $(XC_LIB) -lscalapack $(BLAS)
-</span>
-<span class="c"># LibXC compatibility (LibXC below) or Conquest XC library
-</span>
-<span class="c"># Conquest XC library
-</span><span class="py">XC_LIBRARY</span> <span class="p">=</span> <span class="s">CQ</span>
-<span class="py">XC_LIB</span> <span class="p">=</span>
-<span class="py">XC_COMPFLAGS</span> <span class="p">=</span>
-
-<span class="c"># LibXC compatibility
+</span><span class="w">
+</span><span class="c"># LibXC compatibility (LibXC below) or Conquest XC library
+</span><span class="w">
+</span><span class="c"># Conquest XC library
+</span><span class="py">XC_LIBRARY</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">CQ</span>
+<span class="py">XC_LIB</span><span class="w"> </span><span class="p">=</span>
+<span class="py">XC_COMPFLAGS</span><span class="w"> </span><span class="p">=</span>
+<span class="w">
+</span><span class="c"># LibXC compatibility
 # Choose old LibXC (v2.x) or modern versions
 #XC_LIBRARY = LibXC_v2
 #XC_LIBRARY = LibXC
 #XC_LIB = -lxcf90 -lxc
 #XC_COMPFLAGS = -I/usr/local/include
-</span>
-<span class="c"># Set FFT library
-</span><span class="py">FFT_LIB</span><span class="p">=</span> <span class="s">-L/opt/fftw3/lib/ -lfftw3</span>
+</span><span class="w">
+</span><span class="c"># Set FFT library
+</span><span class="py">FFT_LIB</span><span class="p">=</span><span class="w"> </span><span class="s">-L/opt/fftw3/lib/ -lfftw3</span>
 <span class="c">#FFT_LIB=-lfftw3
 </span><span class="py">FFT_OBJ</span><span class="p">=</span><span class="s">fft_fftw3.o</span>
-
-<span class="c"># Matrix multiplication kernel type
-</span><span class="py">MULT_KERN</span> <span class="p">=</span> <span class="s">default</span>
+<span class="w">
+</span><span class="c"># Matrix multiplication kernel type
+</span><span class="py">MULT_KERN</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">default</span>
 <span class="c"># Use dummy DiagModule or not
-</span><span class="py">DIAG_DUMMY</span> <span class="p">=</span>
+</span><span class="py">DIAG_DUMMY</span><span class="w"> </span><span class="p">=</span>
 </code></pre></div></div>
 
 <h4 id="编译错误解决">编译错误解决</h4>

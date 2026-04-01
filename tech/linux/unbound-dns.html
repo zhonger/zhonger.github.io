@@ -485,50 +485,50 @@ wget <span class="nt">-c</span> ftp://FTP.INTERNIC.NET/domain/named.cache
 </code></pre></div></div>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 修改配置文件 /usr/local/etc//unbound/unbound.conf
-</span><span class="err">server:</span>
-      <span class="err">num-threads:</span> <span class="err">2</span> <span class="c"># 线程数可以修改为物理核心数
-</span>      <span class="err">interface:</span> <span class="err">0.0.0.0</span> <span class="c"># 侦听所有 IPv4 地址
-</span>      <span class="err">interface:</span> <span class="err">::0</span> <span class="c"># 侦听所有 IPv6 地址
-</span>      <span class="c"># 如果只需要本机使用，则一个 interface: 127.0.0.1 即可
-</span>      <span class="err">so-rcvbuf:</span> <span class="err">4m</span>
-      <span class="err">so-sndbuf:</span> <span class="err">4m</span> <span class="c"># 本机使用的话，这俩 buf 可以取消注释
-</span>      <span class="err">so-reuseport:</span> <span class="err">yes</span> <span class="c"># 如果开了多线程，就写 yes
-</span>      <span class="err">msg-cache-size:</span> <span class="err">64m</span> <span class="c"># 本机可以设置 4m 或者更小
-</span>      <span class="err">rrset-cache-size:</span> <span class="err">128m</span> <span class="c"># 本机可以设置 4m 或者更小
-</span>      <span class="err">cache-max-ttl:</span> <span class="err">3600</span> <span class="c"># 建议设置一个不太大的值...专治各种运营商 DNS 缓存不服
-</span>      <span class="err">outgoing-num-tcp:</span> <span class="err">256</span> <span class="c"># 限制每个线程向上级查询的 TCP 并发数
-</span>      <span class="err">incoming-num-tcp:</span> <span class="err">1024</span> <span class="c"># 限制每个线程接受查询的 TCP 并发数
-</span>      <span class="c"># 下面这四个不需要解释了吧，不想用那个就写 no
-</span>      <span class="err">do-ip4:</span> <span class="err">yes</span>
-      <span class="err">do-ip6:</span> <span class="err">yes</span>
-      <span class="err">do-udp:</span> <span class="err">yes</span>
-      <span class="err">do-tcp:</span> <span class="err">yes</span>
-      <span class="err">tcp-upstream:</span> <span class="err">no</span> <span class="c"># 默认是 no，隧道状态比较稳的话也不需要写 yes。一些情况下强制使用 tcp 连上游的话写 yes
-</span>      <span class="err">access-control:</span> <span class="err">0.0.0.0/0</span> <span class="err">allow</span> <span class="c"># 本机用的话建议设置 127.0.0.0/8 allow，局域网用适当调整
-</span>      <span class="err">chroot:</span> <span class="err">"/usr/local/etc/unbound"</span>
-      <span class="err">username:</span> <span class="err">"unbound"</span>
-      <span class="err">root-hints:</span> <span class="err">"/usr/local/etc/unbound/named.cache"</span> <span class="c"># 没有的话在 ftp://FTP.INTERNIC.NET/domain/named.cache 下载一份
-</span>      <span class="err">hide-identity:</span> <span class="err">yes</span> <span class="c"># 不返回对 id.server 和 hostname.bind 的查询。
-</span>      <span class="err">hide-version:</span> <span class="err">yes</span> <span class="c"># 不返回对 version.server 和 version.bind 的查询。
-</span>      <span class="c"># 不过下面有 identity 和 version 的自定义选项，不隐藏这些的话，修改下选项还可以卖个萌(´・ω・｀)
-</span>      <span class="err">harden-glue:</span> <span class="err">yes</span> <span class="c"># 建议打开
-</span>      <span class="err">module-config:</span> <span class="err">"iterator"</span> <span class="c"># 禁用 DNSSEC 检查，如果上游不支持 DNSSEC 就关掉。注意这个选项有可能在其他 include 的文件里
-</span>      <span class="err">unwanted-reply-threshold:</span> <span class="err">10000000</span> <span class="c"># 针对各种网络不服，数值为建议值，具体可以自己修改看看效果
-</span>      <span class="err">do-not-query-localhost:</span> <span class="err">no</span> <span class="c"># 一般是为了防止扯皮丢包开着，不过等下要用 DNSCrypt 所以关掉
-</span>      <span class="err">directory:</span> <span class="err">"/usr/local/etc/unbound"</span>
-      <span class="err">pidfile:</span> <span class="err">"/usr/local/etc/unbound/unbound.pid"</span>
-      <span class="err">prefetch:</span> <span class="err">yes</span> <span class="c"># 蛮好用的，开着吧
-</span>      <span class="err">minimal-responses:</span> <span class="err">yes</span> <span class="c"># 省带宽，开着吧。本机用可以关掉
-</span>      <span class="c"># 关键部分来了，把默认查询全部丢给 DNSCrypt。使用 [地址]@[端口] 指定查询地址和端口，默认端口 53。
-</span>      <span class="c"># 然后把国内的地址丢给国内的缓存服务器。这两个选项的顺序不能错哟。
-</span>      <span class="c"># 如果使用隧道查询，把这个地址改为隧道对端的地址，或者一个国外的 DNS 服务器都可以，例如 8.8.8.8。
-</span>      <span class="c"># 具体看是在对端开 DNS 还是直接用国外的服务器。后者的话，前面 outgoing-interface 可以直接设置隧道本地端的地址，不过要配合 dnsmasq-china-list 的话，还是写路由表比较合适，否则不够灵活。
-</span>      <span class="err">include:</span> <span class="err">"/etc/unbound/accelerated-domains.china.unbound.conf"</span>
+</span><span class="na">server:</span><span class="w">
+      </span><span class="na">num-threads:</span><span class="w"> </span><span class="na">2</span><span class="w"> </span><span class="c"># 线程数可以修改为物理核心数
+</span><span class="w">      </span><span class="na">interface:</span><span class="w"> </span><span class="na">0.0.0.0</span><span class="w"> </span><span class="c"># 侦听所有 IPv4 地址
+</span><span class="w">      </span><span class="na">interface:</span><span class="w"> </span><span class="na">::0</span><span class="w"> </span><span class="c"># 侦听所有 IPv6 地址
+</span><span class="w">      </span><span class="c"># 如果只需要本机使用，则一个 interface: 127.0.0.1 即可
+</span><span class="w">      </span><span class="na">so-rcvbuf:</span><span class="w"> </span><span class="na">4m</span><span class="w">
+      </span><span class="na">so-sndbuf:</span><span class="w"> </span><span class="na">4m</span><span class="w"> </span><span class="c"># 本机使用的话，这俩 buf 可以取消注释
+</span><span class="w">      </span><span class="na">so-reuseport:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 如果开了多线程，就写 yes
+</span><span class="w">      </span><span class="na">msg-cache-size:</span><span class="w"> </span><span class="na">64m</span><span class="w"> </span><span class="c"># 本机可以设置 4m 或者更小
+</span><span class="w">      </span><span class="na">rrset-cache-size:</span><span class="w"> </span><span class="na">128m</span><span class="w"> </span><span class="c"># 本机可以设置 4m 或者更小
+</span><span class="w">      </span><span class="na">cache-max-ttl:</span><span class="w"> </span><span class="na">3600</span><span class="w"> </span><span class="c"># 建议设置一个不太大的值...专治各种运营商 DNS 缓存不服
+</span><span class="w">      </span><span class="na">outgoing-num-tcp:</span><span class="w"> </span><span class="na">256</span><span class="w"> </span><span class="c"># 限制每个线程向上级查询的 TCP 并发数
+</span><span class="w">      </span><span class="na">incoming-num-tcp:</span><span class="w"> </span><span class="na">1024</span><span class="w"> </span><span class="c"># 限制每个线程接受查询的 TCP 并发数
+</span><span class="w">      </span><span class="c"># 下面这四个不需要解释了吧，不想用那个就写 no
+</span><span class="w">      </span><span class="na">do-ip4:</span><span class="w"> </span><span class="na">yes</span><span class="w">
+      </span><span class="na">do-ip6:</span><span class="w"> </span><span class="na">yes</span><span class="w">
+      </span><span class="na">do-udp:</span><span class="w"> </span><span class="na">yes</span><span class="w">
+      </span><span class="na">do-tcp:</span><span class="w"> </span><span class="na">yes</span><span class="w">
+      </span><span class="na">tcp-upstream:</span><span class="w"> </span><span class="na">no</span><span class="w"> </span><span class="c"># 默认是 no，隧道状态比较稳的话也不需要写 yes。一些情况下强制使用 tcp 连上游的话写 yes
+</span><span class="w">      </span><span class="na">access-control:</span><span class="w"> </span><span class="na">0.0.0.0/0</span><span class="w"> </span><span class="na">allow</span><span class="w"> </span><span class="c"># 本机用的话建议设置 127.0.0.0/8 allow，局域网用适当调整
+</span><span class="w">      </span><span class="na">chroot:</span><span class="w"> </span><span class="na">"/usr/local/etc/unbound"</span><span class="w">
+      </span><span class="na">username:</span><span class="w"> </span><span class="na">"unbound"</span><span class="w">
+      </span><span class="na">root-hints:</span><span class="w"> </span><span class="na">"/usr/local/etc/unbound/named.cache"</span><span class="w"> </span><span class="c"># 没有的话在 ftp://FTP.INTERNIC.NET/domain/named.cache 下载一份
+</span><span class="w">      </span><span class="na">hide-identity:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 不返回对 id.server 和 hostname.bind 的查询。
+</span><span class="w">      </span><span class="na">hide-version:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 不返回对 version.server 和 version.bind 的查询。
+</span><span class="w">      </span><span class="c"># 不过下面有 identity 和 version 的自定义选项，不隐藏这些的话，修改下选项还可以卖个萌(´・ω・｀)
+</span><span class="w">      </span><span class="na">harden-glue:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 建议打开
+</span><span class="w">      </span><span class="na">module-config:</span><span class="w"> </span><span class="na">"iterator"</span><span class="w"> </span><span class="c"># 禁用 DNSSEC 检查，如果上游不支持 DNSSEC 就关掉。注意这个选项有可能在其他 include 的文件里
+</span><span class="w">      </span><span class="na">unwanted-reply-threshold:</span><span class="w"> </span><span class="na">10000000</span><span class="w"> </span><span class="c"># 针对各种网络不服，数值为建议值，具体可以自己修改看看效果
+</span><span class="w">      </span><span class="na">do-not-query-localhost:</span><span class="w"> </span><span class="na">no</span><span class="w"> </span><span class="c"># 一般是为了防止扯皮丢包开着，不过等下要用 DNSCrypt 所以关掉
+</span><span class="w">      </span><span class="na">directory:</span><span class="w"> </span><span class="na">"/usr/local/etc/unbound"</span><span class="w">
+      </span><span class="na">pidfile:</span><span class="w"> </span><span class="na">"/usr/local/etc/unbound/unbound.pid"</span><span class="w">
+      </span><span class="na">prefetch:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 蛮好用的，开着吧
+</span><span class="w">      </span><span class="na">minimal-responses:</span><span class="w"> </span><span class="na">yes</span><span class="w"> </span><span class="c"># 省带宽，开着吧。本机用可以关掉
+</span><span class="w">      </span><span class="c"># 关键部分来了，把默认查询全部丢给 DNSCrypt。使用 [地址]@[端口] 指定查询地址和端口，默认端口 53。
+</span><span class="w">      </span><span class="c"># 然后把国内的地址丢给国内的缓存服务器。这两个选项的顺序不能错哟。
+</span><span class="w">      </span><span class="c"># 如果使用隧道查询，把这个地址改为隧道对端的地址，或者一个国外的 DNS 服务器都可以，例如 8.8.8.8。
+</span><span class="w">      </span><span class="c"># 具体看是在对端开 DNS 还是直接用国外的服务器。后者的话，前面 outgoing-interface 可以直接设置隧道本地端的地址，不过要配合 dnsmasq-china-list 的话，还是写路由表比较合适，否则不够灵活。
+</span><span class="w">      </span><span class="na">include:</span><span class="w"> </span><span class="na">"/etc/unbound/accelerated-domains.china.unbound.conf"</span><span class="w">
 
-<span class="err">forward-zone:</span>
-    <span class="err">name:</span> <span class="err">"."</span>
-    <span class="err">forward-addr:</span> <span class="err">127.0.0.1@5353</span>
-</code></pre></div></div>
+</span><span class="na">forward-zone:</span><span class="w">
+    </span><span class="na">name:</span><span class="w"> </span><span class="na">"."</span><span class="w">
+    </span><span class="na">forward-addr:</span><span class="w"> </span><span class="na">127.0.0.1@5353</span><span class="w">
+</span></code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 运行并自动进入后台执行</span>
 <span class="nb">sudo</span> /usr/local/sbin/unbound <span class="nt">-c</span> /usr/local/etc/unbound/unbound.conf 

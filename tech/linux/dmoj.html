@@ -401,16 +401,16 @@ mariadb&gt; <span class="nb">exit</span>
 
 <p>  由于 DMOJ 设计时数据库用了较长的索引，此处还需要有进一步对数据库进行设置（官方文档中没有提到，可能是操作系统不同的原因）。在 /etc/mysql/mariadb.conf.d/50-server.conf 文件的 innodb 注释位置添加如下三行内容，修改完成后重启 Mysql 数据库生效配置。除此在外，还要在之后下载的 DMOJ 主项目代码文件 site/manage.py 中添加如下两行。</p>
 
-<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[mysqld]</span>
-<span class="err">...</span>
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[mysqld]</span><span class="w">
+</span><span class="na">...</span><span class="w">
 
-<span class="py">innodb_file_format</span> <span class="p">=</span> <span class="s">Barracuda</span>
-<span class="py">innodb_file_per_table</span> <span class="p">=</span> <span class="s">1</span>
-<span class="err">innodb_large_prefix</span>
+</span><span class="py">innodb_file_format</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">Barracuda</span>
+<span class="py">innodb_file_per_table</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">1</span>
+<span class="na">innodb_large_prefix</span><span class="w">
 
-<span class="c">#重启Mysql数据库
-</span><span class="err">sudo</span> <span class="err">service</span> <span class="err">mysql</span> <span class="err">restart</span>
-</code></pre></div></div>
+</span><span class="c">#重启Mysql数据库
+</span><span class="na">sudo</span><span class="w"> </span><span class="na">service</span><span class="w"> </span><span class="na">mysql</span><span class="w"> </span><span class="na">restart</span><span class="w">
+</span></code></pre></div></div>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
 </span><span class="kn">import</span> <span class="n">os</span>
@@ -851,38 +851,38 @@ celery <span class="nt">-A</span> dmoj_celery worker
 
 <p>  众所周知，uwsgi 是一个用于长久运行 Python Web 项目的工具。这里的配置文件放在<code class="language-plaintext highlighter-rouge">site</code>目录下，<a href="https://github.com/DMOJ/docs/raw/master/sample_files/uwsgi.ini" rel="nofollow" target="_blank" class="extlinks">官方下载地址</a>，也可以用我提供的配置文件。</p>
 
-<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[uwsgi]</span>
-<span class="c"># Socket and pid file location/permission.
-</span><span class="py">uwsgi-socket</span> <span class="p">=</span> <span class="s">/tmp/dmoj-site.sock</span>
-<span class="py">chmod-socket</span> <span class="p">=</span> <span class="s">666</span>
-<span class="py">pidfile</span> <span class="p">=</span> <span class="s">/tmp/dmoj-site.pid</span>
-
-<span class="c"># You should create an account dedicated to running dmoj under uwsgi.
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[uwsgi]</span><span class="w">
+</span><span class="c"># Socket and pid file location/permission.
+</span><span class="py">uwsgi-socket</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">/tmp/dmoj-site.sock</span>
+<span class="py">chmod-socket</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">666</span>
+<span class="py">pidfile</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">/tmp/dmoj-site.pid</span>
+<span class="w">
+</span><span class="c"># You should create an account dedicated to running dmoj under uwsgi.
 # 为了避免因用户权限和文件夹权限导致的运行失败，这里均设置为初始用户
-</span><span class="py">uid</span> <span class="p">=</span> <span class="s">ubuntu</span>
-<span class="py">gid</span> <span class="p">=</span> <span class="s">ubuntu</span>
-
-<span class="c"># Paths. 此处的三个目录需修改为对应目录
-</span><span class="py">chdir</span> <span class="p">=</span> <span class="s">/home/ubuntu/site/  </span>
-<span class="py">pythonpath</span> <span class="p">=</span> <span class="s">/home/ubuntu/site/  </span>
-<span class="py">virtualenv</span> <span class="p">=</span> <span class="s">/home/ubuntu/dmojsite/ </span>
-
-<span class="c"># Details regarding DMOJ application.
-</span><span class="py">protocol</span> <span class="p">=</span> <span class="s">uwsgi</span>
-<span class="py">master</span> <span class="p">=</span> <span class="s">true</span>
-<span class="py">env</span> <span class="p">=</span> <span class="s">DJANGO_SETTINGS_MODULE=dmoj.settings</span>
-<span class="py">module</span> <span class="p">=</span> <span class="s">dmoj.wsgi:application</span>
-<span class="py">optimize</span> <span class="p">=</span> <span class="s">2</span>
-
-<span class="c"># Scaling settings. Tune as you like.
-</span><span class="py">memory-report</span> <span class="p">=</span> <span class="s">true</span>
-<span class="py">cheaper-algo</span> <span class="p">=</span> <span class="s">backlog</span>
-<span class="py">cheaper</span> <span class="p">=</span> <span class="s">3</span>
-<span class="py">cheaper-initial</span> <span class="p">=</span> <span class="s">5</span>
-<span class="py">cheaper-step</span> <span class="p">=</span> <span class="s">1</span>
-<span class="py">cheaper-rss-limit-soft</span> <span class="p">=</span> <span class="s">201326592</span>
-<span class="py">cheaper-rss-limit-hard</span> <span class="p">=</span> <span class="s">234881024</span>
-<span class="py">workers</span> <span class="p">=</span> <span class="s">7</span>
+</span><span class="py">uid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">ubuntu</span>
+<span class="py">gid</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">ubuntu</span>
+<span class="w">
+</span><span class="c"># Paths. 此处的三个目录需修改为对应目录
+</span><span class="py">chdir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">/home/ubuntu/site/  </span>
+<span class="py">pythonpath</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">/home/ubuntu/site/  </span>
+<span class="py">virtualenv</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">/home/ubuntu/dmojsite/ </span>
+<span class="w">
+</span><span class="c"># Details regarding DMOJ application.
+</span><span class="py">protocol</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">uwsgi</span>
+<span class="py">master</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">true</span>
+<span class="py">env</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">DJANGO_SETTINGS_MODULE=dmoj.settings</span>
+<span class="py">module</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">dmoj.wsgi:application</span>
+<span class="py">optimize</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">2</span>
+<span class="w">
+</span><span class="c"># Scaling settings. Tune as you like.
+</span><span class="py">memory-report</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">true</span>
+<span class="py">cheaper-algo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">backlog</span>
+<span class="py">cheaper</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">3</span>
+<span class="py">cheaper-initial</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">5</span>
+<span class="py">cheaper-step</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">1</span>
+<span class="py">cheaper-rss-limit-soft</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">201326592</span>
+<span class="py">cheaper-rss-limit-hard</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">234881024</span>
+<span class="py">workers</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">7</span>
 </code></pre></div></div>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装依赖</span>
@@ -907,8 +907,8 @@ uwsgi <span class="nt">--ini</span> uwsgi.ini
 <p>  安装完成后将以下三个配置文件放在 /etc/supervisor/conf.d/ 文件目录下。为了避免因用户权限和文件夹权限导致的运行失败，这里均设置为初始用户执行程序。</p>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># site.conf
-</span><span class="nn">[program:site]</span>
-<span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/uwsgi --ini uwsgi.ini</span>
+</span><span class="nn">[program:site]</span><span class="w">
+</span><span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/uwsgi --ini uwsgi.ini</span>
 <span class="py">directory</span><span class="p">=</span><span class="s">/home/ubuntu/site/</span>
 <span class="py">stopsignal</span><span class="p">=</span><span class="s">QUIT</span>
 <span class="py">stdout_logfile</span><span class="p">=</span><span class="s">/tmp/site.stdout.log</span>
@@ -916,8 +916,8 @@ uwsgi <span class="nt">--ini</span> uwsgi.ini
 </code></pre></div></div>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># bridged.conf
-</span><span class="nn">[program:bridged]</span>
-<span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/python manage.py runbridged</span>
+</span><span class="nn">[program:bridged]</span><span class="w">
+</span><span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/python manage.py runbridged</span>
 <span class="py">directory</span><span class="p">=</span><span class="s">/home/ubuntu/site/</span>
 <span class="py">stopsignal</span><span class="p">=</span><span class="s">INT</span>
 <span class="c"># You should create a dedicated user for the bridged to run under.
@@ -928,8 +928,8 @@ uwsgi <span class="nt">--ini</span> uwsgi.ini
 </code></pre></div></div>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># celery.conf
-</span><span class="nn">[program:celery]</span>
-<span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/celery -A dmoj_celery worker</span>
+</span><span class="nn">[program:celery]</span><span class="w">
+</span><span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/celery -A dmoj_celery worker</span>
 <span class="py">directory</span><span class="p">=</span><span class="s">/home/ubuntu/site/</span>
 <span class="c"># You should create a dedicated user for celery to run under.
 </span><span class="py">user</span><span class="p">=</span><span class="s">ubuntu</span>
@@ -1097,8 +1097,8 @@ runtime:
 </ul>
 
 <div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># judge.conf
-</span><span class="nn">[program:judge]</span>
-<span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/dmoj -c judge.yml localhost</span>
+</span><span class="nn">[program:judge]</span><span class="w">
+</span><span class="py">command</span><span class="p">=</span><span class="s">/home/ubuntu/dmojsite/bin/dmoj -c judge.yml localhost</span>
 <span class="py">directory</span><span class="p">=</span><span class="s">/home/ubuntu/site/</span>
 <span class="py">stopsignal</span><span class="p">=</span><span class="s">QUIT</span>
 <span class="py">stdout_logfile</span><span class="p">=</span><span class="s">/tmp/site.stdout.log</span>
