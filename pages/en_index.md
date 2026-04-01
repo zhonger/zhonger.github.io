@@ -11,7 +11,7 @@ lang: "en"
 
 ## About me
 
-&emsp;&emsp;I'm Li Shengzhou and obtained the PhD degree for Computer Science from University of Tsukuba in March 2025. My PhD thesis is "Machine Learning for the Prediction and Analysis of Material Electronic Structures" which is supervised by Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba. From April 2025, I start my work in Nationa Institute for Materials Science (NIMS) as a NIMS Postdoctor Researcher.
+&emsp;&emsp;I'm Li Shengzhou and obtained the PhD degree for Computer Science from University of Tsukuba in March 2025. My PhD thesis is "Machine Learning for the Prediction and Analysis of Material Electronic Structures" which is supervised by Pro. Nakata Ayako from NIMS and Pro. Sakurai Tetsuya from University of Tsukuba. From April 2025, I start my work in Zhejiang University as a Postdoctor Researcher.
 
 ## Interests
 
@@ -34,13 +34,17 @@ lang: "en"
 
 ## Work
 
-- National Institute for Materials Science (Japan), Research Center for Materials Nanoarchtectonics (MANA), Semiconductor Materials Field, Quantum Materials Group, NIMS Postdoctor Researcher (2025/04~Now) [[Website]](https://www.nims.go.jp/cmsc/fps1/cmsu_fps_member.html)
+- National Institute for Materials Science (Japan), Research Center for Materials Nanoarchtectonics (MANA), Semiconductor Materials Field, Quantum Materials Group, NIMS Postdoctor Researcher (2025/04~2026/02) [[Website]](https://www.nims.go.jp/cmsc/fps1/cmsu_fps_member.html)
+- Zhejiang University (China), School of Aeronaturics and Astronaturics, Institue of Applied Mechanics, Postdoctor Researcher (2026/03~now) [[Website]](https://person.zju.edu.cn/jiewang)
 
 ## Publications
 
 - **(Cover Paper)** **S Li**, T Miyazaki, A Nakata. Theoretical search for characteristic atoms in supported gold nanoparticles: a large-scale DFT study[J]. *Physical Chemistry Chemical Physics*, 2024, 26: 20251-20260 [[DOI]](https://doi.org/10.1039/D4CP01094A)
 - **S Li**, A Nakata. CSIML: a cost-sensitive and iterative machine-learning method for small and imbalanced materials data sets[J]. *Chemistry Letters*, 2024, 53(5).[[DOI]](https://doi.org/10.1093/chemle/upae090)
 - **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136)
+- Y Xu, S Wu, B Lv, Y Zhu, H Zhang, **S Li**, D Dai. A study on phase prediction methods based on wavelet transform and deep learning by XRD data. *JOM*, 2026. [[DOI]](https://doi.org/10.1007/s11837-026-08265-x)
+- H Zhang, Y Lin, **S Li**, M Dai, Y Zhang, L Huang, J Pang, P Wu, J Peng, Z Tang, P Ding, X Wei, N Song, D Dai. Substructure-enhanced MPNN for ploymer discovery and knowledge: a study in predicting glass transition temperature[J], *Macromolecules*, 2025，58(17), 9515–9527. [[DOI]](https://doi.org/10.1021/acs.macromol.4c02859)
+- H Zhang, M Dai, Y Lin, B Xu, P Wu, L Huang, H Xu, **S Li**, Y Xu, Z Tang, J Zhang, R Che, T Xu, D Dai. Subgroup discovery similarity score (SDSS): A significant criterion for the integration of statistical knowledge into machine learning in materials science[J]. *Materials Today Physics*, 2025, 56, 101772. [[DOI]](https://doi.org/10.1016/j.mtphys.2025.101772)
 - D Dai, G Zhang, X Wei, Y Lin, M Dai, J Peng, N Song, Z Tang, **S Li**, J Liu, Y Xu, R Che, H Zhang. A GPT-assisted iterative method for extracting domain knowledge from a large volume of literature of electromagnetic wave absorbing materials with limited manually annotated data[J]. *Computational Materials Science*, 2025, 246: 113431.[[DOI]](https://doi.org/10.1016/j.commatsci.2024.113431)
 - Wei X, Zhang Y, Liu X, J Peng, **S Li**, R Che, H Zhang. A domain knowledge enhanced machine learning method to predict the properties of halide double perovskite $$A_2B^+B^{3+}X_6$$ [J]. *Journal of Materials Chemistry A*, 2023.[[DOI]](https://doi.org/10.1039/D3TA03600F)
 - H Zhang, X Liu, G Zhang, Y Zhu, **S Li**, Q Qian, D Dai, R Che, T Xu, Deriving equation from data via knowledge discovery and machine learning: A study of Young’s modulus of Ti-Nb alloys[J]. *Computational Materials Science*, 2023, 228:112349.[[DOI]](https://doi.org/10.1016/j.commatsci.2023.112349)

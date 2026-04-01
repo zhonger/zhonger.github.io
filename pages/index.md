@@ -11,7 +11,7 @@ lang: "zh-Hans"
 
 ## 关于我
 
-&emsp;&emsp;我是李盛洲，已于2025年3月在筑波大学获得情报工学博士学位。我的博士导师是NIMS的中田彩子研究员和筑波大学的樱井铁也教授，博士论文是《Machine Learning for the Prediction and Analysis of Material Electronic Structures》。目前正在日本物质材料研究所（NIMS）从事博士后研究。
+&emsp;&emsp;我是李盛洲，已于2025年3月在筑波大学获得情报工学博士学位。我的博士导师是NIMS的中田彩子研究员和筑波大学的樱井铁也教授，博士论文是《Machine Learning for the Prediction and Analysis of Material Electronic Structures》。目前正在浙江大学从事博士后研究。
 
 ## 研究兴趣
 
@@ -34,13 +34,17 @@ lang: "zh-Hans"
 
 ## 工作经历
 
-- 国立研究开发法人物质材料研究机构（日本），纳米结构材料中心（MANA），半导体分野，第一性原理量子物性组，博士后研究员（2025年4月~至今）[[网页链接]](https://www.nims.go.jp/cmsc/fps1/index.html)
+- 国立研究开发法人物质材料研究机构（日本），纳米结构材料中心（MANA），半导体分野，第一性原理量子物性组，博士后研究员（2025年4月~2026年2月）[[网页链接]](https://www.nims.go.jp/cmsc/fps1/index.html)
+- 浙江大学（中国），航空航天学院，应用力学研究所，王杰老师课题组，博士后研究员 (2026年3月~至今) [[网页连接]](https://person.zju.edu.cn/jiewang)
 
 ## 论文发表
 
 - **(Cover Paper)** **S Li**, T Miyazaki, A Nakata. Theoretical search for characteristic atoms in supported gold nanoparticles: a large-scale DFT study[J]. *Physical Chemistry Chemical Physics*, 2024, 26: 20251-20260 [[DOI]](https://doi.org/10.1039/D4CP01094A)
 - **S Li**, A Nakata. CSIML: a cost-sensitive and iterative machine-learning method for small and imbalanced materials data sets[J]. *Chemistry Letters*, 2024, 53(5).[[DOI]](https://doi.org/10.1093/chemle/upae090)
 - **S Li**, H Zhang, D Dai, G Ding, X Wei, Y Guo. Study on the factors affecting solid solubility in binary alloys: An exploration by Machine Learning[J]. *Journal of Alloys and Compounds*, 2019, 782: 110-118.[[DOI]](https://doi.org/10.1016/j.jallcom.2018.12.136)
+- Y Xu, S Wu, B Lv, Y Zhu, H Zhang, **S Li**, D Dai. A study on phase prediction methods based on wavelet transform and deep learning by XRD data. *JOM*, 2026. [[DOI]](https://doi.org/10.1007/s11837-026-08265-x)
+- H Zhang, Y Lin, **S Li**, M Dai, Y Zhang, L Huang, J Pang, P Wu, J Peng, Z Tang, P Ding, X Wei, N Song, D Dai. Substructure-enhanced MPNN for ploymer discovery and knowledge: a study in predicting glass transition temperature[J], *Macromolecules*, 2025，58(17), 9515–9527. [[DOI]](https://doi.org/10.1021/acs.macromol.4c02859)
+- H Zhang, M Dai, Y Lin, B Xu, P Wu, L Huang, H Xu, **S Li**, Y Xu, Z Tang, J Zhang, R Che, T Xu, D Dai. Subgroup discovery similarity score (SDSS): A significant criterion for the integration of statistical knowledge into machine learning in materials science[J]. *Materials Today Physics*, 2025, 56, 101772. [[DOI]](https://doi.org/10.1016/j.mtphys.2025.101772)
 - D Dai, G Zhang, X Wei, Y Lin, M Dai, J Peng, N Song, Z Tang, **S Li**, J Liu, Y Xu, R Che, H Zhang. A GPT-assisted iterative method for extracting domain knowledge from a large volume of literature of electromagnetic wave absorbing materials with limited manually annotated data[J]. *Computational Materials Science*, 2025, 246: 113431.[[DOI]](https://doi.org/10.1016/j.commatsci.2024.113431)
 - Wei X, Zhang Y, Liu X, J Peng, **S Li**, R Che, H Zhang. A domain knowledge enhanced machine learning method to predict the properties of halide double perovskite $$A_2B^+B^{3+}X_6$$ [J]. *Journal of Materials Chemistry A*, 2023.[[DOI]](https://doi.org/10.1039/D3TA03600F)
 - H Zhang, X Liu, G Zhang, Y Zhu, **S Li**, Q Qian, D Dai, R Che, T Xu, Deriving equation from data via knowledge discovery and machine learning: A study of Young’s modulus of Ti-Nb alloys[J]. *Computational Materials Science*, 2023, 228:112349.[[DOI]](https://doi.org/10.1016/j.commatsci.2023.112349)
