@@ -1,0 +1,31 @@
+name: CVS deploy
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v4
+      - name: 'Generate static files'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.0'
+          bundler-cache: false
+      - run: rm _posts/services/2019-04-03-zerotier.md
+      - run: rm _posts/develope/2021-06-15-remote-ssh.md
+      - run: rm _posts/ldap/2022-09-28-ldap-openvpn.md
+      - run: rm _posts/services/2017-12-03-unbound-dns.md
+      - run: bundle install
+      - run: bundle exec jekyll build --config _config.cvs.yml
+      - name: 'SCP upload'
+        uses: nogsantos/scp-deploy@master
+        with:
+          src: ./_site/*
+          host: ${{ secrets.CVS_HOST }}
+          remote: ${{ secrets.CVS_PATH }}
+          port: ${{ secrets.CVS_PORT }}
+          user: ${{ secrets.CVS_USERNAME }}
+          key: ${{ secrets.CVS_KEY }}
+
+
