@@ -95,33 +95,34 @@
     <div class="g-logo">
       <a href="/" aria-label="logo"></a>
     </div>
-    <!-- <i id="menu-toggle" class="iconfont icon-menu"></i> -->
-    
-        <div id="search-toggle"></div>
-    
-    
-    <div id="random-toggle">
-        <a href="#" aria-label="Random Article" target="_blank">🎲</a>
-    </div>
-    <div id="travelling-toggle">
-        <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
-            <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-train-subway"></use>
+    <div class="menu-tools">
+        
+            <div id="search-toggle"></div>
+        
+        <div id="random-toggle">
+            <a href="#" aria-label="Random Article" target="_blank">🎲</a>
+        </div>
+        
+        <div id="travelling-toggle">
+            <a href="https://www.travellings.cn/go.html" aria-label="Travelings" target="_blank">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-train-subway"></use>
+                </svg>
+            </a>
+        </div>
+        
+        <div id="mode-toggle">
+            <svg class="icon icon-day" aria-hidden="true">
+                <use xlink:href="#icon-day"></use>
             </svg>
-        </a>
-    </div>
-    
-    <div id="mode-toggle">
-        <svg class="icon icon-day" aria-hidden="true">
-            <use xlink:href="#icon-day"></use>
-        </svg>
-        <svg class="icon icon-night" aria-hidden="true">
-            <use xlink:href="#icon-night"></use>
+            <svg class="icon icon-night" aria-hidden="true">
+                <use xlink:href="#icon-night"></use>
+            </svg>
+        </div>
+        <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
+            <use xlink:href="#icon-menu"></use>
         </svg>
     </div>
-    <svg id="menu-toggle" class="icon-menu" aria-hidden="true">
-        <use xlink:href="#icon-menu"></use>
-    </svg>
     <nav class="g-nav">
         <ul>
             
@@ -259,17 +260,17 @@
         <div class="post-tags">
             
             
-            <a href="/%20/tags.html#command%20line" class="post-tag">command line</a>
+            <a href="/tags.html#command%20line" class="post-tag">command line</a>
             
-            <a href="/%20/tags.html#%E5%91%BD%E4%BB%A4%E8%A1%8C" class="post-tag">命令行</a>
+            <a href="/tags.html#%E5%91%BD%E4%BB%A4%E8%A1%8C" class="post-tag">命令行</a>
             
-            <a href="/%20/tags.html#develop" class="post-tag">develop</a>
+            <a href="/tags.html#develop" class="post-tag">develop</a>
             
-            <a href="/%20/tags.html#%E5%BC%80%E5%8F%91" class="post-tag">开发</a>
+            <a href="/tags.html#%E5%BC%80%E5%8F%91" class="post-tag">开发</a>
             
-            <a href="/%20/tags.html#tool" class="post-tag">tool</a>
+            <a href="/tags.html#tool" class="post-tag">tool</a>
             
-            <a href="/%20/tags.html#%E5%B7%A5%E5%85%B7" class="post-tag">工具</a>
+            <a href="/tags.html#%E5%B7%A5%E5%85%B7" class="post-tag">工具</a>
             
             
         </div>
@@ -349,7 +350,9 @@
 
 </div>
         <div class="contents">
+            
             <article class="markdown-body post">
+            
                 
 
 
@@ -738,15 +741,20 @@ fatal: not a git repository <span class="o">(</span>or any of the parent directo
     <div class="g-left">
       <section class="links">
         本站由 <a href="//jekyllrb.com" target="_blank" class="extlinks">Jekyll</a> 和 (基于 <a href="https://github.com/kaeyleo/jekyll-theme-H2O" target="_blank" class="extlinks">H2O</a> 的) <a href="https://github.com/zhonger/jekyll-theme-H2O-ac" target="_blank" class="extlinks">H2O-ac</a> 强力驱动
-         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.5.1"
-          target="_blank" class="extlinks">v1.5.1</a>)
+         (<a href="https://github.com/zhonger/jekyll-theme-H2O-ac/releases/tag/v1.5.3"
+          target="_blank" class="extlinks">v1.5.3</a>)
         
       </section>
       <section class="links">仲儿的自留地 ©
         <input type="hidden" id="footer-since" value="2015">
         <span id="footer-year"></span>
+      </section>
+      <section class="links beian">
         
         
+        
+      </section>
+      <section class="links">
         <a href="/rss.xml" target="_blank" aria-label="Terms of Service" class="others">
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-rss"></use>
@@ -757,6 +765,13 @@ fatal: not a git repository <span class="o">(</span>or any of the parent directo
             <use xlink:href="#icon-tos"></use>
           </svg> 使用条款
         </a>
+        
+        本站已运行
+        <span class="alivetime_days"></span> 天
+        <span class="alivetime_hours"></span> 小时
+        <span class="alivetime_minutes"></span> 分
+        <span class="alivetime_seconds"></span> 秒
+        
       </section>
       
       <section class="links">
@@ -780,15 +795,6 @@ fatal: not a git repository <span class="o">(</span>or any of the parent directo
         </span>
       </section>
       
-      <section>
-        
-        本站已运行
-        <span class="alivetime_days"></span> 天
-        <span class="alivetime_hours"></span> 小时
-        <span class="alivetime_minutes"></span> 分
-        <span class="alivetime_seconds"></span> 秒
-        
-      </section>
     </div>
     <div class="g-right">
       
