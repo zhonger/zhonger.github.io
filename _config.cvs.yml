@@ -100,6 +100,7 @@ links:
 
 # Beian 备案号
 beian: '浙ICP备2026023536号-1'
+police_beian: '浙公网安备33010602014467号'
 
 # CC License
 cclicense: true
