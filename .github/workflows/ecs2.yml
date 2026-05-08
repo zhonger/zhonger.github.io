@@ -17,7 +17,7 @@ jobs:
       - run: rm _posts/ldap/2022-09-28-ldap-openvpn.md
       - run: rm _posts/services/2017-12-03-unbound-dns.md
       - run: bundle install
-      - run: bundle exec jekyll build --config _config.ecs.yml
+      - run: bundle exec jekyll build --config _config.ecs2.yml
       - name: 'SCP upload'
         uses: nogsantos/scp-deploy@master
         with:
