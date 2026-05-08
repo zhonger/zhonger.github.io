@@ -110,8 +110,8 @@ cnzz:
 # Umami Analytics
 umami:
   status: true
-  id: 90ea4822-8012-444e-837a-757ea473e087
-  js: https://umami.lisz.top/pwiki.js
+  id: b3b11ab7-db17-48e6-9d2c-9e2f2c028c01
+  js: https://umami.lisz.top/script.js
 
 # Busuanzi
 busuanzi: true
