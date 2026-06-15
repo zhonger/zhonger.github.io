@@ -68,6 +68,10 @@ permalink: /logs
 - 2022年5月，由于在 [vgy.me](https://vgy.me) 托管的图片不知原因发生了丢失，而且打算对全站进行一次图片改造——将原来所有的 png 图片全部转成 webp 图片。vgy.me 不支持 webp 图片上传，故而自行搭建了私人图床服务，文章中涉及到的图片全部转成 webp 图片。
 - 2022年6月2日，重新上线阿里云服务器节点。
 
+### 2026
+
+- 2026年5月，重新上线国内阿里云、腾讯云节点，并上线腾讯云 EdgeOne 节点。另外，筑波大学节点已下线。
+
 ## 站点节点信息
 
 | 托管方 | 支持访问域名 | IPv4 | IPv6 | 备注 |
@@ -75,10 +79,10 @@ permalink: /logs
 | Netlify | [lisz.me](https://lisz.me) | 是 | 是 | 全球性节点 |
 | Github | [blog.lui8.cn](https://blog.lui8.cn) | 是 | 否 | 美国节点 |
 | Cloudflare| [lui.site](https://lui.site) | 是 | 是 | 全球性节点 |
-| 阿里云服务器 | www.lisz.ink(下线) | 是 | 否 | 国内单节点 |
-| 腾讯云服务器 | luish.cc(下线) | 是 | 否 | 国内单节点 |
-| 腾讯云 COS | lisz.ink(下线) | 是 | 否 | 国内 CDN 节点 |
-| 筑波大学 | [u.tsukuba.ac.jp](https://www.u.tsukuba.ac.jp/~s2036012/) | 是 | 否 | 日本单节点 |
+| 阿里云服务器 | [lep.site](https://lep.site) | 是 | 否 | 国内单节点 |
+| 腾讯云服务器 | [lui8.cn](https://lui8.cn/) | 是 | 是 | 国内单节点 |
+| 腾讯云 EdgeOne | [eo.lui8.cn](https://eo.lui8.cn) | 是 | 否 | 国内单节点 |
+| 筑波大学 | u.tsukuba.ac.jp(下线) | 是 | 否 | 日本单节点 |
 | 又拍云 CDN | blog.lisz.ink(下线) | 是 | 是 | 国内 CDN 节点 |
 | Vercel | [zhonger.vercel.app](https://zhonger.vercel.app) | 是 | 否 | 美国节点 |
 | Azure | [blog.lisz.ink](https://blog.lisz.ink) | 是 | 否 | 国内香港节点 |
