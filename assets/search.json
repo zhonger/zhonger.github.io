@@ -1,5 +1,11 @@
 [
   {
+    "title"    : "编译 GPU 版本的 ABACUS",
+    "tags"     : "abacus gpu conda",
+    "url"      : "/tech/abacus/abacus-gpu.html"
+  } ,
+
+  {
     "title"    : "LDAP 集成之 Gitlab + Keycloak 篇",
     "tags"     : "LDAP Gitlab Keycloak",
     "url"      : "/tech/webmaster/ldap-gitlab-keycloak.html"

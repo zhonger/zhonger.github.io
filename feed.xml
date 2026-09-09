@@ -1,4 +1,436 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2026-06-15T14:41:21+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">LDAP 集成之 Gitlab + Keycloak 篇</title><link href="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html" rel="alternate" type="text/html" title="LDAP 集成之 Gitlab + Keycloak 篇" /><published>2025-09-05T11:30:00+09:00</published><updated>2025-09-05T11:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-gitlab-keycloak</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html"><![CDATA[<h2 id="前言">前言</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://lisz.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://lisz.me/" rel="alternate" type="text/html" /><updated>2026-09-09T16:46:55+09:00</updated><id>https://lisz.me/feed.xml</id><title type="html">仲儿的自留地</title><subtitle>个人的一个技术博客站点，主要用于记录个人在学习过程中遇到的技术问题及解决方法、技术实验，以及一些比较有趣的事情。</subtitle><author><name>zhonger</name></author><entry><title type="html">编译 GPU 版本的 ABACUS</title><link href="https://lisz.me/tech/abacus/abacus-gpu.html" rel="alternate" type="text/html" title="编译 GPU 版本的 ABACUS" /><published>2026-09-07T16:14:00+09:00</published><updated>2026-09-07T16:14:00+09:00</updated><id>https://lisz.me/tech/abacus/abacus-gpu</id><content type="html" xml:base="https://lisz.me/tech/abacus/abacus-gpu.html"><![CDATA[<h2 id="前言">前言</h2>
+
+<p>  在过去的数十年里，第一性原理计算主要使用 CPU 计算。受限于可用 CPU 的数量和计算能力，一般使用一台 96 核的服务器往往最多只能计算包含百来个原子的体系。当然这有很大一部分是因为，基于<strong>平面波函数</strong>（PW）基组的第一性原理计算软件（例如 <code class="language-plaintext highlighter-rouge">VASP</code>）的计算代价随着体系中原子个数呈现  O(N²)  规模增大。为了“尽可能地降低计算代价”和“同时保留计算精度”，<strong>数值原子轨道</strong>（NAO）基组被设计出来替代平面波函数加速计算。相比平面波基组描述<strong>自由电子在空间各处的分布</strong>，数值原子轨道基组描述<strong>束缚态电子在高度局域的原子核周围的分布</strong>，并且可利用局域性结合<strong>稀疏矩阵</strong>实现线性扩展，即 O(N) 规模。当数值原子轨道基组考虑的轨道数越多时，结果就越与平面波基组结果接近。这样一来，基于数值原子轨道基组的第一性原理软件可以同样使用一台 96 核的服务器最多计算包含数百个原子的体系。</p>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>   平面波基组与数值原子轨道基组是两种最核心的基组（Basis Sets）形式，它们本质上是用不同的数学函数作为“构件”（可以理解为电子密度空间的基础向量），来拟合实际体系中的波函数（“电子状态”或者“电子密度分布”）。</p>
+
+
+
+ </div> </div>
+<p>  近些年来，随着 GPU 硬件及其开发环境的不断发展和成熟，越来越多的第一性原理计算软件开始支持在 GPU 上加速计算。以结构优化为例，现有的第一性原理计算软件（例如 <code class="language-plaintext highlighter-rouge">ABACUS</code>）只将电子步和交换关联能求解搬上了 GPU，离子步等则保留在了 CPU 上。具体如下所示：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">计算阶段</th>
+      <th style="text-align: left">细分步骤</th>
+      <th style="text-align: center">执行设备</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">离子步</td>
+      <td style="text-align: left">原子坐标/晶胞参数更新</td>
+      <td style="text-align: center">CPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">离子步</td>
+      <td style="text-align: left">结构优化算法 (CG/BFGS等)</td>
+      <td style="text-align: center">CPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">离子步</td>
+      <td style="text-align: left">力、应力收敛判断</td>
+      <td style="text-align: center">CPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电子步</td>
+      <td style="text-align: left">快速傅里叶变换 (FFT)</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电子步</td>
+      <td style="text-align: left">汉密尔顿矩阵与波函数乘法</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电子步</td>
+      <td style="text-align: left">子空间对角化/矩阵求解</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电子步</td>
+      <td style="text-align: left">局域轨道重叠积分/哈密尔顿量构建</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">电子步</td>
+      <td style="text-align: left">密集/稀疏矩阵对角化</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">辅助计算</td>
+      <td style="text-align: left">交换关联能求解 (XC Functional)</td>
+      <td style="text-align: center">GPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">辅助计算</td>
+      <td style="text-align: left">电荷密度混合 (Mixing)</td>
+      <td style="text-align: center">CPU</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">辅助计算</td>
+      <td style="text-align: left">离子受力与应力张量计算</td>
+      <td style="text-align: center">CPU/GPU 混合</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>由于 DFT 计算中<strong>最耗时</strong>的就是<strong>对角化</strong>相关的步骤（电子步），一旦这些被搬上 GPU 加速计算之后，DFT 计算对于 CPU 的需求就会显著降低。甚至于，只需要保留几个 CPU 核就能轻松应对外层控制和电荷密度混合。从上表也可以看出，GPU 的使用会将原本大部分对于内存的需求转变为显存的需求，仅有原子坐标和电子密度相关的数据仍然保留在内存中。</p>
+
+<h2 id="编译实践">编译实践</h2>
+
+<p>  GPU 运行版本的 ABACUS 编译环境应该与运行环境完全一致，尤其是 CUDA 及 NVCC 版本。当使用不同型号的 GPU 时，宿主机安装的 CUDA 版本很大可能也不一样，这主要是因为 NVIDIA 官方通常只对最新架构的 GPU 更新 CUDA 版本支持。在某些 GPU 服务器上，也有可能 CUDA 版本和 NVCC 版本不一致的情况，这无疑也是障碍。为了避免这些障碍，比较可行的方案是用 conda 来统一管理 ABACUS 在特定 CUDA 版本上的 GPU 运行版本及其他所需依赖。</p>
+
+<p>  这里笔者采用一块 L20 GPU 作为示范。可以通过 <a href="https://www.nvidia.cn/drivers/">NVIDIA 官网</a> 查询到 GPU 支持的 CUDA 最高版本（13.3）。但在 GPU 主机上通过 <code class="language-plaintext highlighter-rouge">nvidia-smi</code> 命令查询到宿主机安装的 NVIDIA 驱动版本和默认兼容 CUDA 版本为 535.247 和 12.2。由于 CUDA 13.3 和 12.2 属于跨主版本，不推荐交叉使用。所以这里可以安装的 CUDA 和 NVCC 版本就是 12.x 系列。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.247.01             Driver Version: 535.247.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>   我们可以通过阅读 NVIDIA 官方提供的 <a href="https://docs.nvidia.com/deploy/cuda-compatibility/why-cuda-compatibility.html">CUDA 兼容性解释</a> 来理解 CUDA 版本的选择。这里主要考虑的是两种兼容性原则：<strong>次要版本兼容性</strong>和<strong>数据中心卡的向前兼容</strong>。</p>
+
+
+
+ </div> </div>
+<h3 id="准备编译环境">准备编译环境</h3>
+
+<p>  这里假设 GPU 主机上已经安装好了 conda 软件，可以正常使用。首先通过以下命令创建一个名为 <code class="language-plaintext highlighter-rouge">abacus</code> 的、仅包含 <code class="language-plaintext highlighter-rouge">Python 3.10</code> 的环境。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda create <span class="nt">-n</span> abacus <span class="nv">python</span><span class="o">=</span>3.10
+</code></pre></div></div>
+
+<p>下载 ABACUS 源代码到准备编译的目录 <code class="language-plaintext highlighter-rouge">~/opt/abacus</code>，并如下解压源代码到 <code class="language-plaintext highlighter-rouge">~/opt/abacus/v3.10.0</code> 目录。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> ~/opt/abacus
+<span class="nb">cd</span> ~/opt/abacus
+wget <span class="nt">-c</span> https://abacus.ustc.edu.cn/_upload/tpl/0c/d8/3288/template3288/download/zip/source-LTS.zip
+unzip source-LTS.zip
+<span class="nb">tar </span>zxf abacus-develop-LTSv3.10.0.tar.gz
+<span class="nb">mv </span>abacus-develop-LTSv3.10.0 v3.10.0
+<span class="nb">cd </span>v3.10.0
+</code></pre></div></div>
+
+<h4 id="安装-cuda-环境">安装 CUDA 环境</h4>
+
+<p>  ABACUS 采用了 CMAKE、g++、gfortran 等编译工具，因此需要在正式编译前确保具备这些工具。其次，BLAS、LAPACK、SCALAPACK、FFTW、LIBXC、CEREAL、OpenMPI 等多种依赖库也需要安装。最后，CUDA 环境是必须的，因为 ABACUS 的 GPU 版本编译和运行都需要 CUDA 支持。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge <span class="se">\</span>
+    cmake openmpi openblas libblas liblapack scalapack fftw libxc <span class="se">\</span>
+    rapidjson cereal cuda-toolkit<span class="o">=</span>12.2 <span class="nt">-y</span>
+
+conda <span class="nb">install</span> <span class="nt">-c</span> conda-forge <span class="se">\</span>
+    cxx-compiler <span class="se">\</span>
+    fortran-compiler <span class="se">\</span>
+    c-compiler <span class="se">\</span>
+    make git bc <span class="nb">time </span>unzip wget cuda-nvtx-dev <span class="nt">-y</span>
+</code></pre></div></div>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>  这里的 OpenMPI 必须与 cuda-toolkit 一起安装，否则 conda 默认安装将会是不可用的 OpenMPI 版本。另外，cuda-toolkit 并不包括 cuda-nvtx-dev 头文件，因此需要单独安装。这个库的核心作用是允许开发者在 C/C++ 代码中手动插入“标记”和“时间区间”，以便在进行 GPU 性能分析时能更清晰地定位和解读耗时瓶颈。</p>
+
+
+
+ </div> </div>
+<p>  通过以下命令验证 conda 安装的 CUDA 和 NVCC 版本。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>conda list | <span class="nb">grep</span> <span class="nt">-E</span> <span class="s2">"cuda-version|nvcc"</span>
+cuda-nvcc                      12.2.140            hcdd1206_0             conda-forge
+cuda-nvcc-dev_linux-64         12.2.140            ha770c72_1             conda-forge
+cuda-nvcc-impl                 12.2.140            hd3aeb46_1             conda-forge
+cuda-nvcc-tools                12.2.140            hd3aeb46_1             conda-forge
+cuda-nvcc_linux-64             12.2.140            h8a487aa_0             conda-forge
+cuda-version                   12.2                he2b69de_3             conda-forge
+</code></pre></div></div>
+
+<div class="premonition note"> <div class="header"> <svg class="icon note" aria-hidden="true"> <use xlink:href="#icon-note"></use> </svg> <div class="title"> 小知识 </div> </div> <div class="content"> <p>  <code class="language-plaintext highlighter-rouge">cuda-toolkit</code> 是包括了 <code class="language-plaintext highlighter-rouge">cuda-nvcc</code>、<code class="language-plaintext highlighter-rouge">cuda-version</code>、<code class="language-plaintext highlighter-rouge">CUDA runtime</code>、<code class="language-plaintext highlighter-rouge">cuBLAS</code> 等一系列 CUDA 开发工具的集合。当我们指定安装 <code class="language-plaintext highlighter-rouge">cuda-toolkit</code> 时会自动安装它们。如果想要使用更高版本的 CUDA，可以通过类似 <code class="language-plaintext highlighter-rouge">cuda-toolkit=12.9</code> 指定。</p>
+
+
+
+ </div> </div>
+<h4 id="准备头文件-libnpy">准备头文件 libnpy</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">libnpy</code> 是一个用于在 C++ 中读写 (Python NumPy) NPY 格式文件的头文件库。ABACUS 的 GPU 版本需要这个库来读写 NPY 格式的文件。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
+git clone https://gh-proxy.org/github.com/llohse/libnpy.git
+<span class="nb">cp </span>libnpy/include/npy.hpp <span class="nv">$CONDA_PREFIX</span>/include
+<span class="nb">rm</span> <span class="nt">-rf</span> libnpy
+</code></pre></div></div>
+
+<h4 id="编译并安装-elpa-库">编译并安装 ELPA 库</h4>
+
+<p>  ELPA（Eigenvalue Solver for Petascale Applications）是一个专为大规模并行计算设计的高性能特征值/特征向量求解器开源库。ELPA 采用了两段式归约算法，大幅减少了跨节点/跨核通信，使大规模计算的并行扩展性延伸到数万甚至数十万 CPU 核心。它本身也支持 GPU 加速。不过，ABACUS 在 GPU 运算时默认使用 CUDA 提供的 cusolver 库，可以进一步优化性能。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 从 ELPA 官网下载最新版本的源代码压缩包</span>
+<span class="nb">cd</span> /tmp
+<span class="nv">ELPA_VER</span><span class="o">=</span>2026.02.002 
+wget <span class="nt">-q</span> https://elpa.mpcdf.mpg.de/software/tarball-archive/Releases/<span class="nv">$ELPA_VER</span>/elpa-<span class="nv">$ELPA_VER</span>.tar.gz
+<span class="nb">tar </span>xzf elpa-<span class="nv">$ELPA_VER</span>.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">rm </span>elpa-<span class="nv">$ELPA_VER</span>.tar.gz
+<span class="nb">cd </span>elpa-<span class="nv">$ELPA_VER</span>
+
+<span class="c"># 检测编译环境是否齐全和应用自定义安装配置</span>
+./configure <span class="nv">CC</span><span class="o">=</span>mpicc <span class="se">\</span>
+            <span class="nv">CXX</span><span class="o">=</span>mpic++ <span class="se">\</span>
+            <span class="nv">FC</span><span class="o">=</span>mpifort <span class="se">\</span>
+            <span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">"-O3"</span> <span class="se">\</span>
+            <span class="nv">FCFLAGS</span><span class="o">=</span><span class="s2">"-O3"</span> <span class="se">\</span>
+            <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">"-L</span><span class="nv">$CONDA_PREFIX</span><span class="s2">/lib -Wl,-rpath,</span><span class="nv">$CONDA_PREFIX</span><span class="s2">/lib -lstdc++"</span> <span class="se">\</span>
+            <span class="nt">--disable-sse</span> <span class="se">\</span>
+            <span class="nt">--disable-sse-assembly</span> <span class="se">\</span>
+            <span class="nt">--disable-avx</span> <span class="se">\</span>
+            <span class="nt">--disable-avx2</span> <span class="se">\</span>
+            <span class="nt">--disable-avx512</span> <span class="se">\</span>
+            <span class="nt">--enable-openmp</span> <span class="se">\</span>
+            <span class="nt">--enable-nvidia-gpu</span> <span class="se">\</span>
+            <span class="nt">--with-cuda-path</span><span class="o">=</span><span class="nv">$CONDA_PREFIX</span> <span class="se">\</span>
+            <span class="nt">--prefix</span><span class="o">=</span><span class="nv">$CONDA_PREFIX</span>
+
+<span class="c"># 使用 8 个核并行编译并安装</span>
+make <span class="nt">-j8</span>
+make <span class="nb">install</span>
+
+<span class="c"># 创建软链接使得 ELPA 头文件加入 conda 库文件夹</span>
+<span class="nb">ln</span> <span class="nt">-sf</span> <span class="nv">$CONDA_PREFIX</span>/include/elpa_openmp-<span class="nv">$ELPA_VER</span>/elpa <span class="nv">$CONDA_PREFIX</span>/include/
+</code></pre></div></div>
+
+<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>   如果在 <code class="language-plaintext highlighter-rouge">./configure</code> 配置过程中报错需要更改参数，推荐先用命令 <code class="language-plaintext highlighter-rouge">make clean 2&gt;/dev/null || true &amp;&amp; rm -rf config.cache config.status</code> 清理上次失败的缓存。</p>
+
+
+
+ </div> </div>
+<h3 id="正式编译">正式编译</h3>
+
+<p>  在 conda 的 abacus 环境中如上准备好所需环境后，就可以正式开始编译 ABACUS 了。这里需要指定安装目录、启用 ELPA、启用 CUDA、启用 rapidjson 和 cereal 库、禁用测试等参数。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 在 build 目录中生成编译所需的文件</span>
+cmake <span class="nt">-B</span> build <span class="se">\</span>
+      <span class="nt">-DCMAKE_INSTALL_PREFIX</span><span class="o">=</span><span class="nv">$CONDA_PREFIX</span> <span class="se">\</span>
+      <span class="nt">-DUSE_ELPA</span><span class="o">=</span>ON <span class="se">\</span>
+      <span class="nt">-DUSE_CUDA</span><span class="o">=</span>ON <span class="se">\</span>
+      <span class="nt">-DENABLE_RAPIDJSON</span><span class="o">=</span>ON <span class="se">\</span>
+      <span class="nt">-DBUILD_TESTING</span><span class="o">=</span>OFF
+
+<span class="c"># 使用 8 个核并行编译并安装到指定目录</span>
+cmake <span class="nt">--build</span> build <span class="nt">-j8</span>
+cmake <span class="nt">--install</span> build
+</code></pre></div></div>
+
+<p>  编译完成后，可以通过以下命令验证 ABACUS 可执行文件是否正确编译生成。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span>abacus <span class="nt">--version</span>
+ABACUS version v3.10.0
+</code></pre></div></div>
+
+<h2 id="测试验证">测试验证</h2>
+
+<p>  为了测试验证一下 GPU 版本和 CPU 版本的差异，笔者选择了 <a href="https://github.com/MCresearch/abacus-user-guide/tree/master/examples/lcao-gv/005_3BaTiO3">BaTiO3 示例</a>。具体使用到的 INPUt、KPT、STRU 文件如下：（UPF 和 ORB 文件请见示例网站）</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># INPUT</span>
+calculation         scf
+nbands              72
+symmetry            1
+dft_functional      pbe
+basis_type          lcao
+device              gpu
+ecutwfc             90
+scf_nmax            100
+scf_thr             1e-7
+</code></pre></div></div>
+
+<p>对于使用 GPU 运行 ABACUS，需要将 <code class="language-plaintext highlighter-rouge">device</code> 参数设置为 <code class="language-plaintext highlighter-rouge">gpu</code>（默认为 <code class="language-plaintext highlighter-rouge">cpu</code>）。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># KPT</span>
+K_POINTS
+0
+Gamma
+7 7 6 0 0 0
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># STRU</span>
+ATOMIC_SPECIES
+Ba 137.327 Ba_ONCV_PBE-1.0.upf
+Ti 47.867 Ti_ONCV_PBE-1.0.upf
+O 15.999 O_ONCV_PBE-1.0.upf
+
+NUMERICAL_ORBITAL
+Ba_gga_10au_100Ry_4s2p2d1f.orb
+Ti_gga_8au_100Ry_4s2p2d1f.orb
+O_gga_7au_100Ry_2s2p1d.orb
+
+LATTICE_CONSTANT
+1.889716
+
+LATTICE_VECTORS
+    5.75467     0.00000     0.00000
+   <span class="nt">-2</span>.87734     4.98369     0.00000
+    0.00000     0.00000     7.10999
+
+ATOMIC_POSITIONS
+Direct
+
+Ba
+0.0
+3
+  0.0000000   0.0000000   0.0020690 1 1 1
+  0.6666667   0.3333333   0.3354023 1 1 1
+  0.3333333   0.6666667   0.6687357 1 1 1
+
+Ti
+0.0
+3
+  0.0000000   0.0000000   0.5164400 1 1 1
+  0.6666667   0.3333333   0.8497733 1 1 1
+  0.3333333   0.6666667   0.1831067 1 1 1
+
+O
+0.0
+9
+  0.8369553   0.6739107   0.6476637 1 1 1
+  0.3260893   0.1630447   0.6476637 1 1 1
+  0.8369553   0.1630447   0.6476637 1 1 1
+  0.5036220   0.0072440   0.9809970 1 1 1
+  0.9927560   0.4963780   0.9809970 1 1 1
+  0.5036220   0.4963780   0.9809970 1 1 1
+  0.1702887   0.3405773   0.3143303 1 1 1
+  0.6594227   0.8297113   0.3143303 1 1 1
+  0.1702887   0.8297113   0.3143303 1 1 1
+</code></pre></div></div>
+
+<p>  准备好上述文件以及 UPF 和 ORB 文件后，就可以使用 4mpi x 1omp 的配置运行。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">OPENBLAS_NUM_THREADS</span><span class="o">=</span>1 <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span>1 mpirun <span class="nt">-np</span> 4 abacus <span class="o">&gt;</span> OUT
+</code></pre></div></div>
+
+<p>  通过 <code class="language-plaintext highlighter-rouge">nvidia-smi</code> 可以实时看到 GPU 的使用情况。一般来说，GPU 的利用率会尽可能接近 100%，显存利用率则根据计算体系大小而变化。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.247.01             Driver Version: 535.247.01   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|<span class="o">=========================================</span>+<span class="o">======================</span>+<span class="o">======================</span>|
+|   0  NVIDIA L20                     Off | 00000000:BD:00.0 Off |                    0 |
+| N/A   34C    P0              92W / 350W |   1799MiB / 46068MiB |     92%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|<span class="o">=======================================================================================</span>|
++---------------------------------------------------------------------------------------+
+</code></pre></div></div>
+
+<p>  通过 <code class="language-plaintext highlighter-rouge">tail -f OUT</code> 可以实时看到计算进度。可以看到，每一个电子步很快就完成了。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span><span class="nb">tail</span> <span class="nt">-f</span> OUT
+ Initial plane wave basis and FFT box
+ <span class="nt">---------------------------------------------------------</span>
+ DONE<span class="o">(</span>0.139128   SEC<span class="o">)</span> : INIT PLANEWAVE
+ DONE<span class="o">(</span>0.943371   SEC<span class="o">)</span> : LOCAL POTENTIAL
+ <span class="nt">-------------------------------------------</span>
+ SELF-CONSISTENT : 
+ <span class="nt">-------------------------------------------</span>
+ gemm_algo_selector::Fastest <span class="nb">time</span>: 0.03584 ms
+ START CHARGE      : atomic
+ DONE<span class="o">(</span>1.84281    SEC<span class="o">)</span> : INIT SCF
+ ITER       ETOT/eV          EDIFF/eV         DRHO     TIME/s
+ CU1     <span class="nt">-1</span>.06995902e+04   0.00000000e+00   1.6668e-01   5.81
+ CU2     <span class="nt">-1</span>.05876319e+04   1.11958338e+02   3.7860e-01   4.32
+ CU3     <span class="nt">-1</span>.07513294e+04  <span class="nt">-1</span>.63697497e+02   6.8688e-02   4.25
+ CU4     <span class="nt">-1</span>.07481849e+04   3.14455363e+00   4.3508e-02   4.20
+ CU5     <span class="nt">-1</span>.07493547e+04  <span class="nt">-1</span>.16979854e+00   9.2559e-03   4.21
+ CU6     <span class="nt">-1</span>.07493970e+04  <span class="nt">-4</span>.23377294e-02   3.9510e-03   4.14
+ CU7     <span class="nt">-1</span>.07493988e+04  <span class="nt">-1</span>.81857667e-03   1.4855e-03   4.14
+ CU8     <span class="nt">-1</span>.07494003e+04  <span class="nt">-1</span>.45159416e-03   2.3845e-04   4.21
+ CU9     <span class="nt">-1</span>.07494003e+04  <span class="nt">-3</span>.88108856e-05   3.8154e-05   4.21
+ CU10    <span class="nt">-1</span>.07494003e+04   4.48816233e-08   1.8327e-05   4.21
+ CU11    <span class="nt">-1</span>.07494003e+04  <span class="nt">-4</span>.23625231e-07   2.7077e-06   4.20
+ CU12    <span class="nt">-1</span>.07494003e+04  <span class="nt">-4</span>.63727276e-09   1.5024e-06   4.17
+ CU13    <span class="nt">-1</span>.07494003e+04  <span class="nt">-2</span>.92188401e-09   2.7893e-07   4.14
+ CU14    <span class="nt">-1</span>.07494003e+04  <span class="nt">-4</span>.79504522e-11   1.3009e-07   4.19
+ CU15    <span class="nt">-1</span>.07494003e+04   1.54678878e-12   4.4479e-08   4.25
+
+ ....
+
+ START  Time  : Wed Sep  9 13:16:43 2026
+ FINISH Time  : Wed Sep  9 13:17:50 2026
+ TOTAL  Time  : 67
+ SEE INFORMATION IN : OUT.ABACUS/
+</code></pre></div></div>
+
+<p>  这里笔者同时也测试了 CPU 版本，得到如下对比表格。GPU 版本相比 CPU 版本有 1.60 倍的加速，其中 <code class="language-plaintext highlighter-rouge">HamiltLCAO::updateHk</code> 函数的加速最多，达到了 2.94 倍。这与前言中分析的结果一致。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">类</th>
+      <th style="text-align: right">功能</th>
+      <th style="text-align: left">CPU/s (占比)</th>
+      <th style="text-align: left">GPU/s (占比)</th>
+      <th style="text-align: left">加速比</th>
+      <th style="text-align: center">调用次数</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">/</td>
+      <td style="text-align: right">total</td>
+      <td style="text-align: left">106.79</td>
+      <td style="text-align: left">66.89</td>
+      <td style="text-align: left">1.60x</td>
+      <td style="text-align: center">13</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Ions</td>
+      <td style="text-align: right">opt_ions</td>
+      <td style="text-align: left">105.74 (99.01%)</td>
+      <td style="text-align: left">65.92 (98.55%)</td>
+      <td style="text-align: left">1.60x</td>
+      <td style="text-align: center">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">HSolverLCAO</td>
+      <td style="text-align: right">solve</td>
+      <td style="text-align: left">103.90 (97.29)</td>
+      <td style="text-align: left">63.73 (95.28%)</td>
+      <td style="text-align: left">1.63x</td>
+      <td style="text-align: center">15</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">HamiltLCAO</td>
+      <td style="text-align: right">updateHk</td>
+      <td style="text-align: left">25.10 (23.50%)</td>
+      <td style="text-align: left">8.55 (12.78%)</td>
+      <td style="text-align: left">2.94x</td>
+      <td style="text-align: center">2220</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">Diago</td>
+      <td style="text-align: right">cu/elpa</td>
+      <td style="text-align: left">55.00 (51.50%)</td>
+      <td style="text-align: left">39.57 (59.16%)</td>
+      <td style="text-align: left">1.39x</td>
+      <td style="text-align: center">2220</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="结语">结语</h2>
+
+<p>  作为国产第一性原理计算软件， ABACUS 同时支持平面波基组和数值原子轨道基组，在使用上具有天然优势，而 GPU 版本的推出进一步提升了并行计算效率。另外，通过对比运行结果发现，CPU 和 GPU 得到的能量等数值几乎一模一样，说明 GPU 版本在数值计算上误差也极小。（这似乎与深度学习的 GPU 代码相比 CPU 代码通常会有数值上的精度损失的印象有所不同。）如果你对使用 GPU 做第一性原理计算感兴趣，不妨从 ABACUS 的 GPU 版本开始一试。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+  <li><a href="https://github.com/abacusmodeling/abacus-develop/blob/develop/Dockerfile.cuda">ABACUS 官方 GPU 版本容器构建 Dockerfile</a></li>
+  <li><a href="https://mcresearch.github.io/abacus-user-guide/abacus-gpu.html">编译 Nvidia GPU 版本的 ABACUS</a></li>
+  <li><a href="https://mcresearch.github.io/abacus-user-guide/abacus-gpu-lcao.html">ABACUS LCAO 基组 GPU 版本使用说明</a></li>
+  <li><a href="https://mcresearch.github.io/abacus-user-guide/test-10cases-lcao.html#0053batio3">ABACUS 数值原子轨道基组 10 个典型算例</a></li>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="abacus" /><category term="abacus" /><category term="gpu" /><category term="conda" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">LDAP 集成之 Gitlab + Keycloak 篇</title><link href="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html" rel="alternate" type="text/html" title="LDAP 集成之 Gitlab + Keycloak 篇" /><published>2025-09-05T11:30:00+09:00</published><updated>2025-09-05T11:30:00+09:00</updated><id>https://lisz.me/tech/webmaster/ldap-gitlab-keycloak</id><content type="html" xml:base="https://lisz.me/tech/webmaster/ldap-gitlab-keycloak.html"><![CDATA[<h2 id="前言">前言</h2>
 
 <p>  在之前的<a href="./2022-06-23-ldap-gitlab.md">《LDAP 集成之 Gitlab 篇》</a> 和 <a href="./2022-04-27-ldap-integration.md">《基于 LDAP 的统一认证服务 Keycloak》</a> 中，分别探索了 LDAP 与 Gitlab、Keycloak 的集成。实际上，Gitlab 天然支持三者合一的认证方式，即 “<strong>LDAP 为 Gitlab 提供最底层的用户认证</strong>“和”<strong>Keycloak 提供统一的用户认证入口</strong>“。这样一来，</p>
 
@@ -2130,170 +2562,4 @@ python 3.9.0
 <ul>
   <li><a href="https://asdf-vm.com/zh-hans/guide/getting-started.html">ASDF 官网 - 快速入门</a></li>
   <li><a href="https://asdf-vm.com/zh-hans/manage/versions.html">ASDF 官网 - 版本</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="Environment" /><category term="Manage" /><category term="Dev Runtime" /><category term="软件环境" /><category term="多版本" /><category term="管理" /><summary type="html"><![CDATA[前言]]></summary></entry><entry><title type="html">Modules 配置之 Python</title><link href="https://lisz.me/tech/webmaster/modules-python.html" rel="alternate" type="text/html" title="Modules 配置之 Python" /><published>2023-03-20T12:48:00+09:00</published><updated>2023-03-20T12:48:00+09:00</updated><id>https://lisz.me/tech/webmaster/modules-python</id><content type="html" xml:base="https://lisz.me/tech/webmaster/modules-python.html"><![CDATA[<h2 id="前言">前言</h2>
-
-<p>  近年来得益于其轻量、易学易用、第三方支持依赖库多的特点，Python 语言大量被用于机器学习相关的研究、项目开发。在学术界，有以 <a href="https://scikit-learn.org">Scikit-Learn</a> 为代表的全能机器学习库；在产业界，有以 <a href="https://www.tensorflow.org">TensorFlow</a>、<a href="https://pytorch.org">PyTorch</a> 为代表的生产级机器学习模型计算框架。（当然，学术界实际上构建大规模深度学习模型时也会用到 PyTorch 等计算框架。）但对于大多数人来说，学习这些库、框架或者借助它们从事某些研究、项目开发时，可能还是在用自己的笔记本、台式机。哪怕是在高校的实验室里，这种事情也是屡见不鲜。因此，有交互界面、相对容易上手的 <a href="https://www.anaconda.com">Anaconda</a> 可能会作为大家管理 Python 环境的首选。</p>
-
-<p>  当我们在用 Python 编写一些代码，而代码一次运行不可能在短短几秒、几分钟内得到结果时，将任务提交给高性能工作站或者集群作业系统就显得格外有效。尤其是当应用规模较大、计算迭代次数较多时，非交互式的作业提交方式会变得更加有利。毕竟如果是用自己的笔记本运行着这么大的计算，资源基本上都被计算占用了，根本没办法用笔记本去干点别的事情。甚至说，计算还会使得 CPU 等核心部件温度上升，从而影响计算性能。这样比较下来，不得不说提交任务给高性能工作站或者集群作业系统是多么明智的选择。</p>
-
-<p>  其实，Anaconda 在没有交互界面的服务器操作系统上也还是可以使用的，我们可以使用其免费的精简版 —— <a href="https://conda.io/miniconda">miniconda</a>。虽然 miniconda 已经是精简版了，但和原生 Python 环境比起来还是要多不少东西的。从高性能计算环境的角度来看，使用 Modules 直接管理 Python 环境实际上更加贴近原生，也更加有利于用户与其他环境搭配使用。比如说安装  Python 的 MPI 支持库 —— MPI4PY，仅需要通过 Modules 管理工具加载 Python 和 MPI 两个基础环境，使用 <code class="language-plaintext highlighter-rouge">pip3 install mpi4py</code> 命令即可安装。</p>
-
-<h2 id="实践">实践</h2>
-
-<p>  将 Python 环境纳入 Modules 管理的步骤就是两步：第一步，编译源代码及安装；第二步，添加 Modules 配置文件。当然，最开始还是需要确认一下编译环境是否完备以及文件夹是否准备好。</p>
-
-<h3 id="环境及文件夹准备">环境及文件夹准备</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装编译环境</span>
-<span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> build-essential libbz2-dev libdb-dev <span class="se">\</span>
-  libreadline-dev libffi-dev libgdbm-dev liblzma-dev <span class="se">\</span>
-  libncursesw5-dev libsqlite3-dev libssl-dev <span class="se">\</span>
-  zlib1g-dev uuid-dev tk-dev wget
-  
-<span class="c"># 准备文件夹</span>
-<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/python/3.10.6
-</code></pre></div></div>
-
-<h3 id="编译及安装">编译及安装</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 下载源代码</span>
-<span class="nb">cd</span> /tmp
-wget <span class="nt">-c</span> https://www.python.org/ftp/python/3.10.6/Python-3.10.6.tar.xz
-
-<span class="c"># 解压源代码</span>
-<span class="nb">tar </span>xf Python-3.10.6.tar.xz
-
-<span class="c"># 配置安装路径及编译选项</span>
-<span class="nb">cd </span>Python-3.10.6
-./configure <span class="nt">--prefix</span><span class="o">=</span>/opt/python/3.10.6 <span class="nt">--enable-optimizations</span> <span class="nt">--with-lto</span> 
-
-<span class="c"># 编译及安装</span>
-make <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>make <span class="nb">install</span>
-</code></pre></div></div>
-
-<h3 id="配置-modules">配置 Modules</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> <span class="nt">-p</span> /opt/modules/modulefiles/py
-<span class="nb">sudo </span>vim /opt/modules/modulefiles/py/3.10.6
-</code></pre></div></div>
-
-<p>  首先如上命令准备文件夹，并新建 module 配置文件，内容如下：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#%Module</span>
-proc ModulesHelp <span class="o">{</span> <span class="o">}</span> <span class="o">{</span>
-    puts stderr <span class="se">\t</span>This module file will load Python 3.10.6<span class="s2">"
-}
-
-module-whatis  "</span>Enable Python 3.10.6<span class="s2">"
-
-eval set  [ array get env HOME ]
-set basedir /opt/python/3.10.6
-prepend-path PATH "</span><span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>/bin<span class="s2">"
-prepend-path LIBRARY_PATH "</span><span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>/lib<span class="s2">"
-prepend-path LD_LIBRARY_PATH "</span><span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>/lib<span class="s2">"
-prepend-path INCLUDE_PATH "</span><span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>/include<span class="s2">"
-prepend-path LD_INCLUDE_PATH "</span><span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>/include<span class="s2">"
-</span></code></pre></div></div>
-
-<h3 id="验证">验证</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 查看所有可用模块</span>
-╰─<span class="nv">$ </span>module ava
-<span class="nt">--------------------------</span> /opt/modules/modulefiles <span class="nt">---------------------------</span>
-dot  module-git  module-info  modules  null  py/3.10.6  use.own
-
-Key:
-modulepath
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 加载 python 3.10.6 环境，并确认已加载模块</span>
-╰─<span class="nv">$ </span>module load py/3.10.6
-╰─<span class="nv">$ </span>module list
-Currently Loaded Modulefiles:
- 1<span class="o">)</span> py/3.10.6
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 确认目前 python 版本</span>
-╰─<span class="nv">$ </span>python3 <span class="nt">-V</span>
-Python 3.10.6
-</code></pre></div></div>
-
-<h3 id="使用">使用</h3>
-
-<p>  由于以上操作将 Python 3.10.6 安装到了一个系统文件夹中，编译完成后会出现如下警告提示。不过无须担心，普通用户可以通过 venv 虚拟环境工具正常使用。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Installing collected packages: setuptools, pip
-  WARNING: The scripts pip3 and pip3.10 are installed <span class="k">in</span> <span class="s1">'/opt/python/3.10.6/bin'</span> which is not on PATH.
-  Consider adding this directory to PATH or, <span class="k">if </span>you prefer to suppress this warning, use <span class="nt">--no-warn-script-location</span><span class="nb">.</span>
-Successfully installed pip-22.2.1 setuptools-63.2.0
-WARNING: Running pip as the <span class="s1">'root'</span> user can result <span class="k">in </span>broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
-</code></pre></div></div>
-
-<p>  如下所示，当已经如<strong>验证</strong>部分加载好 python 3.10.6 模块后，使用以下命令新建虚拟环境、激活后即可使用。</p>
-
-<div class="premonition info"> <div class="header"> <svg class="icon info" aria-hidden="true"> <use xlink:href="#icon-info"></use> </svg> <div class="title"> 小提示 </div> </div> <div class="content"> <p>   新建虚拟环境时最后的参数 env 是指虚拟环境的名字，我们可以取任意符合 python 规则的字符串作为虚拟环境名字。值得注意的是，python 虚拟环境有关的文件将会被安装在命令执行的当前目录下的同名文件夹中。为了便于管理和使用，建议将所有的 python 虚拟环境都放置在同一目录下。</p>
-
-
-
- </div> </div>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 新建 env 虚拟环境</span>
-╰─<span class="nv">$ </span>python3 <span class="nt">-m</span> venv <span class="nb">env</span>
-
-<span class="c"># 激活 env 虚拟环境</span>
-╰─<span class="nv">$ </span><span class="nb">source env</span>/bin/activate
-
-<span class="c"># 可以看到 &lt;env&gt; 的环境提示</span>
-<span class="c"># 尝试升级 pip，可以看到成功升级 </span>
-╭─zhonger@lep-u ~ ‹env›
-╰─<span class="nv">$ </span>pip3 <span class="nb">install</span> <span class="nt">-U</span> pip
-Requirement already satisfied: pip <span class="k">in</span> ./env/lib/python3.10/site-packages <span class="o">(</span>22.2.1<span class="o">)</span>
-Collecting pip
-  Using cached pip-23.0.1-py3-none-any.whl <span class="o">(</span>2.1 MB<span class="o">)</span>
-Installing collected packages: pip
-  Attempting uninstall: pip
-    Found existing installation: pip 22.2.1
-    Uninstalling pip-22.2.1:
-      Successfully uninstalled pip-22.2.1
-Successfully installed pip-23.0.1
-
-<span class="c"># 取消激活 env 虚拟环境</span>
-╰─<span class="nv">$ </span>deactivate
-</code></pre></div></div>
-
-<h2 id="有趣的问题">有趣的问题</h2>
-
-<p>  如果使用 module 提供的 python 模块创建了虚拟环境后，实际运行虚拟环境时还需要使用 module 加载 python 模块吗？答案是<strong>不需要</strong>。虚拟环境的本质是拷贝运行相同命令所需的必要文件，如下对比查看一下 python 模块和 env 虚拟环境的顶级目录。可以发现，两者的差别不是很大。env 虚拟环境少了 share 目录，多了 pyvenv.cfg 文件。查看该文件可知，存在与 python 模块之间的关系的声明。再查看 bin 目录，可以看到 python 可执行命令用了链接的方式，pip 命令则是直接从原来的 python 模块复制过来的。于是，这就能允许普通用户自行管理  pip 命令和 python 库了。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>╰─<span class="nv">$ </span><span class="nb">ls</span> /opt/python/3.10.6
-bin  include  lib  share
-
-╰─<span class="nv">$ </span><span class="nb">ls env
-</span>bin  include  lib  lib64  pyvenv.cfg
-
-╰─<span class="nv">$ </span><span class="nb">cat env</span>/pyvenv.cfg
-home <span class="o">=</span> /opt/python/3.10.6/bin
-include-system-site-packages <span class="o">=</span> <span class="nb">false
-</span>version <span class="o">=</span> 3.10.6
-
-╰─<span class="nv">$ </span>ll <span class="nb">env</span>/bin
-total 36K
-<span class="nt">-rw-r--r--</span> 1 zhonger zhonger 8.9K Mar 20 15:20 Activate.ps1
-<span class="nt">-rw-r--r--</span> 1 zhonger zhonger 2.0K Mar 20 15:20 activate
-<span class="nt">-rw-r--r--</span> 1 zhonger zhonger  908 Mar 20 15:20 activate.csh
-<span class="nt">-rw-r--r--</span> 1 zhonger zhonger 2.1K Mar 20 15:20 activate.fish
-<span class="nt">-rwxrwxr-x</span> 1 zhonger zhonger  234 Mar 20 15:20 pip
-<span class="nt">-rwxrwxr-x</span> 1 zhonger zhonger  234 Mar 20 15:20 pip3
-<span class="nt">-rwxrwxr-x</span> 1 zhonger zhonger  234 Mar 20 15:20 pip3.10
-lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python -&gt; python3
-lrwxrwxrwx 1 zhonger zhonger   30 Mar 20 15:20 python3 -&gt; /opt/python/3.10.6/bin/python3
-lrwxrwxrwx 1 zhonger zhonger    7 Mar 20 15:20 python3.10 -&gt; python3
-</code></pre></div></div>
-
-<h2 id="参考资料">参考资料</h2>
-
-<ul>
-  <li><a href="https://docs.python.org/zh-cn/3/using/unix.html#building-python">Python 官方文档 - 构建 Python</a></li>
-  <li><a href="https://docs.python.org/zh-cn/3/using/configure.html#configure-options">Python 官方文档 - 性能选项</a></li>
-  <li><a href="https://docs.python.org/zh-cn/3/tutorial/venv.html">Python 官方文档 - 虚拟环境和包</a></li>
-  <li><a href="https://www.python.jp/install/ubuntu/index.html">Ubuntu 環境の Python</a></li>
-</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="Modules" /><category term="Python" /><category term="软件环境" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
+</ul>]]></content><author><name>zhonger</name></author><category term="tech" /><category term="webmaster" /><category term="Linux" /><category term="Environment" /><category term="Manage" /><category term="Dev Runtime" /><category term="软件环境" /><category term="多版本" /><category term="管理" /><summary type="html"><![CDATA[前言]]></summary></entry></feed>
